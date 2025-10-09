@@ -1,82 +1,159 @@
 # 📝 Docura
 
-**A fast, elegant, and secure document viewer/editor built with Rust and Iced.**
+**A fast, elegant, and memory-efficient Markdown editor built with Tauri and React.**
 
-Docura is a native desktop app designed for SunlightOS and other Linux systems. It supports Markdown, PDF, and project-based document management — with a clean UI, customizable themes, and future AI integration. Inspired by Typora, but built for performance, safety, and deep system integration.
+Docura is a native desktop app designed for Linux systems. Inspired by Typora, it offers a clean, modern UI for Markdown editing and viewing — but uses **23% less memory** than traditional Electron-based editors. Built with Rust (Tauri) for performance, safety, and a minimal footprint.
 
 ---
 
 ## ✨ Features
 
-- 📝 Live Markdown editing with preview
-- 📄 PDF viewing with native rendering
-- 📂 Project sidebar with folder tree and recent files
-- 🎨 Custom themes and color schemes
-- 🔍 Outline and search panel
-- 🔒 Offline-first, no telemetry
-- 🧠 Planned: AI assistant for summaries, grammar fixes, and code explanations
+- 📝 **Monaco Editor** - Full-featured code editor with syntax highlighting
+- 👁️ **Live Preview** - Real-time Markdown rendering with syntax-highlighted code blocks
+- 📂 **File Browser** - Folder tree sidebar with recursive directory support
+- 📑 **Document Outline** - Automatic heading extraction and navigation
+- 🎨 **Theme Switching** - Beautiful light and dark themes
+- 💾 **Auto-Save** - File operations with native dialogs
+- 🚀 **Lightweight** - Uses **780 MB RAM** vs Typora's 1011 MB (23% less!)
+- 🔒 **Privacy-First** - Offline-first, no telemetry, fully local
 
 ---
 
 ## 🧱 Tech Stack
 
-| Layer       | Tool |
-|-------------|------|
-| GUI         | [`Iced`](https://github.com/iced-rs/iced) |
-| Markdown    | `pulldown-cmark` or `comrak` |
-| PDF         | `poppler-rs` or `pdfium-render` |
-| File I/O    | `tokio` or `async-std` |
-| Theming     | Custom Iced styles |
-| Packaging   | `.deb`, `.rpm`, `.msi`, AUR, AppImage |
+| Layer       | Technology |
+|-------------|------------|
+| **Backend** | [Tauri 2.8](https://tauri.app) - Rust-based desktop framework |
+| **Frontend** | React 19 + Vite 7 |
+| **Editor** | [Monaco Editor](https://microsoft.github.io/monaco-editor/) - VSCode's editor |
+| **Markdown** | [react-markdown](https://github.com/remarkjs/react-markdown) with syntax highlighting |
+| **File I/O** | Tauri plugins (fs, dialog) |
+| **Renderer** | WebKitGTK (system native) |
+| **Styling** | Custom CSS with CSS variables for theming |
+
+---
+
+## 📊 Performance Comparison
+
+Tested on Linux (Arch) with both applications running a markdown file:
+
+```
+╔════════════════════════════════════════════════════════════╗
+║        TYPORA vs DACURA - Memory Usage Comparison         ║
+╠════════════════════════════════════════════════════════════╣
+║  Application          │  Memory Used │   Difference ║
+║  Typora (Electron)    │   1011.14 MB │     baseline ║
+║  Dacura (Tauri)       │    780.22 MB │   -230.92 MB ║
+╠════════════════════════════════════════════════════════════╣
+║  Dacura uses 22.8% LESS memory than Typora!              ║
+║  Memory saved: ~231 MB                                     ║
+╚════════════════════════════════════════════════════════════╝
+```
+
+### Why is Dacura more efficient?
+
+- **WebKitGTK vs Chromium** - WebKit is lighter than full Chromium
+- **Rust vs Node.js** - More memory-efficient backend
+- **System Integration** - Uses system WebKit rather than bundling everything
+- **No V8 overhead** - Electron includes full V8 JavaScript engine for backend
 
 ---
 
 ## 🛣️ Roadmap
 
-### Phase 1: Core Editor (Q4 2025)
-- [x] Project setup and crate structure
-- [ ] Markdown parser and live preview
-- [ ] PDF viewer integration
-- [ ] File open/save dialogs
-- [ ] Basic UI layout with Iced
+### ✅ Phase 1: Core Editor (Complete!)
+- [x] Tauri + React project setup
+- [x] Monaco Editor integration
+- [x] Live Markdown preview
+- [x] File open/save dialogs
+- [x] Modern UI layout with sidebar
 
-### Phase 2: Project Management (Q1 2026)
-- [ ] Folder tree sidebar
+### ✅ Phase 2: Project Management (Complete!)
+- [x] Folder tree sidebar with recursive browsing
+- [x] Outline and TOC generation
+- [x] Theme switching (light/dark)
+- [x] Document header navigation
+
+### 🚧 Phase 3: Enhanced Features (In Progress)
+- [ ] Export to PDF functionality
+- [ ] Print support
 - [ ] Recent files and favorites
-- [ ] Outline and TOC generation
-- [ ] Theme switching (light/dark/custom)
+- [ ] Search across files
+- [ ] Custom keyboard shortcuts
+- [ ] Split view (edit + preview side-by-side)
 
-### Phase 3: AI & Extensions (Q2 2026)
-- [ ] AI assistant integration (summarize, fix grammar, explain code)
-- [ ] Plugin system for diagrams, charts, export formats
-- [ ] Export to PDF/HTML/Slides
+### 🔮 Phase 4: Extensions & Polish
+- [ ] Plugin system for custom renderers
+- [ ] Diagram support (Mermaid, PlantUML)
+- [ ] Export to HTML/Slides
+- [ ] Vim/Emacs keybindings
+- [ ] AI assistant integration (optional)
 
-### Phase 4: Packaging & Release (Q3 2026)
-- [ ] AppImage and AUR packaging
-- [ ] Installer script for SunlightOS
+### 📦 Phase 5: Distribution
+- [ ] AppImage packaging
+- [ ] AUR package for Arch Linux
+- [ ] `.deb` package for Debian/Ubuntu
 - [ ] Public beta release
 
 ## 🚀 Getting Started
 
+### Prerequisites
+
+- **Node.js** (v16+)
+- **Rust** (latest stable via rustup)
+- **System dependencies** (Linux):
+  ```bash
+  # Arch Linux
+  sudo pacman -S webkit2gtk-4.1
+  
+  # Ubuntu/Debian
+  sudo apt install libwebkit2gtk-4.1-dev
+  ```
+
+### Running in Development
+
+```bash
+# Clone the repository
+git clone https://github.com/WOF-Softwares/Docura.git
+cd Docura
+
+# Install dependencies
+npm install
+
+# Run the app
+npm run tauri:dev
 ```
-git clone https://github.com/yourusername/docura
-cd docura
-cargo run
+
+### Building for Production
+
+```bash
+# Build optimized binary
+npm run tauri:build
+
+# Binary will be in src-tauri/target/release/
 ```
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions in:
+We welcome contributions! Areas where you can help:
 
-- UI components (Iced)
-- Markdown and PDF rendering
-- Theming and layout
-- AI assistant workflows
-- Documentation and testing
+- 🎨 **UI/UX improvements** - React components and styling
+- 📝 **Markdown rendering** - Enhanced preview features
+- 🔧 **Rust backend** - File operations and system integration
+- 🎯 **Features** - Implement items from the roadmap
+- 📚 **Documentation** - Improve guides and examples
+- 🐛 **Bug fixes** - Report and fix issues
 
-See `CONTRIBUTING.md` for guidelines.
+### Development Workflow
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/my-feature`
+3. Make your changes and test
+4. Commit: `git commit -am 'Add some feature'`
+5. Push: `git push origin feature/my-feature`
+6. Open a Pull Request
 
 ------
 
@@ -86,8 +163,16 @@ Apache 2.0 — see `LICENSE`
 
 ------
 
-## 🌐 Community
+## 🌐 Community & Support
 
-- GitHub Discussions (coming soon)
-- Matrix channel (planned)
-- Blog posts and video updates (in progress)
+- 💬 **Issues** - [GitHub Issues](https://github.com/WOF-Softwares/Docura/issues)
+- 🌟 **Star the repo** - If you find Docura useful!
+- 🐦 **Share** - Spread the word about lightweight desktop apps
+
+---
+
+## 🙏 Acknowledgments
+
+- Inspired by [Typora](https://typora.io/) - The excellent Markdown editor
+- Built with [Tauri](https://tauri.app/) - The Rust-powered desktop framework
+- Powered by [Monaco Editor](https://microsoft.github.io/monaco-editor/) - VSCode's editor component
