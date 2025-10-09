@@ -1,0 +1,37 @@
+{
+  "name": "docura",
+  "version": "1.0.0",
+  "description": "**A fast, elegant, and secure document viewer/editor built with Rust and Iced.**",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WOF-Softwares/Docura.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/WOF-Softwares/Docura/issues"
+  },
+  "homepage": "https://github.com/WOF-Softwares/Docura#readme",
+  "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@tauri-apps/api": "^2.8.0",
+    "@tauri-apps/plugin-dialog": "^2.4.0",
+    "@tauri-apps/plugin-fs": "^2.4.2",
+    "@vitejs/plugin-react": "^5.0.4",
+    "lucide-react": "^0.545.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^15.6.6",
+    "vite": "^7.1.9"
+  }
+}
