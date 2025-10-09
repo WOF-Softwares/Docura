@@ -1,7 +1,6 @@
 use std::path::Path;
 use serde::{Deserialize, Serialize};
 use tauri::command;
-use walkdir::WalkDir;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct FileItem {
@@ -150,7 +149,7 @@ fn get_directory_contents(dir_path: &Path) -> Result<Vec<FileItem>, String> {
 }
 
 #[command]
-async fn export_to_pdf(content: String, filename: String) -> Result<String, String> {
+async fn export_to_pdf(_content: String, filename: String) -> Result<String, String> {
     // For now, return a placeholder message
     // In a real implementation, you would use a library like wkhtmltopdf or headless Chrome
     log::info!("Export to PDF requested for: {}", filename);
@@ -158,7 +157,7 @@ async fn export_to_pdf(content: String, filename: String) -> Result<String, Stri
 }
 
 #[command]
-async fn print_document(content: String) -> Result<String, String> {
+async fn print_document(_content: String) -> Result<String, String> {
     // For now, return a placeholder message
     // In a real implementation, you would integrate with the system print dialog
     log::info!("Print document requested");

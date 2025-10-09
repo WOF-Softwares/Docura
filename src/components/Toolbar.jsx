@@ -5,7 +5,6 @@ import {
   FolderOpen, 
   File, 
   Save, 
-  SaveAs, 
   FileText, 
   Printer 
 } from 'lucide-react'
@@ -69,7 +68,7 @@ const Toolbar = ({
           onClick={onSaveAs}
           title="Save As"
         >
-          <SaveAs size={16} />
+          <Save size={16} />
           <span>Save As</span>
         </button>
       </div>
