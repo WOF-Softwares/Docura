@@ -11,7 +11,8 @@ const MainEditor = ({
   activeTab,
   onTabChange,
   currentFile,
-  isEditing
+  isEditing,
+  markdownTheme
 }) => {
   const theme = document.documentElement.getAttribute('data-theme')
 
@@ -100,7 +101,7 @@ const MainEditor = ({
             }}
           />
         ) : (
-          <div className="preview-container">
+          <div className="preview-container" data-md-theme={markdownTheme}>
             {renderMarkdown()}
           </div>
         )}

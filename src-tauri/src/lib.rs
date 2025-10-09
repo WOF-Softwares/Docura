@@ -1,5 +1,7 @@
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use std::fs;
 use serde::{Deserialize, Serialize};
+use serde_json;
 use tauri::command;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -164,6 +166,74 @@ async fn print_document(_content: String) -> Result<String, String> {
     Ok("Print feature coming soon!".to_string())
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct AppConfig {
+    theme: String,
+    #[serde(default)]
+    recent_files: Vec<String>,
+}
+
+impl Default for AppConfig {
+    fn default() -> Self {
+        AppConfig {
+            theme: "dracula-dark".to_string(),
+            recent_files: Vec::new(),
+        }
+    }
+}
+
+fn get_config_dir() -> Result<PathBuf, String> {
+    let home_dir = std::env::var("HOME")
+        .map_err(|_| "Could not find HOME directory".to_string())?;
+    
+    let config_dir = PathBuf::from(home_dir)
+        .join(".local")
+        .join("share")
+        .join("dacura");
+    
+    // Create directory if it doesn't exist
+    if !config_dir.exists() {
+        fs::create_dir_all(&config_dir)
+            .map_err(|e| format!("Failed to create config directory: {}", e))?;
+    }
+    
+    Ok(config_dir)
+}
+
+#[command]
+async fn load_config() -> Result<AppConfig, String> {
+    let config_dir = get_config_dir()?;
+    let config_file = config_dir.join("config.json");
+    
+    if !config_file.exists() {
+        // Return default config if file doesn't exist
+        return Ok(AppConfig::default());
+    }
+    
+    let content = fs::read_to_string(&config_file)
+        .map_err(|e| format!("Failed to read config file: {}", e))?;
+    
+    let config: AppConfig = serde_json::from_str(&content)
+        .map_err(|e| format!("Failed to parse config: {}", e))?;
+    
+    Ok(config)
+}
+
+#[command]
+async fn save_config(config: AppConfig) -> Result<(), String> {
+    let config_dir = get_config_dir()?;
+    let config_file = config_dir.join("config.json");
+    
+    let json = serde_json::to_string_pretty(&config)
+        .map_err(|e| format!("Failed to serialize config: {}", e))?;
+    
+    fs::write(&config_file, json)
+        .map_err(|e| format!("Failed to write config file: {}", e))?;
+    
+    log::info!("Config saved successfully");
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -182,7 +252,9 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             get_folder_files,
             export_to_pdf,
-            print_document
+            print_document,
+            load_config,
+            save_config
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

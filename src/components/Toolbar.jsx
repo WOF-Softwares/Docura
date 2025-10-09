@@ -6,7 +6,8 @@ import {
   File, 
   Save, 
   FileText, 
-  Printer 
+  Printer,
+  Palette 
 } from 'lucide-react'
 
 const Toolbar = ({
@@ -18,6 +19,7 @@ const Toolbar = ({
   onSaveAs,
   onExportPdf,
   onPrint,
+  onOpenThemeSelector,
   hasFile
 }) => {
   return (
@@ -29,6 +31,15 @@ const Toolbar = ({
           title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
         >
           {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+        </button>
+        
+        <button
+          className="toolbar-button"
+          onClick={onOpenThemeSelector}
+          title="Change Markdown Theme"
+        >
+          <Palette size={16} />
+          <span>Theme</span>
         </button>
       </div>
       

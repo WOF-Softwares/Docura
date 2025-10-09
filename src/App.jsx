@@ -5,10 +5,15 @@ import { writeTextFile, readTextFile } from '@tauri-apps/plugin-fs'
 import Toolbar from './components/Toolbar'
 import Sidebar from './components/Sidebar'
 import MainEditor from './components/MainEditor'
+import ThemeSelector from './components/ThemeSelector'
 import './styles/App.css'
+import './styles/ThemeSelector.css'
+import './styles/markdown-themes.css'
 
 function App() {
   const [theme, setTheme] = useState('light')
+  const [markdownTheme, setMarkdownTheme] = useState('dracula-dark')
+  const [isThemeSelectorOpen, setIsThemeSelectorOpen] = useState(false)
   const [currentFile, setCurrentFile] = useState(null)
   const [currentFolder, setCurrentFolder] = useState(null)
   const [files, setFiles] = useState([])
@@ -18,9 +23,38 @@ function App() {
   const [outlineHeaders, setOutlineHeaders] = useState([])
 
   useEffect(() => {
-    // Apply theme to document
+    // Load config on mount
+    loadAppConfig()
+  }, [])
+
+  useEffect(() => {
+    // Apply UI theme to document
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
+
+  const loadAppConfig = async () => {
+    try {
+      const config = await invoke('load_config')
+      if (config && config.theme) {
+        setMarkdownTheme(config.theme)
+      }
+    } catch (error) {
+      console.error('Error loading config:', error)
+    }
+  }
+
+  const saveAppConfig = async (newTheme) => {
+    try {
+      await invoke('save_config', {
+        config: {
+          theme: newTheme,
+          recent_files: []
+        }
+      })
+    } catch (error) {
+      console.error('Error saving config:', error)
+    }
+  }
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light')
@@ -153,6 +187,11 @@ function App() {
     extractHeaders(newContent)
   }
 
+  const handleMarkdownThemeChange = (newTheme) => {
+    setMarkdownTheme(newTheme)
+    saveAppConfig(newTheme)
+  }
+
   return (
     <div className={`app ${theme}`}>
       <Toolbar
@@ -164,6 +203,7 @@ function App() {
         onSaveAs={saveFileAs}
         onExportPdf={exportToPdf}
         onPrint={printDocument}
+        onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
         hasFile={!!currentFile}
       />
       
@@ -188,8 +228,16 @@ function App() {
           onTabChange={setActiveTab}
           currentFile={currentFile}
           isEditing={isEditing}
+          markdownTheme={markdownTheme}
         />
       </div>
+
+      <ThemeSelector
+        isOpen={isThemeSelectorOpen}
+        onClose={() => setIsThemeSelectorOpen(false)}
+        currentTheme={markdownTheme}
+        onThemeChange={handleMarkdownThemeChange}
+      />
     </div>
   )
 }
