@@ -257,11 +257,20 @@
 .preview-container {
     height: 100%;
     overflow-y: auto;
-    padding: 0; /* outer spacing handled by the markdown theme file to avoid duplication/conflict */
+    line-height: 2.3rem;
+    padding: 2rem; /* outer spacing handled by the markdown theme file to avoid duplication/conflict */
     background-color: var(--bg-primary);
     display: flex;
     justify-content: center;
     align-items: flex-start; /* keep content top-aligned */
+    letter-spacing: 0.02em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1;
+    font-kerning: normal;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
     /* The markdown theme now controls the inner padding and measure (max-width). */
 }
 

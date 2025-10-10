@@ -5,13 +5,13 @@
         -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
         Arial, sans-serif;
     /* Generous line spacing for comfortable reading */
-    --line-height: 2;
+    --line-height: 2.3rem !important;
     /* Comfortable heading line-height */
-    --heading-line-height: 1.4;
+    --heading-line-height: 1.4rem !important;
     /* Extra spacing variables */
-    --paragraph-margin: 2em;
-    --heading-top-margin: 2.5rem;
-    --heading-bottom-margin: 1.25rem;
+    --paragraph-margin: 2rem !important;
+    --heading-top-margin: 2.5rem !important;
+    --heading-bottom-margin: 1.25rem !important;
     --border-radius: 8px;
     --transition: all 0.2s ease-in-out;
 }
@@ -273,8 +273,31 @@
 }
 
 /* Task Lists */
-.markdown-preview input[type="checkbox"] {
-    margin-right: 0.5em;
+.markdown-preview .task-list-item {
+    list-style: none;
+    margin-left: -1.5em;
+    padding-left: 0;
+}
+
+.markdown-preview .task-list-item-checkbox {
+    margin-right: 0.75em;
+    margin-left: 0.25em;
+    cursor: pointer;
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: middle;
+    position: relative;
+    top: -0.05em;
+    accent-color: var(--link-color);
+}
+
+.markdown-preview .task-list-item-checkbox:hover {
+    opacity: 0.8;
+}
+
+.markdown-preview .task-list-item-checkbox:focus {
+    outline: 2px solid var(--link-color);
+    outline-offset: 2px;
 }
 
 /* ===== THEME: Dracula Dark ===== */
