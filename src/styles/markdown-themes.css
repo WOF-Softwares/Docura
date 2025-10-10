@@ -4,15 +4,15 @@
     --font-family:
         -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
         Arial, sans-serif;
-    /* increase base text spacing for readability */
+    /* Generous line spacing for comfortable reading */
     --line-height: 2;
-    /* much more aggressive heading line-height for better readability */
-    --heading-line-height: 3.75;
-    /* extra spacing variables */
-    --paragraph-margin: 2.2em;
-    --heading-top-margin: 3.5rem;
-    --heading-bottom-margin: 1.75rem;
-    --border-radius: 6px;
+    /* Comfortable heading line-height */
+    --heading-line-height: 1.4;
+    /* Extra spacing variables */
+    --paragraph-margin: 2em;
+    --heading-top-margin: 2.5rem;
+    --heading-bottom-margin: 1.25rem;
+    --border-radius: 8px;
     --transition: all 0.2s ease-in-out;
 }
 
@@ -22,16 +22,23 @@
     line-height: var(--line-height);
     color: var(--text-primary);
     background-color: var(--bg-primary);
-    /* slightly wider for better measure on larger windows */
-    max-width: 900px;
+    /* Optimal reading width - Typora uses ~850px */
+    max-width: 860px;
     margin: 0 auto;
-    /* add more breathing room around content */
+    /* Generous padding for breathing room */
     padding: 80px 60px;
     transition: var(--transition);
-    letter-spacing: 0.01em;
-    font-size: 18px;
+    letter-spacing: 0.02em;
+    font-size: 17px;
+    /* Enhanced text rendering for crisp, beautiful typography */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1;
+    font-kerning: normal;
+    /* Improve subpixel rendering */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
 }
 
 /* Headings */
@@ -53,54 +60,65 @@
 }
 
 .markdown-preview h1 {
-    /* much larger, more prominent top-level heading */
-    font-size: 9em;
+    /* Much larger, more prominent top-level heading */
+    font-size: 2.8em;
+    font-weight: 700;
     border-bottom-width: 2px;
     margin-top: 0;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 0.6em;
 }
 
 .markdown-preview h2 {
-    font-size: 6.75em;
+    font-size: 2.1em;
+    font-weight: 650;
     border-bottom-width: 1px;
-    margin-top: 2.5rem;
-    margin-bottom: 1.6rem;
+    margin-top: 3rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 0.5em;
 }
 
 .markdown-preview h3 {
-    font-size: 5.4em;
+    font-size: 1.75em;
+    font-weight: 650;
+    border-bottom: none;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.markdown-preview h4 {
+    font-size: 1.4em;
+    font-weight: 650;
     border-bottom: none;
     margin-top: 2rem;
     margin-bottom: 1.25rem;
 }
 
-.markdown-preview h4 {
-    font-size: 3.9em;
-    border-bottom: none;
-    margin-top: 1.75rem;
-}
-
 .markdown-preview h5 {
-    font-size: 3.3em;
+    font-size: 1.2em;
+    font-weight: 600;
     border-bottom: none;
-    margin-top: 1.75rem;
+    margin-top: 2rem;
+    margin-bottom: 1.25rem;
 }
 
 .markdown-preview h6 {
-    font-size: 3em;
+    font-size: 1.05em;
+    font-weight: 600;
     color: var(--text-secondary);
     border-bottom: none;
-    margin-top: 1.75rem;
+    margin-top: 2rem;
+    margin-bottom: 1.25rem;
 }
 
 /* Paragraphs and Text */
 .markdown-preview p {
-    /* increased space between paragraphs for easier scanning */
-    margin-bottom: var(--paragraph-margin);
+    /* Generous space between paragraphs for easier scanning */
+    margin-bottom: 2em;
     margin-top: 0;
-    font-size: 18px;
-    line-height: 2.1;
-    /* improve readability on narrow measures */
+    font-size: 17px;
+    line-height: 2;
+    /* Improve readability on narrow measures */
     hyphens: auto;
     word-break: break-word;
 }
@@ -137,45 +155,46 @@
 .markdown-preview ul,
 .markdown-preview ol {
     padding-left: 2em;
-    margin-bottom: 1.5em;
-    margin-top: 0.5em;
+    margin-bottom: 2em;
+    margin-top: 0.75em;
 }
 
 .markdown-preview li {
-    margin-bottom: 0.6em;
-    line-height: 1.9;
+    margin-bottom: 0.8em;
+    line-height: 2;
 }
 
 .markdown-preview li > p {
-    margin-bottom: 0.5em;
+    margin-bottom: 0.75em;
 }
 
 .markdown-preview li > ul,
 .markdown-preview li > ol {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
 }
 
 /* Code */
 .markdown-preview code {
     font-family:
         "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.9em;
+    font-size: 0.88em;
     background-color: var(--code-bg);
     color: var(--code-color);
-    padding: 0.3em 0.5em;
+    padding: 0.25em 0.6em;
     border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
 }
 
 .markdown-preview pre {
     background-color: var(--code-block-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    padding: 1.5em;
+    padding: 1.75em 1.5em;
     overflow: auto;
-    margin: 1.5em 0;
-    font-size: 0.92em;
-    line-height: 1.65;
+    margin: 2em 0;
+    font-size: 0.9em;
+    line-height: 1.7;
 }
 
 .markdown-preview pre code {
@@ -186,18 +205,19 @@
 
 /* Blockquotes */
 .markdown-preview blockquote {
-    margin: 1.75em 0;
-    padding: 1em 1.5em;
+    margin: 2.25em 0;
+    padding: 1.25em 1.75em;
     background-color: var(--blockquote-bg);
-    border-left: 4px solid var(--blockquote-border);
+    border-left: 5px solid var(--blockquote-border);
     color: var(--blockquote-color);
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
-    font-size: 1.05em;
+    font-size: 1em;
+    font-style: italic;
 }
 
 .markdown-preview blockquote p {
-    margin-bottom: 0.75em;
-    line-height: 1.7;
+    margin-bottom: 1em;
+    line-height: 1.9;
 }
 
 .markdown-preview blockquote p:last-child {
@@ -208,17 +228,19 @@
 .markdown-preview table {
     border-collapse: collapse;
     width: 100%;
-    margin: 1.75em 0;
+    margin: 2.25em 0;
     background-color: var(--table-bg);
-    font-size: 0.95em;
+    font-size: 0.94em;
+    border-radius: var(--border-radius);
+    overflow: hidden;
 }
 
 .markdown-preview th,
 .markdown-preview td {
     border: 1px solid var(--border-color);
-    padding: 0.75em 1em;
+    padding: 0.9em 1.25em;
     text-align: left;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .markdown-preview th {
@@ -233,10 +255,11 @@
 
 /* Horizontal Rule */
 .markdown-preview hr {
-    height: 2px;
+    height: 1px;
     background-color: var(--border-color);
     border: none;
-    margin: 3em 0;
+    margin: 3.5em 0;
+    opacity: 0.6;
 }
 
 /* Images */
@@ -244,8 +267,8 @@
     max-width: 100%;
     height: auto;
     border-radius: var(--border-radius);
-    box-shadow: 0 4px 12px var(--shadow-color);
-    margin: 2em 0;
+    box-shadow: 0 4px 16px var(--shadow-color);
+    margin: 2.5em 0;
     display: block;
 }
 
@@ -361,25 +384,25 @@
 /* Responsive Design */
 @media (max-width: 768px) {
     .markdown-preview {
-        padding: 40px 20px;
+        padding: 50px 30px;
         font-size: 16px;
     }
 
     .markdown-preview h1 {
-        font-size: 5.7em;
+        font-size: 2.2em;
     }
 
     .markdown-preview h2 {
-        font-size: 4.5em;
+        font-size: 1.8em;
     }
 
     .markdown-preview h3 {
-        font-size: 3.75em;
+        font-size: 1.5em;
     }
 
     .markdown-preview pre {
         font-size: 0.88em;
-        padding: 1.25em;
+        padding: 1.5em 1.25em;
     }
 
     .markdown-preview p {
