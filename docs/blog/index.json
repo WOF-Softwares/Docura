@@ -1,5 +1,21 @@
 [
   {
+    "slug": "solo-developer-ai-advantage",
+    "title": "Solo Developer + AI vs Traditional Teams: The 2025 Reality",
+    "date": "October 11, 2025",
+    "readTime": "12 min read",
+    "excerpt": "How one developer with Claude AI shipped 17 features in a single day - while traditional teams take months. The revolution in software development is here.",
+    "file": "solo-developer-ai-advantage.md"
+  },
+  {
+    "slug": "ux-superiority-respect-over-force",
+    "title": "UX Superiority: Why Docura Asks While Typora Forces",
+    "date": "October 11, 2025",
+    "readTime": "10 min read",
+    "excerpt": "326 MB Typora silently forces windows on you. 12 MB Docura asks what YOU want. This is what user respect looks like in 2025.",
+    "file": "ux-superiority-respect-over-force.md"
+  },
+  {
     "slug": "ghormeh-sabzi-software-philosophy",
     "title": "The Ghormeh Sabzi Principle: Why Great Software Takes Time",
     "date": "October 11, 2025",
