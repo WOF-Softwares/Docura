@@ -458,7 +458,10 @@ async fn open_new_window(app: tauri::AppHandle, folder_path: Option<String>) -> 
         .unwrap()
         .as_millis());
     
-    // Create new window
+    // Detect tiling WM
+    let is_tiling = detect_tiling_wm();
+    
+    // Create new window with appropriate decorations
     let new_window = tauri::WebviewWindowBuilder::new(
         &app,
         &window_label,
@@ -466,8 +469,11 @@ async fn open_new_window(app: tauri::AppHandle, folder_path: Option<String>) -> 
     )
     .title("Docura")
     .inner_size(1200.0, 800.0)
+    .decorations(!is_tiling)  // Hide decorations in tiling WM
     .build()
     .map_err(|e| e.to_string())?;
+    
+    log::info!("New window created: {} (tiling WM: {})", window_label, is_tiling);
     
     // If folder_path provided, emit event to open it
     if let Some(path) = folder_path {
