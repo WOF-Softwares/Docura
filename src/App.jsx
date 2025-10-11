@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { getCurrentWindow } from '@tauri-apps/api/window'
+import { listen } from '@tauri-apps/api/event'
 import { open, save } from '@tauri-apps/plugin-dialog'
 import { writeTextFile, readTextFile } from '@tauri-apps/plugin-fs'
 import toast, { Toaster } from 'react-hot-toast'
@@ -10,6 +11,7 @@ import MainEditor from './components/MainEditor'
 import ThemeSelector from './components/ThemeSelector'
 import PDFPreviewDialog from './components/PDFPreviewDialog'
 import SettingsDialog from './components/SettingsDialog'
+import FolderSwitchDialog from './components/FolderSwitchDialog'
 import { exportToPDF, generatePDFBlob } from './utils/pdfExport'
 import { convertMarkdownImagePaths } from './utils/imagePathConverter'
 import { isOmakaseEnvironment, syncWithOmakase } from './utils/omakaseSync'
@@ -39,6 +41,8 @@ function App() {
   const [omakaseSyncEnabled, setOmakaseSyncEnabled] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
   const [omakaseFont, setOmakaseFont] = useState(null)
+  const [isFolderSwitchDialogOpen, setIsFolderSwitchDialogOpen] = useState(false)
+  const [pendingFolderPath, setPendingFolderPath] = useState(null)
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
 
@@ -67,6 +71,51 @@ function App() {
     
     // Check for Omakase
     checkOmakase()
+    
+    // Set up CLI event listeners
+    let unlistenFolder, unlistenFile
+    
+    listen('cli-open-folder', async (event) => {
+      const folderPath = event.payload
+      console.log('📁 CLI: Opening folder:', folderPath)
+      try {
+        await invoke('grant_file_scope', { filePath: folderPath })
+        setCurrentFolder(folderPath)
+        const folderFiles = await invoke('get_folder_files', { folderPath })
+        setFiles(folderFiles)
+        toast.success(`Opened folder: ${folderPath.split('/').pop()}`)
+      } catch (error) {
+        console.error('Error opening folder from CLI:', error)
+        toast.error('Failed to open folder')
+      }
+    }).then(fn => { unlistenFolder = fn })
+    
+    listen('cli-open-file', async (event) => {
+      const filePath = event.payload
+      console.log('📄 CLI: Opening file:', filePath)
+      try {
+        await invoke('grant_file_scope', { filePath })
+        const content = await readTextFile(filePath)
+        setCurrentFile(filePath)
+        setFileContent(content)
+        setOriginalContent(content)
+        setIsEditing(true)
+        extractHeaders(content)
+        setCurrentFolder(null)
+        const fileName = filePath.split('/').pop()
+        setFiles([{ name: fileName, path: filePath, type: 'file' }])
+        toast.success(`Opened: ${fileName}`)
+      } catch (error) {
+        console.error('Error opening file from CLI:', error)
+        toast.error('Failed to open file')
+      }
+    }).then(fn => { unlistenFile = fn })
+    
+    // Cleanup
+    return () => {
+      if (unlistenFolder) unlistenFolder()
+      if (unlistenFile) unlistenFile()
+    }
   }, [])
   
   useEffect(() => {
@@ -340,24 +389,60 @@ function App() {
       })
       
       if (selected) {
-        // Grant file system scope for the folder
-        try {
-          await invoke('grant_file_scope', { filePath: selected })
-        } catch (scopeError) {
-          console.warn('Failed to grant file scope:', scopeError)
+        // If a folder is already open, ask user what to do
+        if (currentFolder) {
+          setPendingFolderPath(selected)
+          setIsFolderSwitchDialogOpen(true)
+          return
         }
         
-        setCurrentFolder(selected)
-        const folderFiles = await invoke('get_folder_files', { 
-          folderPath: selected 
-        })
-        setFiles(folderFiles)
-        toast.success(`Opened folder: ${selected.split('/').pop()}`)
+        // Open folder directly
+        await openFolderDirect(selected)
       }
     } catch (error) {
       console.error('Error opening folder:', error)
       toast.error('Failed to open folder')
     }
+  }
+  
+  const openFolderDirect = async (folderPath) => {
+    try {
+      // Grant file system scope for the folder
+      try {
+        await invoke('grant_file_scope', { filePath: folderPath })
+      } catch (scopeError) {
+        console.warn('Failed to grant file scope:', scopeError)
+      }
+      
+      setCurrentFolder(folderPath)
+      const folderFiles = await invoke('get_folder_files', { 
+        folderPath 
+      })
+      setFiles(folderFiles)
+      toast.success(`Opened folder: ${folderPath.split('/').pop()}`)
+    } catch (error) {
+      console.error('Error opening folder:', error)
+      toast.error('Failed to open folder')
+    }
+  }
+  
+  const handleFolderSwitchChoice = async (choice) => {
+    if (choice === 'new-window') {
+      // Open in new window
+      try {
+        await invoke('open_new_window', { folderPath: pendingFolderPath })
+        toast.success('Opening in new window...')
+      } catch (error) {
+        console.error('Error opening new window:', error)
+        toast.error('Failed to open new window')
+      }
+    } else if (choice === 'replace') {
+      // Replace current folder
+      await openFolderDirect(pendingFolderPath)
+    }
+    // Close dialog and reset
+    setIsFolderSwitchDialogOpen(false)
+    setPendingFolderPath(null)
   }
 
   const openFile = async () => {
@@ -785,6 +870,13 @@ function App() {
         omakaseSyncEnabled={omakaseSyncEnabled}
         onOmakaseSyncToggle={handleOmakaseSyncToggle}
         onSyncNow={handleOmakaseSync}
+      />
+
+      <FolderSwitchDialog
+        isOpen={isFolderSwitchDialogOpen}
+        currentFolder={currentFolder}
+        newFolder={pendingFolderPath}
+        onChoice={handleFolderSwitchChoice}
       />
 
       <Toaster

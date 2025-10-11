@@ -3,7 +3,7 @@ use std::fs;
 use std::env;
 use serde::{Deserialize, Serialize};
 use serde_json;
-use tauri::{command, Manager};
+use tauri::{command, Manager, Emitter};
 use tauri_plugin_fs::FsExt;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -450,12 +450,50 @@ async fn grant_file_scope(app: tauri::AppHandle, file_path: String) -> Result<()
     Ok(())
 }
 
+#[command]
+async fn open_new_window(app: tauri::AppHandle, folder_path: Option<String>) -> Result<(), String> {
+    // Generate unique window label
+    let window_label = format!("docura-{}", std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_millis());
+    
+    // Create new window
+    let new_window = tauri::WebviewWindowBuilder::new(
+        &app,
+        &window_label,
+        tauri::WebviewUrl::App("index.html".into())
+    )
+    .title("Docura")
+    .inner_size(1200.0, 800.0)
+    .build()
+    .map_err(|e| e.to_string())?;
+    
+    // If folder_path provided, emit event to open it
+    if let Some(path) = folder_path {
+        // Wait a bit for window to load
+        tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
+        new_window.emit("cli-open-folder", path)
+            .map_err(|e| e.to_string())?;
+    }
+    
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // Get CLI arguments
+    let args: Vec<String> = env::args().collect();
+    let cli_arg = if args.len() > 1 {
+        Some(args[1].clone())
+    } else {
+        None
+    };
+    
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
-        .setup(|app| {
+        .setup(move |app| {
             if cfg!(debug_assertions) {
                 app.handle().plugin(
                     tauri_plugin_log::Builder::default()
@@ -476,6 +514,29 @@ pub fn run() {
                 }
             }
             
+            // Handle CLI arguments
+            if let Some(arg) = cli_arg {
+                let path = Path::new(&arg);
+                
+                if path.exists() {
+                    if path.is_dir() {
+                        // Open folder
+                        log::info!("CLI: Opening folder: {}", arg);
+                        if let Some(window) = app.get_webview_window("main") {
+                            let _ = window.emit("cli-open-folder", arg);
+                        }
+                    } else if path.is_file() {
+                        // Open file
+                        log::info!("CLI: Opening file: {}", arg);
+                        if let Some(window) = app.get_webview_window("main") {
+                            let _ = window.emit("cli-open-file", arg);
+                        }
+                    }
+                } else {
+                    log::warn!("CLI: Path does not exist: {}", arg);
+                }
+            }
+            
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -488,7 +549,8 @@ pub fn run() {
             grant_file_scope,
             check_omakase_command,
             get_omakase_theme,
-            get_omakase_font
+            get_omakase_font,
+            open_new_window
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
