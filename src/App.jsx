@@ -371,6 +371,10 @@ function App() {
   const saveFile = async () => {
     // If no file is open, use Save As instead
     if (!currentFile) {
+      toast('Please choose where to save your file 📝', {
+        icon: '💾',
+        duration: 2000,
+      })
       await saveFileAs()
       return
     }
