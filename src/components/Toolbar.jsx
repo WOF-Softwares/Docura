@@ -23,7 +23,11 @@ const Toolbar = ({
   onExportPdf,
   onPrint,
   onOpenThemeSelector,
-  hasFile
+  hasFile,
+  onToggleFullscreen,
+  isFullscreen,
+  onToggleSidebar,
+  isSidebarVisible
 }) => {
   return (
     <div className="toolbar">
@@ -107,6 +111,26 @@ const Toolbar = ({
         >
           <Printer size={16} />
           <span>Print</span>
+        </button>
+      </div>
+      
+      <div className="toolbar-section">
+        <button
+          className="toolbar-button"
+          onClick={onToggleSidebar}
+          title={`${isSidebarVisible ? 'Hide' : 'Show'} Sidebar (Ctrl+B)`}
+        >
+          {isSidebarVisible ? <PanelLeftClose size={16} /> : <PanelLeft size={16} />}
+          <span>Sidebar</span>
+        </button>
+        
+        <button
+          className="toolbar-button"
+          onClick={onToggleFullscreen}
+          title={`${isFullscreen ? 'Exit' : 'Enter'} Fullscreen (F11)`}
+        >
+          {isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
+          <span>Fullscreen</span>
         </button>
       </div>
     </div>

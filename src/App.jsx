@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { invoke } from '@tauri-apps/api/core'
+import { getCurrentWindow } from '@tauri-apps/api/window'
 import { open } from '@tauri-apps/plugin-dialog'
 import { writeTextFile, readTextFile } from '@tauri-apps/plugin-fs'
 import Toolbar from './components/Toolbar'
@@ -20,6 +21,8 @@ function App() {
   const [isEditing, setIsEditing] = useState(false)
   const [activeTab, setActiveTab] = useState('code') // 'code' or 'preview'
   const [outlineHeaders, setOutlineHeaders] = useState([])
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true)
+  const [isFullscreen, setIsFullscreen] = useState(false)
 
   // Available themes for random cycling
   const availableThemes = [
@@ -43,6 +46,32 @@ function App() {
         console.log('🪟 Running in standard window manager')
       }
     }).catch(err => console.error('Error checking WM:', err))
+  }, [])
+
+  useEffect(() => {
+    // Add keyboard shortcuts
+    const handleKeyDown = async (e) => {
+      // F11 for fullscreen
+      if (e.key === 'F11') {
+        e.preventDefault()
+        try {
+          const window = getCurrentWindow()
+          const isCurrentlyFullscreen = await window.isFullscreen()
+          await window.setFullscreen(!isCurrentlyFullscreen)
+          setIsFullscreen(!isCurrentlyFullscreen)
+        } catch (error) {
+          console.error('Error toggling fullscreen:', error)
+        }
+      }
+      // Ctrl+B for sidebar toggle
+      if (e.ctrlKey && e.key === 'b') {
+        e.preventDefault()
+        setIsSidebarVisible(prev => !prev)
+      }
+    }
+    
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
   useEffect(() => {
@@ -217,6 +246,21 @@ function App() {
     saveAppConfig(newTheme)
   }
 
+  const toggleFullscreen = async () => {
+    try {
+      const window = getCurrentWindow()
+      const isCurrentlyFullscreen = await window.isFullscreen()
+      await window.setFullscreen(!isCurrentlyFullscreen)
+      setIsFullscreen(!isCurrentlyFullscreen)
+    } catch (error) {
+      console.error('Error toggling fullscreen:', error)
+    }
+  }
+
+  const toggleSidebar = () => {
+    setIsSidebarVisible(prev => !prev)
+  }
+
   // Extract theme variant for UI components that need it
   const currentVariant = currentTheme.split('-')[1] || 'dark'
 
@@ -233,21 +277,27 @@ function App() {
         onPrint={printDocument}
         onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
         hasFile={!!currentFile}
+        onToggleFullscreen={toggleFullscreen}
+        isFullscreen={isFullscreen}
+        onToggleSidebar={toggleSidebar}
+        isSidebarVisible={isSidebarVisible}
       />
       
       <div className="app-body">
-        <Sidebar
-          currentFolder={currentFolder}
-          files={files}
-          outlineHeaders={outlineHeaders}
-          onSelectFile={selectFile}
-          onRefreshFiles={() => {
-            if (currentFolder) {
-              invoke('get_folder_files', { folderPath: currentFolder })
-                .then(setFiles)
-            }
-          }}
-        />
+        {isSidebarVisible && (
+          <Sidebar
+            currentFolder={currentFolder}
+            files={files}
+            outlineHeaders={outlineHeaders}
+            onSelectFile={selectFile}
+            onRefreshFiles={() => {
+              if (currentFolder) {
+                invoke('get_folder_files', { folderPath: currentFolder })
+                  .then(setFiles)
+              }
+            }}
+          />
+        )}
         
         <MainEditor
           fileContent={fileContent}
