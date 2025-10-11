@@ -480,10 +480,12 @@ async fn open_new_window(app: tauri::AppHandle, folder_path: Option<String>) -> 
         // Wait for window to load and set up listeners
         log::info!("Waiting for new window to initialize...");
         tokio::time::sleep(tokio::time::Duration::from_millis(2000)).await;
-        log::info!("Emitting cli-open-folder event to new window");
-        new_window.emit("cli-open-folder", path)
+        log::info!("Emitting cli-open-folder event to new window: {}", window_label);
+        
+        // Use emit_to to send event to specific window only
+        app.emit_to(&window_label, "cli-open-folder", path)
             .map_err(|e| e.to_string())?;
-        log::info!("Event emitted successfully");
+        log::info!("Event emitted successfully to window: {}", window_label);
     }
     
     Ok(())
@@ -529,17 +531,13 @@ pub fn run() {
                 
                 if path.exists() {
                     if path.is_dir() {
-                        // Open folder
+                        // Open folder - emit only to main window
                         log::info!("CLI: Opening folder: {}", arg);
-                        if let Some(window) = app.get_webview_window("main") {
-                            let _ = window.emit("cli-open-folder", arg);
-                        }
+                        let _ = app.emit_to("main", "cli-open-folder", arg);
                     } else if path.is_file() {
-                        // Open file
+                        // Open file - emit only to main window
                         log::info!("CLI: Opening file: {}", arg);
-                        if let Some(window) = app.get_webview_window("main") {
-                            let _ = window.emit("cli-open-file", arg);
-                        }
+                        let _ = app.emit_to("main", "cli-open-file", arg);
                     }
                 } else {
                     log::warn!("CLI: Path does not exist: {}", arg);

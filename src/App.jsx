@@ -72,11 +72,14 @@ function App() {
     // Check for Omakase
     checkOmakase()
     
-    // Set up CLI event listeners
-    console.log('🎧 Setting up CLI event listeners...')
+    // Set up CLI event listeners (WINDOW-SPECIFIC)
+    console.log('🎧 Setting up window-specific CLI event listeners...')
     let unlistenFolder, unlistenFile
     
-    listen('cli-open-folder', async (event) => {
+    const currentWindow = getCurrentWindow()
+    
+    // Use window-specific listen instead of global listen
+    currentWindow.listen('cli-open-folder', async (event) => {
       const folderPath = event.payload
       console.log('📁 CLI: Received cli-open-folder event:', folderPath)
       console.log('📁 Event details:', event)
@@ -100,10 +103,10 @@ function App() {
       }
     }).then(fn => { 
       unlistenFolder = fn
-      console.log('✅ CLI folder listener registered')
+      console.log('✅ CLI folder listener registered for this window')
     })
     
-    listen('cli-open-file', async (event) => {
+    currentWindow.listen('cli-open-file', async (event) => {
       const filePath = event.payload
       console.log('📄 CLI: Opening file:', filePath)
       try {
