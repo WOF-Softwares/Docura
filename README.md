@@ -2,6 +2,8 @@
 
 **A fast, elegant, and powerful Markdown editor that surpasses Typora.**
 
+🎉 **Version 1.0 Released!** 🎉
+
 Docura is a next-generation native desktop app designed for Linux systems. Built with Rust (Tauri) and React, it combines the best features of Typora, VS Code, Medium, and Notion into one beautiful, lightweight application.
 
 <div align="center">
@@ -31,6 +33,8 @@ Docura is a next-generation native desktop app designed for Linux systems. Built
 | **Code Editor Theming** | Basic | Monaco with custom themes | 🏆 **Docura** |
 | **Interactive Checkboxes** | ✅ Yes | ✅ Yes + Better UX | 🏆 **Docura** |
 | **Outline Navigation** | ✅ Yes | ✅ Yes + Smooth scrolling | 🏆 **Docura** |
+| **PDF Export** | ✅ Yes | ✅ Yes + Native dialogs | 🏆 **Tie** |
+| **Print Preview** | ✅ Yes | ✅ Yes + PDF preview dialog | 🏆 **Docura** |
 | **Fullscreen Mode** | ✅ Yes | ✅ Yes + Hides all UI | 🏆 **Docura** |
 | **Tiling WM Support** | ❌ No | ✅ Auto-detection & titlebar hide | 🏆 **Docura** |
 | **Memory Usage** | ~1011 MB | ~780 MB (23% less!) | 🏆 **Docura** |
@@ -98,6 +102,12 @@ Typora forces you into one way of working. **Docura lets you choose your adventu
 - 📄 **Multiple File Support** - Quick switching between markdown files
 - 💾 **Save & Save As** - Standard file operations with native dialogs
 - 🔄 **Auto-sync** - Changes reflect across all editor modes
+
+### 📄 Export & Print
+- 📑 **PDF Export** - Convert markdown to beautiful PDFs with native save dialog
+- 🖨️ **Print Support** - PDF preview dialog with print and download options
+- 🎨 **Styled Output** - PDFs match your selected theme's styling
+- 💾 **Native Dialogs** - System-native file save dialogs for seamless UX
 
 ### 🗺️ Navigation
 - 📑 **Document Outline** - Automatic heading extraction (h1-h6)
