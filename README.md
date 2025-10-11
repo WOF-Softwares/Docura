@@ -30,7 +30,9 @@ Docura is a next-generation native desktop app designed for Linux systems. Built
 - ✅ **Fullscreen Mode** - Distraction-free writing (F11)
 - ✅ **Tiling WM Support** - Auto-detection for i3, sway, Hyprland, etc.
 - ✅ **Document Outline** - Clickable navigation with smooth scrolling
-- ✅ **23% Less Memory** - Than Typora (780 MB vs 1011 MB)
+- ✅ **96% Less Disk Space** - 12 MB vs Typora's 326 MB!
+- ✅ **23% Less RAM** - 780 MB vs Typora's 1011 MB
+- ✅ **94% Smaller Download** - 5 MB package vs 80 MB
 - ✅ **100% Open Source** - Apache 2.0 license
 
 **Ready to use, battle-tested, and better than Typora!** 🚀
@@ -99,7 +101,9 @@ Docura is a next-generation native desktop app designed for Linux systems. Built
 | **Print Preview** | ✅ Yes | ✅ Yes + PDF preview dialog | 🏆 **Docura** |
 | **Fullscreen Mode** | ✅ Yes | ✅ Yes + Hides all UI | 🏆 **Docura** |
 | **Tiling WM Support** | ❌ No | ✅ Auto-detection & titlebar hide | 🏆 **Docura** |
+| **Disk Space** | ~326 MB | ~12 MB (96% less!) | 🏆 **Docura** |
 | **Memory Usage** | ~1011 MB | ~780 MB (23% less!) | 🏆 **Docura** |
+| **Download Size** | ~80 MB | ~5 MB (94% smaller) | 🏆 **Docura** |
 | **Open Source** | ❌ No | ✅ Yes (Apache 2.0) | 🏆 **Docura** |
 | **Price** | $14.99 | 🆓 Free | 🏆 **Docura** |
 
@@ -221,16 +225,20 @@ Typora forces you into one way of working. **Docura lets you choose your adventu
 
 ## 📊 Performance Comparison
 
-Tested on Linux (Arch) with both applications editing a markdown file:
+Tested on Linux (Arch) with both applications:
 
-| Application | Memory Used | Difference | Improvement |
-|-------------|-------------|------------|-------------|
-| **Typora** (Electron) | 1011 MB | baseline | - |
-| **Docura** (Tauri) | 780 MB | -231 MB | ⚡ **23% faster** |
+| Metric | Typora (Electron) | Docura (Tauri) | Savings |
+|--------|-------------------|----------------|---------|
+| **Disk Space** | 326 MB | 12 MB | **-314 MB (96%)** ⚡ |
+| **RAM Usage** | 1011 MB | 780 MB | **-231 MB (23%)** ⚡ |
+| **Download Size** | 80 MB | 5 MB | **-75 MB (94%)** ⚡ |
+| **Price** | $14.99 | $0.00 | **$14.99 saved** 💰 |
 
-### 🎯 Key Takeaway
-**Docura uses 23% LESS memory than Typora!**  
-Memory saved: ~231 MB (enough to run another app!)
+### 🎯 Key Takeaways
+- **96% less disk space** - You could install **27 copies** of Docura in Typora's space!
+- **23% less RAM** - 231 MB saved (enough to run another app!)
+- **94% smaller download** - Faster to download and install
+- **100% free** - Save $14.99 and get more features!
 
 ### Why is Docura more efficient?
 
