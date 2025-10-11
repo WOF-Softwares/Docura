@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useCallback } from 'react'
 import Editor from '@monaco-editor/react'
 import MDEditor from '@uiw/react-md-editor'
 import { Code, Eye, Edit3 } from 'lucide-react'
+import { makeCheckboxesInteractive, toggleCheckboxByText, extractCheckboxes } from '../utils/checkboxHandler'
 
 // Monaco theme configurations
 const monacoThemes = {
@@ -234,7 +235,10 @@ const MainEditor = ({
   markdownTheme
 }) => {
   const monacoRef = useRef(null)
+  const previewRef = useRef(null)
+  const livePreviewRef = useRef(null)
   const theme = document.documentElement.getAttribute('data-theme')
+  const checkboxesRef = useRef([]) // Track checkboxes to match with markdown
 
   // Register Monaco themes
   useEffect(() => {
@@ -257,6 +261,72 @@ const MainEditor = ({
   const handleEditorChange = (value) => {
     onContentChange(value || '')
   }
+
+  // Handle checkbox toggle in preview
+  const handleCheckboxToggle = useCallback((checkboxInfo) => {
+    const { text, index } = checkboxInfo
+    
+    // Extract current checkboxes from content
+    const checkboxes = extractCheckboxes(fileContent)
+    
+    // Find the matching checkbox by index
+    if (index >= 0 && index < checkboxes.length) {
+      const updatedContent = toggleCheckboxByText(fileContent, text, 0)
+      onContentChange(updatedContent)
+    }
+  }, [fileContent, onContentChange])
+
+  // Make checkboxes interactive when preview renders
+  useEffect(() => {
+    const setupInteractiveCheckboxes = () => {
+      // For preview-only mode
+      if (activeTab === 'preview' && previewRef.current) {
+        const previewElement = previewRef.current.querySelector('.wmde-markdown')
+        if (previewElement) {
+          makeCheckboxesInteractive(previewElement, handleCheckboxToggle)
+        }
+      }
+      
+      // For live mode (preview side)
+      if (activeTab === 'live' && livePreviewRef.current) {
+        const previewElement = livePreviewRef.current.querySelector('.wmde-markdown-var')
+        if (previewElement) {
+          makeCheckboxesInteractive(previewElement, handleCheckboxToggle)
+        }
+      }
+    }
+
+    // Setup with a small delay to ensure DOM is ready
+    const timeoutId = setTimeout(setupInteractiveCheckboxes, 100)
+    
+    return () => clearTimeout(timeoutId)
+  }, [activeTab, fileContent, displayContent, handleCheckboxToggle])
+
+  // Re-setup checkboxes when switching tabs or content changes
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      if (activeTab === 'preview' && previewRef.current) {
+        const previewElement = previewRef.current.querySelector('.wmde-markdown')
+        if (previewElement) {
+          makeCheckboxesInteractive(previewElement, handleCheckboxToggle)
+        }
+      } else if (activeTab === 'live' && livePreviewRef.current) {
+        const previewElement = livePreviewRef.current.querySelector('.wmde-markdown-var')
+        if (previewElement) {
+          makeCheckboxesInteractive(previewElement, handleCheckboxToggle)
+        }
+      }
+    })
+
+    if (previewRef.current) {
+      observer.observe(previewRef.current, { childList: true, subtree: true })
+    }
+    if (livePreviewRef.current) {
+      observer.observe(livePreviewRef.current, { childList: true, subtree: true })
+    }
+
+    return () => observer.disconnect()
+  }, [activeTab, handleCheckboxToggle])
 
 
   if (!isEditing && !currentFile) {
@@ -326,7 +396,11 @@ const MainEditor = ({
             }}
           />
         ) : activeTab === 'live' ? (
-          <div className="wysiwyg-editor" data-color-mode={markdownTheme?.includes('dark') ? 'dark' : 'light'}>
+          <div 
+            ref={livePreviewRef}
+            className="wysiwyg-editor" 
+            data-color-mode={markdownTheme?.includes('dark') ? 'dark' : 'light'}
+          >
             <MDEditor
               value={fileContent}
               onChange={(value) => handleEditorChange(value || '')}
@@ -343,7 +417,11 @@ const MainEditor = ({
             />
           </div>
         ) : (
-          <div className="wysiwyg-editor preview-only" data-color-mode={markdownTheme?.includes('dark') ? 'dark' : 'light'}>
+          <div 
+            ref={previewRef}
+            className="wysiwyg-editor preview-only" 
+            data-color-mode={markdownTheme?.includes('dark') ? 'dark' : 'light'}
+          >
             <MDEditor
               value={displayContent || fileContent}
               height="100%"

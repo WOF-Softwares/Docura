@@ -234,6 +234,44 @@ Use `test-images.md` to verify image loading functionality.
 
 ---
 
+## ✅ Interactive Checkboxes (NEW!)
+
+### Overview:
+Todo list checkboxes are now fully interactive in Preview and Live modes!
+
+### Features:
+- **Click to Toggle**: Checkboxes respond to clicks
+- **Auto-Update**: Source markdown updates automatically
+- **Visual Feedback**: Hover effects with smooth animations
+- **Theme-Aware**: Styling matches current theme
+- **Multiple Formats**: Works with -, *, +, and numbered lists
+- **Nested Support**: Handles nested todo lists
+
+### Implementation:
+- New utility: `checkboxHandler.js` with checkbox manipulation functions
+- MutationObserver watches for DOM changes
+- Event handlers attached to checkbox inputs
+- Regex-based markdown parsing and updating
+- useCallback for stable event handlers
+
+### Files:
+- ✨ `src/utils/checkboxHandler.js` - Core functionality
+- 📝 `src/components/MainEditor.jsx` - Integration
+- 📝 `src/styles/App.css` - Checkbox styling
+- 📄 `docs/INTERACTIVE_CHECKBOXES.md` - Documentation
+- 📄 `test-todos.md` - Test file with examples
+
+### Supported Syntax:
+```markdown
+- [ ] Unchecked
+- [x] Checked
+* [ ] With asterisk
++ [ ] With plus
+1. [ ] Numbered
+```
+
+---
+
 ## 🎯 Future Improvements
 
 ### Planned Features:
@@ -244,21 +282,24 @@ Use `test-images.md` to verify image loading functionality.
 - [ ] Clipboard image paste
 - [ ] Recent files list in sidebar
 - [ ] File watching for external changes
+- [ ] Checkbox keyboard navigation
+- [ ] Todo list progress indicators
+- [ ] Task completion timestamps
 
 ---
 
 ## 📊 Statistics
 
 ### Lines of Code Added/Modified:
-- Frontend JavaScript: ~250 lines
+- Frontend JavaScript: ~550 lines
 - Rust Backend: ~25 lines
 - Configuration: ~30 lines
-- Documentation: ~400 lines
+- Documentation: ~1000 lines
 
 ### Files Changed:
-- Modified: 8 files
-- Created: 4 files
-- Total: 12 files touched
+- Modified: 10 files
+- Created: 7 files
+- Total: 17 files touched
 
 ---
 
@@ -273,7 +314,8 @@ All requested features have been successfully implemented and tested:
 5. ✅ Single file support in sidebar
 6. ✅ Image loading from markdown files
 7. ✅ Secure file system access
-8. ✅ Comprehensive documentation
+8. ✅ Interactive checkboxes in Preview/Live modes
+9. ✅ Comprehensive documentation
 
 ---
 
@@ -284,7 +326,17 @@ Docura now provides a significantly improved user experience with:
 - Better visual feedback with toast notifications
 - Clear file state indication
 - Support for images in markdown documents
+- Interactive todo list management
 - Professional, polished UI
 
 All changes maintain Tauri's security model and follow React best practices!
+
+### Try It Out! 🚀
+
+1. Open `test-todos.md` with `Ctrl+O`
+2. Switch to Preview mode
+3. Click checkboxes to toggle them
+4. Notice the unsaved changes indicator
+5. Save with `Ctrl+S`
+6. Enjoy your interactive todo lists! 🎊
 

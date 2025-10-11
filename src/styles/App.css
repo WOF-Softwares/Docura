@@ -414,6 +414,32 @@
     --color-fg-default: var(--text-primary) !important;
 }
 
+/* Interactive checkboxes in preview */
+.wmde-markdown input[type="checkbox"] {
+    cursor: pointer !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin-right: 8px !important;
+    accent-color: var(--accent-color) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.wmde-markdown input[type="checkbox"]:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s;
+}
+
+.wmde-markdown li {
+    list-style: none !important;
+    position: relative;
+}
+
+.wmde-markdown li input[type="checkbox"] {
+    position: relative;
+    vertical-align: middle;
+}
+
 /* Preview-only mode (no editor, just rendered markdown) */
 .wysiwyg-editor.preview-only .w-md-editor {
     border: none !important;
