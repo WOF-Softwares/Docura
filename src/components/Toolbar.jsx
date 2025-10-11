@@ -1,7 +1,6 @@
 import React from 'react'
 import { 
-  Sun, 
-  Moon, 
+  Shuffle, 
   FolderOpen, 
   File, 
   Save, 
@@ -28,18 +27,19 @@ const Toolbar = ({
         <button
           className="toolbar-button"
           onClick={onToggleTheme}
-          title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          title="Switch to random theme"
         >
-          {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+          <Shuffle size={16} />
+          <span>Random</span>
         </button>
         
         <button
           className="toolbar-button"
           onClick={onOpenThemeSelector}
-          title="Change Markdown Theme"
+          title="Choose specific theme"
         >
           <Palette size={16} />
-          <span>Theme</span>
+          <span>Themes</span>
         </button>
       </div>
       

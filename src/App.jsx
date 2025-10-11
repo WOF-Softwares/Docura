@@ -11,8 +11,7 @@ import './styles/ThemeSelector.css'
 import './styles/markdown-themes.css'
 
 function App() {
-  const [theme, setTheme] = useState('light')
-  const [markdownTheme, setMarkdownTheme] = useState('dracula-dark')
+  const [currentTheme, setCurrentTheme] = useState('dracula-dark') // Unified theme state
   const [isThemeSelectorOpen, setIsThemeSelectorOpen] = useState(false)
   const [currentFile, setCurrentFile] = useState(null)
   const [currentFolder, setCurrentFolder] = useState(null)
@@ -22,21 +21,34 @@ function App() {
   const [activeTab, setActiveTab] = useState('code') // 'code' or 'preview'
   const [outlineHeaders, setOutlineHeaders] = useState([])
 
+  // Available themes for random cycling
+  const availableThemes = [
+    'dracula-dark', 'dracula-light',
+    'cappuccino-dark', 'cappuccino-light', 
+    'nord-dark', 'nord-light',
+    'solarized-dark', 'solarized-light',
+    'monokai-dark', 'monokai-light',
+    'github-dark', 'github-light'
+  ]
+
   useEffect(() => {
     // Load config on mount
     loadAppConfig()
   }, [])
 
   useEffect(() => {
-    // Apply UI theme to document
-    document.documentElement.setAttribute('data-theme', theme)
-  }, [theme])
+    // Apply unified theme to document
+    const [themeName, variant] = currentTheme.split('-')
+    document.documentElement.setAttribute('data-theme', currentTheme)
+    document.documentElement.setAttribute('data-theme-base', themeName)
+    document.documentElement.setAttribute('data-theme-variant', variant)
+  }, [currentTheme])
 
   const loadAppConfig = async () => {
     try {
       const config = await invoke('load_config')
       if (config && config.theme) {
-        setMarkdownTheme(config.theme)
+        setCurrentTheme(config.theme)
       }
     } catch (error) {
       console.error('Error loading config:', error)
@@ -57,7 +69,11 @@ function App() {
   }
 
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light')
+    // Get a random theme from available themes, but different from current
+    const otherThemes = availableThemes.filter(theme => theme !== currentTheme)
+    const randomTheme = otherThemes[Math.floor(Math.random() * otherThemes.length)]
+    setCurrentTheme(randomTheme)
+    saveAppConfig(randomTheme)
   }
 
   const openFolder = async () => {
@@ -187,15 +203,18 @@ function App() {
     extractHeaders(newContent)
   }
 
-  const handleMarkdownThemeChange = (newTheme) => {
-    setMarkdownTheme(newTheme)
+  const handleThemeChange = (newTheme) => {
+    setCurrentTheme(newTheme)
     saveAppConfig(newTheme)
   }
 
+  // Extract theme variant for UI components that need it
+  const currentVariant = currentTheme.split('-')[1] || 'dark'
+
   return (
-    <div className={`app ${theme}`}>
+    <div className={`app`}>
       <Toolbar
-        theme={theme}
+        theme={currentVariant}
         onToggleTheme={toggleTheme}
         onOpenFolder={openFolder}
         onOpenFile={openFile}
@@ -228,15 +247,15 @@ function App() {
           onTabChange={setActiveTab}
           currentFile={currentFile}
           isEditing={isEditing}
-          markdownTheme={markdownTheme}
+          markdownTheme={currentTheme}
         />
       </div>
 
       <ThemeSelector
         isOpen={isThemeSelectorOpen}
         onClose={() => setIsThemeSelectorOpen(false)}
-        currentTheme={markdownTheme}
-        onThemeChange={handleMarkdownThemeChange}
+        currentTheme={currentTheme}
+        onThemeChange={handleThemeChange}
       />
     </div>
   )
