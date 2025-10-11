@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import { open } from '@tauri-apps/plugin-dialog'
@@ -7,6 +7,8 @@ import Toolbar from './components/Toolbar'
 import Sidebar from './components/Sidebar'
 import MainEditor from './components/MainEditor'
 import ThemeSelector from './components/ThemeSelector'
+import PDFPreviewDialog from './components/PDFPreviewDialog'
+import { exportToPDF, generatePDFBlob } from './utils/pdfExport'
 import './styles/App.css'
 import './styles/ThemeSelector.css'
 import './styles/markdown-themes.css'
@@ -23,6 +25,9 @@ function App() {
   const [outlineHeaders, setOutlineHeaders] = useState([])
   const [isSidebarVisible, setIsSidebarVisible] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [isPDFPreviewOpen, setIsPDFPreviewOpen] = useState(false)
+  const [pdfBlob, setPdfBlob] = useState(null)
+  const previewRef = useRef(null)
 
   // Available themes for random cycling
   const availableThemes = [
@@ -189,22 +194,80 @@ function App() {
     }
   }
 
-  const exportToPdf = async () => {
+  const handleExportToPdf = async () => {
     try {
-      await invoke('export_to_pdf', { 
-        content: fileContent,
-        filename: currentFile || 'document.pdf'
-      })
+      console.log('Export PDF clicked, current tab:', activeTab)
+      
+      // Switch to preview mode if not already there
+      if (activeTab === 'code') {
+        alert('Please switch to Preview or Live mode to export PDF')
+        return
+      }
+
+      // Wait a moment for DOM to be ready
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
+      // Get the preview element
+      let previewElement = document.querySelector('.wmde-markdown')
+      
+      console.log('Preview element found:', previewElement)
+      
+      if (!previewElement) {
+        console.error('No preview element found!')
+        alert('Could not find preview. Please make sure you are in Preview or Live mode.')
+        return
+      }
+
+      // Get filename from current file or use default
+      const filename = currentFile 
+        ? currentFile.split('/').pop().replace(/\.(md|markdown)$/i, '.pdf')
+        : 'document.pdf'
+
+      console.log('Exporting to:', filename)
+
+      // Export to PDF
+      await exportToPDF(previewElement, filename)
+      console.log('PDF exported successfully!')
+      alert('PDF exported successfully!')
     } catch (error) {
       console.error('Error exporting to PDF:', error)
+      alert(`Failed to export PDF: ${error.message}`)
     }
   }
 
-  const printDocument = async () => {
+  const handlePrint = async () => {
     try {
-      await invoke('print_document', { content: fileContent })
+      console.log('Print clicked, current tab:', activeTab)
+      
+      // Switch to preview mode if not already there
+      if (activeTab === 'code') {
+        alert('Please switch to Preview or Live mode to print')
+        return
+      }
+
+      // Wait a moment for DOM to be ready
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
+      // Get the preview element
+      let previewElement = document.querySelector('.wmde-markdown')
+      
+      console.log('Preview element for print:', previewElement)
+      
+      if (!previewElement) {
+        console.error('No preview element found!')
+        alert('Could not find preview. Please make sure you are in Preview or Live mode.')
+        return
+      }
+
+      console.log('Generating PDF blob...')
+      // Generate PDF blob for preview
+      const blob = await generatePDFBlob(previewElement)
+      console.log('PDF blob generated:', blob)
+      setPdfBlob(blob)
+      setIsPDFPreviewOpen(true)
     } catch (error) {
-      console.error('Error printing document:', error)
+      console.error('Error generating PDF preview:', error)
+      alert(`Failed to generate print preview: ${error.message}`)
     }
   }
 
@@ -285,22 +348,22 @@ function App() {
   return (
     <div className={`app`}>
       {!isFullscreen && (
-        <Toolbar
-          theme={currentVariant}
-          onToggleTheme={toggleTheme}
-          onOpenFolder={openFolder}
-          onOpenFile={openFile}
-          onSave={saveFile}
-          onSaveAs={saveFileAs}
-          onExportPdf={exportToPdf}
-          onPrint={printDocument}
-          onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
-          hasFile={!!currentFile}
-          onToggleFullscreen={toggleFullscreen}
-          isFullscreen={isFullscreen}
-          onToggleSidebar={toggleSidebar}
-          isSidebarVisible={isSidebarVisible}
-        />
+      <Toolbar
+        theme={currentVariant}
+        onToggleTheme={toggleTheme}
+        onOpenFolder={openFolder}
+        onOpenFile={openFile}
+        onSave={saveFile}
+        onSaveAs={saveFileAs}
+        onExportPdf={handleExportToPdf}
+        onPrint={handlePrint}
+        onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
+        hasFile={!!currentFile}
+        onToggleFullscreen={toggleFullscreen}
+        isFullscreen={isFullscreen}
+        onToggleSidebar={toggleSidebar}
+        isSidebarVisible={isSidebarVisible}
+      />
       )}
       
       <div className="app-body">
@@ -336,6 +399,13 @@ function App() {
         onClose={() => setIsThemeSelectorOpen(false)}
         currentTheme={currentTheme}
         onThemeChange={handleThemeChange}
+      />
+
+      <PDFPreviewDialog
+        isOpen={isPDFPreviewOpen}
+        onClose={() => setIsPDFPreviewOpen(false)}
+        pdfBlob={pdfBlob}
+        filename={currentFile ? currentFile.split('/').pop().replace(/\.(md|markdown)$/i, '.pdf') : 'document.pdf'}
       />
     </div>
   )
