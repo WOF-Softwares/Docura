@@ -53,6 +53,32 @@ Docura is a next-generation native desktop app designed for Linux systems. Built
 
 ---
 
+## 📸 Screenshots
+
+<div align="center">
+
+### Three Editing Modes
+![Docura Main Interface](screenshots/screenshot-1.png)
+*Code, Live (WYSIWYG), and Preview modes in one powerful editor*
+
+### 12 Beautiful Themes
+![Theme Selector](screenshots/screenshot-2.png)
+*Unified theming across UI, editor, and preview*
+
+### Document Outline Navigation
+![Document Outline](screenshots/screenshot-3.png)
+*Clickable headings with smooth scrolling*
+
+### PDF Export & Print
+![Export Features](screenshots/screenshot-4.png)
+*Native save dialogs and print preview*
+
+**🌐 [View Live Demo →](https://wof-softwares.github.io/Docura/)**
+
+</div>
+
+---
+
 ## 🌟 Why Docura is Better Than Typora
 
 | Feature | Typora | Docura | Winner |
