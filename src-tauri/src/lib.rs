@@ -285,6 +285,29 @@ async fn is_tiling_wm() -> bool {
     detect_tiling_wm()
 }
 
+#[command]
+async fn grant_file_scope(app: tauri::AppHandle, file_path: String) -> Result<(), String> {
+    use tauri::Manager;
+    
+    // Parse the file path
+    let path = Path::new(&file_path);
+    
+    // Get the parent directory
+    let dir_path = if path.is_dir() {
+        path
+    } else {
+        path.parent().ok_or("Could not get parent directory")?
+    };
+    
+    // Grant recursive read access to the directory
+    let scope = app.fs_scope();
+    scope.allow_directory(dir_path, true)
+        .map_err(|e| format!("Failed to grant directory scope: {}", e))?;
+    
+    log::info!("Granted file system scope for: {:?}", dir_path);
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -319,7 +342,8 @@ pub fn run() {
             print_document,
             load_config,
             save_config,
-            is_tiling_wm
+            is_tiling_wm,
+            grant_file_scope
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

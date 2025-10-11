@@ -225,6 +225,7 @@ const monacoThemes = {
 
 const MainEditor = ({
   fileContent,
+  displayContent,
   onContentChange,
   activeTab,
   onTabChange,
@@ -335,12 +336,16 @@ const MainEditor = ({
               enableScroll={true}
               visibleDragbar={false}
               highlightEnable={true}
+              previewOptions={{
+                // Use display content for preview side with converted image paths
+                value: displayContent || fileContent
+              }}
             />
           </div>
         ) : (
           <div className="wysiwyg-editor preview-only" data-color-mode={markdownTheme?.includes('dark') ? 'dark' : 'light'}>
             <MDEditor
-              value={fileContent}
+              value={displayContent || fileContent}
               height="100%"
               preview="preview"
               hideToolbar={true}

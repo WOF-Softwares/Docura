@@ -3,12 +3,14 @@ import { invoke } from '@tauri-apps/api/core'
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import { open } from '@tauri-apps/plugin-dialog'
 import { writeTextFile, readTextFile } from '@tauri-apps/plugin-fs'
+import toast, { Toaster } from 'react-hot-toast'
 import Toolbar from './components/Toolbar'
 import Sidebar from './components/Sidebar'
 import MainEditor from './components/MainEditor'
 import ThemeSelector from './components/ThemeSelector'
 import PDFPreviewDialog from './components/PDFPreviewDialog'
 import { exportToPDF, generatePDFBlob } from './utils/pdfExport'
+import { convertMarkdownImagePaths } from './utils/imagePathConverter'
 import './styles/App.css'
 import './styles/ThemeSelector.css'
 import './styles/markdown-themes.css'
@@ -20,6 +22,9 @@ function App() {
   const [currentFolder, setCurrentFolder] = useState(null)
   const [files, setFiles] = useState([])
   const [fileContent, setFileContent] = useState('')
+  const [displayContent, setDisplayContent] = useState('') // Content with converted image paths for display
+  const [originalContent, setOriginalContent] = useState('') // Track original content for unsaved changes
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [activeTab, setActiveTab] = useState('code') // 'code' or 'preview'
   const [outlineHeaders, setOutlineHeaders] = useState([])
@@ -54,6 +59,28 @@ function App() {
   }, [])
 
   useEffect(() => {
+    // Track unsaved changes
+    if (originalContent !== '' && fileContent !== originalContent) {
+      setHasUnsavedChanges(true)
+    } else {
+      setHasUnsavedChanges(false)
+    }
+  }, [fileContent, originalContent])
+
+  useEffect(() => {
+    // Convert image paths when content or file changes
+    const updateDisplayContent = async () => {
+      if (currentFile && fileContent) {
+        const converted = await convertMarkdownImagePaths(fileContent, currentFile)
+        setDisplayContent(converted)
+      } else {
+        setDisplayContent(fileContent)
+      }
+    }
+    updateDisplayContent()
+  }, [fileContent, currentFile])
+
+  useEffect(() => {
     // Add keyboard shortcuts
     const handleKeyDown = async (e) => {
       // F11 for fullscreen
@@ -73,11 +100,35 @@ function App() {
         e.preventDefault()
         setIsSidebarVisible(prev => !prev)
       }
+      // Ctrl+S for save
+      if (e.ctrlKey && !e.shiftKey && e.key === 's') {
+        e.preventDefault()
+        if (currentFile) {
+          await saveFile()
+        } else {
+          toast.error('No file open to save')
+        }
+      }
+      // Ctrl+Shift+S for save as
+      if (e.ctrlKey && e.shiftKey && e.key === 'S') {
+        e.preventDefault()
+        await saveFileAs()
+      }
+      // Ctrl+O for open file
+      if (e.ctrlKey && !e.shiftKey && e.key === 'o') {
+        e.preventDefault()
+        await openFile()
+      }
+      // Ctrl+Shift+O for open folder
+      if (e.ctrlKey && e.shiftKey && e.key === 'O') {
+        e.preventDefault()
+        await openFolder()
+      }
     }
     
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [currentFile])
 
   useEffect(() => {
     // Apply unified theme to document
@@ -127,14 +178,23 @@ function App() {
       })
       
       if (selected) {
+        // Grant file system scope for the folder
+        try {
+          await invoke('grant_file_scope', { filePath: selected })
+        } catch (scopeError) {
+          console.warn('Failed to grant file scope:', scopeError)
+        }
+        
         setCurrentFolder(selected)
         const folderFiles = await invoke('get_folder_files', { 
           folderPath: selected 
         })
         setFiles(folderFiles)
+        toast.success(`Opened folder: ${selected.split('/').pop()}`)
       }
     } catch (error) {
       console.error('Error opening folder:', error)
+      toast.error('Failed to open folder')
     }
   }
 
@@ -150,14 +210,35 @@ function App() {
       })
       
       if (selected) {
+        // Grant file system scope for the file's directory
+        try {
+          await invoke('grant_file_scope', { filePath: selected })
+        } catch (scopeError) {
+          console.warn('Failed to grant file scope:', scopeError)
+        }
+        
         const content = await readTextFile(selected)
         setCurrentFile(selected)
         setFileContent(content)
+        setOriginalContent(content)
         setIsEditing(true)
         extractHeaders(content)
+        
+        // If no folder is open, add this file to the sidebar
+        if (!currentFolder) {
+          const fileName = selected.split('/').pop()
+          setFiles([{
+            name: fileName,
+            path: selected,
+            type: 'file'
+          }])
+        }
+        
+        toast.success(`Opened: ${selected.split('/').pop()}`)
       }
     } catch (error) {
       console.error('Error opening file:', error)
+      toast.error('Failed to open file')
     }
   }
 
@@ -165,9 +246,13 @@ function App() {
     if (currentFile && fileContent) {
       try {
         await writeTextFile(currentFile, fileContent)
-        console.log('File saved successfully')
+        setOriginalContent(fileContent) // Update original content after save
+        setHasUnsavedChanges(false)
+        const fileName = currentFile.split('/').pop()
+        toast.success(`Saved: ${fileName}`)
       } catch (error) {
         console.error('Error saving file:', error)
+        toast.error('Failed to save file')
       }
     }
   }
@@ -187,10 +272,23 @@ function App() {
       if (selected) {
         await writeTextFile(selected, fileContent)
         setCurrentFile(selected)
-        console.log('File saved as:', selected)
+        setOriginalContent(fileContent)
+        setHasUnsavedChanges(false)
+        const fileName = selected.split('/').pop()
+        toast.success(`Saved as: ${fileName}`)
+        
+        // If no folder is open, update the file in sidebar
+        if (!currentFolder) {
+          setFiles([{
+            name: fileName,
+            path: selected,
+            type: 'file'
+          }])
+        }
       }
     } catch (error) {
       console.error('Error saving file as:', error)
+      toast.error('Failed to save file')
     }
   }
 
@@ -230,13 +328,13 @@ function App() {
       
       if (result) {
         console.log('PDF exported successfully!')
-        alert('PDF exported successfully!')
+        toast.success('PDF exported successfully!')
       } else {
         console.log('Export cancelled')
       }
     } catch (error) {
       console.error('Error exporting to PDF:', error)
-      alert(`Failed to export PDF: ${error.message}`)
+      toast.error(`Failed to export PDF: ${error.message}`)
     }
   }
 
@@ -312,13 +410,24 @@ function App() {
 
   const selectFile = async (filePath) => {
     try {
+      // Grant file system scope for the file's directory
+      try {
+        await invoke('grant_file_scope', { filePath })
+      } catch (scopeError) {
+        console.warn('Failed to grant file scope:', scopeError)
+      }
+      
       const content = await readTextFile(filePath)
       setCurrentFile(filePath)
       setFileContent(content)
+      setOriginalContent(content)
       setIsEditing(true)
       extractHeaders(content)
+      const fileName = filePath.split('/').pop()
+      toast.success(`Opened: ${fileName}`)
     } catch (error) {
       console.error('Error reading file:', error)
+      toast.error('Failed to open file')
     }
   }
 
@@ -385,11 +494,14 @@ function App() {
               }
             }}
             onHeaderClick={handleHeaderClick}
+            currentFile={currentFile}
+            hasUnsavedChanges={hasUnsavedChanges}
           />
         )}
         
         <MainEditor
           fileContent={fileContent}
+          displayContent={displayContent}
           onContentChange={onContentChange}
           activeTab={activeTab}
           onTabChange={setActiveTab}
@@ -411,6 +523,30 @@ function App() {
         onClose={() => setIsPDFPreviewOpen(false)}
         pdfBlob={pdfBlob}
         filename={currentFile ? currentFile.split('/').pop().replace(/\.(md|markdown)$/i, '.pdf') : 'document.pdf'}
+      />
+
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: 'var(--bg-secondary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-color)',
+          },
+          success: {
+            iconTheme: {
+              primary: 'var(--accent-color)',
+              secondary: 'var(--bg-secondary)',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: 'var(--bg-secondary)',
+            },
+          },
+        }}
       />
     </div>
   )

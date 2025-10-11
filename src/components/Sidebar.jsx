@@ -5,7 +5,8 @@ import {
   RefreshCw, 
   ChevronRight, 
   ChevronDown,
-  Hash
+  Hash,
+  Circle
 } from 'lucide-react'
 
 const Sidebar = ({
@@ -14,7 +15,9 @@ const Sidebar = ({
   outlineHeaders,
   onSelectFile,
   onRefreshFiles,
-  onHeaderClick
+  onHeaderClick,
+  currentFile,
+  hasUnsavedChanges
 }) => {
   const [activeTab, setActiveTab] = useState('files')
   const [expandedFolders, setExpandedFolders] = useState(new Set())
@@ -42,6 +45,7 @@ const Sidebar = ({
     return items.map((item, index) => {
       const isFolder = item.type === 'folder'
       const isExpanded = expandedFolders.has(item.path)
+      const isCurrentFile = !isFolder && currentFile === item.path
       const paddingLeft = depth * 20 + 8
 
       return (
@@ -49,7 +53,7 @@ const Sidebar = ({
           <div
             className={`file-tree-node ${isFolder ? 'folder' : 'file'} ${
               !isFolder && isMarkdownFile(item.name) ? 'markdown' : ''
-            }`}
+            } ${isCurrentFile ? 'active' : ''}`}
             style={{ paddingLeft }}
             onClick={() => {
               if (isFolder) {
@@ -62,6 +66,11 @@ const Sidebar = ({
             {isFolder && (
               <span className="folder-icon">
                 {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+              </span>
+            )}
+            {!isFolder && isCurrentFile && hasUnsavedChanges && (
+              <span className="unsaved-indicator">
+                <Circle size={8} fill="currentColor" />
               </span>
             )}
             <span className="file-icon">
@@ -120,7 +129,7 @@ const Sidebar = ({
           <div className="files-panel">
             <div className="panel-header">
               <span className="panel-title">
-                {currentFolder ? 'Files' : 'No folder selected'}
+                {currentFolder ? 'Files' : files.length > 0 ? 'Open Files' : 'No folder selected'}
               </span>
               {currentFolder && (
                 <button
@@ -133,7 +142,7 @@ const Sidebar = ({
               )}
             </div>
             
-            {currentFolder ? (
+            {(currentFolder || files.length > 0) ? (
               <div className="file-tree">
                 {files.length > 0 ? (
                   renderFileTree(files)
