@@ -248,12 +248,17 @@ function App() {
 
   const toggleFullscreen = async () => {
     try {
+      console.log('Toggling fullscreen...')
       const window = getCurrentWindow()
+      console.log('Got window:', window)
       const isCurrentlyFullscreen = await window.isFullscreen()
+      console.log('Current fullscreen state:', isCurrentlyFullscreen)
       await window.setFullscreen(!isCurrentlyFullscreen)
+      console.log('Set fullscreen to:', !isCurrentlyFullscreen)
       setIsFullscreen(!isCurrentlyFullscreen)
     } catch (error) {
       console.error('Error toggling fullscreen:', error)
+      console.error('Error details:', error.message, error.stack)
     }
   }
 
@@ -266,25 +271,27 @@ function App() {
 
   return (
     <div className={`app`}>
-      <Toolbar
-        theme={currentVariant}
-        onToggleTheme={toggleTheme}
-        onOpenFolder={openFolder}
-        onOpenFile={openFile}
-        onSave={saveFile}
-        onSaveAs={saveFileAs}
-        onExportPdf={exportToPdf}
-        onPrint={printDocument}
-        onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
-        hasFile={!!currentFile}
-        onToggleFullscreen={toggleFullscreen}
-        isFullscreen={isFullscreen}
-        onToggleSidebar={toggleSidebar}
-        isSidebarVisible={isSidebarVisible}
-      />
+      {!isFullscreen && (
+        <Toolbar
+          theme={currentVariant}
+          onToggleTheme={toggleTheme}
+          onOpenFolder={openFolder}
+          onOpenFile={openFile}
+          onSave={saveFile}
+          onSaveAs={saveFileAs}
+          onExportPdf={exportToPdf}
+          onPrint={printDocument}
+          onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
+          hasFile={!!currentFile}
+          onToggleFullscreen={toggleFullscreen}
+          isFullscreen={isFullscreen}
+          onToggleSidebar={toggleSidebar}
+          isSidebarVisible={isSidebarVisible}
+        />
+      )}
       
       <div className="app-body">
-        {isSidebarVisible && (
+        {isSidebarVisible && !isFullscreen && (
           <Sidebar
             currentFolder={currentFolder}
             files={files}
