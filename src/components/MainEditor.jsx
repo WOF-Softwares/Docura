@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 import Editor from '@monaco-editor/react'
+import MDEditor from '@uiw/react-md-editor'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { Code, Eye } from 'lucide-react'
+import { Code, Eye, Edit3 } from 'lucide-react'
 
 // Monaco theme configurations
 const monacoThemes = {
@@ -394,13 +395,23 @@ const MainEditor = ({
         <button
           className={`editor-tab ${activeTab === 'code' ? 'active' : ''}`}
           onClick={() => onTabChange('code')}
+          title="Source Code Editor"
         >
           <Code size={16} />
           <span>Code</span>
         </button>
         <button
+          className={`editor-tab ${activeTab === 'live' ? 'active' : ''}`}
+          onClick={() => onTabChange('live')}
+          title="WYSIWYG Editor (Typora-style)"
+        >
+          <Edit3 size={16} />
+          <span>Live</span>
+        </button>
+        <button
           className={`editor-tab ${activeTab === 'preview' ? 'active' : ''}`}
           onClick={() => onTabChange('preview')}
+          title="Read-only Preview"
         >
           <Eye size={16} />
           <span>Preview</span>
@@ -430,6 +441,19 @@ const MainEditor = ({
               smoothScrolling: true,
             }}
           />
+        ) : activeTab === 'live' ? (
+          <div className="wysiwyg-editor" data-color-mode={markdownTheme?.includes('dark') ? 'dark' : 'light'}>
+            <MDEditor
+              value={fileContent}
+              onChange={(value) => handleEditorChange(value || '')}
+              height="100%"
+              preview="live"
+              hideToolbar={false}
+              enableScroll={true}
+              visibleDragbar={false}
+              highlightEnable={true}
+            />
+          </div>
         ) : (
           <div className="preview-container">
             <div className="markdown-preview" data-theme={markdownTheme}>

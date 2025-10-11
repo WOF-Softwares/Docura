@@ -28,6 +28,7 @@
     "@tauri-apps/api": "^2.8.0",
     "@tauri-apps/plugin-dialog": "^2.4.0",
     "@tauri-apps/plugin-fs": "^2.4.2",
+    "@uiw/react-md-editor": "^4.0.8",
     "@vitejs/plugin-react": "^5.0.4",
     "lucide-react": "^0.545.0",
     "modern-normalize": "^3.0.1",
