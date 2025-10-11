@@ -237,8 +237,13 @@ const MainEditor = ({
   const monacoRef = useRef(null)
   const previewRef = useRef(null)
   const livePreviewRef = useRef(null)
+  const fileContentRef = useRef(fileContent) // Use ref to avoid recreating callback
   const theme = document.documentElement.getAttribute('data-theme')
-  const checkboxesRef = useRef([]) // Track checkboxes to match with markdown
+  
+  // Update ref when fileContent changes
+  useEffect(() => {
+    fileContentRef.current = fileContent
+  }, [fileContent])
 
   // Register Monaco themes
   useEffect(() => {
@@ -266,18 +271,22 @@ const MainEditor = ({
   const handleCheckboxToggle = useCallback((checkboxInfo) => {
     const { text, index } = checkboxInfo
     
+    // Use ref to get current content without recreating callback
+    const currentContent = fileContentRef.current
+    
     // Extract current checkboxes from content
-    const checkboxes = extractCheckboxes(fileContent)
+    const checkboxes = extractCheckboxes(currentContent)
     
     // Find the matching checkbox by index
     if (index >= 0 && index < checkboxes.length) {
-      const updatedContent = toggleCheckboxByText(fileContent, text, 0)
+      const updatedContent = toggleCheckboxByText(currentContent, text, 0)
       onContentChange(updatedContent)
     }
-  }, [fileContent, onContentChange])
+  }, [onContentChange]) // Removed fileContent dependency
 
   // Make checkboxes interactive when preview renders
   useEffect(() => {
+    // Only setup when switching tabs or initially loading
     const setupInteractiveCheckboxes = () => {
       // For preview-only mode
       if (activeTab === 'preview' && previewRef.current) {
@@ -297,36 +306,10 @@ const MainEditor = ({
     }
 
     // Setup with a small delay to ensure DOM is ready
-    const timeoutId = setTimeout(setupInteractiveCheckboxes, 100)
+    const timeoutId = setTimeout(setupInteractiveCheckboxes, 200)
     
     return () => clearTimeout(timeoutId)
-  }, [activeTab, fileContent, displayContent, handleCheckboxToggle])
-
-  // Re-setup checkboxes when switching tabs or content changes
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      if (activeTab === 'preview' && previewRef.current) {
-        const previewElement = previewRef.current.querySelector('.wmde-markdown')
-        if (previewElement) {
-          makeCheckboxesInteractive(previewElement, handleCheckboxToggle)
-        }
-      } else if (activeTab === 'live' && livePreviewRef.current) {
-        const previewElement = livePreviewRef.current.querySelector('.wmde-markdown-var')
-        if (previewElement) {
-          makeCheckboxesInteractive(previewElement, handleCheckboxToggle)
-        }
-      }
-    })
-
-    if (previewRef.current) {
-      observer.observe(previewRef.current, { childList: true, subtree: true })
-    }
-    if (livePreviewRef.current) {
-      observer.observe(livePreviewRef.current, { childList: true, subtree: true })
-    }
-
-    return () => observer.disconnect()
-  }, [activeTab, handleCheckboxToggle])
+  }, [activeTab, handleCheckboxToggle]) // Removed fileContent and displayContent to prevent loops
 
 
   if (!isEditing && !currentFile) {
