@@ -407,22 +407,29 @@ function App() {
   
   const openFolderDirect = async (folderPath) => {
     try {
+      console.log('📁 Opening folder:', folderPath)
+      
       // Grant file system scope for the folder
       try {
         await invoke('grant_file_scope', { filePath: folderPath })
+        console.log('✅ File scope granted')
       } catch (scopeError) {
-        console.warn('Failed to grant file scope:', scopeError)
+        console.warn('⚠️ Failed to grant file scope:', scopeError)
       }
       
-      setCurrentFolder(folderPath)
+      console.log('📂 Getting folder files...')
       const folderFiles = await invoke('get_folder_files', { 
         folderPath 
       })
+      console.log(`📄 Found ${folderFiles.length} files`)
+      
+      setCurrentFolder(folderPath)
       setFiles(folderFiles)
       toast.success(`Opened folder: ${folderPath.split('/').pop()}`)
     } catch (error) {
-      console.error('Error opening folder:', error)
-      toast.error('Failed to open folder')
+      console.error('❌ Error opening folder:', error)
+      console.error('Error details:', error.message, error.stack)
+      toast.error(`Failed to open folder: ${error.message || error}`)
     }
   }
   
