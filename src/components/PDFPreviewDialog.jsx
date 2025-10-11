@@ -20,15 +20,54 @@ const PDFPreviewDialog = ({ isOpen, onClose, pdfBlob, filename }) => {
     }
   }, [pdfBlob])
 
-  const handlePrint = () => {
-    if (pdfUrl) {
-      // Open PDF in new window and trigger print dialog
-      const printWindow = window.open(pdfUrl)
-      if (printWindow) {
-        printWindow.addEventListener('load', () => {
-          printWindow.print()
-        })
+  const handlePrint = async () => {
+    if (!pdfBlob) return
+
+    try {
+      // Create a temporary blob URL for printing
+      const url = URL.createObjectURL(pdfBlob)
+      
+      // Create an iframe to load and print the PDF
+      const iframe = document.createElement('iframe')
+      iframe.style.position = 'fixed'
+      iframe.style.right = '0'
+      iframe.style.bottom = '0'
+      iframe.style.width = '0'
+      iframe.style.height = '0'
+      iframe.style.border = 'none'
+      iframe.src = url
+      
+      document.body.appendChild(iframe)
+      
+      // Wait for PDF to load, then trigger print dialog
+      iframe.onload = () => {
+        setTimeout(() => {
+          try {
+            iframe.contentWindow.focus()
+            iframe.contentWindow.print()
+            
+            // Clean up after print dialog closes or prints
+            setTimeout(() => {
+              document.body.removeChild(iframe)
+              URL.revokeObjectURL(url)
+            }, 1000)
+          } catch (error) {
+            console.error('Error printing:', error)
+            document.body.removeChild(iframe)
+            URL.revokeObjectURL(url)
+            alert('Print failed. Please try downloading the PDF instead.')
+          }
+        }, 500)
       }
+      
+      iframe.onerror = () => {
+        document.body.removeChild(iframe)
+        URL.revokeObjectURL(url)
+        alert('Failed to load PDF for printing. Please try downloading instead.')
+      }
+    } catch (error) {
+      console.error('Error printing PDF:', error)
+      alert('Failed to print: ' + error.message)
     }
   }
 
