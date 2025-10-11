@@ -388,15 +388,21 @@
 /* Preview-only mode (no editor, just rendered markdown) */
 .wysiwyg-editor.preview-only .w-md-editor {
     border: none !important;
+    display: flex !important;
+    justify-content: center !important;
 }
 
 .wysiwyg-editor.preview-only .w-md-editor-preview {
     width: 100% !important;
+    max-width: none !important;
     padding: 60px 80px !important;
+    display: flex !important;
+    justify-content: center !important;
 }
 
 .wysiwyg-editor.preview-only .wmde-markdown {
     max-width: 860px !important;
+    width: 100% !important;
     margin: 0 auto !important;
     font-size: 17px !important;
     line-height: 2 !important;
