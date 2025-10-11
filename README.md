@@ -34,7 +34,7 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 - 🎨 **Omarchy Integration** - Auto-sync with DHH's Omarchy themes! Respects Omarchy control when enabled
 - ⚙️ **Settings Dialog** - New settings page for Omarchy sync and future preferences
 - 📋 **Menu System** - Professional unified menu (File, Export, View, Settings)
-- ✨ **Keyboard Shortcuts** - Ctrl+S (Save), Ctrl+Shift+S (Save As), Ctrl+O (Open), Ctrl+Shift+O (Open Folder)
+- ✨ **Keyboard Shortcuts** - Ctrl+S (Save), Ctrl+Shift+S (Save As), Ctrl+O (Open), Ctrl+Shift+O (Open Folder), Ctrl+N (New)
 - 🔔 **Toast Notifications** - Beautiful feedback for every action (save, open, errors)
 - 🔴 **Unsaved Changes Indicator** - Pulsing dot shows when file needs saving
 - 🎯 **Active File Highlighting** - Current file highlighted in sidebar with accent border
@@ -42,6 +42,12 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 - 🖼️ **Image Loading** - Display local images in markdown with automatic path conversion
 - ✅ **Interactive Checkboxes** - Click to toggle task lists in Preview/Live modes
 - 🎨 **Theme-Aware Checkboxes** - Checkboxes match your current theme
+- 📄 **New File Command** - Create new files with Ctrl+N, prompts to save unsaved changes
+- 🧠 **Smart Filename Preview** - Live filename suggestion from H1 header or first line
+- 💻 **CLI Arguments** - Open files/folders from terminal: `docura .`, `docura file.md`
+- 🪟 **Multi-Window Support** - Open multiple Docura instances, like VS Code or Chrome!
+- 📁 **Smart Folder Dialog** - Choose to open in new window or replace current folder
+- 🎯 **Clean State Management** - Seamless transitions between folders, files, and new documents
 
 ### 📦 v1.0 Core Features
 - ✅ **Three Editing Modes** - Code, Live (WYSIWYG), and Preview
@@ -74,9 +80,60 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 | ⌨️ **Keyboard shortcuts, toasts** | October 11 | Day 2 |
 | 🖼️ **Image loading, checkboxes** | October 11 | Day 2 |
 | 🎯 **File indicators, highlights** | October 11 | Day 2 |
+| 💻 **CLI args, multi-window** | October 11, late evening | Day 2 |
+| 🧠 **Smart filename preview** | October 11, late evening | Day 2 |
 
 **From zero to feature-rich in 2 days!** ⚡  
+**17 major features on Day 2 alone!** 🎉  
 *That's the power of Rust + Tauri + React + Amazing AI Tools!*
+
+---
+
+## 💻 CLI Usage
+
+**Open files and folders directly from your terminal!**
+
+```bash
+# Open current directory
+$ docura .
+
+# Open specific file
+$ docura readme.md
+$ docura ~/Documents/notes.md
+
+# Open specific folder
+$ docura ~/Projects/MyApp
+
+# Multiple instances
+$ docura ~/project1 &
+$ docura ~/project2 &
+$ docura ~/project3 &
+```
+
+**Professional workflow, just like VS Code!** 🚀
+
+---
+
+## 🪟 Multi-Window Support
+
+**Work on multiple projects simultaneously!**
+
+When you try to open a second folder, Docura gives you a choice:
+
+```
+📁 Open New Folder?
+
+You already have "ProjectA" open.
+How would you like to proceed?
+
+[🖥️  Open in New Window]  ← Keep both open!
+[🔄 Replace This Folder]   ← Switch folders
+[Cancel]
+```
+
+**Like Chrome, VS Code, and Sublime!** But lighter! 💪
+
+**Note:** Multi-window support with proper permissions was tricky to implement in Tauri's security model (unlike Electron's permissive approach), but we figured it out! Each window respects tiling WM settings and has full access to file operations. 🔒✨
 
 ---
 
