@@ -1,5 +1,13 @@
 [
   {
+    "slug": "ghormeh-sabzi-software-philosophy",
+    "title": "The Ghormeh Sabzi Principle: Why Great Software Takes Time",
+    "date": "October 11, 2025",
+    "readTime": "10 min read",
+    "excerpt": "What Persian stew and hand-woven carpets teach us about building software that gets better with age. A philosophy of patience, iteration, and care.",
+    "file": "ghormeh-sabzi-software-philosophy.md"
+  },
+  {
     "slug": "respecting-omarchy-dhh-philosophy",
     "title": "Respecting Omarchy: Why We Built DHH's Philosophy Into Docura",
     "date": "October 11, 2025",
