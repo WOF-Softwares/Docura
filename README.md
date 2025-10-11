@@ -2,9 +2,17 @@
 
 **A fast, elegant, and powerful Markdown editor that surpasses Typora.**
 
-🎉 **Version 1.0 Released!** 🎉
+🎉 **Version 1.1 Released!** 🎉
 
 Docura is a next-generation native desktop app designed for Linux systems. Built with Rust (Tauri) and React, it combines the best features of Typora, VS Code, Medium, and Notion into one beautiful, lightweight application.
+
+## 🎨 **NEW! Omakase Integration** - Built for DHH's Workflow
+
+**Docura now syncs seamlessly with [Omakase](https://omakase.app)!**
+
+Respect the setup. When Omakase controls your theme, Docura respects that choice - just like DHH intended. No overrides, no fighting the system. It just works. ✨
+
+[Learn more about Omakase Integration →](#-omakase-integration)
 
 <div align="center">
 
@@ -23,6 +31,9 @@ Docura is a next-generation native desktop app designed for Linux systems. Built
 **Day 2 brings a MASSIVE feature update!** Docura keeps getting better:
 
 ### 🆕 Day 2 Features (October 11, 2025)
+- 🎨 **Omakase Integration** - Auto-sync with DHH's Omakase themes! Respects Omakase control when enabled
+- ⚙️ **Settings Dialog** - New settings page for Omakase sync and future preferences
+- 📋 **Menu System** - Professional unified menu (File, Export, View, Settings)
 - ✨ **Keyboard Shortcuts** - Ctrl+S (Save), Ctrl+Shift+S (Save As), Ctrl+O (Open), Ctrl+Shift+O (Open Folder)
 - 🔔 **Toast Notifications** - Beautiful feedback for every action (save, open, errors)
 - 🔴 **Unsaved Changes Indicator** - Pulsing dot shows when file needs saving
@@ -66,6 +77,67 @@ Docura is a next-generation native desktop app designed for Linux systems. Built
 
 **From zero to feature-rich in 2 days!** ⚡  
 *That's the power of Rust + Tauri + React + Amazing AI Tools!*
+
+---
+
+## 🎨 Omakase Integration
+
+**Docura respects DHH's Omakase philosophy!**
+
+[Omakase](https://omakase.app) is DHH's (creator of Ruby on Rails) curated development environment for Arch Linux. Docura now integrates seamlessly with it!
+
+### ✨ Features
+
+- **🔍 Auto-Detection** - Automatically detects Omakase environment
+- **🔄 Theme Sync** - Syncs with your Omakase theme every 30 seconds
+- **🎨 12 Theme Mappings** - Dracula, Catppuccin, Nord, Gruvbox, Tokyo Night, and more!
+- **🔒 Respects Control** - When synced, Omakase is in control (no manual overrides!)
+- **⚙️ Settings Integration** - Easy toggle in Settings dialog
+- **💚 Zero Configuration** - Just enable sync and it works!
+
+### 🎯 The Philosophy
+
+When you enable Omakase sync, **Docura respects that choice**:
+- ❌ Manual theme changes are blocked
+- ⚠️ Clear warnings if you try to change themes
+- ✅ Must disable sync in Settings to regain manual control
+
+**This is intentional!** Just like DHH's opinionated approach to Rails and Omakase - when you choose a system, you trust it. No half-measures.
+
+### 🚀 How to Use
+
+1. **Install Omakase** on your Arch Linux system
+2. **Open Docura** → It auto-detects Omakase!
+3. **Menu → Settings** → Enable "Auto-sync with Omakase theme"
+4. **Done!** Docura now follows your Omakase theme
+
+Change your theme in the terminal → Docura updates automatically! ✨
+
+### 🗺️ Supported Themes
+
+| Omakase Theme | Docura Theme | Notes |
+|---------------|--------------|-------|
+| Dracula | Dracula Dark | Purple vampire theme |
+| Catppuccin | Cappuccino Dark | Warm coffee vibes |
+| Catppuccin Latte | Cappuccino Light | Light coffee |
+| Nord | Nord Dark | Arctic frost |
+| Gruvbox | Monokai Dark | Retro warm |
+| Tokyo Night | GitHub Dark | Modern dark |
+| Everforest | Nord Light | Forest greens |
+| Kanagawa | Nord Dark | Japanese aesthetics |
+| Rose Pine | Nord Dark | Rosé elegance |
+| Ristretto | Cappuccino Dark | Strong coffee |
+| Matte Black | GitHub Dark | Pure darkness |
+| Osaka Jade | Nord Light | Jade serenity |
+
+### 📖 Documentation
+
+- [Full Omakase Integration Guide →](docs/OMAKASE_INTEGRATION.md)
+- [Feature Summary →](OMAKASE_FEATURE_SUMMARY.md)
+
+### 💬 For DHH
+
+Built with respect for your work on Rails, Basecamp, and Omakase. This integration follows your philosophy: **opinionated, simple, it just works**. 🙏
 
 ---
 
@@ -475,12 +547,28 @@ This means you can:
 - Powered by [Monaco Editor](https://microsoft.github.io/monaco-editor/) - VSCode's editor
 - Thanks to all [contributors](https://github.com/WOF-Softwares/Docura/graphs/contributors)
 
+### 💎 Special Thanks to DHH
+
+**To [DHH](https://dhh.dk/) (David Heinemeier Hansson):**
+- For creating **Ruby on Rails** - transformed how we build web applications
+- For building **[Omakase](https://omakase.app)** - beautiful, opinionated developer experience for Arch Linux
+- For inspiring us to build tools that are opinionated, simple, and respect user choices
+- For showing that the best software comes from strong opinions weakly held
+
+**Docura's Omakase integration** was built with deep respect for your philosophy. When Omakase is in control, we don't fight it - we embrace it. Just like Rails, just like Basecamp, just like everything you build.
+
+**Thank you for inspiring a generation of developers!** 🙏
+
 ### 🤖 AI Tools That Made This Possible
 
 This project was built with the incredible help of modern AI tools:
 
 - **[Cursor](https://cursor.sh/)** - The AI-powered code editor that made development blazingly fast
-- **[Claude AI](https://anthropic.com/) (Sonnet 3.5 & 4)** - For architecture, problem-solving, and smart suggestions
+- **[Claude AI](https://anthropic.com/) (Sonnet 3.5 & 4)** ⭐ **PRIMARY AI PARTNER**
+  - Architecture decisions and system design
+  - Problem-solving and debugging complex issues
+  - Code generation and optimization
+  - **Special Recognition**: Claude powered most of Docura's development!
 - **[GitHub Copilot](https://github.com/features/copilot)** - Real-time code completion and boilerplate generation
 - **[Warp Terminal](https://www.warp.dev/)** - AI-powered terminal for efficient command execution
 - **[DeepSeek](https://www.deepseek.com/)** - Helped craft the beautiful landing page HTML/CSS
