@@ -19,6 +19,10 @@
   --blockquote-border: var(--accent-color);
   --link-color: var(--accent-color);
   --link-hover: var(--accent-hover);
+  
+  /* Additional variables needed for themes */
+  --text-strong: var(--text-primary);
+  --text-emphasis: var(--text-secondary);
 }
 
 /* Dracula Theme */
@@ -40,6 +44,8 @@
   --blockquote-border: #ff79c6;
   --link-color: #8be9fd;
   --link-hover: #50fa7b;
+  --text-strong: #ff79c6;
+  --text-emphasis: #f1fa8c;
 }
 
 [data-theme="dracula-light"] {
@@ -60,6 +66,8 @@
   --blockquote-border: #ff79c6;
   --link-color: #8be9fd;
   --link-hover: #50fa7b;
+  --text-strong: #ff79c6;
+  --text-emphasis: #f1fa8c;
 }
 
 /* Cappuccino Theme */
