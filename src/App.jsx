@@ -216,6 +216,15 @@ function App() {
   }
 
   const toggleTheme = () => {
+    // Check if Omakase sync is enabled
+    if (omakaseSyncEnabled && omakaseAvailable) {
+      toast.error('Please disable Omakase sync first to manually change themes', {
+        duration: 4000,
+        icon: '🎨',
+      })
+      return
+    }
+    
     // Get a random theme from available themes, but different from current
     const otherThemes = availableThemes.filter(theme => theme !== currentTheme)
     const randomTheme = otherThemes[Math.floor(Math.random() * otherThemes.length)]
@@ -490,6 +499,15 @@ function App() {
   }
 
   const handleThemeChange = (newTheme) => {
+    // Check if Omakase sync is enabled
+    if (omakaseSyncEnabled && omakaseAvailable) {
+      toast.error('Omakase sync is enabled. Please disable it in Settings to manually change themes.', {
+        duration: 4000,
+        icon: '🎨',
+      })
+      return
+    }
+    
     setCurrentTheme(newTheme)
     saveAppConfig(newTheme)
   }
@@ -606,6 +624,7 @@ function App() {
         onClose={() => setIsThemeSelectorOpen(false)}
         currentTheme={currentTheme}
         onThemeChange={handleThemeChange}
+        omakaseSyncEnabled={omakaseSyncEnabled && omakaseAvailable}
       />
 
       <PDFPreviewDialog

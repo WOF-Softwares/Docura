@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Palette, X } from 'lucide-react'
+import { Palette, X, AlertCircle } from 'lucide-react'
 
-const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange }) => {
+const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange, omakaseSyncEnabled }) => {
   const [selectedTheme, setSelectedTheme] = useState(currentTheme)
 
   const themes = [
@@ -149,6 +149,16 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange }) => {
         </div>
 
         <div className="theme-selector-body">
+          {omakaseSyncEnabled && (
+            <div className="omakase-sync-notice">
+              <AlertCircle size={20} />
+              <div>
+                <strong>Omakase Sync is Active</strong>
+                <p>Your theme is controlled by Omakase. Disable sync in Settings to manually change themes.</p>
+              </div>
+            </div>
+          )}
+          
           <div className="themes-grid">
             {themes.map((theme) => {
               const currentVariant = getCurrentVariant(theme)
@@ -158,8 +168,8 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange }) => {
               return (
                 <div
                   key={theme.id}
-                  className={`theme-card ${isSelected ? 'selected' : ''}`}
-                  onClick={() => setSelectedTheme(themeId)}
+                  className={`theme-card ${isSelected ? 'selected' : ''} ${omakaseSyncEnabled ? 'disabled' : ''}`}
+                  onClick={() => !omakaseSyncEnabled && setSelectedTheme(themeId)}
                 >
                   <div className="theme-preview" style={{ backgroundColor: currentVariant.bg }}>
                     <div className="theme-preview-header" style={{ backgroundColor: currentVariant.primary }}>
@@ -190,7 +200,11 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange }) => {
           <button className="button-secondary" onClick={onClose}>
             Cancel
           </button>
-          <button className="button-primary" onClick={handleApply}>
+          <button 
+            className="button-primary" 
+            onClick={handleApply}
+            disabled={omakaseSyncEnabled}
+          >
             Apply Theme
           </button>
         </div>
