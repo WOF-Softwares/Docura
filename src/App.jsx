@@ -391,6 +391,27 @@ function App() {
 
   const saveFileAs = async () => {
     try {
+      // Extract first # header from markdown content as suggested filename
+      let suggestedFileName = 'untitled.md'
+      
+      if (fileContent && fileContent.trim()) {
+        // Find first # header (h1)
+        const headerMatch = fileContent.match(/^#\s+(.+)$/m)
+        if (headerMatch && headerMatch[1]) {
+          // Clean the header to make it a valid filename
+          let cleanName = headerMatch[1]
+            .trim()
+            .replace(/[<>:"/\\|?*]/g, '') // Remove invalid filename characters
+            .replace(/\s+/g, '-') // Replace spaces with dashes
+            .toLowerCase()
+            .substring(0, 50) // Limit length
+          
+          if (cleanName) {
+            suggestedFileName = `${cleanName}.md`
+          }
+        }
+      }
+      
       const selected = await save({
         filters: [
           {
@@ -398,7 +419,7 @@ function App() {
             extensions: ['md']
           }
         ],
-        defaultPath: 'untitled.md'
+        defaultPath: suggestedFileName
       })
       
       if (selected) {
