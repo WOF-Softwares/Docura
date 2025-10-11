@@ -1,9 +1,14 @@
 [Desktop Entry]
-Categories=
-Comment=A Tauri App
-Exec=app
-StartupWMClass=app
-Icon=app
 Name=Docura
+GenericName=Markdown Editor
+Comment=A modern, lightweight markdown editor built with Tauri
+Exec=docura %F
+Icon=docura
 Terminal=false
 Type=Application
+Categories=Office;TextEditor;Utility;
+MimeType=text/markdown;text/x-markdown;
+Keywords=markdown;editor;text;writing;
+StartupNotify=true
+StartupWMClass=docura
+

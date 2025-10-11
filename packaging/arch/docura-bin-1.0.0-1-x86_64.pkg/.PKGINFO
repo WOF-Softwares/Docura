@@ -6,9 +6,9 @@ xdata = pkgtype=pkg
 pkgver = 1.0.0-1
 pkgdesc = Docura - Modern markdown editor built with Tauri
 url = https://github.com/WOF-Softwares/Docura
-builddate = 1760174869
+builddate = 1760175413
 packager = Unknown Packager
-size = 12138861
+size = 12129573
 arch = x86_64
 license = Apache
 conflict = docura
