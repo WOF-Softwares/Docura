@@ -83,10 +83,10 @@
 }
 
 .sidebar-content {
-    flex: 1;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .panel-header {
@@ -122,12 +122,16 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+}
+
+.file-tree-container,
+.outline-tree-container {
+    flex: 1;
 }
 
 .file-tree,
 .outline-tree {
-    flex: 1;
-    overflow-y: auto;
     padding: 8px 0;
 }
 
@@ -195,6 +199,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.folder-contents {
+    overflow: hidden;
 }
 
 .outline-item {

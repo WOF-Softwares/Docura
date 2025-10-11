@@ -8,6 +8,7 @@ import {
   Hash,
   Circle
 } from 'lucide-react'
+import ScrollableContainer from './ScrollableContainer'
 
 const Sidebar = ({
   currentFolder,
@@ -21,6 +22,8 @@ const Sidebar = ({
 }) => {
   const [activeTab, setActiveTab] = useState('files')
   const [expandedFolders, setExpandedFolders] = useState(new Set())
+  const fileTreeScrollRef = React.useRef(null)
+  const outlineScrollRef = React.useRef(null)
 
   const toggleFolder = (folderPath) => {
     const newExpanded = new Set(expandedFolders)
@@ -148,13 +151,23 @@ const Sidebar = ({
             </div>
             
             {(currentFolder || files.length > 0) ? (
-              <div className="file-tree">
-                {files.length > 0 ? (
-                  renderFileTree(files)
-                ) : (
-                  <div className="empty-state">No files found</div>
-                )}
-              </div>
+              <ScrollableContainer 
+                ref={fileTreeScrollRef}
+                className="file-tree-container"
+                thumbColor="var(--border-color)"
+                thumbHoverColor="var(--accent-color)"
+                scrollbarWidth={6}
+                autoHide={true}
+                smoothScroll={true}
+              >
+                <div className="file-tree">
+                  {files.length > 0 ? (
+                    renderFileTree(files)
+                  ) : (
+                    <div className="empty-state">No files found</div>
+                  )}
+                </div>
+              </ScrollableContainer>
             ) : (
               <div className="empty-state">
                 Open a folder to see files
@@ -170,9 +183,19 @@ const Sidebar = ({
             </div>
             
             {outlineHeaders.length > 0 ? (
-              <div className="outline-tree">
-                {renderOutline()}
-              </div>
+              <ScrollableContainer 
+                ref={outlineScrollRef}
+                className="outline-tree-container"
+                thumbColor="var(--border-color)"
+                thumbHoverColor="var(--accent-color)"
+                scrollbarWidth={6}
+                autoHide={true}
+                smoothScroll={true}
+              >
+                <div className="outline-tree">
+                  {renderOutline()}
+                </div>
+              </ScrollableContainer>
             ) : (
               <div className="empty-state">
                 No headers found
