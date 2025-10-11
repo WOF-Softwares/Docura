@@ -175,10 +175,16 @@
     cursor: pointer;
     font-size: 13px;
     transition: background-color 0.2s;
+    border-radius: 4px;
+    margin: 2px 4px;
 }
 
 .outline-item:hover {
     background-color: var(--bg-tertiary);
+}
+
+.outline-item:active {
+    background-color: var(--border-color);
 }
 
 .outline-text {

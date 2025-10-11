@@ -13,7 +13,8 @@ const Sidebar = ({
   files,
   outlineHeaders,
   onSelectFile,
-  onRefreshFiles
+  onRefreshFiles,
+  onHeaderClick
 }) => {
   const [activeTab, setActiveTab] = useState('files')
   const [expandedFolders, setExpandedFolders] = useState(new Set())
@@ -86,8 +87,9 @@ const Sidebar = ({
         className="outline-item"
         style={{ paddingLeft: (header.level - 1) * 16 + 8 }}
         onClick={() => {
-          // Scroll to header in editor
-          console.log(`Scroll to line ${header.line}`)
+          if (onHeaderClick) {
+            onHeaderClick(header)
+          }
         }}
       >
         <Hash size={12} />

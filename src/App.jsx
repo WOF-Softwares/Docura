@@ -214,14 +214,32 @@ function App() {
     let match
 
     while ((match = headerRegex.exec(content)) !== null) {
+      const text = match[2]
+      const id = text.toLowerCase().replace(/[^\w]+/g, '-')
       headers.push({
         level: match[1].length,
-        text: match[2],
+        text: text,
+        id: id,
         line: content.substring(0, match.index).split('\n').length
       })
     }
 
     setOutlineHeaders(headers)
+  }
+
+  const handleHeaderClick = (header) => {
+    // Switch to preview mode if not already there
+    if (activeTab !== 'preview') {
+      setActiveTab('preview')
+    }
+    
+    // Use setTimeout to ensure the preview is rendered before scrolling
+    setTimeout(() => {
+      const element = document.getElementById(header.id)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }, 100)
   }
 
   const selectFile = async (filePath) => {
@@ -303,6 +321,7 @@ function App() {
                   .then(setFiles)
               }
             }}
+            onHeaderClick={handleHeaderClick}
           />
         )}
         

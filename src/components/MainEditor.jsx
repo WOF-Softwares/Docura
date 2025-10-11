@@ -97,6 +97,36 @@ const MainEditor = ({
                 {children}
               </li>
             )
+          },
+          h1({ node, children, ...props }) {
+            const text = children?.toString() || ''
+            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
+            return <h1 id={id} {...props}>{children}</h1>
+          },
+          h2({ node, children, ...props }) {
+            const text = children?.toString() || ''
+            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
+            return <h2 id={id} {...props}>{children}</h2>
+          },
+          h3({ node, children, ...props }) {
+            const text = children?.toString() || ''
+            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
+            return <h3 id={id} {...props}>{children}</h3>
+          },
+          h4({ node, children, ...props }) {
+            const text = children?.toString() || ''
+            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
+            return <h4 id={id} {...props}>{children}</h4>
+          },
+          h5({ node, children, ...props }) {
+            const text = children?.toString() || ''
+            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
+            return <h5 id={id} {...props}>{children}</h5>
+          },
+          h6({ node, children, ...props }) {
+            const text = children?.toString() || ''
+            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
+            return <h6 id={id} {...props}>{children}</h6>
           }
         }}
       >
