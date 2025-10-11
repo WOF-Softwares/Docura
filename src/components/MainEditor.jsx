@@ -157,8 +157,10 @@ const MainEditor = ({
             }}
           />
         ) : (
-          <div className="preview-container" data-md-theme={markdownTheme}>
-            {renderMarkdown()}
+          <div className="preview-container">
+            <div className="markdown-preview" data-theme={markdownTheme}>
+              {renderMarkdown()}
+            </div>
           </div>
         )}
       </div>
