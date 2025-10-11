@@ -266,17 +266,12 @@ function App() {
 
   const toggleFullscreen = async () => {
     try {
-      console.log('Toggling fullscreen...')
       const window = getCurrentWindow()
-      console.log('Got window:', window)
       const isCurrentlyFullscreen = await window.isFullscreen()
-      console.log('Current fullscreen state:', isCurrentlyFullscreen)
       await window.setFullscreen(!isCurrentlyFullscreen)
-      console.log('Set fullscreen to:', !isCurrentlyFullscreen)
       setIsFullscreen(!isCurrentlyFullscreen)
     } catch (error) {
       console.error('Error toggling fullscreen:', error)
-      console.error('Error details:', error.message, error.stack)
     }
   }
 
