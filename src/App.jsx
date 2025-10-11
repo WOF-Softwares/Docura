@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { getCurrentWindow } from '@tauri-apps/api/window'
-import { open } from '@tauri-apps/plugin-dialog'
+import { open, save } from '@tauri-apps/plugin-dialog'
 import { writeTextFile, readTextFile } from '@tauri-apps/plugin-fs'
 import toast, { Toaster } from 'react-hot-toast'
 import Toolbar from './components/Toolbar'
@@ -369,7 +369,13 @@ function App() {
   }
 
   const saveFile = async () => {
-    if (currentFile && fileContent) {
+    // If no file is open, use Save As instead
+    if (!currentFile) {
+      await saveFileAs()
+      return
+    }
+    
+    if (fileContent !== undefined) {
       try {
         await writeTextFile(currentFile, fileContent)
         setOriginalContent(fileContent) // Update original content after save
@@ -385,7 +391,7 @@ function App() {
 
   const saveFileAs = async () => {
     try {
-      const selected = await open({
+      const selected = await save({
         filters: [
           {
             name: 'Markdown',
