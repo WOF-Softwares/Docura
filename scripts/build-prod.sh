@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Build a Tauri AppImage and prepare an Arch PKGBUILD that packages the AppImage.
+# Build Tauri packages (.deb, .rpm) and prepare an Arch PKGBUILD that repackages the .deb
 # Usage:
-#   scripts/build-prod.sh            # Build AppImage and generate PKGBUILD
+#   scripts/build-prod.sh            # Build .deb, .rpm and generate PKGBUILD
 #   scripts/build-prod.sh --build-pkg  # Also run makepkg to produce .pkg.tar.xz
 #   scripts/build-prod.sh --clean      # Remove previous build artifacts before building
 #
@@ -14,7 +14,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CONF_JSON="$ROOT_DIR/src-tauri/tauri.conf.json"
 PKG_DIR="$ROOT_DIR/packaging/arch"
-BUNDLE_DIR="$ROOT_DIR/src-tauri/target/release/bundle/appimage"
+DEB_BUNDLE_DIR="$ROOT_DIR/src-tauri/target/release/bundle/deb"
+RPM_BUNDLE_DIR="$ROOT_DIR/src-tauri/target/release/bundle/rpm"
 
 CLEAN_FIRST=false
 DO_BUILD_PKG=false
@@ -62,7 +63,8 @@ fi
 
 # Normalize names
 BASE_NAME_LOWER="$(echo "$PRODUCT_NAME" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9_-')"
-APPIMAGE_NAME="${PRODUCT_NAME}-${APP_VERSION}.AppImage"
+DEB_NAME="${BASE_NAME_LOWER}_${APP_VERSION}_amd64.deb"
+RPM_NAME="${BASE_NAME_LOWER}-${APP_VERSION}-1.x86_64.rpm"
 
 log "Product: $PRODUCT_NAME"
 log "Version: $APP_VERSION"
@@ -70,7 +72,7 @@ log "Version: $APP_VERSION"
 # Optional clean
 if $CLEAN_FIRST; then
   log "Cleaning previous artifacts"
-  rm -rf "$ROOT_DIR/dist" "$ROOT_DIR/.vite" "$ROOT_DIR/src-tauri/target" "$PKG_DIR"/*.AppImage "$PKG_DIR"/*.pkg.tar.* || true
+  rm -rf "$ROOT_DIR/dist" "$ROOT_DIR/.vite" "$ROOT_DIR/src-tauri/target" "$PKG_DIR"/*.deb "$PKG_DIR"/*.rpm "$PKG_DIR"/*.pkg.tar.* || true
 fi
 
 # Install frontend deps and build
@@ -84,26 +86,40 @@ fi
 log "Building frontend"
 npm run --prefix "$ROOT_DIR" build
 
-# Build AppImage with Tauri v2 CLI via npm script
-log "Building Tauri AppImage"
-npm run --prefix "$ROOT_DIR" tauri:build -- --bundles appimage
+# Build .deb and .rpm with Tauri v2 CLI via npm script
+log "Building Tauri packages (.deb and .rpm)"
+npm run --prefix "$ROOT_DIR" tauri:build -- --bundles deb,rpm
 
-# Locate AppImage artifact
-if [[ ! -d "$BUNDLE_DIR" ]]; then
-  err "Bundle directory not found: $BUNDLE_DIR"; exit 1
+# Locate .deb artifact
+if [[ ! -d "$DEB_BUNDLE_DIR" ]]; then
+  err "DEB bundle directory not found: $DEB_BUNDLE_DIR"; exit 1
 fi
 
-LATEST_APPIMAGE="$(ls -t "$BUNDLE_DIR"/*.AppImage 2>/dev/null | head -n1 || true)"
-if [[ -z "$LATEST_APPIMAGE" ]]; then
-  err "No AppImage found in $BUNDLE_DIR"; exit 1
+LATEST_DEB="$(ls -t "$DEB_BUNDLE_DIR"/*.deb 2>/dev/null | head -n1 || true)"
+if [[ -z "$LATEST_DEB" ]]; then
+  err "No .deb found in $DEB_BUNDLE_DIR"; exit 1
 fi
 
-log "Found AppImage: $LATEST_APPIMAGE"
+log "Found .deb: $LATEST_DEB"
 mkdir -p "$PKG_DIR"
-cp -f "$LATEST_APPIMAGE" "$PKG_DIR/$APPIMAGE_NAME"
+cp -f "$LATEST_DEB" "$PKG_DIR/$DEB_NAME"
 
-# Generate PKGBUILD that packages the AppImage as /opt/<name>/<name>.AppImage with a launcher in /usr/bin
-PKG_NAME_APPIMAGE="${BASE_NAME_LOWER}-appimage"
+# Locate .rpm artifact
+if [[ ! -d "$RPM_BUNDLE_DIR" ]]; then
+  warn "RPM bundle directory not found: $RPM_BUNDLE_DIR (RPM may not be available on this system)"
+else
+  LATEST_RPM="$(ls -t "$RPM_BUNDLE_DIR"/*.rpm 2>/dev/null | head -n1 || true)"
+  if [[ -z "$LATEST_RPM" ]]; then
+    warn "No .rpm found in $RPM_BUNDLE_DIR"
+  else
+    log "Found .rpm: $LATEST_RPM"
+    cp -f "$LATEST_RPM" "$PKG_DIR/$RPM_NAME"
+    log ".rpm copied to $PKG_DIR/$RPM_NAME"
+  fi
+fi
+
+# Generate PKGBUILD that repackages the .deb for Arch Linux
+PKG_NAME_BIN="${BASE_NAME_LOWER}-bin"
 cat > "$PKG_DIR/PKGBUILD" <<'EOF'
 pkgname=__PKG_NAME__
 pkgver=__PKG_VER__
@@ -111,54 +127,58 @@ pkgrel=1
 pkgdesc="__PKG_DESC__"
 arch=('x86_64')
 url="__PKG_URL__"
-license=('custom')
-depends=()
-optdepends=('fuse2: required to run some AppImages on older systems')
+license=('Apache')
+depends=('gtk3' 'webkit2gtk')
 provides=('__BASE_NAME__')
 conflicts=('__BASE_NAME__')
 options=('!strip')
-source=("__APPIMAGE_FILE__")
+source=("__DEB_FILE__")
 noextract=("${source[@]}")
 sha256sums=('SKIP')
 
 package() {
-  install -d "${pkgdir}/opt/__BASE_NAME__"
-  install -Dm755 "${srcdir}/__APPIMAGE_FILE__" "${pkgdir}/opt/__BASE_NAME__/__BASE_PROPER__.AppImage"
-
-  # Launcher
-  install -d "${pkgdir}/usr/bin"
-  cat > "${pkgdir}/usr/bin/__BASE_NAME__" << 'LAUNCH'
-#!/usr/bin/env bash
-exec "/opt/__BASE_NAME__/__BASE_PROPER__.AppImage" "$@"
-LAUNCH
-  chmod 755 "${pkgdir}/usr/bin/__BASE_NAME__"
+  # Extract .deb
+  bsdtar -xf "${srcdir}/__DEB_FILE__" -C "${pkgdir}/"
+  
+  # Fix permissions
+  find "${pkgdir}" -type d -exec chmod 755 {} \;
+  find "${pkgdir}/usr/bin" -type f -exec chmod 755 {} \; 2>/dev/null || true
 }
 EOF
 
 # Fill placeholders in PKGBUILD
-PKG_DESC="$PRODUCT_NAME AppImage repackaged as an Arch package"
+PKG_DESC="$PRODUCT_NAME - Modern markdown editor built with Tauri"
 PKG_URL="https://github.com/WOF-Softwares/Docura"
 
 sed -i \
-  -e "s/__PKG_NAME__/$PKG_NAME_APPIMAGE/" \
+  -e "s/__PKG_NAME__/$PKG_NAME_BIN/" \
   -e "s/__PKG_VER__/$APP_VERSION/" \
   -e "s|__PKG_DESC__|$PKG_DESC|" \
   -e "s|__PKG_URL__|$PKG_URL|" \
   -e "s/__BASE_NAME__/$BASE_NAME_LOWER/g" \
-  -e "s/__BASE_PROPER__/$PRODUCT_NAME/g" \
-  -e "s|__APPIMAGE_FILE__|$APPIMAGE_NAME|g" \
+  -e "s|__DEB_FILE__|$DEB_NAME|g" \
   "$PKG_DIR/PKGBUILD"
 
 log "Generated $PKG_DIR/PKGBUILD"
-log "AppImage copied to $PKG_DIR/$APPIMAGE_NAME"
+log ".deb copied to $PKG_DIR/$DEB_NAME"
 
 cat <<INSTRUCT
+
+✅ Build complete!
+
+Package files:
+- Debian/Ubuntu: $PKG_DIR/$DEB_NAME
+- Fedora/RHEL:   $PKG_DIR/$RPM_NAME (if built)
+- Arch PKGBUILD: $PKG_DIR/PKGBUILD
 
 Next steps:
 - To build the Arch package (.pkg.tar.xz) run:
     (cd "$PKG_DIR" && PKGEXT='.pkg.tar.xz' makepkg -Ccf --noprepare --skipinteg)
 
-Artifacts will appear in: $PKG_DIR
+Installation:
+- Debian/Ubuntu: sudo dpkg -i $DEB_NAME
+- Fedora/RHEL:   sudo rpm -i $RPM_NAME
+- Arch Linux:    cd packaging/arch && makepkg -si
 
 Tip: You can also run this script with --build-pkg to have it call makepkg for you.
 INSTRUCT
