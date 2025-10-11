@@ -136,11 +136,7 @@ function App() {
       // Ctrl+S for save
       if (e.ctrlKey && !e.shiftKey && e.key === 's') {
         e.preventDefault()
-        if (currentFile) {
-          await saveFile()
-        } else {
-          toast.error('No file open to save')
-        }
+        await saveFile() // saveFile handles both cases: existing file or save as
       }
       // Ctrl+Shift+S for save as
       if (e.ctrlKey && e.shiftKey && e.key === 'S') {
