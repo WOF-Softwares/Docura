@@ -121,38 +121,58 @@ fi
 # Generate PKGBUILD that repackages the .deb for Arch Linux
 PKG_NAME_BIN="${BASE_NAME_LOWER}-bin"
 cat > "$PKG_DIR/PKGBUILD" <<'EOF'
+# Maintainer: Docura Team <https://github.com/WOF-Softwares/Docura>
 pkgname=__PKG_NAME__
 pkgver=__PKG_VER__
 pkgrel=1
 pkgdesc="__PKG_DESC__"
 arch=('x86_64')
 url="__PKG_URL__"
-license=('Apache')
-depends=('gtk3' 'webkit2gtk')
+license=('Apache-2.0')
+depends=('gtk3' 'webkit2gtk-4.1')
+makedepends=()
 provides=('__BASE_NAME__')
 conflicts=('__BASE_NAME__')
-options=('!strip')
+options=('!strip' '!emptydirs')
 source=("__DEB_FILE__")
 noextract=("${source[@]}")
 sha256sums=('SKIP')
 
 package() {
-  # Extract .deb (data.tar.* contains the actual files)
+  msg2 "Extracting .deb package..."
   cd "${srcdir}"
-  ar x "__DEB_FILE__"
-  tar -xf data.tar.* -C "${pkgdir}/"
   
+  # Extract .deb (data.tar.* contains the actual files)
+  ar x "__DEB_FILE__" || {
+    error "Failed to extract .deb archive"
+    return 1
+  }
+  
+  # Extract data
+  tar -xf data.tar.* -C "${pkgdir}/" || {
+    error "Failed to extract data.tar"
+    return 1
+  }
+  
+  msg2 "Fixing permissions..."
   # Fix permissions
-  find "${pkgdir}" -type d -exec chmod 755 {} \;
-  find "${pkgdir}/usr/bin" -type f -exec chmod 755 {} \; 2>/dev/null || true
-  find "${pkgdir}/usr/share/applications" -type f -exec chmod 644 {} \; 2>/dev/null || true
-  find "${pkgdir}/usr/share/icons" -type f -exec chmod 644 {} \; 2>/dev/null || true
+  find "${pkgdir}" -type d -exec chmod 755 {} \+ 2>/dev/null || true
+  find "${pkgdir}/usr/bin" -type f -exec chmod 755 {} \+ 2>/dev/null || true
+  find "${pkgdir}/usr/share/applications" -type f -exec chmod 644 {} \+ 2>/dev/null || true
+  find "${pkgdir}/usr/share/icons" -type f -exec chmod 644 {} \+ 2>/dev/null || true
   
   # Verify binary exists
-  if [[ ! -f "${pkgdir}/usr/bin/__BASE_NAME__" ]]; then
-    echo "Warning: Binary not found at expected location"
-    find "${pkgdir}" -type f -name "__BASE_NAME__" || true
+  if [[ -f "${pkgdir}/usr/bin/__BASE_NAME__" ]]; then
+    msg2 "Binary installed: /usr/bin/__BASE_NAME__"
+  else
+    warning "Binary not found at /usr/bin/__BASE_NAME__"
+    msg2 "Searching for binary..."
+    find "${pkgdir}" -type f -name "__BASE_NAME__" 2>/dev/null || true
   fi
+  
+  # Clean up extracted .deb components
+  cd "${srcdir}"
+  rm -f control.tar.* data.tar.* debian-binary 2>/dev/null || true
 }
 EOF
 
