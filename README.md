@@ -18,15 +18,25 @@ Docura is a next-generation native desktop app designed for Linux systems. Built
 
 ---
 
-## 🎉 What's New in v1.0
+## 🎉 What's New in v1.1 (Day 2!)
 
-**The first stable release is here!** After extensive development, Docura v1.0 includes:
+**Day 2 brings a MASSIVE feature update!** Docura keeps getting better:
 
+### 🆕 Day 2 Features (October 11, 2025)
+- ✨ **Keyboard Shortcuts** - Ctrl+S (Save), Ctrl+Shift+S (Save As), Ctrl+O (Open), Ctrl+Shift+O (Open Folder)
+- 🔔 **Toast Notifications** - Beautiful feedback for every action (save, open, errors)
+- 🔴 **Unsaved Changes Indicator** - Pulsing dot shows when file needs saving
+- 🎯 **Active File Highlighting** - Current file highlighted in sidebar with accent border
+- 📁 **Single File Support** - Open files without folder now appear in sidebar
+- 🖼️ **Image Loading** - Display local images in markdown with automatic path conversion
+- ✅ **Interactive Checkboxes** - Click to toggle task lists in Preview/Live modes
+- 🎨 **Theme-Aware Checkboxes** - Checkboxes match your current theme
+
+### 📦 v1.0 Core Features
 - ✅ **Three Editing Modes** - Code, Live (WYSIWYG), and Preview
 - ✅ **12 Beautiful Themes** - Unified across entire application
 - ✅ **PDF Export** - High-quality PDF generation with native save dialogs
 - ✅ **Print Support** - PDF preview dialog with system print integration
-- ✅ **Interactive Checkboxes** - Click to toggle markdown task lists
 - ✅ **Fullscreen Mode** - Distraction-free writing (F11)
 - ✅ **Tiling WM Support** - Auto-detection for i3, sway, Hyprland, etc.
 - ✅ **Document Outline** - Clickable navigation with smooth scrolling
@@ -35,11 +45,11 @@ Docura is a next-generation native desktop app designed for Linux systems. Built
 - ✅ **94% Smaller Download** - 5 MB package vs 80 MB
 - ✅ **100% Open Source** - Apache 2.0 license
 
-**Ready to use, battle-tested, and better than Typora!** 🚀
+**Getting better every day!** 🚀
 
-### 🕰️ Docura's Birth Timeline
+### 🕰️ Docura's Evolution Timeline
 
-**Built in less than 2 days!** From concept to fully-featured markdown editor:
+**Built in less than 2 days, with continuous improvements!**
 
 | Milestone | Time | Duration |
 |-----------|------|----------|
@@ -48,10 +58,14 @@ Docura is a next-generation native desktop app designed for Linux systems. Built
 | 🎨 **Themes, toolbar, live preview** | October 10 | Day 1 |
 | 📂 **File access, outline linking** | October 10, late | Day 1 |
 | 🖨️ **Export, print, native dialogs** | October 11, morning | Day 2 |
-| ✅ **Finished v1.0** | October 11, 11:29 AM | **37 hours!** |
+| ✅ **v1.0 Released** | October 11, 11:29 AM | **37 hours!** |
+| 🎉 **Day 2 Features** | October 11, evening | Day 2 |
+| ⌨️ **Keyboard shortcuts, toasts** | October 11 | Day 2 |
+| 🖼️ **Image loading, checkboxes** | October 11 | Day 2 |
+| 🎯 **File indicators, highlights** | October 11 | Day 2 |
 
-**From zero to production-ready in just 37 hours!** ⚡  
-*That's the power of Rust + Tauri + React!*
+**From zero to feature-rich in 2 days!** ⚡  
+*That's the power of Rust + Tauri + React + Amazing AI Tools!*
 
 ---
 
@@ -148,7 +162,9 @@ Typora forces you into one way of working. **Docura lets you choose your adventu
 - 💻 **Monaco Editor** - The same editor as VS Code with full features
 - ✍️ **WYSIWYG Editor** - Split-pane markdown editing with live preview
 - 👁️ **Beautiful Preview** - Typora-inspired typography and layout
-- ✅ **Interactive Checkboxes** - Click to toggle task list items
+- ✅ **Interactive Checkboxes** - Click to toggle task lists in Preview/Live modes
+- 🖼️ **Image Support** - Display local images with automatic path conversion
+- 🔒 **Secure Image Loading** - Tauri asset protocol for safe file access
 - 🎯 **Syntax Highlighting** - For code blocks in 12 custom themes
 
 ### 🎨 Theming System
@@ -167,6 +183,10 @@ Typora forces you into one way of working. **Docura lets you choose your adventu
 - 📁 **Folder Explorer** - Recursive directory tree with expand/collapse
 - 📄 **Multiple File Support** - Quick switching between markdown files
 - 💾 **Save & Save As** - Standard file operations with native dialogs
+- 🔔 **Toast Notifications** - Visual feedback for all file operations
+- 🔴 **Unsaved Changes** - Pulsing dot indicator when file needs saving
+- 🎯 **Active File Highlight** - Current file highlighted with accent border
+- 📋 **Single File Mode** - Files opened without folder show in sidebar
 - 🔄 **Auto-sync** - Changes reflect across all editor modes
 
 ### 📄 Export & Print
@@ -188,10 +208,14 @@ Typora forces you into one way of working. **Docura lets you choose your adventu
 - 🎯 **Smart UI** - Hides toolbar and sidebar in fullscreen
 
 ### ⌨️ Keyboard Shortcuts
-- **F11** - Toggle fullscreen mode
+- **Ctrl+S** - Save current file
+- **Ctrl+Shift+S** - Save As (with dialog)
+- **Ctrl+O** - Open file
+- **Ctrl+Shift+O** - Open folder
 - **Ctrl+B** - Toggle sidebar visibility
-- **Ctrl+S** - Save file
-- More shortcuts coming soon!
+- **F11** - Toggle fullscreen mode
+
+*More shortcuts coming soon!*
 
 ### 🚀 Performance
 - ⚡ **23% Less Memory** than Typora (780 MB vs 1011 MB)
@@ -445,10 +469,26 @@ This means you can:
 
 ## 🙏 Acknowledgments
 
+### Inspiration & Tools
 - Inspired by [Typora](https://typora.io/) - The excellent markdown editor (we made it better!)
 - Built with [Tauri](https://tauri.app/) - The future of desktop applications
 - Powered by [Monaco Editor](https://microsoft.github.io/monaco-editor/) - VSCode's editor
 - Thanks to all [contributors](https://github.com/WOF-Softwares/Docura/graphs/contributors)
+
+### 🤖 AI Tools That Made This Possible
+
+This project was built with the incredible help of modern AI tools:
+
+- **[Cursor](https://cursor.sh/)** - The AI-powered code editor that made development blazingly fast
+- **[Claude AI](https://anthropic.com/) (Sonnet 3.5 & 4)** - For architecture, problem-solving, and smart suggestions
+- **[GitHub Copilot](https://github.com/features/copilot)** - Real-time code completion and boilerplate generation
+- **[Warp Terminal](https://www.warp.dev/)** - AI-powered terminal for efficient command execution
+- **[DeepSeek](https://www.deepseek.com/)** - Helped craft the beautiful landing page HTML/CSS
+- **[Bing Copilot](https://www.bing.com/chat)** - Research, documentation, and best practices guidelines
+
+**Special Thanks to Claude (Anthropic)** 🎉 - The primary AI model powering most of the development, architecture decisions, and problem-solving throughout this project. Claude's ability to understand context, suggest elegant solutions, and help debug issues was instrumental in completing Docura in just 2 days!
+
+*This project showcases what's possible when human creativity meets AI assistance. The future of software development is here!*
 
 ---
 
