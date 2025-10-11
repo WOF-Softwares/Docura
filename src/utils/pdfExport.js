@@ -1,5 +1,7 @@
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
+import { save } from '@tauri-apps/plugin-dialog'
+import { writeFile } from '@tauri-apps/plugin-fs'
 
 /**
  * Export markdown preview to PDF
@@ -115,10 +117,28 @@ export async function exportToPDF(previewElement, filename = 'document.pdf') {
       heightLeft -= pageHeight
     }
 
-    // Save the PDF
-    pdf.save(filename)
+    // Get PDF as array buffer
+    const pdfArrayBuffer = pdf.output('arraybuffer')
+    
+    // Show save dialog
+    const filePath = await save({
+      defaultPath: filename,
+      filters: [{
+        name: 'PDF',
+        extensions: ['pdf']
+      }]
+    })
 
-    // Also return the blob for preview
+    if (!filePath) {
+      console.log('Save cancelled')
+      return null
+    }
+
+    // Write the file using Tauri's fs plugin
+    const uint8Array = new Uint8Array(pdfArrayBuffer)
+    await writeFile(filePath, uint8Array)
+
+    console.log('PDF saved to:', filePath)
     return pdf.output('blob')
   } catch (error) {
     console.error('Error generating PDF:', error)

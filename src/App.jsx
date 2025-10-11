@@ -225,10 +225,15 @@ function App() {
 
       console.log('Exporting to:', filename)
 
-      // Export to PDF
-      await exportToPDF(previewElement, filename)
-      console.log('PDF exported successfully!')
-      alert('PDF exported successfully!')
+      // Export to PDF (will show save dialog)
+      const result = await exportToPDF(previewElement, filename)
+      
+      if (result) {
+        console.log('PDF exported successfully!')
+        alert('PDF exported successfully!')
+      } else {
+        console.log('Export cancelled')
+      }
     } catch (error) {
       console.error('Error exporting to PDF:', error)
       alert(`Failed to export PDF: ${error.message}`)

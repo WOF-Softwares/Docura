@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { X, Printer, Download } from 'lucide-react'
+import { save } from '@tauri-apps/plugin-dialog'
+import { writeFile } from '@tauri-apps/plugin-fs'
 
 const PDFPreviewDialog = ({ isOpen, onClose, pdfBlob, filename }) => {
   const [pdfUrl, setPdfUrl] = useState(null)
@@ -30,14 +32,36 @@ const PDFPreviewDialog = ({ isOpen, onClose, pdfBlob, filename }) => {
     }
   }
 
-  const handleDownload = () => {
-    if (pdfUrl) {
-      const a = document.createElement('a')
-      a.href = pdfUrl
-      a.download = filename || 'document.pdf'
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
+  const handleDownload = async () => {
+    if (!pdfBlob) return
+
+    try {
+      // Show save dialog
+      const filePath = await save({
+        defaultPath: filename || 'document.pdf',
+        filters: [{
+          name: 'PDF',
+          extensions: ['pdf']
+        }]
+      })
+
+      if (!filePath) {
+        console.log('Save cancelled')
+        return
+      }
+
+      // Convert blob to array buffer
+      const arrayBuffer = await pdfBlob.arrayBuffer()
+      const uint8Array = new Uint8Array(arrayBuffer)
+
+      // Write the file
+      await writeFile(filePath, uint8Array)
+
+      console.log('PDF downloaded to:', filePath)
+      alert('PDF saved successfully!')
+    } catch (error) {
+      console.error('Error saving PDF:', error)
+      alert('Failed to save PDF: ' + error.message)
     }
   }
 
