@@ -6,7 +6,11 @@ import {
   Save, 
   FileText, 
   Printer,
-  Palette 
+  Palette,
+  Maximize,
+  Minimize,
+  PanelLeftClose,
+  PanelLeft
 } from 'lucide-react'
 
 const Toolbar = ({

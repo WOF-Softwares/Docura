@@ -61,12 +61,13 @@
 
 .markdown-preview h1 {
     /* Much larger, more prominent top-level heading */
-    font-size: 2.8em;
+    font-size: 2.2em;
     font-weight: 700;
     border-bottom-width: 2px;
     margin-top: 0;
     margin-bottom: 2.5rem;
     padding-bottom: 0.6em;
+    line-height: 1.3;
 }
 
 .markdown-preview h2 {

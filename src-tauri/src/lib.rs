@@ -1,8 +1,9 @@
 use std::path::{Path, PathBuf};
 use std::fs;
+use std::env;
 use serde::{Deserialize, Serialize};
 use serde_json;
-use tauri::command;
+use tauri::{command, Manager};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct FileItem {
@@ -234,6 +235,56 @@ async fn save_config(config: AppConfig) -> Result<(), String> {
     Ok(())
 }
 
+/// Detects if running in a tiling window manager
+fn detect_tiling_wm() -> bool {
+    // List of known tiling window managers
+    let tiling_wms = [
+        "i3", "sway", "bspwm", "dwm", "xmonad", "awesome", 
+        "qtile", "herbstluftwm", "spectrwm", "leftwm", 
+        "river", "hyprland", "wmii", "ratpoison"
+    ];
+    
+    // Check XDG_CURRENT_DESKTOP
+    if let Ok(desktop) = env::var("XDG_CURRENT_DESKTOP") {
+        let desktop_lower = desktop.to_lowercase();
+        for wm in &tiling_wms {
+            if desktop_lower.contains(wm) {
+                log::info!("Detected tiling WM via XDG_CURRENT_DESKTOP: {}", desktop);
+                return true;
+            }
+        }
+    }
+    
+    // Check XDG_SESSION_DESKTOP
+    if let Ok(session) = env::var("XDG_SESSION_DESKTOP") {
+        let session_lower = session.to_lowercase();
+        for wm in &tiling_wms {
+            if session_lower.contains(wm) {
+                log::info!("Detected tiling WM via XDG_SESSION_DESKTOP: {}", session);
+                return true;
+            }
+        }
+    }
+    
+    // Check DESKTOP_SESSION (fallback for older systems)
+    if let Ok(session) = env::var("DESKTOP_SESSION") {
+        let session_lower = session.to_lowercase();
+        for wm in &tiling_wms {
+            if session_lower.contains(wm) {
+                log::info!("Detected tiling WM via DESKTOP_SESSION: {}", session);
+                return true;
+            }
+        }
+    }
+    
+    false
+}
+
+#[command]
+async fn is_tiling_wm() -> bool {
+    detect_tiling_wm()
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -247,6 +298,19 @@ pub fn run() {
                         .build(),
                 )?;
             }
+            
+            // Configure window based on tiling WM detection
+            if let Some(window) = app.get_webview_window("main") {
+                let is_tiling = detect_tiling_wm();
+                if is_tiling {
+                    log::info!("Tiling WM detected, hiding decorations");
+                    let _ = window.set_decorations(false);
+                } else {
+                    log::info!("Standard WM detected, showing decorations");
+                    let _ = window.set_decorations(true);
+                }
+            }
+            
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -254,7 +318,8 @@ pub fn run() {
             export_to_pdf,
             print_document,
             load_config,
-            save_config
+            save_config,
+            is_tiling_wm
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

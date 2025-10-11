@@ -34,6 +34,15 @@ function App() {
   useEffect(() => {
     // Load config on mount
     loadAppConfig()
+    
+    // Check if running in tiling WM
+    invoke('is_tiling_wm').then((isTiling) => {
+      if (isTiling) {
+        console.log('🪟 Running in tiling window manager - titlebar hidden')
+      } else {
+        console.log('🪟 Running in standard window manager')
+      }
+    }).catch(err => console.error('Error checking WM:', err))
   }, [])
 
   useEffect(() => {
