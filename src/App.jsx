@@ -73,22 +73,35 @@ function App() {
     checkOmakase()
     
     // Set up CLI event listeners
+    console.log('🎧 Setting up CLI event listeners...')
     let unlistenFolder, unlistenFile
     
     listen('cli-open-folder', async (event) => {
       const folderPath = event.payload
-      console.log('📁 CLI: Opening folder:', folderPath)
+      console.log('📁 CLI: Received cli-open-folder event:', folderPath)
+      console.log('📁 Event details:', event)
       try {
+        console.log('📂 Granting file scope...')
         await invoke('grant_file_scope', { filePath: folderPath })
+        console.log('✅ File scope granted')
+        
+        console.log('📂 Setting current folder state...')
         setCurrentFolder(folderPath)
+        
+        console.log('📂 Getting folder files...')
         const folderFiles = await invoke('get_folder_files', { folderPath })
+        console.log(`✅ Got ${folderFiles.length} files`)
+        
         setFiles(folderFiles)
         toast.success(`Opened folder: ${folderPath.split('/').pop()}`)
       } catch (error) {
-        console.error('Error opening folder from CLI:', error)
+        console.error('❌ Error opening folder from CLI:', error)
         toast.error('Failed to open folder')
       }
-    }).then(fn => { unlistenFolder = fn })
+    }).then(fn => { 
+      unlistenFolder = fn
+      console.log('✅ CLI folder listener registered')
+    })
     
     listen('cli-open-file', async (event) => {
       const filePath = event.payload

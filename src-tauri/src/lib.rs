@@ -477,10 +477,13 @@ async fn open_new_window(app: tauri::AppHandle, folder_path: Option<String>) -> 
     
     // If folder_path provided, emit event to open it
     if let Some(path) = folder_path {
-        // Wait a bit for window to load
-        tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
+        // Wait for window to load and set up listeners
+        log::info!("Waiting for new window to initialize...");
+        tokio::time::sleep(tokio::time::Duration::from_millis(2000)).await;
+        log::info!("Emitting cli-open-folder event to new window");
         new_window.emit("cli-open-folder", path)
             .map_err(|e| e.to_string())?;
+        log::info!("Event emitted successfully");
     }
     
     Ok(())
