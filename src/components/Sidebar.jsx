@@ -48,6 +48,11 @@ const Sidebar = ({
       const isCurrentFile = !isFolder && currentFile === item.path
       const paddingLeft = depth * 20 + 8
 
+      // Only render markdown files and folders
+      if (!isFolder && !isMarkdownFile(item.name)) {
+        return null
+      }
+
       return (
         <div key={`${item.path}-${index}`} className="file-tree-item">
           <div
@@ -58,7 +63,7 @@ const Sidebar = ({
             onClick={() => {
               if (isFolder) {
                 toggleFolder(item.path)
-              } else if (isMarkdownFile(item.name)) {
+              } else {
                 onSelectFile(item.path)
               }
             }}
@@ -78,7 +83,7 @@ const Sidebar = ({
             </span>
             <span className="file-name">{item.name}</span>
           </div>
-          
+
           {isFolder && isExpanded && item.children && (
             <div className="folder-contents">
               {renderFileTree(item.children, depth + 1)}
@@ -86,7 +91,7 @@ const Sidebar = ({
           )}
         </div>
       )
-    })
+    }).filter(Boolean) // Remove null items from filtered files
   }
 
   const renderOutline = () => {
