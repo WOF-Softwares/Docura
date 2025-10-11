@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories=
+Comment=A Tauri App
+Exec=app
+StartupWMClass=app
+Icon=app
+Name=Docura
+Terminal=false
+Type=Application

@@ -137,12 +137,20 @@ noextract=("${source[@]}")
 sha256sums=('SKIP')
 
 package() {
-  # Extract .deb
-  bsdtar -xf "${srcdir}/__DEB_FILE__" -C "${pkgdir}/"
+  # Extract .deb (data.tar.* contains the actual files)
+  cd "${srcdir}"
+  ar x "__DEB_FILE__"
+  tar -xf data.tar.* -C "${pkgdir}/"
   
   # Fix permissions
   find "${pkgdir}" -type d -exec chmod 755 {} \;
   find "${pkgdir}/usr/bin" -type f -exec chmod 755 {} \; 2>/dev/null || true
+  
+  # Verify binary exists
+  if [[ ! -f "${pkgdir}/usr/bin/__BASE_NAME__" ]]; then
+    echo "Warning: Binary not found at expected location"
+    find "${pkgdir}" -type f -name "__BASE_NAME__" || true
+  fi
 }
 EOF
 

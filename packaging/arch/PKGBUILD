@@ -14,10 +14,18 @@ noextract=("${source[@]}")
 sha256sums=('SKIP')
 
 package() {
-  # Extract .deb
-  bsdtar -xf "${srcdir}/docura_1.0.0_amd64.deb" -C "${pkgdir}/"
+  # Extract .deb (data.tar.* contains the actual files)
+  cd "${srcdir}"
+  ar x "docura_1.0.0_amd64.deb"
+  tar -xf data.tar.* -C "${pkgdir}/"
   
   # Fix permissions
   find "${pkgdir}" -type d -exec chmod 755 {} \;
   find "${pkgdir}/usr/bin" -type f -exec chmod 755 {} \; 2>/dev/null || true
+  
+  # Verify binary exists
+  if [[ ! -f "${pkgdir}/usr/bin/docura" ]]; then
+    echo "Warning: Binary not found at expected location"
+    find "${pkgdir}" -type f -name "docura" || true
+  fi
 }
