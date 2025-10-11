@@ -1,10 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import Editor from '@monaco-editor/react'
 import MDEditor from '@uiw/react-md-editor'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { Code, Eye, Edit3 } from 'lucide-react'
 
 // Monaco theme configurations
@@ -261,119 +257,6 @@ const MainEditor = ({
     onContentChange(value || '')
   }
 
-  // Track checkbox index for toggling
-  let checkboxCounter = 0
-
-  const handleCheckboxToggle = (checkboxIndex) => {
-    const lines = fileContent.split('\n')
-    let currentCheckbox = 0
-    
-    for (let i = 0; i < lines.length; i++) {
-      // Match task list items: - [ ] or - [x] or * [ ] etc.
-      if (/^[\s-]*[-*+]\s+\[([ xX])\]/.test(lines[i])) {
-        if (currentCheckbox === checkboxIndex) {
-          // Toggle this checkbox
-          if (lines[i].includes('[ ]')) {
-            lines[i] = lines[i].replace('[ ]', '[x]')
-          } else if (lines[i].includes('[x]') || lines[i].includes('[X]')) {
-            lines[i] = lines[i].replace(/\[x\]/i, '[ ]')
-          }
-          onContentChange(lines.join('\n'))
-          break
-        }
-        currentCheckbox++
-      }
-    }
-  }
-
-  const renderMarkdown = () => {
-    // Reset checkbox counter for each render
-    checkboxCounter = 0
-
-    return (
-      <ReactMarkdown
-        className="markdown-preview"
-        remarkPlugins={[remarkGfm]}
-        components={{
-          code({ node, inline, className, children, ...props }) {
-            const match = /language-(\w+)/.exec(className || '')
-            return !inline && match ? (
-              <SyntaxHighlighter
-                style={theme === 'dark' ? oneDark : oneLight}
-                language={match[1]}
-                PreTag="div"
-                {...props}
-              >
-                {String(children).replace(/\n$/, '')}
-              </SyntaxHighlighter>
-            ) : (
-              <code className={className} {...props}>
-                {children}
-              </code>
-            )
-          },
-          input({ node, checked, type, ...props }) {
-            if (type === 'checkbox') {
-              const currentIndex = checkboxCounter++
-              
-              return (
-                <input
-                  type="checkbox"
-                  checked={checked || false}
-                  onChange={() => handleCheckboxToggle(currentIndex)}
-                  className="task-list-item-checkbox"
-                />
-              )
-            }
-            return <input type={type} {...props} />
-          },
-          li({ node, children, className, ...props }) {
-            const isTaskItem = className === 'task-list-item'
-            return (
-              <li 
-                className={isTaskItem ? 'task-list-item' : ''} 
-                {...props}
-              >
-                {children}
-              </li>
-            )
-          },
-          h1({ node, children, ...props }) {
-            const text = children?.toString() || ''
-            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
-            return <h1 id={id} {...props}>{children}</h1>
-          },
-          h2({ node, children, ...props }) {
-            const text = children?.toString() || ''
-            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
-            return <h2 id={id} {...props}>{children}</h2>
-          },
-          h3({ node, children, ...props }) {
-            const text = children?.toString() || ''
-            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
-            return <h3 id={id} {...props}>{children}</h3>
-          },
-          h4({ node, children, ...props }) {
-            const text = children?.toString() || ''
-            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
-            return <h4 id={id} {...props}>{children}</h4>
-          },
-          h5({ node, children, ...props }) {
-            const text = children?.toString() || ''
-            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
-            return <h5 id={id} {...props}>{children}</h5>
-          },
-          h6({ node, children, ...props }) {
-            const text = children?.toString() || ''
-            const id = text.toLowerCase().replace(/[^\w]+/g, '-')
-            return <h6 id={id} {...props}>{children}</h6>
-          }
-        }}
-      >
-        {fileContent || '# Welcome to Dacura\n\nOpen a markdown file to start editing.'}
-      </ReactMarkdown>
-    )
-  }
 
   if (!isEditing && !currentFile) {
     return (
@@ -455,10 +338,15 @@ const MainEditor = ({
             />
           </div>
         ) : (
-          <div className="preview-container">
-            <div className="markdown-preview" data-theme={markdownTheme}>
-              {renderMarkdown()}
-            </div>
+          <div className="wysiwyg-editor preview-only" data-color-mode={markdownTheme?.includes('dark') ? 'dark' : 'light'}>
+            <MDEditor
+              value={fileContent}
+              height="100%"
+              preview="preview"
+              hideToolbar={true}
+              enableScroll={true}
+              visibleDragbar={false}
+            />
           </div>
         )}
       </div>

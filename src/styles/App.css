@@ -384,3 +384,39 @@
     --color-canvas-default: var(--bg-primary) !important;
     --color-fg-default: var(--text-primary) !important;
 }
+
+/* Preview-only mode (no editor, just rendered markdown) */
+.wysiwyg-editor.preview-only .w-md-editor {
+    border: none !important;
+}
+
+.wysiwyg-editor.preview-only .w-md-editor-preview {
+    width: 100% !important;
+    padding: 60px 80px !important;
+}
+
+.wysiwyg-editor.preview-only .wmde-markdown {
+    max-width: 860px !important;
+    margin: 0 auto !important;
+    font-size: 17px !important;
+    line-height: 2 !important;
+}
+
+/* Make preview mode look identical to live mode's preview */
+.wysiwyg-editor.preview-only .wmde-markdown h1 {
+    font-size: 2.2em !important;
+    line-height: 1.3 !important;
+}
+
+.wysiwyg-editor.preview-only .wmde-markdown h2 {
+    font-size: 2.1em !important;
+}
+
+.wysiwyg-editor.preview-only .wmde-markdown h3 {
+    font-size: 1.75em !important;
+}
+
+.wysiwyg-editor.preview-only .wmde-markdown p {
+    margin-bottom: 2em !important;
+    line-height: 2 !important;
+}
