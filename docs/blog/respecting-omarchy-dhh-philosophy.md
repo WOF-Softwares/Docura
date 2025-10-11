@@ -1,24 +1,24 @@
 ---
-title: "Respecting Omakase: Why We Built DHH's Philosophy Into Docura"
+title: "Respecting Omarchy: Why We Built DHH's Philosophy Into Docura"
 date: "2025-10-11"
 author: "Docura Team"
-tags: ["omakase", "dhh", "philosophy", "linux", "arch"]
-excerpt: "How and why we integrated Omakase into Docura - and what it teaches us about building opinionated software that respects users' choices."
+tags: ["omarchy", "dhh", "philosophy", "linux", "arch"]
+excerpt: "How and why we integrated Omarchy into Docura - and what it teaches us about building opinionated software that respects users' choices."
 ---
 
-# Respecting Omakase: Why We Built DHH's Philosophy Into Docura
+# Respecting Omarchy: Why We Built DHH's Philosophy Into Docura
 
 **October 11, 2025** · 8 min read
 
-When we decided to add [Omakase](https://omakase.app) integration to Docura, it wasn't just about adding theme sync. It was about understanding and respecting a philosophy that has shaped how millions of developers work.
+When we decided to add [Omarchy](https://omakub.org) integration to Docura, it wasn't just about adding theme sync. It was about understanding and respecting a philosophy that has shaped how millions of developers work.
 
-## 🎨 What is Omakase?
+## 🎨 What is Omarchy?
 
-For those unfamiliar, Omakase is DHH's (David Heinemeier Hansson, creator of Ruby on Rails) curated development environment for Arch Linux. It's more than a collection of tools - it's an **opinionated stance** on how a development environment should work.
+For those unfamiliar, Omarchy is DHH's (David Heinemeier Hansson, creator of Ruby on Rails) curated development environment for Arch Linux. It's more than a collection of tools - it's an **opinionated stance** on how a development environment should work.
 
-The name "Omakase" comes from Japanese cuisine, meaning "I'll leave it up to you" - the practice of letting the chef choose your meal. In software, it means **trusting curated defaults from someone who's thought deeply about the problem**.
+The name "Omarchy" comes from Japanese cuisine, meaning "I'll leave it up to you" - the practice of letting the chef choose your meal. In software, it means **trusting curated defaults from someone who's thought deeply about the problem**.
 
-### What Makes Omakase Special
+### What Makes Omarchy Special
 
 1. **Opinionated by Design** - Not endless configuration, but carefully chosen defaults
 2. **Arch Linux Foundation** - Built for a distribution that respects user control
@@ -28,7 +28,7 @@ The name "Omakase" comes from Japanese cuisine, meaning "I'll leave it up to you
 
 ## 🚀 Why Integration Matters
 
-When we started building Docura, we faced a choice: should we just add "theme import" and call it a day? Or should we **respect the philosophy** behind Omakase?
+When we started building Docura, we faced a choice: should we just add "theme import" and call it a day? Or should we **respect the philosophy** behind Omarchy?
 
 We chose respect.
 
@@ -39,36 +39,36 @@ Many apps add "integration" features that are really just:
 - Copy some colors
 - Let users override everything immediately
 
-But that **misses the point** of Omakase entirely.
+But that **misses the point** of Omarchy entirely.
 
 ## 🎯 How We Built Respect Into Code
 
 ### 1. **Auto-Detection**
 
-Docura automatically detects if you're running Omakase:
+Docura automatically detects if you're running Omarchy:
 
 ```bash
 # Behind the scenes
 which omakase-theme-current
-# If found → Omakase detected!
+# If found → Omarchy detected!
 ```
 
 No configuration needed. It just **knows** and adapts.
 
 ### 2. **Theme Synchronization**
 
-When you enable Omakase sync in Settings:
-- Docura checks your Omakase theme every 30 seconds
+When you enable Omarchy sync in Settings:
+- Docura checks your Omarchy theme every 30 seconds
 - Maps it to the closest Docura theme
 - Updates automatically when you change themes in your terminal
 
-Change `dracula` to `nord` in Omakase → Docura follows within 30 seconds. ✨
+Change `dracula` to `nord` in Omarchy → Docura follows within 30 seconds. ✨
 
 ### 3. **The Critical Feature: Control Respect** 🔒
 
 **This is where most apps fail.**
 
-When Omakase sync is enabled in Docura:
+When Omarchy sync is enabled in Docura:
 - ❌ The "Random Theme" button is **disabled**
 - ❌ The Theme Selector shows a **warning banner**
 - ❌ All theme cards are **grayed out**
@@ -76,23 +76,23 @@ When Omakase sync is enabled in Docura:
 
 Try to change the theme manually? You get:
 
-> **"Please disable Omakase sync first to manually change themes"**
+> **"Please disable Omarchy sync first to manually change themes"**
 
 ### Why This Matters
 
 This isn't user-hostile. It's **philosophically consistent**.
 
-When you choose Omakase control, you're saying:
+When you choose Omarchy control, you're saying:
 - "I trust DHH's curation"
 - "I want consistency across my tools"
 - "I don't want to fight my environment"
 
-If Docura let you override Omakase themes while "sync" was enabled, it would be saying:
-- "We don't really trust Omakase"
+If Docura let you override Omarchy themes while "sync" was enabled, it would be saying:
+- "We don't really trust Omarchy"
 - "Here's another thing to configure"
 - "Make more decisions!"
 
-That's the **opposite** of what Omakase is about.
+That's the **opposite** of what Omarchy is about.
 
 ## 📚 Lessons from Rails
 
@@ -102,7 +102,7 @@ DHH's philosophy has always been clear:
 
 Rails succeeded because it made **decisions for you**. Not because it gave you infinite config options.
 
-Omakase applies this to your entire dev environment. Docura's integration respects that.
+Omarchy applies this to your entire dev environment. Docura's integration respects that.
 
 ### Opinionated Software is Good Software
 
@@ -110,14 +110,14 @@ From DHH's writing:
 
 > "Software with strong opinions is software that solves problems. Software that tries to please everyone pleases no one."
 
-Docura's Omakase integration is **opinionated**:
-- When sync is on, Omakase controls themes. Period.
+Docura's Omarchy integration is **opinionated**:
+- When sync is on, Omarchy controls themes. Period.
 - No "hybrid mode" or "sometimes sync"
 - Clear, simple, decisive
 
 ### 🎨 The Arch Linux Connection
 
-Omakase is built for Arch Linux, which has its own philosophy:
+Omarchy is built for Arch Linux, which has its own philosophy:
 
 1. **Simplicity** - Keep it simple, stupid
 2. **User Centrality** - You control your system
@@ -125,14 +125,14 @@ Omakase is built for Arch Linux, which has its own philosophy:
 4. **Versatility** - One system, many uses
 
 Docura embraces this:
-- Simple: Enable sync = Omakase controls themes
+- Simple: Enable sync = Omarchy controls themes
 - User-centric: You choose whether to enable sync
 - Pragmatic: It just works, no fiddling
-- Versatile: Works great with or without Omakase
+- Versatile: Works great with or without Omarchy
 
 ## 🌟 Real-World Benefits
 
-### For Omakase Users
+### For Omarchy Users
 
 1. **Consistency** - Your editor matches your terminal matches your IDE
 2. **Less Context Switching** - Same theme everywhere = easier on your brain
@@ -171,9 +171,9 @@ omakase-theme-current
 ### Sync Logic
 ```javascript
 // In React (Frontend)
-export async function syncWithOmakase(onThemeChange) {
-  const omakaseTheme = await getOmakaseTheme()
-  const docuraTheme = mapOmakaseTheme(omakaseTheme)
+export async function syncWithOmarchy(onThemeChange) {
+  const omakaseTheme = await getOmarchyTheme()
+  const docuraTheme = mapOmarchyTheme(omakaseTheme)
   onThemeChange(docuraTheme)
 }
 ```
@@ -183,7 +183,7 @@ export async function syncWithOmakase(onThemeChange) {
 // Block manual changes when synced
 const toggleTheme = () => {
   if (omakaseSyncEnabled) {
-    toast.error('Please disable Omakase sync first')
+    toast.error('Please disable Omarchy sync first')
     return // Don't change theme
   }
   // ... normal theme change logic
@@ -194,7 +194,7 @@ const toggleTheme = () => {
 
 ### 1. **Philosophy Matters**
 
-Good integration isn't just technical - it's philosophical. Understanding **why** Omakase exists shaped **how** we integrated it.
+Good integration isn't just technical - it's philosophical. Understanding **why** Omarchy exists shaped **how** we integrated it.
 
 ### 2. **Constraints Are Liberating**
 
@@ -221,14 +221,14 @@ But **true integration** means:
 - Respecting their design decisions
 - Building something that enhances both tools
 
-### The Omakase Effect
+### The Omarchy Effect
 
-When you use Omakase:
+When you use Omarchy:
 - Your terminal looks beautiful
 - Your workflows are consistent
 - Your environment **just works**
 
-When Docura integrates with Omakase:
+When Docura integrates with Omarchy:
 - Your markdown editor joins that consistency
 - Everything feels unified
 - You spend less time configuring, more time creating
@@ -240,25 +240,25 @@ If you're reading this, DHH - thank you.
 Thank you for:
 - **Rails** - showed us convention over configuration
 - **Basecamp** - proved simple can scale
-- **Omakase** - gave Arch users a beautiful home
+- **Omarchy** - gave Arch users a beautiful home
 - **Your writing** - taught us to have opinions
 - **Your example** - showed us that opinionated software is good software
 
-Docura's Omakase integration was built with deep respect for your work. When you choose Omakase control in our app, we don't fight it - we embrace it.
+Docura's Omarchy integration was built with deep respect for your work. When you choose Omarchy control in our app, we don't fight it - we embrace it.
 
 **Just like Rails, just like everything you build: opinionated, simple, it just works.** 🙏
 
 ## 🎨 Try It Yourself
 
-If you're on Arch Linux with Omakase:
+If you're on Arch Linux with Omarchy:
 
 1. Install Docura
 2. Open Menu → Settings
-3. Enable "Auto-sync with Omakase theme"
-4. Change your Omakase theme in the terminal
+3. Enable "Auto-sync with Omarchy theme"
+4. Change your Omarchy theme in the terminal
 5. Watch Docura update automatically
 
-If you're not on Omakase - that's fine too! Docura works beautifully standalone.
+If you're not on Omarchy - that's fine too! Docura works beautifully standalone.
 
 ## 🌟 The Philosophy Lives On
 
@@ -271,8 +271,8 @@ Docura is built in that spirit:
 
 ## 🔮 What's Next
 
-The Omakase integration is just the beginning. We're exploring:
-- Font synchronization (use Omakase fonts in editor)
+The Omarchy integration is just the beginning. We're exploring:
+- Font synchronization (use Omarchy fonts in editor)
 - Instant sync (file watching instead of polling)
 - Custom theme mappings
 - Even deeper integration
@@ -283,11 +283,11 @@ But always with the same principle: **Respect the philosophy**.
 
 ## 📖 Further Reading
 
-- [Omakase Official Site](https://omakase.app)
+- [Omarchy Official Site](https://omakub.org)
 - [DHH's Blog](https://world.hey.com/dhh)
 - [Getting Real by 37signals](https://basecamp.com/gettingreal)
 - [The Rails Doctrine](https://rubyonrails.org/doctrine)
-- [Docura's Omakase Integration Guide](../OMAKASE_INTEGRATION.md)
+- [Docura's Omarchy Integration Guide](../OMAKASE_INTEGRATION.md)
 
 ---
 

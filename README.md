@@ -6,13 +6,13 @@
 
 Docura is a next-generation native desktop app designed for Linux systems. Built with Rust (Tauri) and React, it combines the best features of Typora, VS Code, Medium, and Notion into one beautiful, lightweight application.
 
-## 🎨 **NEW! Omakase Integration** - Built for DHH's Workflow
+## 🎨 **NEW! Omarchy Integration** - Built for DHH's Workflow
 
-**Docura now syncs seamlessly with [Omakase](https://omakase.app)!**
+**Docura now syncs seamlessly with [Omarchy](https://omakub.org)!**
 
-Respect the setup. When Omakase controls your theme, Docura respects that choice - just like DHH intended. No overrides, no fighting the system. It just works. ✨
+Respect the setup. When Omarchy controls your theme, Docura respects that choice - just like DHH intended. No overrides, no fighting the system. It just works. ✨
 
-[Learn more about Omakase Integration →](#-omakase-integration)
+[Learn more about Omarchy Integration →](#-omarchy-integration)
 
 <div align="center">
 
@@ -31,8 +31,8 @@ Respect the setup. When Omakase controls your theme, Docura respects that choice
 **Day 2 brings a MASSIVE feature update!** Docura keeps getting better:
 
 ### 🆕 Day 2 Features (October 11, 2025)
-- 🎨 **Omakase Integration** - Auto-sync with DHH's Omakase themes! Respects Omakase control when enabled
-- ⚙️ **Settings Dialog** - New settings page for Omakase sync and future preferences
+- 🎨 **Omarchy Integration** - Auto-sync with DHH's Omarchy themes! Respects Omarchy control when enabled
+- ⚙️ **Settings Dialog** - New settings page for Omarchy sync and future preferences
 - 📋 **Menu System** - Professional unified menu (File, Export, View, Settings)
 - ✨ **Keyboard Shortcuts** - Ctrl+S (Save), Ctrl+Shift+S (Save As), Ctrl+O (Open), Ctrl+Shift+O (Open Folder)
 - 🔔 **Toast Notifications** - Beautiful feedback for every action (save, open, errors)
@@ -80,42 +80,42 @@ Respect the setup. When Omakase controls your theme, Docura respects that choice
 
 ---
 
-## 🎨 Omakase Integration
+## 🎨 Omarchy Integration
 
-**Docura respects DHH's Omakase philosophy!**
+**Docura respects DHH's Omarchy philosophy!**
 
-[Omakase](https://omakase.app) is DHH's (creator of Ruby on Rails) curated development environment for Arch Linux. Docura now integrates seamlessly with it!
+[Omarchy](https://omakub.org) is DHH's (creator of Ruby on Rails) curated development environment for Arch Linux. Docura now integrates seamlessly with it!
 
 ### ✨ Features
 
-- **🔍 Auto-Detection** - Automatically detects Omakase environment
-- **🔄 Theme Sync** - Syncs with your Omakase theme every 30 seconds
+- **🔍 Auto-Detection** - Automatically detects Omarchy environment
+- **🔄 Theme Sync** - Syncs with your Omarchy theme every 30 seconds
 - **🎨 12 Theme Mappings** - Dracula, Catppuccin, Nord, Gruvbox, Tokyo Night, and more!
-- **🔒 Respects Control** - When synced, Omakase is in control (no manual overrides!)
+- **🔒 Respects Control** - When synced, Omarchy is in control (no manual overrides!)
 - **⚙️ Settings Integration** - Easy toggle in Settings dialog
 - **💚 Zero Configuration** - Just enable sync and it works!
 
 ### 🎯 The Philosophy
 
-When you enable Omakase sync, **Docura respects that choice**:
+When you enable Omarchy sync, **Docura respects that choice**:
 - ❌ Manual theme changes are blocked
 - ⚠️ Clear warnings if you try to change themes
 - ✅ Must disable sync in Settings to regain manual control
 
-**This is intentional!** Just like DHH's opinionated approach to Rails and Omakase - when you choose a system, you trust it. No half-measures.
+**This is intentional!** Just like DHH's opinionated approach to Rails and Omarchy - when you choose a system, you trust it. No half-measures.
 
 ### 🚀 How to Use
 
-1. **Install Omakase** on your Arch Linux system
-2. **Open Docura** → It auto-detects Omakase!
-3. **Menu → Settings** → Enable "Auto-sync with Omakase theme"
-4. **Done!** Docura now follows your Omakase theme
+1. **Install Omarchy** on your Arch Linux system
+2. **Open Docura** → It auto-detects Omarchy!
+3. **Menu → Settings** → Enable "Auto-sync with Omarchy theme"
+4. **Done!** Docura now follows your Omarchy theme
 
 Change your theme in the terminal → Docura updates automatically! ✨
 
 ### 🗺️ Supported Themes
 
-| Omakase Theme | Docura Theme | Notes |
+| Omarchy Theme | Docura Theme | Notes |
 |---------------|--------------|-------|
 | Dracula | Dracula Dark | Purple vampire theme |
 | Catppuccin | Cappuccino Dark | Warm coffee vibes |
@@ -132,12 +132,12 @@ Change your theme in the terminal → Docura updates automatically! ✨
 
 ### 📖 Documentation
 
-- [Full Omakase Integration Guide →](docs/OMAKASE_INTEGRATION.md)
+- [Full Omarchy Integration Guide →](docs/OMAKASE_INTEGRATION.md)
 - [Feature Summary →](OMAKASE_FEATURE_SUMMARY.md)
 
 ### 💬 For DHH
 
-Built with respect for your work on Rails, Basecamp, and Omakase. This integration follows your philosophy: **opinionated, simple, it just works**. 🙏
+Built with respect for your work on Rails, Basecamp, and Omarchy. This integration follows your philosophy: **opinionated, simple, it just works**. 🙏
 
 ---
 
@@ -551,11 +551,11 @@ This means you can:
 
 **To [DHH](https://dhh.dk/) (David Heinemeier Hansson):**
 - For creating **Ruby on Rails** - transformed how we build web applications
-- For building **[Omakase](https://omakase.app)** - beautiful, opinionated developer experience for Arch Linux
+- For building **[Omarchy](https://omakub.org)** - beautiful, opinionated developer experience for Arch Linux
 - For inspiring us to build tools that are opinionated, simple, and respect user choices
 - For showing that the best software comes from strong opinions weakly held
 
-**Docura's Omakase integration** was built with deep respect for your philosophy. When Omakase is in control, we don't fight it - we embrace it. Just like Rails, just like Basecamp, just like everything you build.
+**Docura's Omarchy integration** was built with deep respect for your philosophy. When Omarchy is in control, we don't fight it - we embrace it. Just like Rails, just like Basecamp, just like everything you build.
 
 **Thank you for inspiring a generation of developers!** 🙏
 
