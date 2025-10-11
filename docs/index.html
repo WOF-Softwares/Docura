@@ -14,624 +14,651 @@
     <meta property="og:url" content="https://wof-softwares.github.io/Docura/">
     <meta property="og:image" content="https://wof-softwares.github.io/Docura/screenshots/screenshot-1.png">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    
     <title>Docura - From Typora Trial to Production in 37 Hours</title>
     
+    <!-- Tailwind CSS with Typography Plugin -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-primary': '#0d1117',
+                        'dark-secondary': '#161b22',
+                        'dark-tertiary': '#21262d',
+                        'border-dark': '#30363d',
+                        'text-primary': '#f0f6fc',
+                        'text-secondary': '#8b949e',
+                        'accent': '#3b82f6',
+                        'accent-hover': '#60a5fa',
+                        'success': '#10b981',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    },
+                    typography: ({ theme }) => ({
+                        DEFAULT: {
+                            css: {
+                                maxWidth: 'none',
+                                color: theme('colors.text-primary'),
+                                a: {
+                                    color: theme('colors.accent'),
+                                    '&:hover': {
+                                        color: theme('colors.accent-hover'),
+                                    },
+                                },
+                                code: {
+                                    color: theme('colors.accent'),
+                                    backgroundColor: theme('colors.dark-primary'),
+                                },
+                                'h1, h2, h3, h4, h5, h6': {
+                                    color: theme('colors.text-primary'),
+                                },
+                                strong: {
+                                    color: theme('colors.text-primary'),
+                                },
+                            },
+                        },
+                    }),
+                }
+            },
+            plugins: [
+                // Typography plugin for blog content
+            ]
+        }
+    </script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Marked.js for Markdown Parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Inter Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Custom Styles -->
     <style>
         :root {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-tertiary: #21262d;
-            --text-primary: #f0f6fc;
-            --text-secondary: #8b949e;
-            --accent: #58a6ff;
-            --accent-hover: #79c0ff;
-            --success: #3fb950;
-            --border: #30363d;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --success: #10b981;
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Inter', sans-serif;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 24px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 80px;
-            padding-bottom: 40px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        h1 {
-            font-size: 3.5em;
-            font-weight: 700;
-            margin-bottom: 24px;
+        .gradient-text {
             background: linear-gradient(135deg, var(--accent) 0%, var(--success) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            line-height: 1.2;
         }
         
-        .subtitle {
-            font-size: 1.4em;
-            color: var(--text-secondary);
-            margin-bottom: 32px;
+        .gradient-border {
+            position: relative;
         }
         
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin-top: 40px;
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--success) 100%);
         }
         
-        .stat {
-            text-align: center;
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
         }
         
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: 700;
-            color: var(--accent);
-            display: block;
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
-        .stat-label {
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 14px 32px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1em;
+        .blog-card {
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
         }
         
-        .btn-primary {
-            background: var(--accent);
-            color: #000;
+        .blog-card:hover {
+            transform: translateY(-5px);
         }
         
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
+        .screenshot-hover {
+            transition: all 0.5s ease;
         }
         
-        .btn-secondary {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
+        .screenshot-hover:hover img {
+            transform: scale(1.05);
         }
         
-        .btn-secondary:hover {
-            background: var(--bg-secondary);
-            border-color: var(--accent);
-            transform: translateY(-2px);
+        /* Prose styles for markdown blog content */
+        .prose {
+            max-width: none;
         }
         
-        h2 {
-            font-size: 2.2em;
-            margin: 60px 0 24px;
-            color: var(--accent);
-        }
-        
-        h3 {
-            font-size: 1.6em;
-            margin: 40px 0 16px;
+        .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
             color: var(--text-primary);
         }
         
-        p {
-            margin-bottom: 16px;
-            color: var(--text-secondary);
-            font-size: 1.1em;
+        .prose h1 { font-size: 2.25em; }
+        .prose h2 { font-size: 1.875em; }
+        .prose h3 { font-size: 1.5em; }
+        .prose h4 { font-size: 1.25em; }
+        
+        .prose p {
+            margin-bottom: 1.25rem;
+            line-height: 1.75;
         }
         
-        code {
-            font-family: 'JetBrains Mono', monospace;
-            background: var(--bg-tertiary);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.9em;
+        .prose a {
             color: var(--accent);
+            text-decoration: none;
         }
         
-        pre {
-            background: var(--bg-secondary);
-            padding: 24px;
-            border-radius: 12px;
+        .prose a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+        
+        .prose code {
+            color: var(--accent);
+            background-color: #1a1d24;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.875em;
+        }
+        
+        .prose pre {
+            background-color: #0d1117;
+            border: 1px solid var(--border-dark);
+            border-radius: 0.5rem;
+            padding: 1rem;
             overflow-x: auto;
-            margin: 24px 0;
-            border: 1px solid var(--border);
+            margin: 1.5rem 0;
         }
         
-        pre code {
+        .prose pre code {
             background: none;
             padding: 0;
-            color: var(--text-primary);
+            font-size: 0.875rem;
         }
         
-        ul, ol {
-            margin: 16px 0;
-            padding-left: 32px;
+        .prose ul, .prose ol {
+            margin: 1.25rem 0;
+            padding-left: 1.625rem;
         }
         
-        li {
-            margin: 8px 0;
+        .prose li {
+            margin: 0.5rem 0;
+        }
+        
+        .prose blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+            font-style: italic;
+            margin: 1.5rem 0;
             color: var(--text-secondary);
         }
         
-        strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-        
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin: 32px 0;
-        }
-        
-        .feature-card {
-            background: var(--bg-secondary);
-            padding: 24px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow);
-        }
-        
-        .feature-icon {
-            font-size: 2em;
-            margin-bottom: 12px;
-        }
-        
-        .feature-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-        
-        .feature-desc {
-            font-size: 0.95em;
-            color: var(--text-secondary);
-            margin: 0;
-        }
-        
-        .screenshot-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 24px;
-            margin: 40px 0;
-        }
-        
-        .screenshot-item {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-        
-        .screenshot-item:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow);
-        }
-        
-        .screenshot-item img {
+        .prose table {
             width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        .screenshot-caption {
-            padding: 16px;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.95em;
-        }
-        
-        table {
-            width: 100%;
+            margin: 1.5rem 0;
             border-collapse: collapse;
-            margin: 24px 0;
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            overflow: hidden;
         }
         
-        th, td {
-            padding: 16px;
+        .prose th, .prose td {
+            border: 1px solid var(--border-dark);
+            padding: 0.75rem;
             text-align: left;
-            border-bottom: 1px solid var(--border);
         }
         
-        th {
-            background: var(--bg-tertiary);
+        .prose th {
+            background-color: #0d1117;
+            font-weight: 600;
+        }
+        
+        .prose img {
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-dark);
+            margin: 1.5rem 0;
+        }
+        
+        .prose strong {
             font-weight: 600;
             color: var(--text-primary);
-        }
-        
-        tr:last-child td {
-            border-bottom: none;
-        }
-        
-        .timeline {
-            position: relative;
-            padding-left: 40px;
-            margin: 32px 0;
-        }
-        
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--accent);
-        }
-        
-        .timeline-item {
-            position: relative;
-            margin-bottom: 24px;
-            padding-left: 24px;
-        }
-        
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -36px;
-            top: 6px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--accent);
-            border: 3px solid var(--bg-primary);
-        }
-        
-        .timeline-time {
-            font-weight: 600;
-            color: var(--accent);
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .timeline-desc {
-            margin: 4px 0 0;
-            color: var(--text-secondary);
-        }
-        
-        footer {
-            margin-top: 80px;
-            padding-top: 40px;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-secondary);
-        }
-        
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 24px 0;
-            justify-content: center;
-        }
-        
-        .tech-badge {
-            background: var(--bg-tertiary);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5em;
-            }
-            
-            .hero-stats {
-                gap: 24px;
-            }
-            
-            .stat-number {
-                font-size: 2em;
-            }
-            
-            .screenshot-gallery {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>🚀 Docura</h1>
-            <p class="subtitle">From Typora Trial to Production in 37 Hours</p>
+<body class="bg-dark-primary text-text-primary min-h-screen" x-data="app()">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-dark-primary/90 backdrop-blur-sm border-b border-border-dark">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-3 transition-all duration-300 hover:scale-105">
+                <img src="logo.svg" alt="Docura Logo" class="w-10 h-10">
+                <span class="text-xl font-bold gradient-text">Docura</span>
+            </a>
             
-            <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-number">37</span>
-                    <span class="stat-label">Hours Built</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">23%</span>
-                    <span class="stat-label">Lighter</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">3</span>
-                    <span class="stat-label">Editing Modes</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">$0</span>
-                    <span class="stat-label">Cost</span>
-                </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#features" class="text-text-secondary hover:text-text-primary transition-colors">Features</a>
+                <a href="#screenshots" class="text-text-secondary hover:text-text-primary transition-colors">Screenshots</a>
+                <a href="#comparison" class="text-text-secondary hover:text-text-primary transition-colors">Comparison</a>
+                <a href="#blog" class="text-text-secondary hover:text-text-primary transition-colors">Blog</a>
+                <a href="#download" class="text-text-secondary hover:text-text-primary transition-colors">Download</a>
             </div>
             
-            <div class="cta-buttons">
-                <a href="https://github.com/WOF-Softwares/Docura" class="btn btn-primary">
-                    ⭐ View on GitHub
+            <div class="flex items-center space-x-4">
+                <a href="https://github.com/WOF-Softwares/Docura" class="text-text-secondary hover:text-text-primary transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
                 </a>
-                <a href="https://github.com/WOF-Softwares/Docura#-getting-started" class="btn btn-secondary">
-                    📥 Download
+                
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-text-secondary">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenuOpen" class="md:hidden bg-dark-secondary border-t border-border-dark px-4 py-2">
+            <div class="flex flex-col space-y-3 py-2">
+                <a href="#features" class="text-text-secondary hover:text-text-primary transition-colors" @click="mobileMenuOpen = false">Features</a>
+                <a href="#screenshots" class="text-text-secondary hover:text-text-primary transition-colors" @click="mobileMenuOpen = false">Screenshots</a>
+                <a href="#comparison" class="text-text-secondary hover:text-text-primary transition-colors" @click="mobileMenuOpen = false">Comparison</a>
+                <a href="#blog" class="text-text-secondary hover:text-text-primary transition-colors" @click="mobileMenuOpen = false">Blog</a>
+                <a href="#download" class="text-text-secondary hover:text-text-primary transition-colors" @click="mobileMenuOpen = false">Download</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-16 md:py-24">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-8 flex justify-center">
+                <img src="logo.svg" alt="Docura Logo" class="w-32 h-32 md:w-40 md:h-40 animate-float">
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 gradient-text">Docura</h1>
+            <p class="text-xl md:text-2xl text-text-secondary max-w-3xl mx-auto mb-10">
+                A modern, open-source markdown editor built with Tauri and React. 23% lighter than Typora with more features.
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-8 mb-12">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-accent">37</div>
+                    <div class="text-sm text-text-secondary uppercase tracking-wider">Hours Built</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-accent">23%</div>
+                    <div class="text-sm text-text-secondary uppercase tracking-wider">Lighter</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-accent">3</div>
+                    <div class="text-sm text-text-secondary uppercase tracking-wider">Editing Modes</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-accent">$0</div>
+                    <div class="text-sm text-text-secondary uppercase tracking-wider">Cost</div>
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://github.com/WOF-Softwares/Docura" class="bg-accent hover:bg-accent-hover text-black font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    View on GitHub
+                </a>
+                <a href="#download" class="bg-dark-tertiary hover:bg-dark-secondary border border-border-dark text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    Download Now
                 </a>
             </div>
-        </header>
+        </div>
+    </section>
 
-        <section>
-            <h2>📸 See It in Action</h2>
-            <div class="screenshot-gallery">
-                <div class="screenshot-item">
-                    <img src="screenshots/screenshot-1.png" alt="Docura main interface showing three editing modes">
-                    <div class="screenshot-caption">Three Editing Modes: Code, Live (WYSIWYG), and Preview</div>
+    <!-- Screenshots Section -->
+    <section id="screenshots" class="py-16 bg-dark-secondary">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">See It in Action</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent">
+                    <img src="screenshots/screenshot-1.png" alt="Docura main interface showing three editing modes" class="w-full h-auto transition-transform duration-500">
+                    <div class="p-4 text-center text-text-secondary">
+                        Three Editing Modes: Code, Live (WYSIWYG), and Preview
+                    </div>
                 </div>
-                <div class="screenshot-item">
-                    <img src="screenshots/screenshot-2.png" alt="Docura theme selector with 12 beautiful themes">
-                    <div class="screenshot-caption">12 Beautiful Themes with Unified Styling</div>
+                <div class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent">
+                    <img src="screenshots/screenshot-2.png" alt="Docura theme selector with 12 beautiful themes" class="w-full h-auto transition-transform duration-500">
+                    <div class="p-4 text-center text-text-secondary">
+                        12 Beautiful Themes with Unified Styling
+                    </div>
                 </div>
-                <div class="screenshot-item">
-                    <img src="screenshots/screenshot-3.png" alt="Docura document outline and navigation">
-                    <div class="screenshot-caption">Document Outline with Clickable Navigation</div>
+                <div class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent">
+                    <img src="screenshots/screenshot-3.png" alt="Docura document outline and navigation" class="w-full h-auto transition-transform duration-500">
+                    <div class="p-4 text-center text-text-secondary">
+                        Document Outline with Clickable Navigation
+                    </div>
                 </div>
-                <div class="screenshot-item">
-                    <img src="screenshots/screenshot-4.png" alt="Docura export and print features">
-                    <div class="screenshot-caption">PDF Export & Print with Native Dialogs</div>
+                <div class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent">
+                    <img src="screenshots/screenshot-4.png" alt="Docura export and print features" class="w-full h-auto transition-transform duration-500">
+                    <div class="p-4 text-center text-text-secondary">
+                        PDF Export & Print with Native Dialogs
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section>
-            <h2>💡 The Spark</h2>
-            <p>A few nights ago, I opened Typora and was reminded of why I loved it — the clean interface, the beautiful typography, the distraction-free writing. But I had 15 days left on my trial, and instead of reaching for my wallet, I asked myself: <strong>"Could I build something better?"</strong></p>
+    <!-- Features Section -->
+    <section id="features" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">Three Modes, One Editor</h2>
             
-            <p>Not just a clone — something that addressed Typora's limitations:</p>
-            <ul>
-                <li>Only one editing mode (WYSIWYG-only can feel limiting)</li>
-                <li>No split-pane view for learning markdown syntax</li>
-                <li>Closed source and $14.99 price tag</li>
-                <li>Heavy memory footprint (1011 MB on my system)</li>
-                <li>Poor Linux integration (no tiling window manager support)</li>
-            </ul>
-            
-            <p>So I fired up my IDE and started what became <strong>Docura</strong> — a Markdown editor built in 37 hours that uses 23% less memory and adds features Typora can't match.</p>
-        </section>
-
-        <section>
-            <h2>⚙️ Three Modes, One Editor</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📝</div>
-                    <div class="feature-title">Code Mode</div>
-                    <p class="feature-desc">Pure markdown editing with Monaco Editor. Full VS Code experience with syntax highlighting for 12 themes.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-dark-secondary rounded-xl p-6 border border-border-dark transition-all duration-300 hover:border-accent hover:transform hover:-translate-y-2 gradient-border">
+                    <div class="text-4xl mb-4">📝</div>
+                    <h3 class="text-xl font-bold mb-2">Code Mode</h3>
+                    <p class="text-text-secondary">Pure markdown editing with Monaco Editor. Full VS Code experience with syntax highlighting for 12 themes.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✍️</div>
-                    <div class="feature-title">Live Mode</div>
-                    <p class="feature-desc">Split-pane WYSIWYG with toolbar buttons. See markdown syntax and rendered output simultaneously.</p>
+                
+                <div class="bg-dark-secondary rounded-xl p-6 border border-border-dark transition-all duration-300 hover:border-accent hover:transform hover:-translate-y-2 gradient-border">
+                    <div class="text-4xl mb-4">✍️</div>
+                    <h3 class="text-xl font-bold mb-2">Live Mode</h3>
+                    <p class="text-text-secondary">Split-pane WYSIWYG with toolbar buttons. See markdown syntax and rendered output simultaneously.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👁️</div>
-                    <div class="feature-title">Preview Mode</div>
-                    <p class="feature-desc">Beautiful read-only rendering with Typora-inspired typography and interactive checkboxes.</p>
+                
+                <div class="bg-dark-secondary rounded-xl p-6 border border-border-dark transition-all duration-300 hover:border-accent hover:transform hover:-translate-y-2 gradient-border">
+                    <div class="text-4xl mb-4">👁️</div>
+                    <h3 class="text-xl font-bold mb-2">Preview Mode</h3>
+                    <p class="text-text-secondary">Beautiful read-only rendering with Typora-inspired typography and interactive checkboxes.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section>
-            <h2>🏗️ The Tech Stack</h2>
-            <p>Built with modern, performant technologies:</p>
+    <!-- Tech Stack Section -->
+    <section class="py-16 bg-dark-secondary">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">The Tech Stack</h2>
             
-            <div class="tech-stack">
-                <span class="tech-badge">Tauri 2.8 (Rust)</span>
-                <span class="tech-badge">React 19</span>
-                <span class="tech-badge">Vite 7</span>
-                <span class="tech-badge">Monaco Editor</span>
-                <span class="tech-badge">WebKitGTK</span>
-                <span class="tech-badge">react-markdown</span>
-                <span class="tech-badge">remark-gfm</span>
-                <span class="tech-badge">jspdf</span>
+            <p class="text-text-secondary text-center max-w-2xl mx-auto mb-8">
+                Built with modern, performant technologies for the best user experience.
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">Tauri 2.8 (Rust)</span>
+                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">React 19</span>
+                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">Vite 7</span>
+                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">Monaco Editor</span>
+                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">WebKitGTK</span>
+                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">react-markdown</span>
+                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">remark-gfm</span>
+                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">jspdf</span>
             </div>
             
-            <h3>Why Tauri + React?</h3>
-            <ul>
-                <li><strong>WebKitGTK vs Chromium:</strong> Tauri uses system WebKit instead of bundling Chromium. Result? 780 MB vs 1011 MB — 231 MB saved.</li>
-                <li><strong>Rust Backend:</strong> Native performance and security. File I/O and system integration in Rust, not Node.js.</li>
-                <li><strong>Native Integration:</strong> Respects system themes, uses native dialogs, integrates with tiling window managers.</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>📊 Performance Win</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Application</th>
-                        <th>Memory</th>
-                        <th>Difference</th>
-                        <th>Improvement</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Typora</strong> (Electron)</td>
-                        <td>1011 MB</td>
-                        <td>baseline</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Docura</strong> (Tauri)</td>
-                        <td>780 MB</td>
-                        <td>-231 MB</td>
-                        <td>⚡ <strong>23% lighter</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-            <p><strong>Why?</strong> No bundled Chromium, Rust backend, optimized React rendering, and efficient WebKitGTK.</p>
-        </section>
-
-        <section>
-            <h2>🕰️ The Timeline: Zero to v1.0</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-time">Oct 9, 10:12 PM</div>
-                    <div class="timeline-desc">🚀 Project started</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-time">Overnight</div>
-                    <div class="timeline-desc">⚙️ Tauri + React setup, Monaco integration</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-time">Oct 10</div>
-                    <div class="timeline-desc">🎨 Theme system, WYSIWYG mode, toolbar</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-time">Oct 10, Late</div>
-                    <div class="timeline-desc">📂 File explorer, outline navigation</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-time">Oct 11, Morning</div>
-                    <div class="timeline-desc">🖨️ PDF export, print preview, native dialogs</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-time">Oct 11, 11:29 AM</div>
-                    <div class="timeline-desc">✅ <strong>Version 1.0 Complete!</strong></div>
-                </div>
+            <div class="max-w-3xl mx-auto">
+                <h3 class="text-xl font-bold mb-4 text-center">Why Tauri + React?</h3>
+                <ul class="text-text-secondary space-y-3">
+                    <li class="flex items-start">
+                        <span class="text-accent mr-2">•</span>
+                        <span><strong>WebKitGTK vs Chromium:</strong> Tauri uses system WebKit instead of bundling Chromium. Result? 780 MB vs 1011 MB — 231 MB saved.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-accent mr-2">•</span>
+                        <span><strong>Rust Backend:</strong> Native performance and security. File I/O and system integration in Rust, not Node.js.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-accent mr-2">•</span>
+                        <span><strong>Native Integration:</strong> Respects system themes, uses native dialogs, integrates with tiling window managers.</span>
+                    </li>
+                </ul>
             </div>
-            <p style="text-align: center; font-size: 1.3em; color: var(--success); font-weight: 600;">Total: 37 hours and 17 minutes</p>
-        </section>
+        </div>
+    </section>
 
-        <section>
-            <h2>✨ Key Features</h2>
-            <ul>
-                <li>🎨 <strong>12 Beautiful Themes</strong> — Unified across UI, editor, and preview</li>
-                <li>📝 <strong>Monaco Editor</strong> — Same editor as VS Code</li>
-                <li>✍️ <strong>WYSIWYG Mode</strong> — Split-pane with live preview</li>
-                <li>✅ <strong>Interactive Checkboxes</strong> — Click to toggle task lists</li>
-                <li>📑 <strong>PDF Export</strong> — Native save dialogs</li>
-                <li>🖨️ <strong>Print Support</strong> — PDF preview with system print dialog</li>
-                <li>🐧 <strong>Tiling WM Support</strong> — Auto-detects i3, sway, Hyprland, etc.</li>
-                <li>🔍 <strong>Document Outline</strong> — Clickable navigation with smooth scrolling</li>
-                <li>⌨️ <strong>Keyboard Shortcuts</strong> — F11 fullscreen, Ctrl+B sidebar toggle</li>
-                <li>🔓 <strong>Open Source</strong> — Apache 2.0 license</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>🚀 Try It Now</h2>
-            <p>Docura is 100% open source and ready to use:</p>
+    <!-- Comparison Section -->
+    <section id="comparison" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">Performance Comparison</h2>
             
-            <pre><code>git clone https://github.com/WOF-Softwares/Docura.git
+            <div class="max-w-4xl mx-auto bg-dark-secondary rounded-xl overflow-hidden border border-border-dark">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-dark-tertiary">
+                            <th class="py-4 px-6 text-left">Application</th>
+                            <th class="py-4 px-6 text-left">Memory</th>
+                            <th class="py-4 px-6 text-left">Difference</th>
+                            <th class="py-4 px-6 text-left">Improvement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-border-dark">
+                            <td class="py-4 px-6 font-semibold">Typora (Electron)</td>
+                            <td class="py-4 px-6">1011 MB</td>
+                            <td class="py-4 px-6">baseline</td>
+                            <td class="py-4 px-6">-</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-semibold text-success">Docura (Tauri)</td>
+                            <td class="py-4 px-6">780 MB</td>
+                            <td class="py-4 px-6">-231 MB</td>
+                            <td class="py-4 px-6 text-success font-bold">⚡ 23% lighter</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <p class="text-text-secondary text-center mt-6 max-w-2xl mx-auto">
+                <strong>Why?</strong> No bundled Chromium, Rust backend, optimized React rendering, and efficient WebKitGTK.
+            </p>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-16 bg-dark-secondary">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">From the Blog</h2>
+            
+            <!-- Blog Posts Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" x-show="!selectedPost">
+                <template x-for="post in blogPosts" :key="post.slug">
+                    <div class="blog-card bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent cursor-pointer"
+                         @click="loadBlogPost(post)">
+                        <div class="p-6">
+                            <div class="flex items-center text-sm text-text-secondary mb-3">
+                                <span x-text="post.date"></span>
+                                <span class="mx-2">•</span>
+                                <span x-text="post.readTime"></span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3" x-text="post.title"></h3>
+                            <p class="text-text-secondary mb-4" x-text="post.excerpt"></p>
+                            <a class="text-accent font-medium hover:text-accent-hover transition-colors flex items-center">
+                                Read More
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            
+            <!-- Single Blog Post View -->
+            <div x-show="selectedPost" class="max-w-4xl mx-auto">
+                <button @click="selectedPost = null; blogContent = ''" 
+                        class="mb-6 text-text-secondary hover:text-text-primary transition-colors flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    Back to Blog
+                </button>
+                
+                <article class="bg-dark-tertiary rounded-xl p-8 border border-border-dark prose prose-invert prose-lg max-w-none
+                               prose-headings:gradient-text prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover
+                               prose-code:text-accent prose-code:bg-dark-primary prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+                               prose-pre:bg-dark-primary prose-pre:border prose-pre:border-border-dark
+                               prose-blockquote:border-l-accent prose-blockquote:border-l-4 prose-blockquote:pl-4
+                               prose-table:border-border-dark prose-th:bg-dark-primary prose-td:border-border-dark
+                               prose-img:rounded-lg prose-img:border prose-img:border-border-dark"
+                         x-html="blogContent">
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto bg-dark-secondary rounded-2xl p-8 md:p-12 border border-border-dark text-center">
+                <h2 class="text-3xl font-bold mb-4 gradient-text">Ready to Get Started?</h2>
+                <p class="text-text-secondary text-xl mb-8 max-w-2xl mx-auto">
+                    Download Docura today and experience a faster, more powerful markdown editor.
+                </p>
+                
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <a href="#" class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2">
+                        <span>🐧</span> Linux
+                    </a>
+                    <a href="#" class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2">
+                        <span>🪟</span> Windows
+                    </a>
+                    <a href="#" class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2">
+                        <span>🍎</span> macOS
+                    </a>
+                </div>
+                
+                <p class="text-text-secondary mb-8">
+                    Or build from source for the latest features:
+                </p>
+                
+                <div class="bg-dark-primary rounded-lg p-4 mb-8 text-left max-w-2xl mx-auto">
+                    <pre class="text-sm overflow-x-auto"><code class="text-text-primary">git clone https://github.com/WOF-Softwares/Docura.git
 cd Docura
 npm install
 ./dev.sh</code></pre>
+                </div>
+                
+                <p class="text-text-secondary">
+                    <strong>Requirements:</strong> Node.js 18+, Rust (via rustup), WebKitGTK 4.1
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-border-dark">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center items-center gap-3 mb-4">
+                <img src="logo.svg" alt="Docura Logo" class="w-8 h-8">
+                <span class="text-xl font-bold gradient-text">Docura</span>
+            </div>
+            <p class="text-text-secondary mb-6">Built with ❤️ in 37 hours</p>
+            <p class="text-text-secondary mb-6">Open source under Apache 2.0 License</p>
             
-            <p><strong>Requirements:</strong> Node.js 18+, Rust (via rustup), WebKitGTK 4.1</p>
-            
-            <div class="cta-buttons" style="margin-top: 32px;">
-                <a href="https://github.com/WOF-Softwares/Docura" class="btn btn-primary">
-                    View Full Documentation
-                </a>
-                <a href="https://github.com/WOF-Softwares/Docura/issues" class="btn btn-secondary">
-                    Report an Issue
+            <div class="flex justify-center space-x-6">
+                <a href="https://github.com/WOF-Softwares/Docura" class="text-text-secondary hover:text-text-primary transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
                 </a>
             </div>
-        </section>
+        </div>
+    </footer>
 
-        <section>
-            <h2>🎯 What's Next?</h2>
-            <p>Docura v1.0 is production-ready, but there's more to build:</p>
-            <ul>
-                <li>Search & replace (Ctrl+F, Ctrl+H)</li>
-                <li>Recent files list</li>
-                <li>Auto-save with conflict detection</li>
-                <li>Diagram support (Mermaid, PlantUML)</li>
-                <li>Math equations (LaTeX/KaTeX)</li>
-                <li>Split-pane editing</li>
-                <li>AppImage & AUR packaging</li>
-            </ul>
-            <p><strong>Want to contribute?</strong> PRs are welcome! The codebase is clean, well-documented, and ready for community contributions.</p>
-        </section>
-
-        <footer>
-            <p><strong>Docura</strong> — Built with ❤️ in 37 hours</p>
-            <p>Open source under Apache 2.0 License</p>
-            <p style="margin-top: 16px;">
-                <a href="https://github.com/WOF-Softwares/Docura" style="color: var(--accent); text-decoration: none;">
-                    ⭐ Star us on GitHub
-                </a>
-            </p>
-        </footer>
-    </div>
+    <script>
+        function app() {
+            return {
+                mobileMenuOpen: false,
+                activeTab: 'features',
+                blogPosts: [],
+                selectedPost: null,
+                blogContent: '',
+                
+                init() {
+                    // Load blog posts index
+                    this.loadBlogIndex();
+                    
+                    // Intersection Observer for fade-in animations
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    
+                    document.querySelectorAll('.fade-in').forEach(el => {
+                        observer.observe(el);
+                    });
+                },
+                
+                async loadBlogIndex() {
+                    try {
+                        const response = await fetch('blog/index.json');
+                        this.blogPosts = await response.json();
+                    } catch (error) {
+                        console.error('Error loading blog index:', error);
+                        this.blogPosts = [];
+                    }
+                },
+                
+                async loadBlogPost(post) {
+                    try {
+                        const response = await fetch(`blog/${post.file}`);
+                        let markdown = await response.text();
+                        
+                        // Remove frontmatter (--- delimited at top)
+                        markdown = markdown.replace(/^---[\s\S]*?---\n/, '');
+                        
+                        // Configure marked
+                        marked.setOptions({
+                            breaks: true,
+                            gfm: true,
+                            headerIds: true,
+                            mangle: false
+                        });
+                        
+                        // Convert markdown to HTML
+                        this.blogContent = marked.parse(markdown);
+                        this.selectedPost = post;
+                        
+                        // Scroll to top of blog section
+                        document.getElementById('blog').scrollIntoView({ behavior: 'smooth' });
+                    } catch (error) {
+                        console.error('Error loading blog post:', error);
+                        alert('Failed to load blog post. Please try again.');
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
-
