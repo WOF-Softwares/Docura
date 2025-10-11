@@ -116,9 +116,9 @@ $ docura ~/project3 &
 
 ## 🪟 Multi-Window Support
 
-**Work on multiple projects simultaneously!**
+**Work on multiple projects simultaneously - YOUR choice!**
 
-When you try to open a second folder, Docura gives you a choice:
+When you try to open a second folder, Docura **asks what YOU want** (unlike Typora which forces multiple windows):
 
 ```
 📁 Open New Folder?
@@ -131,9 +131,18 @@ How would you like to proceed?
 [Cancel]
 ```
 
-**Like Chrome, VS Code, and Sublime!** But lighter! 💪
+**Why this matters:**
+- ✅ **Typora:** Silently creates multiple windows (no choice!)
+- ✅ **Docura:** Respects YOUR preference (you decide!)
+- ✅ **Result:** Better UX through user control! 🎯
 
-**Note:** Multi-window support with proper permissions was tricky to implement in Tauri's security model (unlike Electron's permissive approach), but we figured it out! Each window respects tiling WM settings and has full access to file operations. 🔒✨
+**Technical Excellence:**
+- Multi-window support with Tauri's strict security model (harder than Electron!)
+- Each window respects tiling WM settings automatically
+- Full file operations in every window
+- Proper permissions architecture
+
+**Like Chrome, VS Code, and Sublime - but LIGHTER and more RESPECTFUL!** 💪
 
 ---
 
