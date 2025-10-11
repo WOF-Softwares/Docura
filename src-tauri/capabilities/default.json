@@ -21,7 +21,6 @@
     "fs:allow-write-file",
     "fs:allow-read-dir",
     "fs:allow-read-file",
-    "fs:allow-exists",
-    "fs:scope-recursive"
+    "fs:allow-exists"
   ]
 }

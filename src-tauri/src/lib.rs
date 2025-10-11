@@ -4,6 +4,7 @@ use std::env;
 use serde::{Deserialize, Serialize};
 use serde_json;
 use tauri::{command, Manager};
+use tauri_plugin_fs::FsExt;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct FileItem {
