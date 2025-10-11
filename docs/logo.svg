@@ -1,66 +1,117 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
     <defs>
-        <!-- Gradient for document -->
-        <linearGradient id="docGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#f0f6fc;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#d8dee9;stop-opacity:1" />
+        <!-- Modern document gradient -->
+        <linearGradient id="docGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+            <stop offset="30%" style="stop-color:#f8fafc;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#f1f5f9;stop-opacity:1" />
         </linearGradient>
-        
-        <!-- Gradient for lines -->
-        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+
+        <!-- Subtle accent gradient -->
+        <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
         </linearGradient>
-        
-        <!-- Shadow -->
-        <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
-            <feOffset dx="4" dy="8" result="offsetblur"/>
+
+        <!-- Text line gradient -->
+        <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#64748b;stop-opacity:0.9" />
+            <stop offset="50%" style="stop-color:#475569;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#334155;stop-opacity:0.8" />
+        </linearGradient>
+
+        <!-- Modern shadow filter -->
+        <filter id="modernShadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="12"/>
+            <feOffset dx="0" dy="8" result="offset"/>
             <feComponentTransfer>
-                <feFuncA type="linear" slope="0.3"/>
+                <feFuncA type="linear" slope="0.15"/>
             </feComponentTransfer>
             <feMerge>
                 <feMergeNode/>
                 <feMergeNode in="SourceGraphic"/>
             </feMerge>
         </filter>
+
+        <!-- Subtle inner shadow -->
+        <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+            <feOffset dx="0" dy="2" result="offset"/>
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.3"/>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode in="offset"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
     </defs>
-    
-    <!-- Document shadow -->
-    <path d="M128 48C128 39.16 135.16 32 144 32H368C376.84 32 384 39.16 384 48V464C384 472.84 376.84 480 368 480H144C135.16 480 128 472.84 128 464V48Z" 
-          fill="rgba(0,0,0,0.1)" 
-          transform="translate(6, 10)"/>
-    
-    <!-- Main document shape -->
-    <path d="M128 48C128 39.16 135.16 32 144 32H368C376.84 32 384 39.16 384 48V464C384 472.84 376.84 480 368 480H144C135.16 480 128 472.84 128 464V48Z" 
-          fill="url(#docGradient)" 
-          stroke="#3b82f6" 
-          stroke-width="4"/>
-    
-    <!-- Folded corner effect -->
-    <path d="M368 32 L368 80 L384 48" 
-          fill="#c5cad4" 
-          stroke="#3b82f6" 
-          stroke-width="2"/>
-    
-    <!-- Writing lines with gradient -->
-    <g opacity="0.9">
-        <line x1="176" y1="144" x2="336" y2="144" stroke="url(#lineGradient)" stroke-width="6" stroke-linecap="round"/>
-        <line x1="176" y1="192" x2="336" y2="192" stroke="url(#lineGradient)" stroke-width="6" stroke-linecap="round"/>
-        <line x1="176" y1="240" x2="320" y2="240" stroke="url(#lineGradient)" stroke-width="6" stroke-linecap="round"/>
-        <line x1="176" y1="288" x2="280" y2="288" stroke="#8b949e" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
-        <line x1="176" y1="336" x2="300" y2="336" stroke="#8b949e" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
-        <line x1="176" y1="384" x2="260" y2="384" stroke="#8b949e" stroke-width="6" stroke-linecap="round" opacity="0.3"/>
+
+    <!-- Background circle (macOS style) -->
+    <circle cx="256" cy="256" r="240" fill="#f8fafc" opacity="0.1"/>
+
+    <!-- Main shadow -->
+    <path d="M120 64C120 55.16 127.16 48 136 48H376C384.84 48 392 55.16 392 64V448C392 456.84 384.84 464 376 464H136C127.16 464 120 456.84 120 448V64Z"
+          fill="rgba(0,0,0,0.08)"
+          transform="translate(2, 12)"/>
+
+    <!-- Main document with modern rounded corners -->
+    <path d="M120 64C120 55.16 127.16 48 136 48H376C384.84 48 392 55.16 392 64V448C392 456.84 384.84 464 376 464H136C127.16 464 120 456.84 120 448V64Z"
+          fill="url(#docGradient)"
+          stroke="none"
+          filter="url(#modernShadow)"
+          rx="12"/>
+
+    <!-- Subtle inner highlight -->
+    <path d="M120 64C120 55.16 127.16 48 136 48H376C384.84 48 392 55.16 392 64V448C392 456.84 384.84 464 376 464H136C127.16 464 120 456.84 120 448V64Z"
+          fill="none"
+          stroke="rgba(255,255,255,0.6)"
+          stroke-width="1"
+          rx="12"
+          opacity="0.5"/>
+
+    <!-- Modern content lines with better spacing -->
+    <g opacity="0.85">
+        <!-- Header line (longer, more prominent) -->
+        <rect x="152" y="128" width="208" height="3" fill="url(#textGradient)" rx="1.5"/>
+
+        <!-- Body text lines -->
+        <rect x="152" y="152" width="208" height="2.5" fill="url(#textGradient)" rx="1.25" opacity="0.9"/>
+        <rect x="152" y="172" width="180" height="2.5" fill="url(#textGradient)" rx="1.25" opacity="0.8"/>
+        <rect x="152" y="192" width="200" height="2.5" fill="url(#textGradient)" rx="1.25" opacity="0.7"/>
+
+        <!-- Indented line (like markdown list or blockquote) -->
+        <rect x="172" y="216" width="150" height="2.5" fill="url(#accentGradient)" rx="1.25" opacity="0.8"/>
+
+        <!-- Regular text lines -->
+        <rect x="152" y="240" width="190" height="2.5" fill="url(#textGradient)" rx="1.25" opacity="0.6"/>
+        <rect x="152" y="260" width="170" height="2.5" fill="url(#textGradient)" rx="1.25" opacity="0.5"/>
+        <rect x="152" y="280" width="160" height="2.5" fill="url(#textGradient)" rx="1.25" opacity="0.4"/>
+
+        <!-- Code block indicator (like markdown code) -->
+        <rect x="152" y="304" width="16" height="2.5" fill="url(#accentGradient)" rx="1.25"/>
+        <rect x="152" y="316" width="16" height="2.5" fill="url(#accentGradient)" rx="1.25"/>
+        <rect x="152" y="328" width="16" height="2.5" fill="url(#accentGradient)" rx="1.25"/>
     </g>
-    
-    <!-- Markdown # symbol (subtle) -->
-    <text x="310" y="430" font-family="monospace" font-size="72" fill="#3b82f6" opacity="0.15" font-weight="bold">#</text>
-    
-    <!-- Cursor/pen indicator with improved styling -->
-    <rect x="290" y="276" width="6" height="52" fill="#10b981" rx="3">
-        <animate attributeName="opacity" values="1;0.3;1" dur="1.2s" repeatCount="indefinite"/>
-    </rect>
-    
-    <!-- Cursor top cap -->
-    <rect x="290" y="272" width="6" height="4" fill="#10b981" rx="3"/>
+
+    <!-- Modern markdown indicators -->
+    <g opacity="0.6">
+        <!-- Subtle # symbol (markdown header) -->
+        <text x="380" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="48" fill="url(#accentGradient)" font-weight="300">#</text>
+
+        <!-- Brackets indicating markup -->
+        <path d="M152 380 L158 374 L158 385 Z" fill="url(#accentGradient)" opacity="0.4"/>
+        <path d="M360 380 L 366 374 L 366 385 Z" fill="url(#accentGradient)" opacity="0.4"/>
+    </g>
+
+    <!-- Modern cursor indicator -->
+    <g opacity="0.9">
+        <!-- Cursor line -->
+        <rect x="320" y="268" width="2" height="36" fill="url(#accentGradient)" rx="1">
+            <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+        </rect>
+
+        <!-- Cursor base -->
+        <rect x="318" y="304" width="6" height="3" fill="url(#accentGradient)" rx="1.5"/>
+    </g>
 </svg>
