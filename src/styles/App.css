@@ -5,6 +5,7 @@
     flex-direction: column;
     background-color: var(--bg-primary);
     color: var(--text-primary);
+    --editor-font: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
 }
 
 .app-body {
@@ -359,7 +360,7 @@
     color: var(--text-primary) !important;
     font-size: 16px !important;
     line-height: 1.8 !important;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-family: var(--editor-font) !important;
 }
 
 .wysiwyg-editor .w-md-editor-preview {

@@ -38,6 +38,7 @@ function App() {
   const [omakaseAvailable, setOmakaseAvailable] = useState(false)
   const [omakaseSyncEnabled, setOmakaseSyncEnabled] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
+  const [omakaseFont, setOmakaseFont] = useState(null)
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
 
@@ -174,7 +175,7 @@ function App() {
     const available = await isOmakaseEnvironment()
     setOmakaseAvailable(available)
     if (available) {
-      console.log('🎨 Omakase detected!')
+      console.log('🎨 Omarchy detected!')
       // Load sync preference from config
       try {
         const config = await invoke('load_config')
@@ -182,9 +183,27 @@ function App() {
           setOmakaseSyncEnabled(config.omakase_sync)
         }
       } catch (error) {
-        console.error('Error loading Omakase sync config:', error)
+        console.error('Error loading Omarchy sync config:', error)
+      }
+      
+      // Get Omarchy font
+      try {
+        const font = await invoke('get_omakase_font')
+        if (font) {
+          setOmakaseFont(font)
+          console.log(`🔤 Using Omarchy font: ${font}`)
+          // Apply font to editor
+          applyEditorFont(font)
+        }
+      } catch (error) {
+        console.log('No Omarchy font detected')
       }
     }
+  }
+  
+  const applyEditorFont = (fontName) => {
+    // Apply font to Monaco editor and markdown editor
+    document.documentElement.style.setProperty('--editor-font', `"${fontName}", monospace`)
   }
 
   const loadAppConfig = async () => {
@@ -520,14 +539,26 @@ function App() {
       if (newTheme !== currentTheme) {
         setCurrentTheme(newTheme)
         saveAppConfig(newTheme)
-        toast.success(`Synced with Omakase: ${newTheme}`)
+        toast.success(`Synced with Omarchy: ${newTheme}`)
       }
     })
+    
+    // Also sync font if available
+    try {
+      const font = await invoke('get_omakase_font')
+      if (font && font !== omakaseFont) {
+        setOmakaseFont(font)
+        applyEditorFont(font)
+        console.log(`🔤 Updated Omarchy font: ${font}`)
+      }
+    } catch (error) {
+      // Font not available, that's okay
+    }
     
     setTimeout(() => setIsSyncing(false), 500)
     
     if (!success) {
-      console.log('Omakase sync failed or theme unchanged')
+      console.log('Omarchy sync failed or theme unchanged')
     }
   }
   
@@ -536,11 +567,11 @@ function App() {
     saveAppConfig(currentTheme, enabled)
     
     if (enabled) {
-      toast.success('Omakase auto-sync enabled')
+      toast.success('Omarchy auto-sync enabled')
       // Sync immediately when enabled
       handleOmakaseSync()
     } else {
-      toast('Omakase auto-sync disabled')
+      toast('Omarchy auto-sync disabled')
     }
   }
 

@@ -289,55 +289,144 @@ async fn is_tiling_wm() -> bool {
     detect_tiling_wm()
 }
 
-/// Check if Omakase commands are available
+/// Check if Omakase/Omarchy commands are available
 #[command]
 async fn check_omakase_command() -> bool {
     use std::process::Command;
     
-    // Check if omakase-theme-current command exists
-    match Command::new("which")
+    // Check for omarchy-theme-current first (with 'r')
+    let omarchy_whereis = Command::new("whereis")
+        .arg("omarchy-theme-current")
+        .output()
+        .map(|output| {
+            let stdout = String::from_utf8_lossy(&output.stdout);
+            // whereis returns "command:" if not found, "command: /path/to/command" if found
+            stdout.contains("/")
+        })
+        .unwrap_or(false);
+    
+    if omarchy_whereis {
+        log::info!("✅ Omarchy detected via whereis (omarchy-theme-current)");
+        return true;
+    }
+    
+    // Check for omakase-theme-current (without 'r')
+    let omakase_whereis = Command::new("whereis")
         .arg("omakase-theme-current")
         .output()
-    {
-        Ok(output) => output.status.success(),
-        Err(_) => false,
+        .map(|output| {
+            let stdout = String::from_utf8_lossy(&output.stdout);
+            stdout.contains("/")
+        })
+        .unwrap_or(false);
+    
+    if omakase_whereis {
+        log::info!("✅ Omakase detected via whereis (omakase-theme-current)");
+        return true;
     }
+    
+    // Fallback: try which for omarchy
+    let omarchy_which = Command::new("which")
+        .arg("omarchy-theme-current")
+        .output()
+        .map(|output| output.status.success())
+        .unwrap_or(false);
+        
+    if omarchy_which {
+        log::info!("✅ Omarchy detected via which");
+        return true;
+    }
+    
+    // Fallback: try which for omakase
+    let omakase_which = Command::new("which")
+        .arg("omakase-theme-current")
+        .output()
+        .map(|output| output.status.success())
+        .unwrap_or(false);
+        
+    if omakase_which {
+        log::info!("✅ Omakase detected via which");
+        return true;
+    }
+    
+    log::info!("❌ Neither Omarchy nor Omakase detected");
+    false
 }
 
-/// Get current Omakase theme
+/// Get current Omakase/Omarchy theme
 #[command]
 async fn get_omakase_theme() -> Result<String, String> {
     use std::process::Command;
     
+    // Try omarchy-theme-current first (with 'r')
+    match Command::new("omarchy-theme-current").output() {
+        Ok(output) => {
+            if output.status.success() {
+                let theme = String::from_utf8_lossy(&output.stdout).to_string();
+                let theme_name = theme.trim().to_lowercase();
+                log::info!("🎨 Got Omarchy theme: {}", theme_name);
+                return Ok(theme_name);
+            }
+        }
+        Err(_) => {
+            log::debug!("omarchy-theme-current not found, trying omakase variant...");
+        }
+    }
+    
+    // Try omakase-theme-current (without 'r')
     match Command::new("omakase-theme-current").output() {
         Ok(output) => {
             if output.status.success() {
                 let theme = String::from_utf8_lossy(&output.stdout).to_string();
-                Ok(theme.trim().to_lowercase())
-            } else {
-                Err("Failed to get Omakase theme".to_string())
+                let theme_name = theme.trim().to_lowercase();
+                log::info!("🎨 Got Omakase theme: {}", theme_name);
+                return Ok(theme_name);
             }
         }
-        Err(e) => Err(format!("Error executing command: {}", e)),
+        Err(_) => {
+            log::warn!("Neither omarchy-theme-current nor omakase-theme-current found");
+        }
     }
+    
+    Err("Failed to get theme from Omarchy/Omakase".to_string())
 }
 
-/// Get current Omakase font
+/// Get current Omakase/Omarchy font
 #[command]
 async fn get_omakase_font() -> Result<String, String> {
     use std::process::Command;
     
+    // Try omarchy-font-current first (with 'r')
+    match Command::new("omarchy-font-current").output() {
+        Ok(output) => {
+            if output.status.success() {
+                let font = String::from_utf8_lossy(&output.stdout).to_string();
+                let font_name = font.trim().to_string();
+                log::info!("🔤 Got Omarchy font: {}", font_name);
+                return Ok(font_name);
+            }
+        }
+        Err(_) => {
+            log::debug!("omarchy-font-current not found, trying omakase variant...");
+        }
+    }
+    
+    // Try omakase-font-current (without 'r')
     match Command::new("omakase-font-current").output() {
         Ok(output) => {
             if output.status.success() {
                 let font = String::from_utf8_lossy(&output.stdout).to_string();
-                Ok(font.trim().to_string())
-            } else {
-                Err("Failed to get Omakase font".to_string())
+                let font_name = font.trim().to_string();
+                log::info!("🔤 Got Omakase font: {}", font_name);
+                return Ok(font_name);
             }
         }
-        Err(e) => Err(format!("Error executing command: {}", e)),
+        Err(_) => {
+            log::warn!("Neither omarchy-font-current nor omakase-font-current found");
+        }
     }
+    
+    Err("Failed to get font from Omarchy/Omakase".to_string())
 }
 
 #[command]
@@ -403,4 +492,6 @@ pub fn run() {
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
 }
