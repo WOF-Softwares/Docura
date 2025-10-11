@@ -89,6 +89,8 @@
   --blockquote-border: #ff6188;
   --link-color: #78dce8;
   --link-hover: #a9dc76;
+  --text-strong: #ff6188;
+  --text-emphasis: #ffd866;
 }
 
 [data-theme="cappuccino-light"] {
@@ -109,6 +111,8 @@
   --blockquote-border: #b4637a;
   --link-color: #286983;
   --link-hover: #56949f;
+  --text-strong: #b4637a;
+  --text-emphasis: #ea9d34;
 }
 
 /* Nord Theme */
@@ -130,6 +134,8 @@
   --blockquote-border: #5e81ac;
   --link-color: #88c0d0;
   --link-hover: #8fbcbb;
+  --text-strong: #bf616a;
+  --text-emphasis: #d08770;
 }
 
 [data-theme="nord-light"] {
@@ -150,6 +156,8 @@
   --blockquote-border: #5e81ac;
   --link-color: #81a1c1;
   --link-hover: #88c0d0;
+  --text-strong: #bf616a;
+  --text-emphasis: #d08770;
 }
 
 /* Solarized Theme */
@@ -171,6 +179,8 @@
   --blockquote-border: #cb4b16;
   --link-color: #2aa198;
   --link-hover: #859900;
+  --text-strong: #dc322f;
+  --text-emphasis: #cb4b16;
 }
 
 [data-theme="solarized-light"] {
@@ -191,6 +201,8 @@
   --blockquote-border: #cb4b16;
   --link-color: #2aa198;
   --link-hover: #859900;
+  --text-strong: #dc322f;
+  --text-emphasis: #cb4b16;
 }
 
 /* Monokai Theme */
@@ -212,6 +224,8 @@
   --blockquote-border: #fd971f;
   --link-color: #66d9ef;
   --link-hover: #a6e22e;
+  --text-strong: #f92672;
+  --text-emphasis: #fd971f;
 }
 
 [data-theme="monokai-light"] {
@@ -232,6 +246,8 @@
   --blockquote-border: #fd971f;
   --link-color: #66d9ef;
   --link-hover: #a6e22e;
+  --text-strong: #f92672;
+  --text-emphasis: #fd971f;
 }
 
 /* GitHub Theme */
@@ -253,6 +269,8 @@
   --blockquote-border: #d2a8ff;
   --link-color: #58a6ff;
   --link-hover: #79c0ff;
+  --text-strong: #d73a49;
+  --text-emphasis: #e36209;
 }
 
 [data-theme="github-light"] {
@@ -273,6 +291,8 @@
   --blockquote-border: #d1a7ff;
   --link-color: #0969da;
   --link-hover: #0550ae;
+  --text-strong: #d73a49;
+  --text-emphasis: #e36209;
 }
 
 /* Reset and base styles */
