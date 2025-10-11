@@ -1,5 +1,13 @@
 [
   {
+    "slug": "multi-window-messaging-bug-fix",
+    "title": "The Multi-Window Bug That Taught Me About Tauri Event Isolation",
+    "date": "October 11, 2025",
+    "readTime": "8 min read",
+    "excerpt": "How Tauri's event system broadcasts to all windows by default, and the clean fix using emit_to() and currentWindow.listen() for proper isolation.",
+    "file": "multi-window-messaging-bug-fix.md"
+  },
+  {
     "slug": "solo-developer-ai-advantage",
     "title": "Solo Developer + AI vs Traditional Teams: The 2025 Reality",
     "date": "October 11, 2025",
