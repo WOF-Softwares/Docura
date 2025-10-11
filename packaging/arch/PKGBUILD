@@ -1,0 +1,23 @@
+pkgname=docura-bin
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Docura - Modern markdown editor built with Tauri"
+arch=('x86_64')
+url="https://github.com/WOF-Softwares/Docura"
+license=('Apache')
+depends=('gtk3' 'webkit2gtk')
+provides=('docura')
+conflicts=('docura')
+options=('!strip')
+source=("docura_1.0.0_amd64.deb")
+noextract=("${source[@]}")
+sha256sums=('SKIP')
+
+package() {
+  # Extract .deb
+  bsdtar -xf "${srcdir}/docura_1.0.0_amd64.deb" -C "${pkgdir}/"
+  
+  # Fix permissions
+  find "${pkgdir}" -type d -exec chmod 755 {} \;
+  find "${pkgdir}/usr/bin" -type f -exec chmod 755 {} \; 2>/dev/null || true
+}
