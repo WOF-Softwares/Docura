@@ -9,8 +9,10 @@ import Sidebar from './components/Sidebar'
 import MainEditor from './components/MainEditor'
 import ThemeSelector from './components/ThemeSelector'
 import PDFPreviewDialog from './components/PDFPreviewDialog'
+import SettingsDialog from './components/SettingsDialog'
 import { exportToPDF, generatePDFBlob } from './utils/pdfExport'
 import { convertMarkdownImagePaths } from './utils/imagePathConverter'
+import { isOmakaseEnvironment, syncWithOmakase } from './utils/omakaseSync'
 import './styles/App.css'
 import './styles/ThemeSelector.css'
 import './styles/markdown-themes.css'
@@ -32,7 +34,12 @@ function App() {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isPDFPreviewOpen, setIsPDFPreviewOpen] = useState(false)
   const [pdfBlob, setPdfBlob] = useState(null)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [omakaseAvailable, setOmakaseAvailable] = useState(false)
+  const [omakaseSyncEnabled, setOmakaseSyncEnabled] = useState(false)
+  const [isSyncing, setIsSyncing] = useState(false)
   const previewRef = useRef(null)
+  const syncIntervalRef = useRef(null)
 
   // Available themes for random cycling
   const availableThemes = [
@@ -56,7 +63,32 @@ function App() {
         console.log('🪟 Running in standard window manager')
       }
     }).catch(err => console.error('Error checking WM:', err))
+    
+    // Check for Omakase
+    checkOmakase()
   }, [])
+  
+  useEffect(() => {
+    // Setup Omakase sync interval if enabled
+    if (omakaseSyncEnabled && omakaseAvailable) {
+      console.log('🎨 Starting Omakase auto-sync (every 30 seconds)')
+      
+      // Sync immediately
+      handleOmakaseSync()
+      
+      // Then sync every 30 seconds
+      syncIntervalRef.current = setInterval(() => {
+        handleOmakaseSync()
+      }, 30000)
+      
+      return () => {
+        if (syncIntervalRef.current) {
+          clearInterval(syncIntervalRef.current)
+          console.log('🎨 Stopped Omakase auto-sync')
+        }
+      }
+    }
+  }, [omakaseSyncEnabled, omakaseAvailable])
 
   useEffect(() => {
     // Track unsaved changes
@@ -138,22 +170,43 @@ function App() {
     document.documentElement.setAttribute('data-theme-variant', variant)
   }, [currentTheme])
 
+  const checkOmakase = async () => {
+    const available = await isOmakaseEnvironment()
+    setOmakaseAvailable(available)
+    if (available) {
+      console.log('🎨 Omakase detected!')
+      // Load sync preference from config
+      try {
+        const config = await invoke('load_config')
+        if (config && config.omakase_sync !== undefined) {
+          setOmakaseSyncEnabled(config.omakase_sync)
+        }
+      } catch (error) {
+        console.error('Error loading Omakase sync config:', error)
+      }
+    }
+  }
+
   const loadAppConfig = async () => {
     try {
       const config = await invoke('load_config')
       if (config && config.theme) {
         setCurrentTheme(config.theme)
       }
+      if (config && config.omakase_sync !== undefined) {
+        setOmakaseSyncEnabled(config.omakase_sync)
+      }
     } catch (error) {
       console.error('Error loading config:', error)
     }
   }
 
-  const saveAppConfig = async (newTheme) => {
+  const saveAppConfig = async (newTheme, omakaseSync = omakaseSyncEnabled) => {
     try {
       await invoke('save_config', {
         config: {
-          theme: newTheme,
+          theme: newTheme || currentTheme,
+          omakase_sync: omakaseSync,
           recent_files: []
         }
       })
@@ -440,6 +493,38 @@ function App() {
     setCurrentTheme(newTheme)
     saveAppConfig(newTheme)
   }
+  
+  const handleOmakaseSync = async () => {
+    if (!omakaseAvailable) return
+    
+    setIsSyncing(true)
+    const success = await syncWithOmakase((newTheme) => {
+      if (newTheme !== currentTheme) {
+        setCurrentTheme(newTheme)
+        saveAppConfig(newTheme)
+        toast.success(`Synced with Omakase: ${newTheme}`)
+      }
+    })
+    
+    setTimeout(() => setIsSyncing(false), 500)
+    
+    if (!success) {
+      console.log('Omakase sync failed or theme unchanged')
+    }
+  }
+  
+  const handleOmakaseSyncToggle = (enabled) => {
+    setOmakaseSyncEnabled(enabled)
+    saveAppConfig(currentTheme, enabled)
+    
+    if (enabled) {
+      toast.success('Omakase auto-sync enabled')
+      // Sync immediately when enabled
+      handleOmakaseSync()
+    } else {
+      toast('Omakase auto-sync disabled')
+    }
+  }
 
   const toggleFullscreen = async () => {
     try {
@@ -472,11 +557,16 @@ function App() {
         onExportPdf={handleExportToPdf}
         onPrint={handlePrint}
         onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
+        onOpenSettings={() => setIsSettingsOpen(true)}
         hasFile={!!currentFile}
         onToggleFullscreen={toggleFullscreen}
         isFullscreen={isFullscreen}
         onToggleSidebar={toggleSidebar}
         isSidebarVisible={isSidebarVisible}
+        omakaseAvailable={omakaseAvailable}
+        omakaseSyncEnabled={omakaseSyncEnabled}
+        onOmakaseSync={handleOmakaseSync}
+        isSyncing={isSyncing}
       />
       )}
       
@@ -523,6 +613,14 @@ function App() {
         onClose={() => setIsPDFPreviewOpen(false)}
         pdfBlob={pdfBlob}
         filename={currentFile ? currentFile.split('/').pop().replace(/\.(md|markdown)$/i, '.pdf') : 'document.pdf'}
+      />
+
+      <SettingsDialog
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        omakaseSyncEnabled={omakaseSyncEnabled}
+        onOmakaseSyncToggle={handleOmakaseSyncToggle}
+        onSyncNow={handleOmakaseSync}
       />
 
       <Toaster

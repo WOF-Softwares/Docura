@@ -1,17 +1,13 @@
 import React from 'react'
 import { 
   Shuffle, 
-  FolderOpen, 
-  File, 
-  Save, 
-  FileText, 
-  Printer,
-  Palette,
+  RefreshCw,
   Maximize,
   Minimize,
   PanelLeftClose,
   PanelLeft
 } from 'lucide-react'
+import Menu from './Menu'
 
 const Toolbar = ({
   theme,
@@ -23,14 +19,37 @@ const Toolbar = ({
   onExportPdf,
   onPrint,
   onOpenThemeSelector,
+  onOpenSettings,
   hasFile,
   onToggleFullscreen,
   isFullscreen,
   onToggleSidebar,
-  isSidebarVisible
+  isSidebarVisible,
+  omakaseAvailable,
+  omakaseSyncEnabled,
+  onOmakaseSync,
+  isSyncing
 }) => {
   return (
     <div className="toolbar">
+      <div className="toolbar-section">
+        <Menu
+          onOpenFolder={onOpenFolder}
+          onOpenFile={onOpenFile}
+          onSave={onSave}
+          onSaveAs={onSaveAs}
+          onExportPdf={onExportPdf}
+          onPrint={onPrint}
+          onOpenThemeSelector={onOpenThemeSelector}
+          onOpenSettings={onOpenSettings}
+          onToggleFullscreen={onToggleFullscreen}
+          onToggleSidebar={onToggleSidebar}
+          hasFile={hasFile}
+          isFullscreen={isFullscreen}
+          isSidebarVisible={isSidebarVisible}
+        />
+      </div>
+      
       <div className="toolbar-section">
         <button
           className="toolbar-button"
@@ -41,80 +60,19 @@ const Toolbar = ({
           <span>Random</span>
         </button>
         
-        <button
-          className="toolbar-button"
-          onClick={onOpenThemeSelector}
-          title="Choose specific theme"
-        >
-          <Palette size={16} />
-          <span>Themes</span>
-        </button>
+        {omakaseAvailable && omakaseSyncEnabled && (
+          <button
+            className={`omakase-sync-button ${isSyncing ? 'syncing' : ''}`}
+            onClick={onOmakaseSync}
+            title="Sync with Omakase theme"
+          >
+            <RefreshCw size={16} />
+            <span>Omakase</span>
+          </button>
+        )}
       </div>
       
-      <div className="toolbar-section">
-        <button
-          className="toolbar-button"
-          onClick={onOpenFolder}
-          title="Open Folder"
-        >
-          <FolderOpen size={16} />
-          <span>Open Folder</span>
-        </button>
-        
-        <button
-          className="toolbar-button"
-          onClick={onOpenFile}
-          title="Open File"
-        >
-          <File size={16} />
-          <span>Open File</span>
-        </button>
-      </div>
-      
-      <div className="toolbar-section">
-        <button
-          className="toolbar-button"
-          onClick={onSave}
-          disabled={!hasFile}
-          title="Save"
-        >
-          <Save size={16} />
-          <span>Save</span>
-        </button>
-        
-        <button
-          className="toolbar-button"
-          onClick={onSaveAs}
-          title="Save As"
-        >
-          <Save size={16} />
-          <span>Save As</span>
-        </button>
-      </div>
-      
-      <div className="toolbar-section">
-        <button
-          className="toolbar-button"
-          onClick={onExportPdf}
-          disabled={!hasFile}
-          title="Export to PDF"
-        >
-          <FileText size={16} />
-          <span>Export PDF</span>
-        </button>
-        
-        <button
-          className="toolbar-button"
-          onClick={onPrint}
-          disabled={!hasFile}
-          title="Print"
-        >
-          <Printer size={16} />
-          <span>Print</span>
-        </button>
-      </div>
-      
-      <div className="toolbar-section">
+      <div className="toolbar-section" style={{ marginLeft: 'auto' }}>
         <button
           className="toolbar-button"
           onClick={onToggleSidebar}

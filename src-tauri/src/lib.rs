@@ -173,6 +173,8 @@ pub struct AppConfig {
     theme: String,
     #[serde(default)]
     recent_files: Vec<String>,
+    #[serde(default)]
+    omakase_sync: bool,
 }
 
 impl Default for AppConfig {
@@ -180,6 +182,7 @@ impl Default for AppConfig {
         AppConfig {
             theme: "dracula-dark".to_string(),
             recent_files: Vec::new(),
+            omakase_sync: false,
         }
     }
 }
@@ -286,10 +289,59 @@ async fn is_tiling_wm() -> bool {
     detect_tiling_wm()
 }
 
+/// Check if Omakase commands are available
+#[command]
+async fn check_omakase_command() -> bool {
+    use std::process::Command;
+    
+    // Check if omakase-theme-current command exists
+    match Command::new("which")
+        .arg("omakase-theme-current")
+        .output()
+    {
+        Ok(output) => output.status.success(),
+        Err(_) => false,
+    }
+}
+
+/// Get current Omakase theme
+#[command]
+async fn get_omakase_theme() -> Result<String, String> {
+    use std::process::Command;
+    
+    match Command::new("omakase-theme-current").output() {
+        Ok(output) => {
+            if output.status.success() {
+                let theme = String::from_utf8_lossy(&output.stdout).to_string();
+                Ok(theme.trim().to_lowercase())
+            } else {
+                Err("Failed to get Omakase theme".to_string())
+            }
+        }
+        Err(e) => Err(format!("Error executing command: {}", e)),
+    }
+}
+
+/// Get current Omakase font
+#[command]
+async fn get_omakase_font() -> Result<String, String> {
+    use std::process::Command;
+    
+    match Command::new("omakase-font-current").output() {
+        Ok(output) => {
+            if output.status.success() {
+                let font = String::from_utf8_lossy(&output.stdout).to_string();
+                Ok(font.trim().to_string())
+            } else {
+                Err("Failed to get Omakase font".to_string())
+            }
+        }
+        Err(e) => Err(format!("Error executing command: {}", e)),
+    }
+}
+
 #[command]
 async fn grant_file_scope(app: tauri::AppHandle, file_path: String) -> Result<(), String> {
-    use tauri::Manager;
-    
     // Parse the file path
     let path = Path::new(&file_path);
     
@@ -344,7 +396,10 @@ pub fn run() {
             load_config,
             save_config,
             is_tiling_wm,
-            grant_file_scope
+            grant_file_scope,
+            check_omakase_command,
+            get_omakase_theme,
+            get_omakase_font
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
