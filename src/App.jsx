@@ -172,6 +172,19 @@ function App() {
     document.documentElement.setAttribute('data-theme-variant', variant)
   }, [currentTheme])
 
+  // Update sidebar filename for unsaved files based on content
+  useEffect(() => {
+    if (!currentFile && fileContent && files.length > 0 && files[0].isUntitled) {
+      const smartName = getSmartFileName(fileContent)
+      setFiles([{
+        name: smartName,
+        path: null,
+        type: 'file',
+        isUntitled: true
+      }])
+    }
+  }, [fileContent, currentFile])
+
   const checkOmakase = async () => {
     const available = await isOmakaseEnvironment()
     setOmakaseAvailable(available)
@@ -252,6 +265,30 @@ function App() {
     saveAppConfig(randomTheme)
   }
 
+  // Extract smart filename from content
+  const getSmartFileName = (content) => {
+    if (!content || !content.trim()) return 'Untitled'
+    
+    // Try H1 header first
+    const h1Match = content.match(/^#\s+(.+)$/m)
+    if (h1Match && h1Match[1]) {
+      const title = h1Match[1].trim()
+      return title.length > 30 ? title.substring(0, 30) + '...' : title
+    }
+    
+    // Fallback: First line
+    const firstLine = content.split('\n')[0].trim()
+    if (firstLine) {
+      // Remove markdown symbols
+      const cleanLine = firstLine.replace(/^[#\-*>\s]+/, '').trim()
+      if (cleanLine) {
+        return cleanLine.length > 30 ? cleanLine.substring(0, 30) + '...' : cleanLine
+      }
+    }
+    
+    return 'Untitled'
+  }
+
   const newFile = async () => {
     try {
       // If there's unsaved content, prompt to save first
@@ -280,10 +317,13 @@ function App() {
       setIsEditing(true)
       setOutlineHeaders([])
       
-      // If no folder is open, clear the file list
-      if (!currentFolder) {
-        setFiles([])
-      }
+      // Add "Untitled" to sidebar (will update as user types)
+      setFiles([{
+        name: 'Untitled',
+        path: null,
+        type: 'file',
+        isUntitled: true
+      }])
       
       toast.success('New file created')
     } catch (error) {
@@ -346,15 +386,16 @@ function App() {
         setIsEditing(true)
         extractHeaders(content)
         
-        // If no folder is open, add this file to the sidebar
-        if (!currentFolder) {
-          const fileName = selected.split('/').pop()
-          setFiles([{
-            name: fileName,
-            path: selected,
-            type: 'file'
-          }])
-        }
+        // Clear folder state (switching to single file mode)
+        setCurrentFolder(null)
+        
+        // Show just this file in the sidebar
+        const fileName = selected.split('/').pop()
+        setFiles([{
+          name: fileName,
+          path: selected,
+          type: 'file'
+        }])
         
         toast.success(`Opened: ${selected.split('/').pop()}`)
       }
