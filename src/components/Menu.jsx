@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { 
   Menu as MenuIcon, 
+  FilePlus,
   FolderOpen, 
   FileText, 
   Save, 
@@ -15,6 +16,7 @@ import {
 } from 'lucide-react'
 
 const Menu = ({ 
+  onNewFile,
   onOpenFolder,
   onOpenFile,
   onSave,
@@ -65,6 +67,15 @@ const Menu = ({
         <div className="menu-dropdown">
           <div className="menu-section">
             <div className="menu-section-title">File</div>
+            <button 
+              className="menu-item" 
+              onClick={() => handleMenuClick(onNewFile)}
+            >
+              <FilePlus size={16} />
+              <span>New File</span>
+              <span className="menu-shortcut">Ctrl+N</span>
+            </button>
+            <div className="menu-divider"></div>
             <button 
               className="menu-item" 
               onClick={() => handleMenuClick(onOpenFolder)}

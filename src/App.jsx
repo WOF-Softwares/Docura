@@ -157,11 +157,16 @@ function App() {
         e.preventDefault()
         await openFolder()
       }
+      // Ctrl+N for new file
+      if (e.ctrlKey && e.key === 'n') {
+        e.preventDefault()
+        await newFile()
+      }
     }
     
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [currentFile])
+  }, [currentFile, hasUnsavedChanges, fileContent])
 
   useEffect(() => {
     // Apply unified theme to document
@@ -249,6 +254,46 @@ function App() {
     const randomTheme = otherThemes[Math.floor(Math.random() * otherThemes.length)]
     setCurrentTheme(randomTheme)
     saveAppConfig(randomTheme)
+  }
+
+  const newFile = async () => {
+    try {
+      // If there's unsaved content, prompt to save first
+      if (hasUnsavedChanges && fileContent.trim() !== '') {
+        const userChoice = confirm('You have unsaved changes. Would you like to save before creating a new file?')
+        
+        if (userChoice) {
+          // If no current file, do Save As
+          if (!currentFile) {
+            await saveFileAs()
+            // If user cancelled save as, don't create new file
+            if (!currentFile) return
+          } else {
+            // Save existing file
+            await saveFile()
+          }
+        }
+      }
+      
+      // Clear editor and state
+      setCurrentFile(null)
+      setFileContent('')
+      setOriginalContent('')
+      setDisplayContent('')
+      setHasUnsavedChanges(false)
+      setIsEditing(true)
+      setOutlineHeaders([])
+      
+      // If no folder is open, clear the file list
+      if (!currentFolder) {
+        setFiles([])
+      }
+      
+      toast.success('New file created')
+    } catch (error) {
+      console.error('Error creating new file:', error)
+      toast.error('Failed to create new file')
+    }
   }
 
   const openFolder = async () => {
@@ -599,6 +644,7 @@ function App() {
       <Toolbar
         theme={currentVariant}
         onToggleTheme={toggleTheme}
+        onNewFile={newFile}
         onOpenFolder={openFolder}
         onOpenFile={openFile}
         onSave={saveFile}

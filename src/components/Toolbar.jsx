@@ -12,6 +12,7 @@ import Menu from './Menu'
 const Toolbar = ({
   theme,
   onToggleTheme,
+  onNewFile,
   onOpenFolder,
   onOpenFile,
   onSave,
@@ -34,6 +35,7 @@ const Toolbar = ({
     <div className="toolbar">
       <div className="toolbar-section">
         <Menu
+          onNewFile={onNewFile}
           onOpenFolder={onOpenFolder}
           onOpenFile={onOpenFile}
           onSave={onSave}
