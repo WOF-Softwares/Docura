@@ -22,6 +22,8 @@ package() {
   # Fix permissions
   find "${pkgdir}" -type d -exec chmod 755 {} \;
   find "${pkgdir}/usr/bin" -type f -exec chmod 755 {} \; 2>/dev/null || true
+  find "${pkgdir}/usr/share/applications" -type f -exec chmod 644 {} \; 2>/dev/null || true
+  find "${pkgdir}/usr/share/icons" -type f -exec chmod 644 {} \; 2>/dev/null || true
   
   # Verify binary exists
   if [[ ! -f "${pkgdir}/usr/bin/docura" ]]; then
