@@ -16,7 +16,8 @@ Not just a clone — something that addressed Typora's limitations:
 - Only one editing mode (WYSIWYG-only can feel limiting)
 - No split-pane view for learning markdown syntax
 - Closed source and $14.99 price tag
-- Heavy memory footprint (1011 MB on my system)
+- Massive disk footprint (326 MB installation!)
+- Heavy memory usage (1011 MB on my system)
 - Poor Linux integration (no tiling window manager support)
 
 So I fired up my IDE and started what became **Docura**.
@@ -25,7 +26,12 @@ So I fired up my IDE and started what became **Docura**.
 
 I chose **Tauri 2.8** as the foundation for three critical reasons:
 
-1. **WebKitGTK vs Chromium**: Tauri uses the system's native WebKit renderer instead of bundling a full Chromium instance like Electron does. Result? **780 MB vs 1011 MB** — a 231 MB saving.
+1. **No Bundled Chromium**: Tauri uses the system's native WebKit renderer instead of bundling a full Chromium instance like Electron does.
+   - **Disk**: 12 MB vs 326 MB (96% smaller!)
+   - **RAM**: 780 MB vs 1011 MB (23% lighter)
+   - **Download**: 5 MB vs 80 MB (94% smaller)
+   
+   You could install **27 copies** of Docura in Typora's disk space!
 
 2. **Rust Backend**: File I/O, system integration, and window management in native Rust instead of Node.js means lower overhead and better security.
 
@@ -69,13 +75,16 @@ Read-only rendered markdown with Typora-inspired typography, interactive checkbo
 
 ## 📊 The Performance Win
 
-Memory comparison (both apps editing the same markdown file on Arch Linux):
+Real-world comparison on Arch Linux:
 
-- **Typora (Electron)**: 1011 MB
-- **Docura (Tauri)**: 780 MB
-- **Savings**: 231 MB (23% lighter!)
+| Metric | Typora | Docura | Savings |
+|--------|--------|--------|---------|
+| **Disk Space** | 326 MB | 12 MB | **96%** ⚡ |
+| **RAM Usage** | 1011 MB | 780 MB | **23%** ⚡ |
+| **Download** | 80 MB | 5 MB | **94%** ⚡ |
+| **Price** | $14.99 | $0.00 | **$14.99** 💰 |
 
-Why? No bundled Chromium, Rust backend, optimized React rendering, and efficient WebKitGTK.
+**The efficiency is staggering.** No bundled Chromium, Rust backend, optimized React rendering, and efficient WebKitGTK combine to make Docura incredibly lightweight without sacrificing any features.
 
 ## 🎯 What's Next
 
@@ -89,7 +98,9 @@ Docura v1.0 is production-ready, but there's more to build:
 ## 💬 Final Thoughts
 
 Docura started as a "can I build this?" challenge. 37 hours later, it's a markdown editor that:
-- Uses **23% less memory** than Typora
+- Uses **96% less disk space** than Typora (12 MB vs 326 MB!)
+- Uses **23% less RAM** (780 MB vs 1011 MB)
+- Has **94% smaller downloads** (5 MB vs 80 MB)
 - Offers **three editing modes** instead of one
 - Costs **$0** instead of $14.99
 - Respects **Linux workflows**
