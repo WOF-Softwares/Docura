@@ -35,6 +35,22 @@ Docura is a next-generation native desktop app designed for Linux systems. Built
 
 **Ready to use, battle-tested, and better than Typora!** 🚀
 
+### 🕰️ Docura's Birth Timeline
+
+**Built in less than 2 days!** From concept to fully-featured markdown editor:
+
+| Milestone | Time | Duration |
+|-----------|------|----------|
+| 🚀 **Started** | October 9, 10:12 PM | Day 0 |
+| ⚙️ **Core features built** | Overnight | ~12 hours |
+| 🎨 **Themes, toolbar, live preview** | October 10 | Day 1 |
+| 📂 **File access, outline linking** | October 10, late | Day 1 |
+| 🖨️ **Export, print, native dialogs** | October 11, morning | Day 2 |
+| ✅ **Finished v1.0** | October 11, 11:29 AM | **37 hours!** |
+
+**From zero to production-ready in just 37 hours!** ⚡  
+*That's the power of Rust + Tauri + React!*
+
 ---
 
 ## 🌟 Why Docura is Better Than Typora
@@ -421,12 +437,13 @@ This means you can:
 
 ### 🎊 Celebrating v1.0! 🎊
 
-**From zero to a fully-featured markdown editor in record time!**
+**From zero to a fully-featured markdown editor in just 37 hours!**
 
 🌟 **Three editing modes** for every user level  
 🎨 **12 gorgeous themes** that stay consistent  
 📑 **PDF export & print** with beautiful output  
 ⚡ **23% lighter** than the competition  
+⏱️ **Built in <2 days** - October 9-11, 2025  
 🔓 **100% free** and open source  
 
 **Thanks to everyone who believed in this project!** 🙏
