@@ -56,11 +56,11 @@ function App() {
   const [recoveryDialog, setRecoveryDialog] = useState({ visible: false, tempFile: null })
   const [currentTempId, setCurrentTempId] = useState(null) // Track temp file ID for unsaved files
   const [recoveryChecked, setRecoveryChecked] = useState(false) // Track if we've already checked for recovery
-  const [isQuitting, setIsQuitting] = useState(false) // Track if we're intentionally quitting to bypass close handler
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
   const autoSaveTimeoutRef = useRef(null)
   const tempSaveTimeoutRef = useRef(null)
+  const isQuittingRef = useRef(false) // Use ref instead of state for immediate access
 
   // Available themes for random cycling
   const availableThemes = [
@@ -165,7 +165,7 @@ function App() {
     
     currentWindow.onCloseRequested(async (event) => {
       // If we're intentionally quitting via Ctrl+Q, don't show dialog again
-      if (isQuitting) {
+      if (isQuittingRef.current) {
         console.log('✅ Quitting intentionally, allowing close')
         return // Allow close
       }
@@ -207,7 +207,7 @@ function App() {
     return () => {
       if (unlistenClose) unlistenClose()
     }
-  }, [hasUnsavedChanges, fileContent, currentTempId, isQuitting, isEditing]) // Re-register when these change
+  }, [hasUnsavedChanges, fileContent, currentTempId, isEditing]) // Re-register when these change (no isQuitting since it's a ref)
   
   useEffect(() => {
     // Setup Omakase sync interval if enabled
@@ -862,19 +862,18 @@ function App() {
         }
       }
       
-      // Set flag to bypass window close handler
-      setIsQuitting(true)
+      // Set flag to bypass window close handler (using ref for immediate access)
+      isQuittingRef.current = true
+      console.log('🚪 Quitting app...')
       
-      // Wait a tiny bit for state to update
-      await new Promise(resolve => setTimeout(resolve, 10))
-      
-      // Now close the window - close handler will see isQuitting = true and allow it
+      // Now close the window - close handler will see isQuittingRef.current = true and allow it
       const window = getCurrentWindow()
       await window.close()
     } catch (error) {
       console.error('Error quitting app:', error)
       // Reset flag on error
-      setIsQuitting(false)
+      isQuittingRef.current = false
+      toast.error('Failed to quit app')
     }
   }
 
