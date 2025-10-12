@@ -22,6 +22,7 @@ import { isOmakaseEnvironment, syncWithOmakase } from './utils/omakaseSync'
 import './styles/App.css'
 import './styles/ThemeSelector.css'
 import './styles/markdown-themes.css'
+import './styles/WelcomeScreen.css'
 
 function App() {
   const [currentTheme, setCurrentTheme] = useState('dracula-dark') // Unified theme state
