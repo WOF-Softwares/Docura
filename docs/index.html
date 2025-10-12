@@ -268,6 +268,47 @@
         <!-- Marked.js for Markdown Parsing -->
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+        <!-- Flamethrower Router - Blazingly Fast SPA Feel -->
+        <script type="module">
+            import flamethrower from 'https://cdn.skypack.dev/flamethrower-router@0.0.0-meme.5';
+            
+            // Initialize with optimal settings
+            const router = flamethrower({ 
+                prefetch: 'visible',  // Prefetch visible links
+                log: false,           // Disable console logs in production
+                pageTransitions: true // Smooth transitions
+            });
+
+            // Add loading bar feedback with smooth transitions
+            window.addEventListener('flamethrower:router:fetch', () => {
+                const progressBar = document.getElementById('flame-progress-bar');
+                if (progressBar) {
+                    progressBar.style.width = '0%';
+                    progressBar.classList.add('active');
+                    document.body.classList.add('flamethrower-loading');
+                }
+            });
+
+            window.addEventListener('flamethrower:router:fetch-progress', ({ detail }) => {
+                const progressBar = document.getElementById('flame-progress-bar');
+                if (progressBar && detail.progress) {
+                    progressBar.style.width = detail.progress + '%';
+                }
+            });
+
+            window.addEventListener('flamethrower:router:end', () => {
+                const progressBar = document.getElementById('flame-progress-bar');
+                document.body.classList.remove('flamethrower-loading');
+                if (progressBar) {
+                    progressBar.style.width = '100%';
+                    setTimeout(() => {
+                        progressBar.classList.remove('active');
+                        progressBar.style.width = '0%';
+                    }, 300);
+                }
+            });
+        </script>
+
         <!-- Inter Font -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -458,9 +499,42 @@
                 font-weight: 600;
                 color: var(--text-primary);
             }
+
+            /* Flamethrower Loading Bar */
+            #flame-progress-bar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 3px;
+                background: linear-gradient(
+                    90deg,
+                    var(--accent) 0%,
+                    var(--success) 100%
+                );
+                width: 0%;
+                opacity: 0;
+                transition: width 0.3s ease, opacity 0.2s ease;
+                z-index: 9999;
+                box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            }
+
+            #flame-progress-bar.active {
+                opacity: 1;
+            }
+
+            /* Smooth page transitions */
+            body {
+                transition: opacity 0.15s ease-in-out;
+            }
+
+            body.flamethrower-loading {
+                opacity: 0.95;
+            }
         </style>
     </head>
     <body class="bg-dark-primary text-text-primary min-h-screen" x-data="app()">
+        <!-- Flamethrower Progress Bar -->
+        <div id="flame-progress-bar"></div>
         <!-- Navigation -->
         <nav
             class="sticky top-0 z-50 bg-dark-primary/90 backdrop-blur-sm border-b border-border-dark"
