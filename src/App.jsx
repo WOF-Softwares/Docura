@@ -55,6 +55,7 @@ function App() {
   const [unsavedChangesDialog, setUnsavedChangesDialog] = useState({ visible: false, onSave: null, onDontSave: null })
   const [recoveryDialog, setRecoveryDialog] = useState({ visible: false, tempFile: null })
   const [currentTempId, setCurrentTempId] = useState(null) // Track temp file ID for unsaved files
+  const [recoveryChecked, setRecoveryChecked] = useState(false) // Track if we've already checked for recovery
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
   const autoSaveTimeoutRef = useRef(null)
@@ -77,8 +78,11 @@ function App() {
     // Load recent items
     loadRecentItems()
     
-    // Check for temp files (crash recovery)
-    loadTempFilesOnStartup()
+    // Check for temp files (crash recovery) - ONLY ONCE on mount
+    if (!recoveryChecked) {
+      loadTempFilesOnStartup()
+      setRecoveryChecked(true)
+    }
     
     // Check if running in tiling WM
     invoke('is_tiling_wm').then((isTiling) => {
@@ -92,45 +96,9 @@ function App() {
     // Check for Omakase
     checkOmakase()
     
-    // Set up window close interceptor (prevent close if unsaved changes)
-    const currentWindow = getCurrentWindow()
-    let unlistenClose
-    
-    currentWindow.onCloseRequested(async (event) => {
-      // Check if there are unsaved changes
-      if (hasUnsavedChanges && fileContent.trim() !== '') {
-        // Prevent the window from closing
-        event.preventDefault()
-        
-        console.log('🛑 Window close prevented - showing unsaved changes dialog')
-        
-        // Show unsaved changes dialog
-        const choice = await showUnsavedChangesDialog()
-        
-        if (choice === 'saved' || choice === 'dont-save') {
-          // User chose to save or discard - clean up temp file if exists
-          if (currentTempId) {
-            try {
-              await invoke('delete_temp_file', { tempId: currentTempId })
-              console.log('🗑️ Deleted temp file on app close')
-            } catch (error) {
-              console.error('Failed to delete temp file:', error)
-            }
-          }
-          
-          // Now close the window
-          await currentWindow.close()
-        }
-        // If 'cancelled', do nothing - window stays open
-      }
-      // If no unsaved changes, allow window to close normally
-    }).then(fn => { 
-      unlistenClose = fn
-      console.log('✅ Window close listener registered')
-    })
-    
     // Set up CLI event listeners (WINDOW-SPECIFIC)
     console.log('🎧 Setting up window-specific CLI event listeners...')
+    const currentWindow = getCurrentWindow()
     let unlistenFolder, unlistenFile
     
     // Use window-specific listen instead of global listen
@@ -184,9 +152,53 @@ function App() {
     
     // Cleanup
     return () => {
-      if (unlistenClose) unlistenClose()
       if (unlistenFolder) unlistenFolder()
       if (unlistenFile) unlistenFile()
+    }
+  }, []) // Only run once on mount
+  
+  useEffect(() => {
+    // Set up window close interceptor (prevent close if unsaved changes)
+    const currentWindow = getCurrentWindow()
+    let unlistenClose
+    
+    currentWindow.onCloseRequested(async (event) => {
+      // Check if there are unsaved changes
+      if (hasUnsavedChanges && fileContent.trim() !== '') {
+        // Prevent the window from closing
+        event.preventDefault()
+        
+        console.log('🛑 Window close prevented - showing unsaved changes dialog')
+        
+        // Show unsaved changes dialog
+        const choice = await showUnsavedChangesDialog()
+        
+        if (choice === 'saved' || choice === 'dont-save') {
+          // User chose to save or discard - clean up temp file if exists
+          if (currentTempId) {
+            try {
+              await invoke('delete_temp_file', { tempId: currentTempId })
+              console.log('🗑️ Deleted temp file on app close')
+            } catch (error) {
+              console.error('Failed to delete temp file:', error)
+            }
+          }
+          
+          // Now close the window (unregister listener first to avoid recursion)
+          if (unlistenClose) unlistenClose()
+          await currentWindow.close()
+        }
+        // If 'cancelled', do nothing - window stays open
+      }
+      // If no unsaved changes, allow window to close normally
+    }).then(fn => { 
+      unlistenClose = fn
+      console.log('✅ Window close listener registered')
+    })
+    
+    // Cleanup
+    return () => {
+      if (unlistenClose) unlistenClose()
     }
   }, [hasUnsavedChanges, fileContent, currentTempId]) // Re-register when these change
   
