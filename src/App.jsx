@@ -191,7 +191,10 @@ function App() {
             }
           }
           
-          // Now close the window (unregister listener first to avoid recursion)
+          // Set flag to allow close, then unregister and close
+          isQuittingRef.current = true
+          console.log('🚪 Closing app after user confirmation...')
+          
           if (unlistenClose) unlistenClose()
           await currentWindow.close()
         }
