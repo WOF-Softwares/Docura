@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { invoke } from '@tauri-apps/api/core'
-import { FileText, Folder, FolderOpen, File, Clock, Zap } from 'lucide-react'
+import { FileText, Folder, FolderOpen, File, Clock, Zap, Lightbulb, Palette } from 'lucide-react'
 import '../styles/WelcomeScreen.css'
 
 function WelcomeScreen({ 
@@ -42,34 +42,33 @@ function WelcomeScreen({
 
   const quickActions = [
     {
-      icon: <FileText size={24} />,
+      icon: <FileText size={20} />,
       title: 'New File',
-      description: 'Create a new markdown document',
-      shortcut: 'Ctrl+N',
-      onClick: onNewFile,
-      primary: true
+      onClick: onNewFile
     },
     {
-      icon: <FolderOpen size={24} />,
+      icon: <FolderOpen size={20} />,
       title: 'Open Folder',
-      description: 'Open a folder of markdown files',
-      shortcut: 'Ctrl+Shift+O',
       onClick: onOpenFolder
     },
     {
-      icon: <File size={24} />,
+      icon: <File size={20} />,
       title: 'Open File',
-      description: 'Open an existing markdown file',
-      shortcut: 'Ctrl+O',
       onClick: onOpenFile
+    },
+    {
+      icon: <Palette size={20} />,
+      title: 'Themes',
+      onClick: () => {}
     }
   ]
 
-  const tips = [
-    { emoji: '⚡', text: 'Press Ctrl+P for quick file search' },
-    { emoji: '🎨', text: 'Click the palette icon to change themes' },
-    { emoji: '💾', text: 'Auto-save keeps your work safe automatically' },
-    { emoji: '🖼️', text: 'Drag & drop images directly into the editor' }
+  const shortcuts = [
+    { key: 'Ctrl+N', description: 'Create new document' },
+    { key: 'Ctrl+O', description: 'Open file' },
+    { key: 'Ctrl+Shift+O', description: 'Open folder' },
+    { key: 'Ctrl+P', description: 'Quick file search' },
+    { key: 'Ctrl+S', description: 'Save document' }
   ]
 
   return (
@@ -77,50 +76,46 @@ function WelcomeScreen({
       <div className="welcome-content">
         {/* Greeting Section */}
         <div className="welcome-greeting">
+          <div className="greeting-emoji">{greeting.emoji}</div>
           <h1 className="greeting-title">
-            <span className="greeting-emoji">{greeting.emoji}</span>
             {greeting.text}, {username}!
           </h1>
           <p className="welcome-subtitle">
-            Welcome to <span className="app-name">Docura</span> — A beautiful markdown editor
+            Welcome to <span className="app-name">Docura</span>
           </p>
         </div>
 
-        {/* Main Grid */}
-        <div className="welcome-grid">
-          {/* Quick Actions */}
-          <div className="welcome-section">
-            <div className="section-header">
-              <Zap size={20} />
-              <h2>Get Started</h2>
+        {/* Cards Grid */}
+        <div className="welcome-cards">
+          {/* Quick Actions Card */}
+          <div className="welcome-card">
+            <div className="card-header">
+              <Zap size={16} />
+              <h2>Quick Actions</h2>
             </div>
-            <div className="quick-actions">
+            <div className="actions-grid">
               {quickActions.map((action, index) => (
                 <button
                   key={index}
-                  className={`action-card ${action.primary ? 'primary' : ''}`}
+                  className="action-item"
                   onClick={action.onClick}
                 >
                   <div className="action-icon">{action.icon}</div>
-                  <div className="action-content">
-                    <h3>{action.title}</h3>
-                    <p>{action.description}</p>
-                  </div>
-                  <div className="action-shortcut">{action.shortcut}</div>
+                  <div className="action-title">{action.title}</div>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Recent Items */}
+          {/* Recent Items Card */}
           {recentItems.length > 0 && (
-            <div className="welcome-section">
-              <div className="section-header">
-                <Clock size={20} />
+            <div className="welcome-card">
+              <div className="card-header">
+                <Clock size={16} />
                 <h2>Recent</h2>
               </div>
               <div className="recent-list">
-                {recentItems.slice(0, 6).map((item, index) => (
+                {recentItems.slice(0, 5).map((item, index) => (
                   <button
                     key={index}
                     className="recent-item"
@@ -128,12 +123,12 @@ function WelcomeScreen({
                   >
                     <div className="recent-icon">
                       {item.type === 'folder' ? (
-                        <Folder size={18} />
+                        <Folder size={16} />
                       ) : (
-                        <FileText size={18} />
+                        <FileText size={16} />
                       )}
                     </div>
-                    <div className="recent-content">
+                    <div className="recent-info">
                       <div className="recent-name">{item.name}</div>
                       <div className="recent-path">{item.path}</div>
                     </div>
@@ -142,18 +137,21 @@ function WelcomeScreen({
               </div>
             </div>
           )}
-        </div>
 
-        {/* Tips Section */}
-        <div className="welcome-tips">
-          <h3 className="tips-title">💡 Quick Tips</h3>
-          <div className="tips-grid">
-            {tips.map((tip, index) => (
-              <div key={index} className="tip-item">
-                <span className="tip-emoji">{tip.emoji}</span>
-                <span className="tip-text">{tip.text}</span>
-              </div>
-            ))}
+          {/* Keyboard Shortcuts Card */}
+          <div className="welcome-card">
+            <div className="card-header">
+              <Lightbulb size={16} />
+              <h2>Keyboard Shortcuts</h2>
+            </div>
+            <div className="shortcuts-list">
+              {shortcuts.map((shortcut, index) => (
+                <div key={index} className="shortcut-item">
+                  <kbd className="shortcut-key">{shortcut.key}</kbd>
+                  <span className="shortcut-desc">{shortcut.description}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
