@@ -153,6 +153,34 @@ fn get_directory_contents(dir_path: &Path) -> Result<Vec<FileItem>, String> {
 }
 
 #[command]
+async fn read_file_content(file_path: String) -> Result<String, String> {
+    let path = Path::new(&file_path);
+    
+    if !path.exists() {
+        return Err("File does not exist".to_string());
+    }
+    
+    if !path.is_file() {
+        return Err("Path is not a file".to_string());
+    }
+    
+    // Only read text files (markdown, txt, etc.)
+    if let Some(extension) = path.extension() {
+        let ext = extension.to_string_lossy().to_lowercase();
+        let allowed_extensions = ["md", "markdown", "txt", "mdown", "mkdn", "mdx"];
+        
+        if !allowed_extensions.contains(&ext.as_str()) {
+            return Err("File type not supported for content search".to_string());
+        }
+    }
+    
+    match fs::read_to_string(path) {
+        Ok(content) => Ok(content),
+        Err(e) => Err(format!("Failed to read file: {}", e))
+    }
+}
+
+#[command]
 async fn export_to_pdf(_content: String, filename: String) -> Result<String, String> {
     // For now, return a placeholder message
     // In a real implementation, you would use a library like wkhtmltopdf or headless Chrome
@@ -820,6 +848,7 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             get_folder_files,
+            read_file_content,
             export_to_pdf,
             print_document,
             load_config,
