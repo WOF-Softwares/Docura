@@ -31,6 +31,8 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 **Day 2 brings a MASSIVE feature update!** Docura keeps getting better:
 
 ### 🆕 Day 2 Features (October 11, 2025)
+- 🏠 **Modern Welcome Screen** - VSCode/Cursor-style welcome with time-based greetings, quick actions, recent items, keyboard shortcuts! **Typora doesn't have this!** ✨
+- 📱 **Ultra-Responsive Design** - Welcome screen adapts perfectly to any screen size, high DPI displays, Wayland scaling, and tiling WMs!
 - 🎨 **Omarchy Integration** - Auto-sync with DHH's Omarchy themes! Respects Omarchy control when enabled
 - ⚙️ **Settings Dialog** - New settings page for Omarchy sync and future preferences
 - 📋 **Menu System** - Professional unified menu (File, Export, View, Settings)
