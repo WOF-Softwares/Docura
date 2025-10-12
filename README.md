@@ -1,10 +1,14 @@
 # 📝 Docura
 
-**A fast, elegant, and powerful Markdown editor that surpasses Typora.**
+**From Markdown Editor to Writing Operating System**
+
+🚀 A fast, elegant, and powerful next-generation writing platform that surpasses Typora and transforms how you create content.
 
 🎉 **Version 1.1 Released!** 🎉
 
-Docura is a next-generation native desktop app designed for Linux systems. Built with Rust (Tauri) and React, it combines the best features of Typora, VS Code, Medium, and Notion into one beautiful, lightweight application.
+Docura is not just another markdown editor - it's the foundation for the **ultimate writing environment**. Currently a powerful native desktop app designed for Linux systems, built with Rust (Tauri) and React, combining the best features of Typora, VS Code, Medium, and Notion into one beautiful, lightweight application.
+
+**Coming Soon:** AI assistance, real-time collaboration, advanced publishing, and intelligent writing analytics. [See our future vision →](#-future-vision---v20-and-beyond)
 
 ## 🎨 **NEW! Omarchy Integration** - Built for DHH's Workflow
 
@@ -537,7 +541,9 @@ All themes are consistently applied across:
 
 ---
 
-## 🛣️ Roadmap
+## 🛣️ Current Development Roadmap
+
+> 💡 **Looking for the big picture?** Check out our [Enhanced Roadmap](#-enhanced-roadmap) for Docura's revolutionary future vision!
 
 ### ✅ Phase 1: Core Editor (Complete!)
 - [x] Tauri + React project setup
@@ -695,6 +701,126 @@ This project was built with the incredible help of modern AI tools:
 **Special Thanks to Claude (Anthropic)** 🎉 - The primary AI model powering most of the development, architecture decisions, and problem-solving throughout this project. Claude's ability to understand context, suggest elegant solutions, and help debug issues was instrumental in completing Docura in just 2 days!
 
 *This project showcases what's possible when human creativity meets AI assistance. The future of software development is here!*
+
+---
+
+## 🔮 Future Vision - v2.0 and Beyond
+
+### 🚀 The Ultimate Writing Environment
+
+Docura is evolving into more than just a markdown editor - it's becoming your **complete writing operating system**.
+
+### 🎯 Upcoming Elite Features
+
+#### 🤖 AI-Powered Writing Suite
+- **Smart Completions** - Write faster with AI-assisted suggestions
+- **One-Click Rewrites** - Improve clarity, expand ideas, change tone
+- **Automatic Summarization** - Extract key points from long documents
+- **Multilingual Support** - Write and translate across languages seamlessly
+
+#### 👥 Real-time Collaboration
+- **Google Docs-style Editing** - Multiple cursors, live presence
+- **Comments & Threads** - Discuss changes without leaving the editor
+- **Version Control** - Git-like history with visual diffs
+- **Team Workspaces** - Organization-level document management
+
+#### 🎨 Ultimate Customization
+- **Plugin Ecosystem** - Extend functionality with community plugins
+- **CSS Injection** - Complete UI customization
+- **Custom Keybindings** - Remap every action to your workflow
+- **Layout Presets** - Save and switch between workspace setups
+
+#### 📈 Productivity Intelligence
+- **Writing Analytics** - Track focus time, word counts, streaks
+- **Smart Goals** - Set and achieve writing targets with AI coaching
+- **Readability Optimization** - Hemingway-style writing improvements
+- **Time Tracking** - Understand your writing patterns and habits
+
+#### 🌐 Advanced Publishing
+- **One-Click Publishing** - Direct to blogs, documentation sites
+- **Ebook Generation** - Create professional ePub/Mobi files
+- **Slide Deck Export** - Convert markdown to beautiful presentations
+- **API Ecosystem** - Connect to your favorite tools and platforms
+
+### 🏆 Why This Matters
+
+**Traditional editors are stuck in the past.** They treat writing as a solitary, static activity.
+
+**Docura sees writing as:**
+- 🤝 **Collaborative** - Work together in real-time
+- 🧠 **Intelligent** - AI that helps you think better
+- 📊 **Data-Driven** - Insights to improve your craft
+- 🔗 **Connected** - Publish anywhere with one click
+- 🎨 **Personal** - Mold the tool to your exact workflow
+
+### 💡 The Big Picture
+
+We're building the **writing environment of the future** - where the tool disappears and you're left with pure creative flow.
+
+**From markdown editor → writing assistant → creative partner.**
+
+---
+
+## 🗓️ Enhanced Roadmap
+
+### 🔥 Phase 6: Intelligence & Customization (Q1 2026)
+- [ ] AI Writing Assistant integration
+- [ ] Plugin system architecture
+- [ ] Advanced customization (CSS, keybindings)
+- [ ] Writing analytics dashboard
+- [ ] Semantic search across documents
+- [ ] Custom export templates
+
+### 🚀 Phase 7: Collaboration & Ecosystem (Q2 2026)
+- [ ] Real-time multiplayer editing
+- [ ] Commenting & annotation system
+- [ ] Version control with visual diffs
+- [ ] One-click publishing platform
+- [ ] API ecosystem and integrations
+- [ ] Team workspaces and permissions
+
+### 🌟 Phase 8: Platform Vision (H2 2026)
+- [ ] Mobile companion apps
+- [ ] Offline-first sync architecture
+- [ ] Enterprise features
+- [ ] Marketplace for plugins and themes
+- [ ] AI training on your writing style
+- [ ] Voice-to-markdown integration
+
+---
+
+## 🎯 Our Philosophy
+
+### Why Docura Will Surpass Everything
+
+**Current State:**
+- 🐌 Traditional editors: Slow innovation, siloed features
+- 💡 Docura: Rapid iteration, integrated experience
+
+**Our Advantage:**
+- ⚡ **AI-Assisted Development** - We move at light speed
+- 🎯 **User-Centric Focus** - Features users actually want
+- 🔓 **Open Source** - Community drives innovation
+- 🦀 **Rust Performance** - Native speed, minimal resources
+- 🎨 **Beautiful Design** - No compromise on user experience
+
+**The Result:** A writing tool that **adapts to you**, not the other way around.
+
+---
+
+<div align="center">
+
+## 🚀 Join the Revolution
+
+**We're not just building another editor. We're reimagining how writing software should work.**
+
+[⭐ Star the repo](https://github.com/WOF-Softwares/Docura) | 
+[💬 Join discussions](https://github.com/WOF-Softwares/Docura/discussions) |
+[🔧 Contribute](CONTRIBUTING.md)
+
+**Be part of building the future of writing!** ✨
+
+</div>
 
 ---
 
