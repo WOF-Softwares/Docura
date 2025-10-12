@@ -59,6 +59,12 @@ function App() {
   const [recoveryDialog, setRecoveryDialog] = useState({ visible: false, tempFile: null })
   const [currentTempId, setCurrentTempId] = useState(null) // Track temp file ID for unsaved files
   const [recoveryChecked, setRecoveryChecked] = useState(false) // Track if we've already checked for recovery
+  const [editorSettings, setEditorSettings] = useState({
+    indentation: '2',
+    lineEnding: 'LF',
+    encoding: 'UTF-8'
+  })
+  const [cursorPosition, setCursorPosition] = useState({ line: 1, column: 1 })
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
   const autoSaveTimeoutRef = useRef(null)
@@ -1546,6 +1552,30 @@ function App() {
     }
   }
 
+  const handleEditorSettingsChange = (newSettings) => {
+    setEditorSettings(newSettings)
+    // TODO: Persist editor settings to config
+  }
+  
+  // Calculate word count
+  const getWordCount = () => {
+    if (!fileContent) return 0
+    const words = fileContent.trim().split(/\s+/)
+    return words.filter(word => word.length > 0).length
+  }
+
+  // Calculate character count
+  const getCharCount = () => {
+    return fileContent.length
+  }
+
+  // Get indentation display string
+  const getIndentationDisplay = () => {
+    const indent = editorSettings.indentation
+    if (indent === 'tab') return 'Tab'
+    return `${indent} Spaces`
+  }
+
   const toggleFullscreen = async () => {
     try {
       const window = getCurrentWindow()
@@ -1641,8 +1671,24 @@ function App() {
           onOpenFile={openFile}
           onNewFile={newFile}
           onOpenRecentItem={openRecentItem}
+          onCursorPositionChange={setCursorPosition}
         />
       </div>
+
+      {!isFullscreen && (
+        <StatusBar
+          currentFile={currentFile}
+          wordCount={getWordCount()}
+          charCount={getCharCount()}
+          lineNumber={cursorPosition.line}
+          columnNumber={cursorPosition.column}
+          encoding={editorSettings.encoding}
+          lineEnding={editorSettings.lineEnding}
+          indentation={getIndentationDisplay()}
+          isEditing={isEditing}
+          onSettingsClick={() => setIsSettingsOpen(true)}
+        />
+      )}
 
       <ThemeSelector
         isOpen={isThemeSelectorOpen}
@@ -1667,6 +1713,8 @@ function App() {
         onSyncNow={handleOmakaseSync}
         autoSaveEnabled={autoSaveEnabled}
         onAutoSaveToggle={handleAutoSaveToggle}
+        editorSettings={editorSettings}
+        onEditorSettingsChange={handleEditorSettingsChange}
       />
 
       <FolderSwitchDialog

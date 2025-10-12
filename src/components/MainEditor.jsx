@@ -240,7 +240,8 @@ const MainEditor = ({
   onOpenFolder,
   onOpenFile,
   onNewFile,
-  onOpenRecentItem
+  onOpenRecentItem,
+  onCursorPositionChange
 }) => {
   const monacoRef = useRef(null)
   const editorRef = useRef(null) // Reference to the editor instance
@@ -282,6 +283,16 @@ const MainEditor = ({
     // Set initial theme
     if (markdownTheme) {
       monaco.editor.setTheme(markdownTheme)
+    }
+    
+    // Track cursor position changes
+    if (onCursorPositionChange) {
+      editor.onDidChangeCursorPosition((e) => {
+        onCursorPositionChange({
+          line: e.position.lineNumber,
+          column: e.position.column
+        })
+      })
     }
   }
 
