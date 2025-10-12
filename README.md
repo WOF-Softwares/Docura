@@ -34,7 +34,10 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 - 🎨 **Omarchy Integration** - Auto-sync with DHH's Omarchy themes! Respects Omarchy control when enabled
 - ⚙️ **Settings Dialog** - New settings page for Omarchy sync and future preferences
 - 📋 **Menu System** - Professional unified menu (File, Export, View, Settings)
-- ✨ **Keyboard Shortcuts** - Ctrl+S (Save), Ctrl+Shift+S (Save As), Ctrl+O (Open), Ctrl+Shift+O (Open Folder), Ctrl+N (New)
+- 🔍 **Quick Search (Ctrl+P)** - VSCode-style command palette to instantly find files in folder and recent items
+- 📜 **Recent History** - Track last 15 opened files/folders, stored in ~/.local/share/docura/config.json
+- 📂 **Recent Submenu** - Hover-activated submenu in menu for quick access to recent items
+- ✨ **Keyboard Shortcuts** - Ctrl+S (Save), Ctrl+P (Quick Search), Ctrl+O (Open), Ctrl+N (New), and more
 - 🔔 **Toast Notifications** - Beautiful feedback for every action (save, open, errors)
 - 🔴 **Unsaved Changes Indicator** - Pulsing dot shows when file needs saving
 - 🎯 **Active File Highlighting** - Current file highlighted in sidebar with accent border
@@ -48,6 +51,7 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 - 🪟 **Multi-Window Support** - Open multiple Docura instances, like VS Code or Chrome!
 - 📁 **Smart Folder Dialog** - Choose to open in new window or replace current folder
 - 🎯 **Clean State Management** - Seamless transitions between folders, files, and new documents
+- 🖱️ **Context Menu** - Right-click menu with common actions (New, Open, Copy, Paste, etc.)
 
 ### 📦 v1.0 Core Features
 - ✅ **Three Editing Modes** - Code, Live (WYSIWYG), and Preview
@@ -327,9 +331,20 @@ Typora forces you into one way of working. **Docura lets you choose your adventu
 - 💾 **Theme Persistence** - Your choice is saved between sessions
 - 🎲 **Random Theme** - Discover new themes with one click
 
-### 📂 File Management
+### 📂 File Management & Navigation
 - 📁 **Folder Explorer** - Recursive directory tree with expand/collapse
 - 📄 **Multiple File Support** - Quick switching between markdown files
+- 🔍 **Quick Search (Ctrl+P)** - Instantly find files VSCode-style
+  - Real-time fuzzy search across all files in folder
+  - Searches through recent items history
+  - Keyboard navigation (↑↓ arrows, Enter to open, Esc to close)
+  - Shows up to 15 results with smart sorting
+  - Markdown files only (filters out images, configs, etc.)
+- 📜 **Recent History** - Automatically tracks last 15 files/folders
+  - Stored in `~/.local/share/docura/config.json`
+  - Accessible via hover submenu in Menu
+  - Quick re-open frequently used files
+  - Clear history option
 - 💾 **Save & Save As** - Standard file operations with native dialogs
 - 🔔 **Toast Notifications** - Visual feedback for all file operations
 - 🔴 **Unsaved Changes** - Pulsing dot indicator when file needs saving
@@ -356,14 +371,19 @@ Typora forces you into one way of working. **Docura lets you choose your adventu
 - 🎯 **Smart UI** - Hides toolbar and sidebar in fullscreen
 
 ### ⌨️ Keyboard Shortcuts
+- **Ctrl+P** - Quick Search (find files instantly)
 - **Ctrl+S** - Save current file
 - **Ctrl+Shift+S** - Save As (with dialog)
 - **Ctrl+O** - Open file
 - **Ctrl+Shift+O** - Open folder
+- **Ctrl+N** - New file
+- **Ctrl+E** - Export to PDF
+- **Ctrl+Alt+P** - Print (preview dialog)
+- **Ctrl+Shift+P** - Settings
 - **Ctrl+B** - Toggle sidebar visibility
 - **F11** - Toggle fullscreen mode
 
-*More shortcuts coming soon!*
+*VSCode-level keyboard shortcuts!* ⚡
 
 ### 🚀 Performance
 - ⚡ **23% Less Memory** than Typora (780 MB vs 1011 MB)
@@ -531,15 +551,21 @@ All themes are consistently applied across:
 - [x] Styled PDF output matching themes
 - [x] Native file save integration
 
-### 🚧 Phase 4: Enhanced Features (Next)
-- [ ] Recent files list
-- [ ] Search across files (Ctrl+F)
+### ✅ Phase 4: Enhanced Navigation (Complete!)
+- [x] Recent files list with persistent storage
+- [x] Quick Search (Ctrl+P) - VSCode-style file finder
+- [x] Recent history submenu with hover activation
+- [x] Keyboard shortcuts for all major operations
+- [x] Context menu (right-click) support
+
+### 🚧 Phase 5: Enhanced Features (Next)
+- [x] Search in file content (Ctrl+F)
 - [ ] Find & Replace (Ctrl+H)
 - [ ] Auto-save option
 - [ ] Custom CSS theme support
 - [ ] Image paste from clipboard
 
-### 🔮 Phase 5: Advanced Features
+### 🔮 Phase 6: Advanced Features
 - [ ] Split pane editing (vertical/horizontal)
 - [ ] Vim keybindings mode
 - [ ] Diagram support (Mermaid, PlantUML)
@@ -549,10 +575,11 @@ All themes are consistently applied across:
 - [ ] Git integration
 - [ ] Plugin system for extensions
 
-### 📦 Phase 6: Distribution
+### 📦 Phase 7: Distribution
 - [ ] AppImage packaging
-- [ ] AUR package for Arch Linux
-- [ ] `.deb` package for Debian/Ubuntu
+- [x] AUR and xz package for Arch Linux based distro
+- [x] `.deb` package for Debian/Ubuntu and all debain based distros
+- [x] `.rpm` package for Redhat/Fedora and other rpm based distros
 - [ ] Flatpak support
 - [x] **Version 1.0 Released!** 🎉
 
