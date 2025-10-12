@@ -13,6 +13,7 @@ import PDFPreviewDialog from './components/PDFPreviewDialog'
 import SettingsDialog from './components/SettingsDialog'
 import FolderSwitchDialog from './components/FolderSwitchDialog'
 import QuickOpenDialog from './components/QuickOpenDialog'
+import ContextMenu from './components/ContextMenu'
 import { exportToPDF, generatePDFBlob } from './utils/pdfExport'
 import { convertMarkdownImagePaths } from './utils/imagePathConverter'
 import { isOmakaseEnvironment, syncWithOmakase } from './utils/omakaseSync'
@@ -46,6 +47,7 @@ function App() {
   const [pendingFolderPath, setPendingFolderPath] = useState(null)
   const [recentItems, setRecentItems] = useState([])
   const [isQuickOpenVisible, setIsQuickOpenVisible] = useState(false)
+  const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, hasSelection: false })
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
 
@@ -254,6 +256,40 @@ function App() {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [currentFile, hasUnsavedChanges, fileContent])
+
+  useEffect(() => {
+    // Handle right-click context menu
+    const handleContextMenu = (e) => {
+      // Allow default context menu in Monaco editor and MDEditor (contenteditable areas)
+      const target = e.target
+      const isEditor = target.closest('.monaco-editor') || 
+                      target.closest('.w-md-editor-text') || 
+                      target.closest('.w-md-editor-text-pre') ||
+                      target.closest('.w-md-editor-text-input')
+      
+      if (isEditor) {
+        // Allow default context menu in editor areas
+        return
+      }
+
+      // Prevent default context menu everywhere else
+      e.preventDefault()
+      
+      // Check if there's any selected text
+      const selection = window.getSelection()
+      const hasSelection = selection && selection.toString().length > 0
+      
+      setContextMenu({
+        visible: true,
+        x: e.clientX,
+        y: e.clientY,
+        hasSelection
+      })
+    }
+
+    window.addEventListener('contextmenu', handleContextMenu)
+    return () => window.removeEventListener('contextmenu', handleContextMenu)
+  }, [])
 
   useEffect(() => {
     // Apply unified theme to document
@@ -940,6 +976,19 @@ function App() {
     setIsSidebarVisible(prev => !prev)
   }
 
+  // Context menu handlers
+  const handleContextMenuCopy = () => {
+    document.execCommand('copy')
+  }
+
+  const handleContextMenuCut = () => {
+    document.execCommand('cut')
+  }
+
+  const handleContextMenuPaste = () => {
+    document.execCommand('paste')
+  }
+
   // Extract theme variant for UI components that need it
   const currentVariant = currentTheme.split('-')[1] || 'dark'
 
@@ -1043,6 +1092,24 @@ function App() {
         onSelectFile={handleQuickOpenFile}
         currentFolder={currentFolder}
       />
+
+      {contextMenu.visible && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          hasSelection={contextMenu.hasSelection}
+          onClose={() => setContextMenu({ ...contextMenu, visible: false })}
+          onNewFile={newFile}
+          onOpenFile={openFile}
+          onOpenFolder={openFolder}
+          onQuickOpen={() => setIsQuickOpenVisible(true)}
+          onOpenSettings={() => setIsSettingsOpen(true)}
+          onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
+          onCopy={handleContextMenuCopy}
+          onCut={handleContextMenuCut}
+          onPaste={handleContextMenuPaste}
+        />
+      )}
 
       <Toaster
         position="bottom-right"
