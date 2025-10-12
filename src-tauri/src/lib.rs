@@ -724,6 +724,13 @@ async fn save_clipboard_image(
     Ok(format!("assets/{}", final_name))
 }
 
+#[command]
+async fn quit_app(app: tauri::AppHandle) -> Result<(), String> {
+    log::info!("Quit command received, exiting application");
+    app.exit(0);
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Get CLI arguments
@@ -798,7 +805,8 @@ pub fn run() {
             save_temp_file,
             load_temp_files,
             delete_temp_file,
-            clear_all_temp_files
+            clear_all_temp_files,
+            quit_app
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

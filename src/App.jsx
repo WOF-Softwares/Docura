@@ -52,7 +52,7 @@ function App() {
   const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, hasSelection: false })
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true)
   const [isAutoSaving, setIsAutoSaving] = useState(false)
-  const [unsavedChangesDialog, setUnsavedChangesDialog] = useState({ visible: false, onSave: null, onDontSave: null })
+  const [unsavedChangesDialog, setUnsavedChangesDialog] = useState({ visible: false, onSave: null, onDontSave: null, onCancel: null })
   const [recoveryDialog, setRecoveryDialog] = useState({ visible: false, tempFile: null })
   const [currentTempId, setCurrentTempId] = useState(null) // Track temp file ID for unsaved files
   const [recoveryChecked, setRecoveryChecked] = useState(false) // Track if we've already checked for recovery
@@ -61,6 +61,11 @@ function App() {
   const autoSaveTimeoutRef = useRef(null)
   const tempSaveTimeoutRef = useRef(null)
   const isQuittingRef = useRef(false) // Use ref instead of state for immediate access
+  const hasUnsavedChangesRef = useRef(hasUnsavedChanges)
+  const fileContentRef = useRef(fileContent)
+  const isEditingRef = useRef(isEditing)
+  const currentTempIdRef = useRef(currentTempId)
+  const showUnsavedChangesDialogRef = useRef(null)
 
   // Available themes for random cycling
   const availableThemes = [
@@ -164,27 +169,29 @@ function App() {
     let unlistenClose
     
     currentWindow.onCloseRequested(async (event) => {
+      console.log('🔧 Window close requested, isQuitting:', isQuittingRef.current)
+      
       // If we're intentionally quitting via Ctrl+Q, don't show dialog again
       if (isQuittingRef.current) {
         console.log('✅ Quitting intentionally, allowing close')
         return // Allow close
       }
       
-      // Check if there are unsaved changes
-      if (hasUnsavedChanges && fileContent.trim() !== '' && isEditing) {
+      // Check if there are unsaved changes (access current state values via refs)
+      if (hasUnsavedChangesRef.current && fileContentRef.current.trim() !== '' && isEditingRef.current) {
         // Prevent the window from closing
         event.preventDefault()
         
         console.log('🛑 Window close prevented - showing unsaved changes dialog')
         
         // Show unsaved changes dialog
-        const choice = await showUnsavedChangesDialog()
+        const choice = await showUnsavedChangesDialogRef.current()
         
         if (choice === 'saved' || choice === 'dont-save') {
           // User chose to save or discard - clean up temp file if exists
-          if (currentTempId) {
+          if (currentTempIdRef.current) {
             try {
-              await invoke('delete_temp_file', { tempId: currentTempId })
+              await invoke('delete_temp_file', { tempId: currentTempIdRef.current })
               console.log('🗑️ Deleted temp file on app close')
             } catch (error) {
               console.error('Failed to delete temp file:', error)
@@ -199,6 +206,8 @@ function App() {
           await currentWindow.close()
         }
         // If 'cancelled', do nothing - window stays open
+      } else {
+        console.log('✅ No unsaved changes, allowing close')
       }
       // If no unsaved changes, allow window to close normally
     }).then(fn => { 
@@ -210,7 +219,7 @@ function App() {
     return () => {
       if (unlistenClose) unlistenClose()
     }
-  }, [hasUnsavedChanges, fileContent, currentTempId, isEditing]) // Re-register when these change (no isQuitting since it's a ref)
+  }, []) // Remove dependencies and only register once
   
   useEffect(() => {
     // Setup Omakase sync interval if enabled
@@ -483,6 +492,23 @@ function App() {
     }
   }, [fileContent, currentFile])
 
+  // Keep refs updated with current state values for window close handler
+  useEffect(() => {
+    hasUnsavedChangesRef.current = hasUnsavedChanges
+  }, [hasUnsavedChanges])
+  
+  useEffect(() => {
+    fileContentRef.current = fileContent
+  }, [fileContent])
+  
+  useEffect(() => {
+    isEditingRef.current = isEditing
+  }, [isEditing])
+  
+  useEffect(() => {
+    currentTempIdRef.current = currentTempId
+  }, [currentTempId])
+
   const checkOmakase = async () => {
     const available = await isOmakaseEnvironment()
     setOmakaseAvailable(available)
@@ -725,7 +751,7 @@ function App() {
       setUnsavedChangesDialog({
         visible: true,
         onSave: async () => {
-          setUnsavedChangesDialog({ visible: false, onSave: null, onDontSave: null })
+          setUnsavedChangesDialog({ visible: false, onSave: null, onDontSave: null, onCancel: null })
           if (!currentFile) {
             await saveFileAs()
             resolve(currentFile ? 'saved' : 'cancelled')
@@ -735,16 +761,19 @@ function App() {
           }
         },
         onDontSave: () => {
-          setUnsavedChangesDialog({ visible: false, onSave: null, onDontSave: null })
+          setUnsavedChangesDialog({ visible: false, onSave: null, onDontSave: null, onCancel: null })
           resolve('dont-save')
         },
         onCancel: () => {
-          setUnsavedChangesDialog({ visible: false, onSave: null, onDontSave: null })
+          setUnsavedChangesDialog({ visible: false, onSave: null, onDontSave: null, onCancel: null })
           resolve('cancelled')
         }
       })
     })
   }
+
+  // Update the ref whenever the function changes
+  showUnsavedChangesDialogRef.current = showUnsavedChangesDialog
 
   const newFile = async () => {
     try {
@@ -835,14 +864,19 @@ function App() {
   }
 
   const quitApp = async () => {
+    console.log('🔧 quitApp called')
     try {
       // Only show dialog if there's actually unsaved content
       if (hasUnsavedChanges && fileContent.trim() !== '' && isEditing) {
+        console.log('🔧 Showing unsaved changes dialog for quit')
         const choice = await showUnsavedChangesDialog()
         
         if (choice === 'cancelled') {
+          console.log('🔧 User cancelled quit')
           return // User cancelled, don't quit
         }
+        
+        console.log('🔧 User chose:', choice)
         
         // If user chose to save or discard, clean up temp file
         if (currentTempId) {
@@ -854,6 +888,7 @@ function App() {
           }
         }
       } else {
+        console.log('🔧 No unsaved changes, proceeding with quit')
         // No unsaved changes, just clean up temp file if exists
         if (currentTempId) {
           try {
@@ -867,11 +902,11 @@ function App() {
       
       // Set flag to bypass window close handler (using ref for immediate access)
       isQuittingRef.current = true
-      console.log('🚪 Quitting app...')
+      console.log('🚪 Quitting app... (flag set to true)')
       
-      // Now close the window - close handler will see isQuittingRef.current = true and allow it
-      const window = getCurrentWindow()
-      await window.close()
+      // Use custom quit command instead of exit() or window.close()
+      await invoke('quit_app')
+      console.log('🚪 Quit command sent')
     } catch (error) {
       console.error('Error quitting app:', error)
       // Reset flag on error
