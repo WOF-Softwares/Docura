@@ -12,6 +12,7 @@ import ThemeSelector from './components/ThemeSelector'
 import PDFPreviewDialog from './components/PDFPreviewDialog'
 import SettingsDialog from './components/SettingsDialog'
 import FolderSwitchDialog from './components/FolderSwitchDialog'
+import QuickOpenDialog from './components/QuickOpenDialog'
 import { exportToPDF, generatePDFBlob } from './utils/pdfExport'
 import { convertMarkdownImagePaths } from './utils/imagePathConverter'
 import { isOmakaseEnvironment, syncWithOmakase } from './utils/omakaseSync'
@@ -44,6 +45,7 @@ function App() {
   const [isFolderSwitchDialogOpen, setIsFolderSwitchDialogOpen] = useState(false)
   const [pendingFolderPath, setPendingFolderPath] = useState(null)
   const [recentItems, setRecentItems] = useState([])
+  const [isQuickOpenVisible, setIsQuickOpenVisible] = useState(false)
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
 
@@ -227,8 +229,8 @@ function App() {
         e.preventDefault()
         await newFile()
       }
-      // Ctrl+P for print
-      if (e.ctrlKey && !e.shiftKey && e.key === 'p') {
+      // Ctrl+Alt+P for print
+      if (e.ctrlKey && e.altKey && e.key === 'p') {
         e.preventDefault()
         await handlePrint()
       }
@@ -241,6 +243,11 @@ function App() {
       if (e.ctrlKey && e.shiftKey && e.key === 'P') {
         e.preventDefault()
         setIsSettingsOpen(true)
+      }
+      // Ctrl+P for quick open (only if not Shift or Alt)
+      if (e.ctrlKey && !e.shiftKey && !e.altKey && e.key === 'p') {
+        e.preventDefault()
+        setIsQuickOpenVisible(true)
       }
     }
     
@@ -831,6 +838,30 @@ function App() {
     }
   }
 
+  const handleQuickOpenFile = async (filePath) => {
+    try {
+      // Grant file system scope
+      await invoke('grant_file_scope', { filePath })
+      
+      // Read file content
+      const content = await readTextFile(filePath)
+      setCurrentFile(filePath)
+      setFileContent(content)
+      setOriginalContent(content)
+      setIsEditing(true)
+      extractHeaders(content)
+      
+      // Add to recent items
+      await addRecentItem(filePath, 'file')
+      
+      const fileName = filePath.split('/').pop()
+      toast.success(`Opened: ${fileName}`)
+    } catch (error) {
+      console.error('Error opening file from quick open:', error)
+      toast.error('Failed to open file')
+    }
+  }
+
   const onContentChange = (newContent) => {
     setFileContent(newContent)
     extractHeaders(newContent)
@@ -939,6 +970,7 @@ function App() {
         recentItems={recentItems}
         onOpenRecentItem={openRecentItem}
         onClearRecentItems={clearRecentItems}
+        onOpenQuickSearch={() => setIsQuickOpenVisible(true)}
       />
       )}
       
@@ -1001,6 +1033,15 @@ function App() {
         currentFolder={currentFolder}
         newFolder={pendingFolderPath}
         onChoice={handleFolderSwitchChoice}
+      />
+
+      <QuickOpenDialog
+        isOpen={isQuickOpenVisible}
+        onClose={() => setIsQuickOpenVisible(false)}
+        files={files}
+        recentItems={recentItems}
+        onSelectFile={handleQuickOpenFile}
+        currentFolder={currentFolder}
       />
 
       <Toaster

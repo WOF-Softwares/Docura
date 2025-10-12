@@ -5,7 +5,8 @@ import {
   Maximize,
   Minimize,
   PanelLeftClose,
-  PanelLeft
+  PanelLeft,
+  Search
 } from 'lucide-react'
 import Menu from './Menu'
 
@@ -32,7 +33,8 @@ const Toolbar = ({
   isSyncing,
   recentItems,
   onOpenRecentItem,
-  onClearRecentItems
+  onClearRecentItems,
+  onOpenQuickSearch
 }) => {
   return (
     <div className="toolbar">
@@ -56,6 +58,17 @@ const Toolbar = ({
           onOpenRecentItem={onOpenRecentItem}
           onClearRecentItems={onClearRecentItems}
         />
+      </div>
+      
+      <div className="toolbar-section">
+        <button
+          className="toolbar-button quick-search-button"
+          onClick={onOpenQuickSearch}
+          title="Quick Open (Ctrl+P)"
+        >
+          <Search size={16} />
+          <span>Search</span>
+        </button>
       </div>
       
       <div className="toolbar-section">

@@ -175,7 +175,7 @@ const Menu = ({
             >
               <Printer size={16} />
               <span>Print</span>
-              <span className="menu-shortcut">Ctrl+P</span>
+              <span className="menu-shortcut">Ctrl+Alt+P</span>
             </button>
           </div>
 
