@@ -226,8 +226,16 @@ function App() {
 
   useEffect(() => {
     // Track unsaved changes
-    if (originalContent !== '' && fileContent !== originalContent) {
-      setHasUnsavedChanges(true)
+    // For new files (originalContent === ''), mark as unsaved if user has typed anything
+    // For existing files, mark as unsaved if content changed
+    if (fileContent !== originalContent) {
+      // Has changes if: content differs AND (has content OR had original content)
+      if (fileContent.trim() !== '' || originalContent !== '') {
+        setHasUnsavedChanges(true)
+      } else {
+        // Both empty - no unsaved changes
+        setHasUnsavedChanges(false)
+      }
     } else {
       setHasUnsavedChanges(false)
     }
@@ -362,6 +370,16 @@ function App() {
       if (e.ctrlKey && e.key === 'n') {
         e.preventDefault()
         await newFile()
+      }
+      // Ctrl+W for close current file
+      if (e.ctrlKey && e.key === 'w') {
+        e.preventDefault()
+        await closeCurrentFile()
+      }
+      // Ctrl+Q or Super+Q for quit app
+      if ((e.ctrlKey || e.metaKey) && e.key === 'q') {
+        e.preventDefault()
+        await quitApp()
       }
       // Ctrl+Alt+P for print
       if (e.ctrlKey && e.altKey && e.key === 'p') {
@@ -760,6 +778,79 @@ function App() {
     } catch (error) {
       console.error('Error creating new file:', error)
       toast.error('Failed to create new file')
+    }
+  }
+
+  const closeCurrentFile = async () => {
+    try {
+      // If there's unsaved content, prompt to save first
+      if (hasUnsavedChanges && fileContent.trim() !== '') {
+        const choice = await showUnsavedChangesDialog()
+        
+        if (choice === 'cancelled') {
+          return // User cancelled, keep file open
+        }
+      }
+      
+      // Delete temp file if exists
+      if (currentTempId) {
+        try {
+          await invoke('delete_temp_file', { tempId: currentTempId })
+          console.log('🗑️ Deleted temp file on close')
+        } catch (error) {
+          console.error('Failed to delete temp file:', error)
+        }
+      }
+      
+      // Clear editor and state (back to welcome screen)
+      setCurrentFile(null)
+      setCurrentTempId(null)
+      setFileContent('')
+      setOriginalContent('')
+      setDisplayContent('')
+      setHasUnsavedChanges(false)
+      setIsEditing(false)
+      setOutlineHeaders([])
+      
+      // Keep folder/files in sidebar if folder is open
+      if (!currentFolder) {
+        setFiles([])
+      }
+      
+      toast.success('File closed')
+    } catch (error) {
+      console.error('Error closing file:', error)
+      toast.error('Failed to close file')
+    }
+  }
+
+  const quitApp = async () => {
+    try {
+      // If there's unsaved content, prompt to save first
+      if (hasUnsavedChanges && fileContent.trim() !== '') {
+        const choice = await showUnsavedChangesDialog()
+        
+        if (choice === 'cancelled') {
+          return // User cancelled, don't quit
+        }
+      }
+      
+      // Delete temp file if exists
+      if (currentTempId) {
+        try {
+          await invoke('delete_temp_file', { tempId: currentTempId })
+          console.log('🗑️ Deleted temp file on quit')
+        } catch (error) {
+          console.error('Failed to delete temp file:', error)
+        }
+      }
+      
+      // Close the window
+      const window = getCurrentWindow()
+      await window.close()
+    } catch (error) {
+      console.error('Error quitting app:', error)
+      toast.error('Failed to quit app')
     }
   }
 
