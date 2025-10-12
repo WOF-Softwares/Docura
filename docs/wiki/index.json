@@ -1,0 +1,63 @@
+[
+  {
+    "slug": "getting-started",
+    "file": "getting-started.md",
+    "title": "Getting Started with Docura",
+    "description": "Learn the basics of using Docura markdown editor",
+    "category": "Basics",
+    "icon": "🚀",
+    "difficulty": "Beginner",
+    "readTime": "5 min read"
+  },
+  {
+    "slug": "editing-modes",
+    "file": "editing-modes.md",
+    "title": "Editing Modes",
+    "description": "Understanding Docura's three powerful editing modes",
+    "category": "Editing",
+    "icon": "✍️",
+    "difficulty": "Beginner",
+    "readTime": "7 min read"
+  },
+  {
+    "slug": "keyboard-shortcuts",
+    "file": "keyboard-shortcuts.md",
+    "title": "Keyboard Shortcuts",
+    "description": "Master Docura with these essential keyboard shortcuts",
+    "category": "Productivity",
+    "icon": "⌨️",
+    "difficulty": "Intermediate",
+    "readTime": "6 min read"
+  },
+  {
+    "slug": "themes",
+    "file": "themes.md",
+    "title": "Themes and Customization",
+    "description": "Explore Docura's 12 beautiful themes and customization options",
+    "category": "Customization",
+    "icon": "🎨",
+    "difficulty": "Beginner",
+    "readTime": "8 min read"
+  },
+  {
+    "slug": "export-features",
+    "file": "export-features.md",
+    "title": "Export Features",
+    "description": "Export your markdown to PDF, HTML, JSON, RTF, and more",
+    "category": "Export",
+    "icon": "🚀",
+    "difficulty": "Intermediate",
+    "readTime": "10 min read"
+  },
+  {
+    "slug": "images",
+    "file": "images.md",
+    "title": "Working with Images",
+    "description": "Add local and online images to your markdown documents",
+    "category": "Media",
+    "icon": "🖼️",
+    "difficulty": "Intermediate",
+    "readTime": "8 min read"
+  }
+]
+
