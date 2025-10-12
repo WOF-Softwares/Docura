@@ -56,6 +56,7 @@ function App() {
   const [recoveryDialog, setRecoveryDialog] = useState({ visible: false, tempFile: null })
   const [currentTempId, setCurrentTempId] = useState(null) // Track temp file ID for unsaved files
   const [recoveryChecked, setRecoveryChecked] = useState(false) // Track if we've already checked for recovery
+  const [isQuitting, setIsQuitting] = useState(false) // Track if we're intentionally quitting to bypass close handler
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
   const autoSaveTimeoutRef = useRef(null)
@@ -163,8 +164,14 @@ function App() {
     let unlistenClose
     
     currentWindow.onCloseRequested(async (event) => {
+      // If we're intentionally quitting via Ctrl+Q, don't show dialog again
+      if (isQuitting) {
+        console.log('✅ Quitting intentionally, allowing close')
+        return // Allow close
+      }
+      
       // Check if there are unsaved changes
-      if (hasUnsavedChanges && fileContent.trim() !== '') {
+      if (hasUnsavedChanges && fileContent.trim() !== '' && isEditing) {
         // Prevent the window from closing
         event.preventDefault()
         
@@ -200,7 +207,7 @@ function App() {
     return () => {
       if (unlistenClose) unlistenClose()
     }
-  }, [hasUnsavedChanges, fileContent, currentTempId]) // Re-register when these change
+  }, [hasUnsavedChanges, fileContent, currentTempId, isQuitting, isEditing]) // Re-register when these change
   
   useEffect(() => {
     // Setup Omakase sync interval if enabled
@@ -826,31 +833,48 @@ function App() {
 
   const quitApp = async () => {
     try {
-      // If there's unsaved content, prompt to save first
-      if (hasUnsavedChanges && fileContent.trim() !== '') {
+      // Only show dialog if there's actually unsaved content
+      if (hasUnsavedChanges && fileContent.trim() !== '' && isEditing) {
         const choice = await showUnsavedChangesDialog()
         
         if (choice === 'cancelled') {
           return // User cancelled, don't quit
         }
-      }
-      
-      // Delete temp file if exists
-      if (currentTempId) {
-        try {
-          await invoke('delete_temp_file', { tempId: currentTempId })
-          console.log('🗑️ Deleted temp file on quit')
-        } catch (error) {
-          console.error('Failed to delete temp file:', error)
+        
+        // If user chose to save or discard, clean up temp file
+        if (currentTempId) {
+          try {
+            await invoke('delete_temp_file', { tempId: currentTempId })
+            console.log('🗑️ Deleted temp file on quit')
+          } catch (error) {
+            console.error('Failed to delete temp file:', error)
+          }
+        }
+      } else {
+        // No unsaved changes, just clean up temp file if exists
+        if (currentTempId) {
+          try {
+            await invoke('delete_temp_file', { tempId: currentTempId })
+            console.log('🗑️ Deleted temp file on quit')
+          } catch (error) {
+            console.error('Failed to delete temp file:', error)
+          }
         }
       }
       
-      // Close the window
+      // Set flag to bypass window close handler
+      setIsQuitting(true)
+      
+      // Wait a tiny bit for state to update
+      await new Promise(resolve => setTimeout(resolve, 10))
+      
+      // Now close the window - close handler will see isQuitting = true and allow it
       const window = getCurrentWindow()
       await window.close()
     } catch (error) {
       console.error('Error quitting app:', error)
-      toast.error('Failed to quit app')
+      // Reset flag on error
+      setIsQuitting(false)
     }
   }
 
