@@ -287,9 +287,20 @@ function App() {
       })
     }
 
+    // Close context menu on Escape key
+    const handleEscapeKey = (e) => {
+      if (e.key === 'Escape' && contextMenu.visible) {
+        setContextMenu({ ...contextMenu, visible: false })
+      }
+    }
+
     window.addEventListener('contextmenu', handleContextMenu)
-    return () => window.removeEventListener('contextmenu', handleContextMenu)
-  }, [])
+    window.addEventListener('keydown', handleEscapeKey)
+    return () => {
+      window.removeEventListener('contextmenu', handleContextMenu)
+      window.removeEventListener('keydown', handleEscapeKey)
+    }
+  }, [contextMenu])
 
   useEffect(() => {
     // Apply unified theme to document
