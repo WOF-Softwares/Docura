@@ -659,6 +659,15 @@ function App() {
 
   const openFolder = async () => {
     try {
+      // Check for unsaved changes first
+      if (hasUnsavedChanges && fileContent.trim() !== '') {
+        const choice = await showUnsavedChangesDialog()
+        
+        if (choice === 'cancelled') {
+          return // User cancelled, don't open folder
+        }
+      }
+      
       const selected = await open({
         directory: true,
         multiple: false,
@@ -734,6 +743,15 @@ function App() {
 
   const openFile = async () => {
     try {
+      // Check for unsaved changes first
+      if (hasUnsavedChanges && fileContent.trim() !== '') {
+        const choice = await showUnsavedChangesDialog()
+        
+        if (choice === 'cancelled') {
+          return // User cancelled, don't open file
+        }
+      }
+      
       const selected = await open({
         filters: [
           {
@@ -752,6 +770,18 @@ function App() {
         }
         
         const content = await readTextFile(selected)
+        
+        // Clean up temp file if switching from untitled
+        if (currentTempId) {
+          try {
+            await invoke('delete_temp_file', { tempId: currentTempId })
+            console.log('🗑️ Deleted temp file when opening new file')
+          } catch (error) {
+            console.error('Failed to delete temp file:', error)
+          }
+          setCurrentTempId(null)
+        }
+        
         setCurrentFile(selected)
         setFileContent(content)
         setOriginalContent(content)
@@ -991,6 +1021,15 @@ function App() {
 
   const selectFile = async (filePath) => {
     try {
+      // Check for unsaved changes first
+      if (hasUnsavedChanges && fileContent.trim() !== '') {
+        const choice = await showUnsavedChangesDialog()
+        
+        if (choice === 'cancelled') {
+          return // User cancelled, don't switch files
+        }
+      }
+      
       // Grant file system scope for the file's directory
       try {
         await invoke('grant_file_scope', { filePath })
@@ -999,6 +1038,18 @@ function App() {
       }
       
       const content = await readTextFile(filePath)
+      
+      // Clean up temp file if switching from untitled
+      if (currentTempId) {
+        try {
+          await invoke('delete_temp_file', { tempId: currentTempId })
+          console.log('🗑️ Deleted temp file when switching files')
+        } catch (error) {
+          console.error('Failed to delete temp file:', error)
+        }
+        setCurrentTempId(null)
+      }
+      
       setCurrentFile(filePath)
       setFileContent(content)
       setOriginalContent(content)
@@ -1018,6 +1069,15 @@ function App() {
   
   const openRecentItem = async (item) => {
     try {
+      // Check for unsaved changes first
+      if (hasUnsavedChanges && fileContent.trim() !== '') {
+        const choice = await showUnsavedChangesDialog()
+        
+        if (choice === 'cancelled') {
+          return // User cancelled
+        }
+      }
+      
       if (item.type === 'folder') {
         // Check if a folder is already open
         if (currentFolder) {
@@ -1030,6 +1090,18 @@ function App() {
         // Open file
         await invoke('grant_file_scope', { filePath: item.path })
         const content = await readTextFile(item.path)
+        
+        // Clean up temp file if switching from untitled
+        if (currentTempId) {
+          try {
+            await invoke('delete_temp_file', { tempId: currentTempId })
+            console.log('🗑️ Deleted temp file when opening recent item')
+          } catch (error) {
+            console.error('Failed to delete temp file:', error)
+          }
+          setCurrentTempId(null)
+        }
+        
         setCurrentFile(item.path)
         setFileContent(content)
         setOriginalContent(content)
@@ -1057,11 +1129,32 @@ function App() {
 
   const handleQuickOpenFile = async (filePath) => {
     try {
+      // Check for unsaved changes first
+      if (hasUnsavedChanges && fileContent.trim() !== '') {
+        const choice = await showUnsavedChangesDialog()
+        
+        if (choice === 'cancelled') {
+          return // User cancelled, keep quick open dialog open
+        }
+      }
+      
       // Grant file system scope
       await invoke('grant_file_scope', { filePath })
       
       // Read file content
       const content = await readTextFile(filePath)
+      
+      // Clean up temp file if switching from untitled
+      if (currentTempId) {
+        try {
+          await invoke('delete_temp_file', { tempId: currentTempId })
+          console.log('🗑️ Deleted temp file when opening from quick search')
+        } catch (error) {
+          console.error('Failed to delete temp file:', error)
+        }
+        setCurrentTempId(null)
+      }
+      
       setCurrentFile(filePath)
       setFileContent(content)
       setOriginalContent(content)
