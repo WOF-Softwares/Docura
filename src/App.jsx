@@ -1672,6 +1672,7 @@ function App() {
           onNewFile={newFile}
           onOpenRecentItem={openRecentItem}
           onCursorPositionChange={setCursorPosition}
+          onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
         />
       </div>
 

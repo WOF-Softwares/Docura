@@ -8,7 +8,8 @@ function WelcomeScreen({
   onOpenFolder, 
   onOpenFile, 
   onNewFile,
-  onOpenRecentItem 
+  onOpenRecentItem,
+  onOpenThemeSelector
 }) {
   const [username, setUsername] = useState('')
   const [greeting, setGreeting] = useState({ text: 'Hello', emoji: '👋' })
@@ -59,7 +60,7 @@ function WelcomeScreen({
     {
       icon: <Palette size={20} />,
       title: 'Themes',
-      onClick: () => {}
+      onClick: onOpenThemeSelector
     }
   ]
 

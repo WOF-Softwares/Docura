@@ -241,7 +241,8 @@ const MainEditor = ({
   onOpenFile,
   onNewFile,
   onOpenRecentItem,
-  onCursorPositionChange
+  onCursorPositionChange,
+  onOpenThemeSelector
 }) => {
   const monacoRef = useRef(null)
   const editorRef = useRef(null) // Reference to the editor instance
@@ -447,6 +448,7 @@ const MainEditor = ({
           onOpenFile={onOpenFile}
           onNewFile={onNewFile}
           onOpenRecentItem={onOpenRecentItem}
+          onOpenThemeSelector={onOpenThemeSelector}
         />
       </div>
     )
