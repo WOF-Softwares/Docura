@@ -911,7 +911,7 @@
 .quick-open-dialog {
     width: 600px;
     max-width: 90vw;
-    max-height: 600px;
+    max-height: 80vh; /* Use viewport height instead of fixed pixels */
     background-color: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -977,7 +977,7 @@
     overflow-y: auto;
     padding: 8px 8px 0 8px;
     min-height: 200px;
-    max-height: 400px;
+    max-height: calc(80vh - 140px); /* Account for header (~60px) and footer (~80px) height */
 }
 
 .quick-open-item {
