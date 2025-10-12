@@ -16,6 +16,7 @@ import QuickOpenDialog from './components/QuickOpenDialog'
 import ContextMenu from './components/ContextMenu'
 import UnsavedChangesDialog from './components/UnsavedChangesDialog'
 import RecoveryDialog from './components/RecoveryDialog'
+import StatusBar from './components/StatusBar'
 import { exportToPDF, generatePDFBlob } from './utils/pdfExport'
 import { convertMarkdownImagePaths } from './utils/imagePathConverter'
 import { isOmakaseEnvironment, syncWithOmakase } from './utils/omakaseSync'
@@ -23,6 +24,7 @@ import './styles/App.css'
 import './styles/ThemeSelector.css'
 import './styles/markdown-themes.css'
 import './styles/WelcomeScreen.css'
+import './styles/StatusBar.css'
 
 function App() {
   const [currentTheme, setCurrentTheme] = useState('dracula-dark') // Unified theme state

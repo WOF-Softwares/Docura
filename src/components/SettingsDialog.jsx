@@ -9,10 +9,13 @@ const SettingsDialog = ({
   onOmakaseSyncToggle,
   onSyncNow,
   autoSaveEnabled,
-  onAutoSaveToggle
+  onAutoSaveToggle,
+  editorSettings,
+  onEditorSettingsChange
 }) => {
   const [omakaseStatus, setOmakaseStatus] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('general')
 
   useEffect(() => {
     if (isOpen) {
@@ -43,7 +46,28 @@ const SettingsDialog = ({
           </button>
         </div>
 
-        <div className="settings-content">
+        <div className="settings-body">
+          {/* Settings Tabs Sidebar */}
+          <div className="settings-sidebar">
+            <button
+              className={`settings-tab ${activeTab === 'general' ? 'active' : ''}`}
+              onClick={() => setActiveTab('general')}
+            >
+              ⚙️ General
+            </button>
+            <button
+              className={`settings-tab ${activeTab === 'advanced' ? 'active' : ''}`}
+              onClick={() => setActiveTab('advanced')}
+            >
+              🔧 Editor Settings
+            </button>
+          </div>
+
+          {/* Settings Content */}
+          <div className="settings-content">
+            {/* General Tab */}
+            {activeTab === 'general' && (
+              <>
           {/* Omakase Sync Section */}
           <div className="settings-section">
             <h3>🎨 Omakase Integration</h3>
@@ -122,6 +146,76 @@ const SettingsDialog = ({
                 Automatically save your file 2 seconds after you stop typing. Only works with saved files (not "Untitled" documents).
               </p>
             </div>
+          </div>
+              </>
+            )}
+
+            {/* Advanced/Editor Settings Tab */}
+            {activeTab === 'advanced' && (
+              <>
+                <div className="settings-section">
+                  <h3>📝 Editor</h3>
+                  
+                  <div className="settings-option">
+                    <label className="setting-label">
+                      Default Indentation
+                    </label>
+                    <select
+                      className="setting-select"
+                      value={editorSettings?.indentation || '2'}
+                      onChange={(e) => onEditorSettingsChange({ ...editorSettings, indentation: e.target.value })}
+                    >
+                      <option value="2">2 Spaces</option>
+                      <option value="4">4 Spaces</option>
+                      <option value="8">8 Spaces</option>
+                      <option value="tab">Tab</option>
+                    </select>
+                    <p className="option-description">
+                      Default indentation size for new documents
+                    </p>
+                  </div>
+
+                  <div className="settings-option">
+                    <label className="setting-label">
+                      Line Ending
+                    </label>
+                    <select
+                      className="setting-select"
+                      value={editorSettings?.lineEnding || 'LF'}
+                      onChange={(e) => onEditorSettingsChange({ ...editorSettings, lineEnding: e.target.value })}
+                    >
+                      <option value="LF">LF (Unix/Linux)</option>
+                      <option value="CRLF">CRLF (Windows)</option>
+                      <option value="CR">CR (Mac Classic)</option>
+                    </select>
+                    <p className="option-description">
+                      Default line ending for new documents
+                    </p>
+                  </div>
+
+                  <div className="settings-option">
+                    <label className="setting-label">
+                      Encoding
+                    </label>
+                    <select
+                      className="setting-select"
+                      value={editorSettings?.encoding || 'UTF-8'}
+                      onChange={(e) => onEditorSettingsChange({ ...editorSettings, encoding: e.target.value })}
+                    >
+                      <option value="UTF-8">UTF-8</option>
+                      <option value="UTF-16">UTF-16</option>
+                      <option value="UTF-16LE">UTF-16LE</option>
+                      <option value="UTF-16BE">UTF-16BE</option>
+                      <option value="ISO-8859-1">ISO-8859-1 (Latin-1)</option>
+                      <option value="Windows-1252">Windows-1252</option>
+                    </select>
+                    <p className="option-description">
+                      Default character encoding for new documents. File-specific encoding is detected and shown in status bar.
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
 

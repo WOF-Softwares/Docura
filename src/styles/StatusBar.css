@@ -1,0 +1,114 @@
+/* Modern Status Bar */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 28px;
+  min-height: 28px;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  padding: 0 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  user-select: none;
+  z-index: 100;
+}
+
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.status-item.file-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.status-item.clickable {
+  cursor: pointer;
+}
+
+.status-item.clickable:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.status-item.settings-button {
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.status-item.settings-button:hover {
+  background-color: var(--accent-color);
+  color: var(--bg-primary);
+}
+
+.status-divider {
+  width: 1px;
+  height: 16px;
+  background-color: var(--border-color);
+  margin: 0 4px;
+}
+
+/* Responsive - hide some items on small screens */
+@media (max-width: 768px) {
+  .status-bar {
+    font-size: 11px;
+    padding: 0 8px;
+  }
+  
+  .status-item {
+    padding: 2px 6px;
+    gap: 4px;
+  }
+  
+  /* Hide character count on small screens */
+  .status-item:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .status-bar {
+    font-size: 10px;
+  }
+  
+  .status-item {
+    padding: 2px 4px;
+  }
+  
+  /* Hide word count too on very small screens */
+  .status-item:nth-child(3) {
+    display: none;
+  }
+}
+
+/* Dark mode enhancements */
+[data-theme-variant="dark"] .status-bar {
+  background-color: var(--bg-secondary);
+  border-top-color: var(--border-color);
+}
+
+/* Light mode enhancements */
+[data-theme-variant="light"] .status-bar {
+  background-color: var(--bg-secondary);
+  border-top-color: var(--border-color);
+}
+
