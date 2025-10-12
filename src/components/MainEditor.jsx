@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react'
 import Editor from '@monaco-editor/react'
 import MDEditor from '@uiw/react-md-editor'
+import VditorEditor from './VditorEditor'
 import { Code, Eye, Edit3 } from 'lucide-react'
 import { invoke } from '@tauri-apps/api/core'
 import toast from 'react-hot-toast'
@@ -513,19 +514,13 @@ const MainEditor = ({
             className="wysiwyg-editor" 
             data-color-mode={markdownTheme?.includes('dark') ? 'dark' : 'light'}
           >
-            <MDEditor
+            <VditorEditor
               value={fileContent}
               onChange={(value) => handleEditorChange(value || '')}
               height="100%"
-              preview="live"
-              hideToolbar={false}
-              enableScroll={true}
-              visibleDragbar={false}
-              highlightEnable={true}
-              previewOptions={{
-                // Use display content for preview side with converted image paths
-                value: displayContent || fileContent
-              }}
+              theme={markdownTheme?.includes('dark') ? 'dark' : 'light'}
+              mode="wysiwyg"
+              currentFile={currentFile}
             />
           </div>
         ) : (

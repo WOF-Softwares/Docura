@@ -83,6 +83,8 @@
           },
           "featureList": [
             "Three Editing Modes (Code, Live, Preview)",
+            "Modern Welcome Screen with Time-Based Greetings",
+            "Professional Status Bar (Line/Col, Word/Char Count)",
             "Quick Search (Ctrl+P) - VSCode-style file finder",
             "Recent History (15 files/folders)",
             "Multi-Window Support",
@@ -94,11 +96,13 @@
             "Toast Notifications",
             "Context Menu",
             "Smart Auto-Save",
-            "Image Paste from Clipboard"
+            "Image Paste from Clipboard",
+            "Ultra-Responsive Design",
+            "Tiling WM Support"
           ],
           "programmingLanguage": ["Rust", "JavaScript", "React"],
           "datePublished": "2025-10-09",
-          "dateModified": "2025-10-11"
+          "dateModified": "2025-10-12"
         },
         {
           "@type": "Organization",
@@ -449,8 +453,8 @@
                 A modern, open-source markdown editor built with Tauri and React. 96% smaller than Typora with MORE features!
             </p>
             <div class="bg-dark-secondary rounded-lg p-4 max-w-2xl mx-auto mb-10 border border-accent">
-                <p class="text-lg text-accent font-semibold mb-2">🏠 NEW! Modern Welcome Screen + Auto-Save + 23+ Features</p>
-                <p class="text-text-secondary">VSCode/Cursor-style welcome screen with time-based greetings! Plus: Smart auto-save, paste images, Quick Search (Ctrl+P), Recent History, Omarchy integration, Ultra-responsive design! <strong class="text-success">Typora doesn't have any of this!</strong> <a href="#features" class="text-accent underline">See all features →</a></p>
+                <p class="text-lg text-accent font-semibold mb-2">🏠 NEW! Welcome Screen + Status Bar + Auto-Save + 25+ Features</p>
+                <p class="text-text-secondary">VSCode/Cursor-style welcome screen with time-based greetings! Professional status bar with stats! Plus: Smart auto-save, paste images, Quick Search (Ctrl+P), Recent History, Omarchy integration, Ultra-responsive design! <strong class="text-success">Typora has none of this!</strong> <a href="#features" class="text-accent underline">See all features →</a></p>
             </div>
             
             <div class="flex flex-wrap justify-center gap-8 mb-12">
@@ -467,7 +471,7 @@
                     <div class="text-sm text-text-secondary uppercase tracking-wider">vs 326MB</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-3xl font-bold text-accent">23+</div>
+                    <div class="text-3xl font-bold text-accent">25+</div>
                     <div class="text-sm text-text-secondary uppercase tracking-wider">Day 2 Features</div>
                 </div>
                 <div class="text-center">
@@ -600,8 +604,93 @@
         </div>
     </section>
 
+    <!-- Status Bar Showcase -->
+    <section class="py-16 bg-dark-primary">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center gradient-text">📊 Professional Status Bar - Like VSCode!</h2>
+            
+            <div class="max-w-5xl mx-auto">
+                <div class="bg-dark-tertiary rounded-xl p-8 border-2 border-accent mb-8">
+                    <div class="grid md:grid-cols-2 gap-8 mb-6">
+                        <div class="text-center">
+                            <div class="text-6xl mb-4">❌</div>
+                            <h3 class="text-2xl font-bold mb-3 text-error">Typora's Way</h3>
+                            <div class="bg-dark-primary rounded-lg p-4 text-left space-y-2">
+                                <p class="text-text-secondary">• No status bar</p>
+                                <p class="text-text-secondary">• <strong class="text-error">No stats!</strong></p>
+                                <p class="text-text-secondary">• No cursor position</p>
+                                <p class="text-text-secondary">• No word count</p>
+                                <p class="text-text-secondary">• Writing blind</p>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="text-6xl mb-4">✅</div>
+                            <h3 class="text-2xl font-bold mb-3 text-success">Docura's Way</h3>
+                            <div class="bg-dark-primary rounded-lg p-4 text-left space-y-2">
+                                <p class="text-text-secondary">• Professional status bar</p>
+                                <p class="text-text-secondary">• <strong class="text-success">All stats visible!</strong></p>
+                                <p class="text-text-secondary">• Ln 20, Col 30 tracking</p>
+                                <p class="text-text-secondary">• Word/char counts</p>
+                                <p class="text-text-secondary">• Encoding, line endings, indentation</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-dark-primary rounded-lg p-6 border border-border-dark">
+                        <h4 class="text-center mb-4 text-accent font-bold text-lg">Docura's Status Bar Features:</h4>
+                        <div class="grid md:grid-cols-3 gap-4 text-sm">
+                            <div class="bg-dark-secondary rounded-lg p-4">
+                                <p class="font-semibold text-success mb-2">📄 Current File</p>
+                                <p class="text-text-secondary">Always know which file you're editing with icon and filename display</p>
+                            </div>
+                            <div class="bg-dark-secondary rounded-lg p-4">
+                                <p class="font-semibold text-success mb-2">📍 Line & Column</p>
+                                <p class="text-text-secondary">Real-time cursor position (Ln 20, Col 30) - updates as you type!</p>
+                            </div>
+                            <div class="bg-dark-secondary rounded-lg p-4">
+                                <p class="font-semibold text-success mb-2">📝 Word Count</p>
+                                <p class="text-text-secondary">Live word count - perfect for writers with quotas</p>
+                            </div>
+                            <div class="bg-dark-secondary rounded-lg p-4">
+                                <p class="font-semibold text-success mb-2">🔤 Character Count</p>
+                                <p class="text-text-secondary">Track character count for Twitter posts, SMS, metadata</p>
+                            </div>
+                            <div class="bg-dark-secondary rounded-lg p-4">
+                                <p class="font-semibold text-success mb-2">🌍 Encoding</p>
+                                <p class="text-text-secondary">UTF-8, UTF-16, etc. - click to open settings and change</p>
+                            </div>
+                            <div class="bg-dark-secondary rounded-lg p-4">
+                                <p class="font-semibold text-success mb-2">↩️ Line Ending</p>
+                                <p class="text-text-secondary">LF (Unix) or CRLF (Windows) - clickable to adjust</p>
+                            </div>
+                            <div class="bg-dark-secondary rounded-lg p-4">
+                                <p class="font-semibold text-success mb-2">⌨️ Indentation</p>
+                                <p class="text-text-secondary">2 Spaces, 4 Spaces, or Tab - click to configure</p>
+                            </div>
+                            <div class="bg-dark-secondary rounded-lg p-4">
+                                <p class="font-semibold text-success mb-2">⚙️ Quick Settings</p>
+                                <p class="text-text-secondary">Gear icon for instant access to all editor settings</p>
+                            </div>
+                            <div class="bg-dark-secondary rounded-lg p-4">
+                                <p class="font-semibold text-success mb-2">📱 Responsive</p>
+                                <p class="text-text-secondary">Adapts to screen size - hides less important items on small screens</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-accent mb-2">💎 Professional Tools for Professional Writers!</p>
+                    <p class="text-lg text-text-secondary">Inspired by VSCode, refined for markdown editing!</p>
+                    <p class="text-sm text-text-secondary mt-4">326 MB Typora gives you nothing. 12 MB Docura gives you everything. 🎯</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Features Section -->
-    <section id="features" class="py-16">
+    <section id="features" class="py-16 bg-dark-secondary">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-12 text-center gradient-text">Three Modes, One Editor + Day 2 Features!</h2>
             
@@ -640,6 +729,13 @@
                     <div class="text-3xl mb-3">📱</div>
                     <h4 class="font-bold mb-2">Ultra-Responsive</h4>
                     <p class="text-sm text-text-secondary">Welcome screen adapts perfectly to any screen size, high DPI, Wayland scaling (150-300%), tiling WMs. <strong class="text-accent">Typora's UI breaks!</strong></p>
+                </div>
+                
+                <div class="bg-dark-tertiary rounded-lg p-5 border-2 border-accent hover:border-success transition-all relative">
+                    <div class="absolute top-2 right-2 bg-accent text-black text-xs font-bold px-2 py-1 rounded">NEW!</div>
+                    <div class="text-3xl mb-3">📊</div>
+                    <h4 class="font-bold mb-2">Professional Status Bar</h4>
+                    <p class="text-sm text-text-secondary">VSCode-style status bar: line/column, word/char count, encoding, line ending, indentation. <strong class="text-accent">Typora has none of this!</strong></p>
                 </div>
                 
                 <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
@@ -980,6 +1076,12 @@
                             <td class="py-4 px-6 text-success">Asks YOU 🙏</td>
                             <td class="py-4 px-6 text-success font-bold">💎 User respect</td>
                         </tr>
+                        <tr class="border-b border-border-dark">
+                            <td class="py-4 px-6 font-semibold">Status Bar</td>
+                            <td class="py-4 px-6">None 🙁</td>
+                            <td class="py-4 px-6 text-success">Professional! 📊</td>
+                            <td class="py-4 px-6 text-success font-bold">✨ Better info</td>
+                        </tr>
                         <tr>
                             <td class="py-4 px-6 font-semibold">Price</td>
                             <td class="py-4 px-6">$14.99</td>
@@ -993,7 +1095,7 @@
             <div class="text-text-secondary text-center mt-8 max-w-3xl mx-auto space-y-3">
                 <p class="text-lg font-semibold text-text-primary">You could install 27 copies of Docura in Typora's disk space!</p>
                 <p><strong>Why so efficient?</strong> No bundled Chromium, Rust backend, optimized React, and efficient WebKitGTK.</p>
-                <p class="text-accent font-semibold">💎 Better yet: Docura has a beautiful welcome screen (Typora has none!), RESPECTS your choices, and works perfectly everywhere! 🙏</p>
+                <p class="text-accent font-semibold">💎 Better yet: Docura has a beautiful welcome screen (Typora has none!), professional status bar (Typora has none!), RESPECTS your choices, and works perfectly everywhere! 🙏</p>
             </div>
         </div>
     </section>

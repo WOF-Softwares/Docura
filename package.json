@@ -41,6 +41,7 @@
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^15.6.6",
     "remark-gfm": "^4.0.1",
+    "vditor": "^3.11.2",
     "vite": "^7.1.9"
   },
   "devDependencies": {

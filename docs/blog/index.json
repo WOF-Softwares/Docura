@@ -1,5 +1,13 @@
 [
   {
+    "slug": "why-welcome-screens-matter",
+    "title": "Why Every Great Editor Needs a Welcome Screen",
+    "date": "October 12, 2025",
+    "readTime": "10 min read",
+    "excerpt": "VSCode has it. Cursor perfected it. Typora ignored it. Why welcome screens are the difference between delighting users and abandoning them.",
+    "file": "why-welcome-screens-matter.md"
+  },
+  {
     "slug": "multi-window-messaging-bug-fix",
     "title": "The Multi-Window Bug That Taught Me About Tauri Event Isolation",
     "date": "October 11, 2025",

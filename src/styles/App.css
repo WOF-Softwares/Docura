@@ -472,6 +472,95 @@
     line-height: 2 !important;
 }
 
+/* Vditor Editor Styles */
+.vditor-container {
+    height: 100%;
+    width: 100%;
+}
+
+.wysiwyg-editor .vditor {
+    border: none !important;
+    height: 100% !important;
+}
+
+.wysiwyg-editor .vditor-toolbar {
+    background-color: var(--bg-secondary) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 8px !important;
+}
+
+.wysiwyg-editor .vditor-toolbar .vditor-tooltipped {
+    color: var(--text-primary) !important;
+}
+
+.wysiwyg-editor .vditor-toolbar .vditor-tooltipped:hover {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.wysiwyg-editor .vditor-content {
+    background-color: var(--bg-primary) !important;
+}
+
+.wysiwyg-editor .vditor-wysiwyg,
+.wysiwyg-editor .vditor-ir,
+.wysiwyg-editor .vditor-sv {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    font-size: 16px !important;
+    line-height: 1.8 !important;
+    font-family: var(--editor-font) !important;
+}
+
+.wysiwyg-editor .vditor-wysiwyg h1,
+.wysiwyg-editor .vditor-wysiwyg h2,
+.wysiwyg-editor .vditor-wysiwyg h3,
+.wysiwyg-editor .vditor-wysiwyg h4,
+.wysiwyg-editor .vditor-wysiwyg h5,
+.wysiwyg-editor .vditor-wysiwyg h6,
+.wysiwyg-editor .vditor-ir h1,
+.wysiwyg-editor .vditor-ir h2,
+.wysiwyg-editor .vditor-ir h3,
+.wysiwyg-editor .vditor-ir h4,
+.wysiwyg-editor .vditor-ir h5,
+.wysiwyg-editor .vditor-ir h6 {
+    color: var(--heading-color) !important;
+}
+
+.wysiwyg-editor .vditor-wysiwyg a,
+.wysiwyg-editor .vditor-ir a {
+    color: var(--link-color) !important;
+}
+
+.wysiwyg-editor .vditor-wysiwyg code,
+.wysiwyg-editor .vditor-ir code {
+    background-color: var(--code-bg) !important;
+    color: var(--code-color) !important;
+}
+
+.wysiwyg-editor .vditor-wysiwyg pre,
+.wysiwyg-editor .vditor-ir pre {
+    background-color: var(--code-bg) !important;
+}
+
+.wysiwyg-editor .vditor-wysiwyg blockquote,
+.wysiwyg-editor .vditor-ir blockquote {
+    border-left-color: var(--blockquote-border) !important;
+    color: var(--text-secondary) !important;
+}
+
+/* Dark mode adjustments for Vditor */
+[data-color-mode="dark"] .vditor {
+    --vditor-color: var(--text-primary) !important;
+    --vditor-background-color: var(--bg-primary) !important;
+    --vditor-border-color: var(--border-color) !important;
+}
+
+[data-color-mode="light"] .vditor {
+    --vditor-color: var(--text-primary) !important;
+    --vditor-background-color: var(--bg-primary) !important;
+    --vditor-border-color: var(--border-color) !important;
+}
+
 /* PDF Preview Dialog */
 .pdf-preview-overlay {
     position: fixed;
