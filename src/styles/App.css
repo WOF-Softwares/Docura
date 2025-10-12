@@ -1472,6 +1472,139 @@
     margin: 6px 8px;
 }
 
+/* Recovery Dialog */
+.recovery-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.recovery-dialog {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-width: 550px;
+    width: 90%;
+    overflow: hidden;
+    animation: slideDown 0.2s ease-out;
+}
+
+.recovery-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+}
+
+.recovery-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.recovery-content {
+    padding: 24px;
+}
+
+.recovery-message {
+    font-size: 15px;
+    color: var(--text-primary);
+    margin: 0 0 16px 0;
+    line-height: 1.5;
+}
+
+.recovery-preview {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 16px 0;
+    max-height: 200px;
+    overflow: auto;
+}
+
+.recovery-preview-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.recovery-preview-content {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.6;
+}
+
+.recovery-question {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent-color);
+    margin: 16px 0 0 0;
+}
+
+.recovery-actions {
+    display: flex;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    justify-content: flex-end;
+}
+
+.recovery-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.recovery-button-recover {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.recovery-button-recover:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.recovery-button-discard {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.recovery-button-discard:hover {
+    background-color: #ef4444;
+    color: white;
+    border-color: #ef4444;
+}
+
 /* Unsaved Changes Dialog */
 .unsaved-changes-overlay {
     position: fixed;

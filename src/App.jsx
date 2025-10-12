@@ -15,6 +15,7 @@ import FolderSwitchDialog from './components/FolderSwitchDialog'
 import QuickOpenDialog from './components/QuickOpenDialog'
 import ContextMenu from './components/ContextMenu'
 import UnsavedChangesDialog from './components/UnsavedChangesDialog'
+import RecoveryDialog from './components/RecoveryDialog'
 import { exportToPDF, generatePDFBlob } from './utils/pdfExport'
 import { convertMarkdownImagePaths } from './utils/imagePathConverter'
 import { isOmakaseEnvironment, syncWithOmakase } from './utils/omakaseSync'
@@ -52,6 +53,7 @@ function App() {
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true)
   const [isAutoSaving, setIsAutoSaving] = useState(false)
   const [unsavedChangesDialog, setUnsavedChangesDialog] = useState({ visible: false, onSave: null, onDontSave: null })
+  const [recoveryDialog, setRecoveryDialog] = useState({ visible: false, tempFile: null })
   const [currentTempId, setCurrentTempId] = useState(null) // Track temp file ID for unsaved files
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
@@ -544,39 +546,95 @@ function App() {
       if (tempFiles && tempFiles.length > 0) {
         console.log(`🔄 Found ${tempFiles.length} unsaved file(s) from previous session`)
         
-        // Load the most recent temp file
+        // Get the most recent temp file
         const mostRecent = tempFiles[0]
-        setCurrentTempId(mostRecent.id)
-        setFileContent(mostRecent.content)
-        setOriginalContent(mostRecent.content)
-        setIsEditing(true)
-        extractHeaders(mostRecent.content)
         
-        // Add to sidebar
-        setFiles([{
-          name: getSmartFileName(mostRecent.content),
-          path: null,
-          type: 'file',
-          isUntitled: true
-        }])
-        
-        // Show recovery toast
-        toast.success('📂 Recovered unsaved work from previous session!', {
-          duration: 4000,
-          icon: '✨',
+        // Show recovery dialog instead of auto-recovering
+        setRecoveryDialog({
+          visible: true,
+          tempFile: mostRecent,
+          allTempFiles: tempFiles // Keep reference to all temp files for cleanup
         })
-        
-        // Clean up old temp files (keep only the most recent)
-        for (let i = 1; i < tempFiles.length; i++) {
+      }
+    } catch (error) {
+      console.error('Error loading temp files:', error)
+    }
+  }
+  
+  const handleRecoverWork = async () => {
+    try {
+      const { tempFile, allTempFiles } = recoveryDialog
+      
+      // Load the recovered content
+      setCurrentTempId(tempFile.id)
+      setFileContent(tempFile.content)
+      setOriginalContent(tempFile.content)
+      setIsEditing(true)
+      extractHeaders(tempFile.content)
+      
+      // Add to sidebar
+      setFiles([{
+        name: getSmartFileName(tempFile.content),
+        path: null,
+        type: 'file',
+        isUntitled: true
+      }])
+      
+      // Delete the temp file (it's now being edited, will create new temp if needed)
+      try {
+        await invoke('delete_temp_file', { tempId: tempFile.id })
+        console.log('🗑️ Deleted temp file after recovery')
+      } catch (error) {
+        console.error('Failed to delete temp file:', error)
+      }
+      
+      // Clean up other old temp files
+      if (allTempFiles && allTempFiles.length > 1) {
+        for (let i = 1; i < allTempFiles.length; i++) {
           try {
-            await invoke('delete_temp_file', { tempId: tempFiles[i].id })
+            await invoke('delete_temp_file', { tempId: allTempFiles[i].id })
           } catch (error) {
             console.error('Failed to delete old temp file:', error)
           }
         }
       }
+      
+      // Close dialog
+      setRecoveryDialog({ visible: false, tempFile: null })
+      
+      // Show success toast
+      toast.success('✨ Work recovered successfully!', {
+        duration: 3000,
+        icon: '📂',
+      })
     } catch (error) {
-      console.error('Error loading temp files:', error)
+      console.error('Error recovering work:', error)
+      toast.error('Failed to recover work')
+    }
+  }
+  
+  const handleDiscardRecovery = async () => {
+    try {
+      const { allTempFiles } = recoveryDialog
+      
+      // Delete all temp files
+      if (allTempFiles && allTempFiles.length > 0) {
+        for (const tempFile of allTempFiles) {
+          try {
+            await invoke('delete_temp_file', { tempId: tempFile.id })
+            console.log('🗑️ Deleted temp file:', tempFile.id)
+          } catch (error) {
+            console.error('Failed to delete temp file:', error)
+          }
+        }
+      }
+      
+      // Close dialog
+      setRecoveryDialog({ visible: false, tempFile: null })
+      
+      console.log('❌ User chose to discard recovered work')
+    } catch (error) {
+      console.error('Error discarding recovery:', error)
     }
   }
 
@@ -1442,6 +1500,14 @@ function App() {
         onDontSave={unsavedChangesDialog.onDontSave}
         onCancel={unsavedChangesDialog.onCancel}
         fileName={currentFile ? currentFile.split('/').pop() : 'Untitled'}
+      />
+
+      <RecoveryDialog
+        isOpen={recoveryDialog.visible}
+        onRecover={handleRecoverWork}
+        onDiscard={handleDiscardRecovery}
+        fileName={recoveryDialog.tempFile ? getSmartFileName(recoveryDialog.tempFile.content) : 'Untitled'}
+        preview={recoveryDialog.tempFile ? recoveryDialog.tempFile.content.substring(0, 200) : ''}
       />
 
       <Toaster
