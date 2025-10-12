@@ -731,6 +731,31 @@ async fn quit_app(app: tauri::AppHandle) -> Result<(), String> {
     Ok(())
 }
 
+#[command]
+async fn get_username() -> Result<String, String> {
+    use std::process::Command;
+    
+    match Command::new("whoami").output() {
+        Ok(output) => {
+            if output.status.success() {
+                let username = String::from_utf8_lossy(&output.stdout)
+                    .trim()
+                    .to_string();
+                Ok(username)
+            } else {
+                // Fallback to USER env variable
+                env::var("USER").or_else(|_| env::var("USERNAME"))
+                    .map_err(|_| "Could not determine username".to_string())
+            }
+        }
+        Err(_) => {
+            // Fallback to USER env variable
+            env::var("USER").or_else(|_| env::var("USERNAME"))
+                .map_err(|_| "Could not determine username".to_string())
+        }
+    }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Get CLI arguments
@@ -806,7 +831,8 @@ pub fn run() {
             load_temp_files,
             delete_temp_file,
             clear_all_temp_files,
-            quit_app
+            quit_app,
+            get_username
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

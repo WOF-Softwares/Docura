@@ -1633,6 +1633,11 @@ function App() {
           currentFile={currentFile}
           isEditing={isEditing}
           markdownTheme={currentTheme}
+          recentItems={recentItems}
+          onOpenFolder={openFolder}
+          onOpenFile={openFile}
+          onNewFile={newFile}
+          onOpenRecentItem={openRecentItem}
         />
       </div>
 

@@ -5,6 +5,7 @@ import { Code, Eye, Edit3 } from 'lucide-react'
 import { invoke } from '@tauri-apps/api/core'
 import toast from 'react-hot-toast'
 import { makeCheckboxesInteractive, toggleCheckboxByText, extractCheckboxes } from '../utils/checkboxHandler'
+import WelcomeScreen from './WelcomeScreen'
 
 // Monaco theme configurations
 const monacoThemes = {
@@ -234,7 +235,12 @@ const MainEditor = ({
   onTabChange,
   currentFile,
   isEditing,
-  markdownTheme
+  markdownTheme,
+  recentItems,
+  onOpenFolder,
+  onOpenFile,
+  onNewFile,
+  onOpenRecentItem
 }) => {
   const monacoRef = useRef(null)
   const editorRef = useRef(null) // Reference to the editor instance
@@ -424,13 +430,13 @@ const MainEditor = ({
   if (!isEditing && !currentFile) {
     return (
       <div className="main-editor">
-        <div className="welcome-screen">
-          <h1>Welcome to Docura</h1>
-          <p>A Typora-like markdown editor</p>
-          <div className="welcome-actions">
-            <p>Open a folder or file to get started</p>
-          </div>
-        </div>
+        <WelcomeScreen
+          recentItems={recentItems}
+          onOpenFolder={onOpenFolder}
+          onOpenFile={onOpenFile}
+          onNewFile={onNewFile}
+          onOpenRecentItem={onOpenRecentItem}
+        />
       </div>
     )
   }
