@@ -54,6 +54,7 @@ const VditorEditor = ({
       mode: mode,
       theme: theme,
       value: value,
+      lang: 'en_US',
       cache: { enable: false },
       preview: {
         theme: {
