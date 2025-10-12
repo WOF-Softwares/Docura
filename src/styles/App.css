@@ -1471,3 +1471,122 @@
     background-color: var(--border-color);
     margin: 6px 8px;
 }
+
+/* Unsaved Changes Dialog */
+.unsaved-changes-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.unsaved-changes-dialog {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-width: 500px;
+    width: 90%;
+    overflow: hidden;
+    animation: slideDown 0.2s ease-out;
+}
+
+.unsaved-changes-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+}
+
+.unsaved-changes-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.unsaved-changes-content {
+    padding: 24px;
+}
+
+.unsaved-changes-message {
+    font-size: 15px;
+    color: var(--text-primary);
+    margin: 0 0 12px 0;
+    line-height: 1.5;
+}
+
+.unsaved-changes-message strong {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.unsaved-changes-hint {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.unsaved-changes-actions {
+    display: flex;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    justify-content: flex-end;
+}
+
+.unsaved-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.unsaved-button-save {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.unsaved-button-save:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.unsaved-button-dont-save {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.unsaved-button-dont-save:hover {
+    background-color: #ef4444;
+    color: white;
+    border-color: #ef4444;
+}
+
+.unsaved-button-cancel {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.unsaved-button-cancel:hover {
+    background-color: var(--border-color);
+}

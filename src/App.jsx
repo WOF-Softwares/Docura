@@ -14,6 +14,7 @@ import SettingsDialog from './components/SettingsDialog'
 import FolderSwitchDialog from './components/FolderSwitchDialog'
 import QuickOpenDialog from './components/QuickOpenDialog'
 import ContextMenu from './components/ContextMenu'
+import UnsavedChangesDialog from './components/UnsavedChangesDialog'
 import { exportToPDF, generatePDFBlob } from './utils/pdfExport'
 import { convertMarkdownImagePaths } from './utils/imagePathConverter'
 import { isOmakaseEnvironment, syncWithOmakase } from './utils/omakaseSync'
@@ -50,6 +51,7 @@ function App() {
   const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, hasSelection: false })
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true)
   const [isAutoSaving, setIsAutoSaving] = useState(false)
+  const [unsavedChangesDialog, setUnsavedChangesDialog] = useState({ visible: false, onSave: null, onDontSave: null })
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
   const autoSaveTimeoutRef = useRef(null)
@@ -500,22 +502,41 @@ function App() {
     return 'Untitled'
   }
 
+  // Helper function to show unsaved changes dialog
+  const showUnsavedChangesDialog = () => {
+    return new Promise((resolve) => {
+      setUnsavedChangesDialog({
+        visible: true,
+        onSave: async () => {
+          setUnsavedChangesDialog({ visible: false, onSave: null, onDontSave: null })
+          if (!currentFile) {
+            await saveFileAs()
+            resolve(currentFile ? 'saved' : 'cancelled')
+          } else {
+            await saveFile()
+            resolve('saved')
+          }
+        },
+        onDontSave: () => {
+          setUnsavedChangesDialog({ visible: false, onSave: null, onDontSave: null })
+          resolve('dont-save')
+        },
+        onCancel: () => {
+          setUnsavedChangesDialog({ visible: false, onSave: null, onDontSave: null })
+          resolve('cancelled')
+        }
+      })
+    })
+  }
+
   const newFile = async () => {
     try {
       // If there's unsaved content, prompt to save first
       if (hasUnsavedChanges && fileContent.trim() !== '') {
-        const userChoice = confirm('You have unsaved changes. Would you like to save before creating a new file?')
+        const choice = await showUnsavedChangesDialog()
         
-        if (userChoice) {
-          // If no current file, do Save As
-          if (!currentFile) {
-            await saveFileAs()
-            // If user cancelled save as, don't create new file
-            if (!currentFile) return
-          } else {
-            // Save existing file
-            await saveFile()
-          }
+        if (choice === 'cancelled') {
+          return // User cancelled, don't create new file
         }
       }
       
@@ -1180,6 +1201,14 @@ function App() {
           onPaste={handleContextMenuPaste}
         />
       )}
+
+      <UnsavedChangesDialog
+        isOpen={unsavedChangesDialog.visible}
+        onSave={unsavedChangesDialog.onSave}
+        onDontSave={unsavedChangesDialog.onDontSave}
+        onCancel={unsavedChangesDialog.onCancel}
+        fileName={currentFile ? currentFile.split('/').pop() : 'Untitled'}
+      />
 
       <Toaster
         position="bottom-right"
