@@ -78,6 +78,20 @@ function App() {
   ]
 
   useEffect(() => {
+    // Set up global error handler for unhandled promise rejections
+    const handleUnhandledRejection = (event) => {
+      // Check if it's the window.destroy permission error
+      if (event.reason && typeof event.reason === 'string' && event.reason.includes('window.destroy not allowed')) {
+        console.log('🔧 Intercepted window.destroy permission error - this is expected')
+        event.preventDefault() // Prevent it from showing in console
+        return
+      }
+      // Let other errors through
+      console.error('Unhandled promise rejection:', event.reason)
+    }
+    
+    window.addEventListener('unhandledrejection', handleUnhandledRejection)
+    
     // Load config on mount
     loadAppConfig()
     
@@ -158,6 +172,7 @@ function App() {
     
     // Cleanup
     return () => {
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection)
       if (unlistenFolder) unlistenFolder()
       if (unlistenFile) unlistenFile()
     }
@@ -198,12 +213,12 @@ function App() {
             }
           }
           
-          // Set flag to allow close, then unregister and close
+          // Set flag to allow close, then use our custom quit command
           isQuittingRef.current = true
           console.log('🚪 Closing app after user confirmation...')
           
           if (unlistenClose) unlistenClose()
-          await currentWindow.close()
+          await invoke('quit_app')
         }
         // If 'cancelled', do nothing - window stays open
       } else {
@@ -400,6 +415,11 @@ function App() {
         e.preventDefault()
         await quitApp()
       }
+      // Alt+F4 for quit app (common Windows shortcut)
+      if (e.altKey && e.key === 'F4') {
+        e.preventDefault()
+        await quitApp()
+      }
       // Ctrl+Alt+P for print
       if (e.ctrlKey && e.altKey && e.key === 'p') {
         e.preventDefault()
@@ -470,6 +490,23 @@ function App() {
       window.removeEventListener('keydown', handleEscapeKey)
     }
   }, [contextMenu])
+
+  useEffect(() => {
+    // Handle browser beforeunload event (when browser tries to close the tab/window)
+    const handleBeforeUnload = (e) => {
+      // Only prevent if there are unsaved changes
+      if (hasUnsavedChanges && fileContent.trim() !== '' && isEditing) {
+        e.preventDefault()
+        e.returnValue = '' // Chrome requires returnValue to be set
+        return '' // Some browsers require a return value
+      }
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [hasUnsavedChanges, fileContent, isEditing])
 
   useEffect(() => {
     // Apply unified theme to document
