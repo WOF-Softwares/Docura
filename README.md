@@ -52,6 +52,8 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 - 📁 **Smart Folder Dialog** - Choose to open in new window or replace current folder
 - 🎯 **Clean State Management** - Seamless transitions between folders, files, and new documents
 - 🖱️ **Context Menu** - Right-click menu with common actions (New, Open, Copy, Paste, etc.)
+- 💾 **Auto-Save** - Smart auto-save that saves 2 seconds after you stop typing (toggle in Settings)
+- 📸 **Image Paste** - Paste images directly from clipboard, automatically saves to assets folder
 
 ### 📦 v1.0 Core Features
 - ✅ **Three Editing Modes** - Code, Live (WYSIWYG), and Preview
@@ -351,6 +353,8 @@ Typora forces you into one way of working. **Docura lets you choose your adventu
 - 🎯 **Active File Highlight** - Current file highlighted with accent border
 - 📋 **Single File Mode** - Files opened without folder show in sidebar
 - 🔄 **Auto-sync** - Changes reflect across all editor modes
+- 💾 **Auto-Save** - Smart auto-save 2 seconds after typing stops (toggle in Settings)
+- 📸 **Image Paste** - Paste images from clipboard, saves to assets/ folder automatically
 
 ### 📄 Export & Print
 - 📑 **PDF Export** - Convert markdown to beautiful PDFs with native save dialog
@@ -558,12 +562,12 @@ All themes are consistently applied across:
 - [x] Keyboard shortcuts for all major operations
 - [x] Context menu (right-click) support
 
-### 🚧 Phase 5: Enhanced Features (Next)
+### ✅ Phase 5: Enhanced Features (Complete!)
 - [x] Search in file content (Ctrl+F)
 - [x] Find & Replace (Ctrl+H)
-- [ ] Auto-save option
+- [x] **Auto-save option** - Smart debounced auto-save (2 seconds after stopping typing)
+- [x] **Image paste from clipboard** - Paste images directly, saves to assets folder
 - [ ] Custom CSS theme support
-- [] Image paste from clipboard
 
 ### 🔮 Phase 6: Advanced Features
 - [ ] Split pane editing (vertical/horizontal)
