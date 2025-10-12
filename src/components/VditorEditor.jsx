@@ -4,6 +4,11 @@ import 'vditor/dist/index.css'
 import { invoke } from '@tauri-apps/api/core'
 import toast from 'react-hot-toast'
 
+// Set Vditor to English locale
+if (typeof window !== 'undefined' && window.Vditor) {
+  window.Vditor.setCodeTheme = window.Vditor.setCodeTheme || (() => {})
+}
+
 const VditorEditor = ({ 
   value = '', 
   onChange, 
@@ -67,7 +72,14 @@ const VditorEditor = ({
         math: { inlineDigit: true }
       },
       toolbar: [
-        'emoji', 'headings', 'bold', 'italic', 'strike', '|',
+        'emoji', 
+        {
+          name: 'headings',
+          tipPosition: 'n',
+          tip: 'Headings',
+          options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+        },
+        'bold', 'italic', 'strike', '|',
         'line', 'quote', 'list', 'ordered-list', 'check', '|',
         'code', 'inline-code', '|', 'upload', 'link', 'table', '|',
         'undo', 'redo', '|', 'fullscreen', 'edit-mode'

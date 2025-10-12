@@ -561,6 +561,56 @@
     --vditor-border-color: var(--border-color) !important;
 }
 
+/* Override Chinese text in Vditor headings dropdown */
+.vditor-toolbar .vditor-tooltipped--headings .vditor-panel--input button span {
+    font-size: 0 !important;
+}
+
+.vditor-toolbar .vditor-tooltipped--headings .vditor-panel--input button:nth-child(1) span:after {
+    content: "Heading 1" !important;
+    font-size: 14px !important;
+}
+
+.vditor-toolbar .vditor-tooltipped--headings .vditor-panel--input button:nth-child(2) span:after {
+    content: "Heading 2" !important;
+    font-size: 14px !important;
+}
+
+.vditor-toolbar .vditor-tooltipped--headings .vditor-panel--input button:nth-child(3) span:after {
+    content: "Heading 3" !important;
+    font-size: 14px !important;
+}
+
+.vditor-toolbar .vditor-tooltipped--headings .vditor-panel--input button:nth-child(4) span:after {
+    content: "Heading 4" !important;
+    font-size: 14px !important;
+}
+
+.vditor-toolbar .vditor-tooltipped--headings .vditor-panel--input button:nth-child(5) span:after {
+    content: "Heading 5" !important;
+    font-size: 14px !important;
+}
+
+.vditor-toolbar .vditor-tooltipped--headings .vditor-panel--input button:nth-child(6) span:after {
+    content: "Heading 6" !important;
+    font-size: 14px !important;
+}
+
+.vditor-toolbar .vditor-tooltipped--headings .vditor-panel--input button:nth-child(7) span:after {
+    content: "Paragraph" !important;
+    font-size: 14px !important;
+}
+
+/* Override other Chinese text in Vditor toolbar */
+.vditor-toolbar .vditor-tooltipped[data-type="headings"]:before {
+    content: "Headings" !important;
+}
+
+/* Fix any remaining Chinese tooltips */
+.vditor-toolbar .vditor-tooltipped:before {
+    font-family: inherit !important;
+}
+
 /* PDF Preview Dialog */
 .pdf-preview-overlay {
     position: fixed;
