@@ -178,6 +178,13 @@ pub struct RecentItem {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct TempFile {
+    id: String,
+    content: String,
+    timestamp: i64,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct AppConfig {
     theme: String,
     #[serde(default)]
@@ -215,6 +222,19 @@ fn get_config_dir() -> Result<PathBuf, String> {
     }
     
     Ok(config_dir)
+}
+
+fn get_temp_dir() -> Result<PathBuf, String> {
+    let config_dir = get_config_dir()?;
+    let temp_dir = config_dir.join("temp");
+    
+    // Create temp directory if it doesn't exist
+    if !temp_dir.exists() {
+        fs::create_dir_all(&temp_dir)
+            .map_err(|e| format!("Failed to create temp directory: {}", e))?;
+    }
+    
+    Ok(temp_dir)
 }
 
 #[command]
@@ -557,6 +577,106 @@ async fn open_new_window(app: tauri::AppHandle, folder_path: Option<String>) -> 
     Ok(())
 }
 
+// Temp file management commands
+#[command]
+async fn save_temp_file(content: String, temp_id: Option<String>) -> Result<String, String> {
+    let temp_dir = get_temp_dir()?;
+    
+    // Use existing ID or generate new one
+    let id = temp_id.unwrap_or_else(|| {
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_millis()
+            .to_string()
+    });
+    
+    let temp_file_path = temp_dir.join(format!("temp-{}.md", id));
+    
+    fs::write(&temp_file_path, content)
+        .map_err(|e| format!("Failed to save temp file: {}", e))?;
+    
+    log::info!("Saved temp file: {:?}", temp_file_path);
+    Ok(id)
+}
+
+#[command]
+async fn load_temp_files() -> Result<Vec<TempFile>, String> {
+    let temp_dir = get_temp_dir()?;
+    let mut temp_files = Vec::new();
+    
+    if !temp_dir.exists() {
+        return Ok(temp_files);
+    }
+    
+    let entries = fs::read_dir(&temp_dir)
+        .map_err(|e| format!("Failed to read temp directory: {}", e))?;
+    
+    for entry in entries {
+        if let Ok(entry) = entry {
+            let path = entry.path();
+            if path.is_file() && path.extension().and_then(|s| s.to_str()) == Some("md") {
+                if let Some(file_name) = path.file_stem().and_then(|s| s.to_str()) {
+                    // Extract ID from filename (temp-{id}.md)
+                    if let Some(id) = file_name.strip_prefix("temp-") {
+                        let content = fs::read_to_string(&path)
+                            .unwrap_or_default();
+                        
+                        let metadata = fs::metadata(&path).ok();
+                        let timestamp = metadata
+                            .and_then(|m| m.modified().ok())
+                            .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+                            .map(|d| d.as_secs() as i64)
+                            .unwrap_or(0);
+                        
+                        temp_files.push(TempFile {
+                            id: id.to_string(),
+                            content,
+                            timestamp,
+                        });
+                    }
+                }
+            }
+        }
+    }
+    
+    // Sort by timestamp (newest first)
+    temp_files.sort_by(|a, b| b.timestamp.cmp(&a.timestamp));
+    
+    log::info!("Loaded {} temp files", temp_files.len());
+    Ok(temp_files)
+}
+
+#[command]
+async fn delete_temp_file(temp_id: String) -> Result<(), String> {
+    let temp_dir = get_temp_dir()?;
+    let temp_file_path = temp_dir.join(format!("temp-{}.md", temp_id));
+    
+    if temp_file_path.exists() {
+        fs::remove_file(&temp_file_path)
+            .map_err(|e| format!("Failed to delete temp file: {}", e))?;
+        log::info!("Deleted temp file: {:?}", temp_file_path);
+    }
+    
+    Ok(())
+}
+
+#[command]
+async fn clear_all_temp_files() -> Result<(), String> {
+    let temp_dir = get_temp_dir()?;
+    
+    if temp_dir.exists() {
+        fs::remove_dir_all(&temp_dir)
+            .map_err(|e| format!("Failed to clear temp directory: {}", e))?;
+        // Recreate the directory
+        fs::create_dir(&temp_dir)
+            .map_err(|e| format!("Failed to recreate temp directory: {}", e))?;
+        log::info!("Cleared all temp files");
+    }
+    
+    Ok(())
+}
+
 #[command]
 async fn save_clipboard_image(
     file_path: String,
@@ -674,7 +794,11 @@ pub fn run() {
             get_omakase_theme,
             get_omakase_font,
             open_new_window,
-            save_clipboard_image
+            save_clipboard_image,
+            save_temp_file,
+            load_temp_files,
+            delete_temp_file,
+            clear_all_temp_files
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

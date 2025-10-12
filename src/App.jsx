@@ -52,9 +52,11 @@ function App() {
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true)
   const [isAutoSaving, setIsAutoSaving] = useState(false)
   const [unsavedChangesDialog, setUnsavedChangesDialog] = useState({ visible: false, onSave: null, onDontSave: null })
+  const [currentTempId, setCurrentTempId] = useState(null) // Track temp file ID for unsaved files
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
   const autoSaveTimeoutRef = useRef(null)
+  const tempSaveTimeoutRef = useRef(null)
 
   // Available themes for random cycling
   const availableThemes = [
@@ -72,6 +74,9 @@ function App() {
     
     // Load recent items
     loadRecentItems()
+    
+    // Check for temp files (crash recovery)
+    loadTempFilesOnStartup()
     
     // Check if running in tiling WM
     invoke('is_tiling_wm').then((isTiling) => {
@@ -214,6 +219,41 @@ function App() {
       }
     }
   }, [autoSaveEnabled, currentFile, hasUnsavedChanges, fileContent, originalContent])
+
+  useEffect(() => {
+    // Temp file auto-save for untitled files (crash recovery)
+    if (!currentFile && fileContent !== '' && isEditing) {
+      // Clear any pending temp save
+      if (tempSaveTimeoutRef.current) {
+        clearTimeout(tempSaveTimeoutRef.current)
+      }
+      
+      // Save to temp after 2 seconds of inactivity
+      tempSaveTimeoutRef.current = setTimeout(async () => {
+        try {
+          const tempId = await invoke('save_temp_file', {
+            content: fileContent,
+            tempId: currentTempId
+          })
+          
+          if (!currentTempId) {
+            setCurrentTempId(tempId)
+            console.log('💾 Created temp file:', tempId)
+          } else {
+            console.log('💾 Updated temp file:', tempId)
+          }
+        } catch (error) {
+          console.error('Failed to save temp file:', error)
+        }
+      }, 2000)
+    }
+    
+    return () => {
+      if (tempSaveTimeoutRef.current) {
+        clearTimeout(tempSaveTimeoutRef.current)
+      }
+    }
+  }, [fileContent, currentFile, isEditing, currentTempId])
 
   useEffect(() => {
     // Convert image paths when content or file changes
@@ -461,6 +501,49 @@ function App() {
     }
   }
 
+  const loadTempFilesOnStartup = async () => {
+    try {
+      const tempFiles = await invoke('load_temp_files')
+      
+      if (tempFiles && tempFiles.length > 0) {
+        console.log(`🔄 Found ${tempFiles.length} unsaved file(s) from previous session`)
+        
+        // Load the most recent temp file
+        const mostRecent = tempFiles[0]
+        setCurrentTempId(mostRecent.id)
+        setFileContent(mostRecent.content)
+        setOriginalContent(mostRecent.content)
+        setIsEditing(true)
+        extractHeaders(mostRecent.content)
+        
+        // Add to sidebar
+        setFiles([{
+          name: getSmartFileName(mostRecent.content),
+          path: null,
+          type: 'file',
+          isUntitled: true
+        }])
+        
+        // Show recovery toast
+        toast.success('📂 Recovered unsaved work from previous session!', {
+          duration: 4000,
+          icon: '✨',
+        })
+        
+        // Clean up old temp files (keep only the most recent)
+        for (let i = 1; i < tempFiles.length; i++) {
+          try {
+            await invoke('delete_temp_file', { tempId: tempFiles[i].id })
+          } catch (error) {
+            console.error('Failed to delete old temp file:', error)
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error loading temp files:', error)
+    }
+  }
+
   const toggleTheme = () => {
     // Check if Omakase sync is enabled
     if (omakaseSyncEnabled && omakaseAvailable) {
@@ -540,8 +623,18 @@ function App() {
         }
       }
       
+      // Delete old temp file if exists
+      if (currentTempId) {
+        try {
+          await invoke('delete_temp_file', { tempId: currentTempId })
+        } catch (error) {
+          console.error('Failed to delete temp file:', error)
+        }
+      }
+      
       // Clear editor and state
       setCurrentFile(null)
+      setCurrentTempId(null)
       setFileContent('')
       setOriginalContent('')
       setDisplayContent('')
@@ -747,6 +840,18 @@ function App() {
       
       if (selected) {
         await writeTextFile(selected, fileContent)
+        
+        // Delete temp file if exists (now that we've saved permanently)
+        if (currentTempId) {
+          try {
+            await invoke('delete_temp_file', { tempId: currentTempId })
+            console.log('🗑️ Deleted temp file after permanent save')
+          } catch (error) {
+            console.error('Failed to delete temp file:', error)
+          }
+          setCurrentTempId(null)
+        }
+        
         setCurrentFile(selected)
         setOriginalContent(fileContent)
         setHasUnsavedChanges(false)
