@@ -569,7 +569,8 @@ All themes are consistently applied across:
 - [x] Find & Replace (Ctrl+H)
 - [x] **Auto-save option** - Smart debounced auto-save (2 seconds after stopping typing)
 - [x] **Image paste from clipboard** - Paste images directly, saves to assets folder
-- [ ] Custom CSS theme support
+- [x] Advanced Welcome screen
+- [ ] Modern and elegan status bar in bottom (stats, ..)
 
 ### 🔮 Phase 6: Advanced Features
 - [ ] Split pane editing (vertical/horizontal)
@@ -580,6 +581,7 @@ All themes are consistently applied across:
 - [ ] Export to HTML/Slides
 - [ ] Git integration
 - [ ] Plugin system for extensions
+- [ ] Custome theme and styles by install or download
 
 ### 📦 Phase 7: Distribution
 - [ ] AppImage packaging
