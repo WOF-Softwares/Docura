@@ -570,7 +570,7 @@ All themes are consistently applied across:
 - [x] **Auto-save option** - Smart debounced auto-save (2 seconds after stopping typing)
 - [x] **Image paste from clipboard** - Paste images directly, saves to assets folder
 - [x] Advanced Welcome screen
-- [ ] Modern and elegan status bar in bottom (stats, ..)
+- [x] Modern and elegan status bar in bottom (stats, ..)
 
 ### 🔮 Phase 6: Advanced Features
 - [ ] Split pane editing (vertical/horizontal)
