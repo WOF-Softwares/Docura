@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { 
-  Menu as MenuIcon, 
+import React, { useState, useRef, useEffect } from "react";
+import {
+  Menu as MenuIcon,
   FilePlus,
-  FolderOpen, 
-  FileText, 
-  Save, 
-  Download, 
-  FileDown, 
-  Printer, 
+  FolderOpen,
+  FileText,
+  Save,
+  Download,
+  FileDown,
+  Printer,
   Settings,
   Palette,
   Maximize2,
@@ -17,16 +17,29 @@ import {
   Folder,
   File,
   Trash2,
-  ChevronRight
-} from 'lucide-react'
+  ChevronRight,
+  FileType,
+  Code,
+  Globe,
+  FileJson,
+  AlignLeft,
+  Newspaper,
+} from "lucide-react";
 
-const Menu = ({ 
+const Menu = ({
   onNewFile,
   onOpenFolder,
   onOpenFile,
   onSave,
   onSaveAs,
   onExportPdf,
+  onExportHtml,
+  onExportHtmlPlain,
+  onExportHtmlTailwind,
+  onExportHtmlBootstrap,
+  onExportJson,
+  onExportRtf,
+  onExportMediaWiki,
   onPrint,
   onOpenThemeSelector,
   onOpenSettings,
@@ -37,39 +50,45 @@ const Menu = ({
   isSidebarVisible,
   recentItems,
   onOpenRecentItem,
-  onClearRecentItems
+  onClearRecentItems,
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isRecentSubmenuOpen, setIsRecentSubmenuOpen] = useState(false)
-  const menuRef = useRef(null)
-  const recentSubmenuRef = useRef(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [isRecentSubmenuOpen, setIsRecentSubmenuOpen] = useState(false);
+  const [isExportSubmenuOpen, setIsExportSubmenuOpen] = useState(false);
+  const menuRef = useRef(null);
+  const recentSubmenuRef = useRef(null);
+  const exportSubmenuRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsOpen(false)
-        setIsRecentSubmenuOpen(false)
+        setIsOpen(false);
+        setIsRecentSubmenuOpen(false);
+        setIsExportSubmenuOpen(false);
       }
-    }
+    };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   // Close submenu when main menu closes
   useEffect(() => {
     if (!isOpen) {
-      setIsRecentSubmenuOpen(false)
+      setIsRecentSubmenuOpen(false);
+      setIsExportSubmenuOpen(false);
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   const handleMenuClick = (action) => {
-    action()
-    setIsOpen(false)
-    setIsRecentSubmenuOpen(false)
-  }
+    action();
+    setIsOpen(false);
+    setIsRecentSubmenuOpen(false);
+    setIsExportSubmenuOpen(false);
+  };
 
   return (
     <div className="menu-container" ref={menuRef}>
@@ -86,8 +105,8 @@ const Menu = ({
         <div className="menu-dropdown">
           <div className="menu-section">
             <div className="menu-section-title">File</div>
-            <button 
-              className="menu-item" 
+            <button
+              className="menu-item"
               onClick={() => handleMenuClick(onNewFile)}
             >
               <FilePlus size={16} />
@@ -95,16 +114,16 @@ const Menu = ({
               <span className="menu-shortcut">Ctrl+N</span>
             </button>
             <div className="menu-divider"></div>
-            <button 
-              className="menu-item" 
+            <button
+              className="menu-item"
               onClick={() => handleMenuClick(onOpenFolder)}
             >
               <FolderOpen size={16} />
               <span>Open Folder</span>
               <span className="menu-shortcut">Ctrl+Shift+O</span>
             </button>
-            <button 
-              className="menu-item" 
+            <button
+              className="menu-item"
               onClick={() => handleMenuClick(onOpenFile)}
             >
               <FileText size={16} />
@@ -112,8 +131,8 @@ const Menu = ({
               <span className="menu-shortcut">Ctrl+O</span>
             </button>
             <div className="menu-divider"></div>
-            <button 
-              className="menu-item" 
+            <button
+              className="menu-item"
               onClick={() => handleMenuClick(onSave)}
               disabled={!hasFile}
             >
@@ -121,8 +140,8 @@ const Menu = ({
               <span>Save</span>
               <span className="menu-shortcut">Ctrl+S</span>
             </button>
-            <button 
-              className="menu-item" 
+            <button
+              className="menu-item"
               onClick={() => handleMenuClick(onSaveAs)}
             >
               <Download size={16} />
@@ -134,7 +153,7 @@ const Menu = ({
           <div className="menu-divider"></div>
 
           <div className="menu-section">
-            <div 
+            <div
               className="menu-item menu-item-submenu"
               onMouseEnter={() => setIsRecentSubmenuOpen(true)}
               onMouseLeave={() => setIsRecentSubmenuOpen(false)}
@@ -142,7 +161,7 @@ const Menu = ({
               <Clock size={16} />
               <span>Recent</span>
               <ChevronRight size={16} className="submenu-arrow" />
-              
+
               {isRecentSubmenuOpen && (
                 <div className="menu-submenu" ref={recentSubmenuRef}>
                   {recentItems && recentItems.length > 0 ? (
@@ -152,11 +171,19 @@ const Menu = ({
                           <button
                             key={index}
                             className="menu-item recent-item"
-                            onClick={() => handleMenuClick(() => onOpenRecentItem(item))}
+                            onClick={() =>
+                              handleMenuClick(() => onOpenRecentItem(item))
+                            }
                             title={item.path}
                           >
-                            {item.type === 'folder' ? <Folder size={14} /> : <File size={14} />}
-                            <span className="recent-item-name">{item.name}</span>
+                            {item.type === "folder" ? (
+                              <Folder size={14} />
+                            ) : (
+                              <File size={14} />
+                            )}
+                            <span className="recent-item-name">
+                              {item.name}
+                            </span>
                           </button>
                         ))}
                       </div>
@@ -170,7 +197,10 @@ const Menu = ({
                       </button>
                     </>
                   ) : (
-                    <div className="menu-item" style={{ opacity: 0.5, cursor: 'default' }}>
+                    <div
+                      className="menu-item"
+                      style={{ opacity: 0.5, cursor: "default" }}
+                    >
                       <span>No recent items</span>
                     </div>
                   )}
@@ -182,18 +212,92 @@ const Menu = ({
           <div className="menu-divider"></div>
 
           <div className="menu-section">
-            <div className="menu-section-title">Export</div>
-            <button 
-              className="menu-item" 
-              onClick={() => handleMenuClick(onExportPdf)}
-              disabled={!hasFile}
+            <div
+              className="menu-item menu-item-submenu"
+              onMouseEnter={() => setIsExportSubmenuOpen(true)}
+              onMouseLeave={() => setIsExportSubmenuOpen(false)}
             >
-              <FileDown size={16} />
-              <span>Export to PDF</span>
-              <span className="menu-shortcut">Ctrl+E</span>
-            </button>
-            <button 
-              className="menu-item" 
+              <Download size={16} />
+              <span>Export</span>
+              <ChevronRight size={16} className="submenu-arrow" />
+
+              {isExportSubmenuOpen && (
+                <div className="menu-submenu" ref={exportSubmenuRef}>
+                  <div className="menu-submenu-items">
+                    <button
+                      className="menu-item"
+                      onClick={() => handleMenuClick(onExportPdf)}
+                      disabled={!hasFile}
+                    >
+                      <FileDown size={14} />
+                      <span>PDF</span>
+                      <span className="menu-shortcut">Ctrl+E</span>
+                    </button>
+                    <div className="menu-divider"></div>
+                    <button
+                      className="menu-item"
+                      onClick={() => handleMenuClick(onExportHtml)}
+                      disabled={!hasFile}
+                    >
+                      <Globe size={14} />
+                      <span>HTML</span>
+                    </button>
+                    <button
+                      className="menu-item"
+                      onClick={() => handleMenuClick(onExportHtmlPlain)}
+                      disabled={!hasFile}
+                    >
+                      <FileType size={14} />
+                      <span>HTML (Plain)</span>
+                    </button>
+                    <button
+                      className="menu-item"
+                      onClick={() => handleMenuClick(onExportHtmlTailwind)}
+                      disabled={!hasFile}
+                    >
+                      <Code size={14} />
+                      <span>HTML with Tailwind CSS</span>
+                    </button>
+                    <button
+                      className="menu-item"
+                      onClick={() => handleMenuClick(onExportHtmlBootstrap)}
+                      disabled={!hasFile}
+                    >
+                      <Globe size={14} />
+                      <span>HTML with Bootstrap</span>
+                    </button>
+                    <div className="menu-divider"></div>
+                    <button
+                      className="menu-item"
+                      onClick={() => handleMenuClick(onExportJson)}
+                      disabled={!hasFile}
+                    >
+                      <FileJson size={14} />
+                      <span>JSON</span>
+                    </button>
+                    <button
+                      className="menu-item"
+                      onClick={() => handleMenuClick(onExportRtf)}
+                      disabled={!hasFile}
+                    >
+                      <AlignLeft size={14} />
+                      <span>RTF</span>
+                    </button>
+                    <button
+                      className="menu-item"
+                      onClick={() => handleMenuClick(onExportMediaWiki)}
+                      disabled={!hasFile}
+                    >
+                      <Newspaper size={14} />
+                      <span>MediaWiki</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <button
+              className="menu-item"
               onClick={() => handleMenuClick(onPrint)}
               disabled={!hasFile}
             >
@@ -207,25 +311,29 @@ const Menu = ({
 
           <div className="menu-section">
             <div className="menu-section-title">View</div>
-            <button 
-              className="menu-item" 
+            <button
+              className="menu-item"
               onClick={() => handleMenuClick(onToggleSidebar)}
             >
-              {isSidebarVisible ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
-              <span>{isSidebarVisible ? 'Hide' : 'Show'} Sidebar</span>
+              {isSidebarVisible ? (
+                <PanelLeftClose size={16} />
+              ) : (
+                <PanelLeftOpen size={16} />
+              )}
+              <span>{isSidebarVisible ? "Hide" : "Show"} Sidebar</span>
               <span className="menu-shortcut">Ctrl+B</span>
             </button>
-            <button 
-              className="menu-item" 
+            <button
+              className="menu-item"
               onClick={() => handleMenuClick(onToggleFullscreen)}
             >
               <Maximize2 size={16} />
-              <span>{isFullscreen ? 'Exit' : 'Enter'} Fullscreen</span>
+              <span>{isFullscreen ? "Exit" : "Enter"} Fullscreen</span>
               <span className="menu-shortcut">F11</span>
             </button>
             <div className="menu-divider"></div>
-            <button 
-              className="menu-item" 
+            <button
+              className="menu-item"
               onClick={() => handleMenuClick(onOpenThemeSelector)}
             >
               <Palette size={16} />
@@ -236,8 +344,8 @@ const Menu = ({
           <div className="menu-divider"></div>
 
           <div className="menu-section">
-            <button 
-              className="menu-item" 
+            <button
+              className="menu-item"
               onClick={() => handleMenuClick(onOpenSettings)}
             >
               <Settings size={16} />
@@ -248,8 +356,7 @@ const Menu = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Menu
-
+export default Menu;

@@ -34,6 +34,18 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 
 **Day 2 brings a MASSIVE feature update!** Docura keeps getting better:
 
+### 🆕 Day 3 Features (October 12, 2025)
+- **🚀 Comprehensive Export System**: Now supports 8+ export formats in a beautiful submenu!
+  - **PDF Export** (with Ctrl+E shortcut)
+  - **HTML Export** (Standard, Plain, Tailwind CSS, Bootstrap)
+  - **JSON Export** (with metadata and timestamps)
+  - **RTF Export** (for word processors)
+  - **MediaWiki Export** (ready for Wikipedia!)
+- **📁 Export Submenu**: Clean, organized interface like the Recent menu
+- **🔧 Extensible Architecture**: Easy to add new export formats
+- **🎯 Smart File Dialogs**: Appropriate file extensions and filters
+- **⚡ Error Handling**: Comprehensive validation and user feedback
+
 ### 🆕 Day 2 Features (October 11, 2025)
 - 🏠 **Modern Welcome Screen** - VSCode/Cursor-style welcome with time-based greetings, quick actions, recent items, keyboard shortcuts! **Typora doesn't have this!** ✨
 - 📱 **Ultra-Responsive Design** - Welcome screen adapts perfectly to any screen size, high DPI displays, Wayland scaling, and tiling WMs!
@@ -95,8 +107,8 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 | 💻 **CLI args, multi-window** | October 11, late evening | Day 2 |
 | 🧠 **Smart filename preview** | October 11, late evening | Day 2 |
 
-**From zero to feature-rich in 2 days!** ⚡  
-**17 major features on Day 2 alone!** 🎉  
+**From zero to feature-rich in 2 days!** ⚡
+**17 major features on Day 2 alone!** 🎉
 *That's the power of Rust + Tauri + React + Amazing AI Tools!*
 
 ---
@@ -245,7 +257,7 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 ![Document Outline](screenshots/screenshot-3.png)
 *Clickable headings with smooth scrolling*
 
-### PDF Export & Print
+### Comprehensive Export System
 ![Export Features](screenshots/screenshot-4.png)
 *Native save dialogs and print preview*
 
@@ -370,10 +382,17 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 - 📸 **Image Paste** - Paste images from clipboard, saves to assets/ folder automatically
 
 ### 📄 Export & Print
-- 📑 **PDF Export** - Convert markdown to beautiful PDFs with native save dialog
+- 🚀 **Comprehensive Export System** - 8+ formats in beautiful submenu interface
+  - 📑 **PDF Export** - Beautiful PDFs with theme styling (Ctrl+E)
+  - 🌐 **HTML Exports** - Standard, Plain, Tailwind CSS, Bootstrap variants
+  - 📊 **JSON Export** - Structured data with metadata and timestamps
+  - 📝 **RTF Export** - Rich Text Format for word processors
+  - 📖 **MediaWiki Export** - Ready for Wikipedia and wiki platforms
 - 🖨️ **Print Support** - PDF preview dialog with print and download options
-- 🎨 **Styled Output** - PDFs match your selected theme's styling
+- 🎯 **Smart File Dialogs** - Appropriate extensions and filters per format
+- 🔧 **Extensible Architecture** - Easy to add new export formats
 - 💾 **Native Dialogs** - System-native file save dialogs for seamless UX
+- ⚡ **Error Handling** - Comprehensive validation and user feedback
 
 ### 🗺️ Navigation
 - 📑 **Document Outline** - Automatic heading extraction (h1-h6)
@@ -469,10 +488,10 @@ Tested on Linux (Arch) with both applications:
   ```bash
   # Arch Linux
   sudo pacman -S webkit2gtk-4.1 base-devel
-  
+
   # Ubuntu/Debian
   sudo apt install libwebkit2gtk-4.1-dev build-essential curl wget
-  
+
   # Fedora
   sudo dnf install webkit2gtk4.1-devel gcc
   ```
@@ -596,7 +615,7 @@ All themes are consistently applied across:
 - [ ] Plugin system for extensions
 - [ ] Custome theme and styles by install or download
 
-### 📦 Phase 7: Distribution
+### 📦 Phase 8: Distribution
 - [ ] AppImage packaging
 - [x] AUR and xz package for Arch Linux based distro
 - [x] `.deb` package for Debian/Ubuntu and all debain based distros
@@ -710,6 +729,16 @@ This project was built with the incredible help of modern AI tools:
 
 Docura is evolving into more than just a markdown editor - it's becoming your **complete writing operating system**.
 
+### 🎯 Recently Added Elite Features
+
+#### 🚀 Comprehensive Export System (NEW!)
+- **8+ Export Formats**: PDF, HTML variants, JSON, RTF, MediaWiki
+- **Smart Interface**: Beautiful submenu with organized format categories
+- **Framework Integration**: Tailwind CSS and Bootstrap HTML exports
+- **Data Export**: JSON with metadata, timestamps, and structured content
+- **Cross-Platform**: RTF for word processors, MediaWiki for wikis
+- **Developer Friendly**: Extensible architecture for adding new formats
+
 ### 🎯 Upcoming Elite Features
 
 #### 🤖 AI-Powered Writing Suite
@@ -763,15 +792,15 @@ We're building the **writing environment of the future** - where the tool disapp
 
 ## 🗓️ Enhanced Roadmap
 
-### 🔥 Phase 6: Intelligence & Customization (Q1 2026)
+### 🔥 Phase 7: Intelligence & Customization (Q1 2026)
 - [ ] AI Writing Assistant integration
 - [ ] Plugin system architecture
 - [ ] Advanced customization (CSS, keybindings)
 - [ ] Writing analytics dashboard
-- [ ] Semantic search across documents
+- [x] Semantic search across documents
 - [ ] Custom export templates
 
-### 🚀 Phase 7: Collaboration & Ecosystem (Q2 2026)
+### 🚀 Phase 8: Collaboration & Ecosystem (Q2 2026)
 - [ ] Real-time multiplayer editing
 - [ ] Commenting & annotation system
 - [ ] Version control with visual diffs
@@ -779,7 +808,7 @@ We're building the **writing environment of the future** - where the tool disapp
 - [ ] API ecosystem and integrations
 - [ ] Team workspaces and permissions
 
-### 🌟 Phase 8: Platform Vision (H2 2026)
+### 🌟 Phase 9: Platform Vision (H2 2026)
 - [ ] Mobile companion apps
 - [ ] Offline-first sync architecture
 - [ ] Enterprise features
@@ -814,7 +843,7 @@ We're building the **writing environment of the future** - where the tool disapp
 
 **We're not just building another editor. We're reimagining how writing software should work.**
 
-[⭐ Star the repo](https://github.com/WOF-Softwares/Docura) | 
+[⭐ Star the repo](https://github.com/WOF-Softwares/Docura) |
 [💬 Join discussions](https://github.com/WOF-Softwares/Docura/discussions) |
 [🔧 Contribute](CONTRIBUTING.md)
 
@@ -845,12 +874,12 @@ We're building the **writing environment of the future** - where the tool disapp
 
 **From zero to a fully-featured markdown editor in just 37 hours!**
 
-🌟 **Three editing modes** for every user level  
-🎨 **12 gorgeous themes** that stay consistent  
-📑 **PDF export & print** with beautiful output  
-⚡ **23% lighter** than the competition  
-⏱️ **Built in <2 days** - October 9-11, 2025  
-🔓 **100% free** and open source  
+🌟 **Three editing modes** for every user level
+🎨 **12 gorgeous themes** that stay consistent
+📑 **PDF export & print** with beautiful output
+⚡ **23% lighter** than the competition
+⏱️ **Built in <2 days** - October 9-11, 2025
+🔓 **100% free** and open source
 
 **Thanks to everyone who believed in this project!** 🙏
 

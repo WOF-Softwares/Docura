@@ -1414,6 +1414,248 @@ function App() {
     }
   };
 
+  const handleExportHtml = async () => {
+    try {
+      if (!currentFile || !fileContent) {
+        alert("Please open a file first");
+        return;
+      }
+
+      // Get the rendered HTML content
+      let previewElement = document.querySelector(".wmde-markdown");
+      if (!previewElement) {
+        alert("Please switch to Preview or Live mode first");
+        return;
+      }
+
+      const htmlContent = previewElement.innerHTML;
+      const filename = await save({
+        defaultPath: currentFile.replace(/\.(md|markdown)$/i, ".html"),
+        filters: [
+          {
+            name: "HTML",
+            extensions: ["html"],
+          },
+        ],
+      });
+
+      if (filename) {
+        const result = await invoke("export_to_html", {
+          content: htmlContent,
+          filename: filename,
+        });
+        toast.success("HTML exported successfully!");
+      }
+    } catch (error) {
+      console.error("Error exporting HTML:", error);
+      toast.error(`Failed to export HTML: ${error.message}`);
+    }
+  };
+
+  const handleExportHtmlPlain = async () => {
+    try {
+      if (!currentFile || !fileContent) {
+        alert("Please open a file first");
+        return;
+      }
+
+      let previewElement = document.querySelector(".wmde-markdown");
+      if (!previewElement) {
+        alert("Please switch to Preview or Live mode first");
+        return;
+      }
+
+      const htmlContent = previewElement.innerHTML;
+      const filename = await save({
+        defaultPath: currentFile.replace(/\.(md|markdown)$/i, "_plain.html"),
+        filters: [
+          {
+            name: "HTML",
+            extensions: ["html"],
+          },
+        ],
+      });
+
+      if (filename) {
+        const result = await invoke("export_to_html_plain", {
+          content: htmlContent,
+          filename: filename,
+        });
+        toast.success("Plain HTML exported successfully!");
+      }
+    } catch (error) {
+      console.error("Error exporting plain HTML:", error);
+      toast.error(`Failed to export plain HTML: ${error.message}`);
+    }
+  };
+
+  const handleExportHtmlTailwind = async () => {
+    try {
+      if (!currentFile || !fileContent) {
+        alert("Please open a file first");
+        return;
+      }
+
+      let previewElement = document.querySelector(".wmde-markdown");
+      if (!previewElement) {
+        alert("Please switch to Preview or Live mode first");
+        return;
+      }
+
+      const htmlContent = previewElement.innerHTML;
+      const filename = await save({
+        defaultPath: currentFile.replace(/\.(md|markdown)$/i, "_tailwind.html"),
+        filters: [
+          {
+            name: "HTML",
+            extensions: ["html"],
+          },
+        ],
+      });
+
+      if (filename) {
+        const result = await invoke("export_to_html_tailwind", {
+          content: htmlContent,
+          filename: filename,
+        });
+        toast.success("HTML with Tailwind CSS exported successfully!");
+      }
+    } catch (error) {
+      console.error("Error exporting HTML with Tailwind:", error);
+      toast.error(`Failed to export HTML with Tailwind: ${error.message}`);
+    }
+  };
+
+  const handleExportHtmlBootstrap = async () => {
+    try {
+      if (!currentFile || !fileContent) {
+        alert("Please open a file first");
+        return;
+      }
+
+      let previewElement = document.querySelector(".wmde-markdown");
+      if (!previewElement) {
+        alert("Please switch to Preview or Live mode first");
+        return;
+      }
+
+      const htmlContent = previewElement.innerHTML;
+      const filename = await save({
+        defaultPath: currentFile.replace(
+          /\.(md|markdown)$/i,
+          "_bootstrap.html",
+        ),
+        filters: [
+          {
+            name: "HTML",
+            extensions: ["html"],
+          },
+        ],
+      });
+
+      if (filename) {
+        const result = await invoke("export_to_html_bootstrap", {
+          content: htmlContent,
+          filename: filename,
+        });
+        toast.success("HTML with Bootstrap exported successfully!");
+      }
+    } catch (error) {
+      console.error("Error exporting HTML with Bootstrap:", error);
+      toast.error(`Failed to export HTML with Bootstrap: ${error.message}`);
+    }
+  };
+
+  const handleExportJson = async () => {
+    try {
+      if (!currentFile || !fileContent) {
+        alert("Please open a file first");
+        return;
+      }
+
+      const filename = await save({
+        defaultPath: currentFile.replace(/\.(md|markdown)$/i, ".json"),
+        filters: [
+          {
+            name: "JSON",
+            extensions: ["json"],
+          },
+        ],
+      });
+
+      if (filename) {
+        const result = await invoke("export_to_json", {
+          content: fileContent,
+          filename: filename,
+        });
+        toast.success("JSON exported successfully!");
+      }
+    } catch (error) {
+      console.error("Error exporting JSON:", error);
+      toast.error(`Failed to export JSON: ${error.message}`);
+    }
+  };
+
+  const handleExportRtf = async () => {
+    try {
+      if (!currentFile || !fileContent) {
+        alert("Please open a file first");
+        return;
+      }
+
+      const filename = await save({
+        defaultPath: currentFile.replace(/\.(md|markdown)$/i, ".rtf"),
+        filters: [
+          {
+            name: "RTF",
+            extensions: ["rtf"],
+          },
+        ],
+      });
+
+      if (filename) {
+        const result = await invoke("export_to_rtf", {
+          content: fileContent,
+          filename: filename,
+        });
+        toast.success("RTF exported successfully!");
+      }
+    } catch (error) {
+      console.error("Error exporting RTF:", error);
+      toast.error(`Failed to export RTF: ${error.message}`);
+    }
+  };
+
+  const handleExportMediaWiki = async () => {
+    try {
+      if (!currentFile || !fileContent) {
+        alert("Please open a file first");
+        return;
+      }
+
+      const filename = await save({
+        defaultPath: currentFile.replace(/\.(md|markdown)$/i, ".mediawiki"),
+        filters: [
+          {
+            name: "MediaWiki",
+            extensions: ["mediawiki", "wiki"],
+          },
+        ],
+      });
+
+      if (filename) {
+        const result = await invoke("export_to_mediawiki", {
+          content: fileContent,
+          filename: filename,
+        });
+        toast.success("MediaWiki format exported successfully!");
+      }
+    } catch (error) {
+      console.error("Error exporting MediaWiki:", error);
+      toast.error(`Failed to export MediaWiki: ${error.message}`);
+    }
+  };
+
   const extractHeaders = (content) => {
     const headerRegex = /^(#{1,6})\s+(.*)$/gm;
     const headers = [];
@@ -1765,6 +2007,13 @@ function App() {
           onSave={saveFile}
           onSaveAs={saveFileAs}
           onExportPdf={handleExportToPdf}
+          onExportHtml={handleExportHtml}
+          onExportHtmlPlain={handleExportHtmlPlain}
+          onExportHtmlTailwind={handleExportHtmlTailwind}
+          onExportHtmlBootstrap={handleExportHtmlBootstrap}
+          onExportJson={handleExportJson}
+          onExportRtf={handleExportRtf}
+          onExportMediaWiki={handleExportMediaWiki}
           onPrint={handlePrint}
           onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
           onOpenSettings={() => setIsSettingsOpen(true)}

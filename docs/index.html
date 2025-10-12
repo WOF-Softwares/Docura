@@ -1,1307 +1,2248 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Docura - A fast, elegant markdown editor built in 37 hours. Better than Typora, open source, and 23% lighter.">
-    <meta name="keywords" content="markdown, editor, tauri, rust, react, typora, open source, linux">
-    <meta name="author" content="Docura Team">
-    
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Docura - Better Markdown Editor in 37 Hours">
-    <meta property="og:description" content="From Typora trial to production: Building a markdown editor that's 23% lighter, open source, and feature-rich.">
-    <meta property="og:url" content="https://wof-softwares.github.io/Docura/">
-    <meta property="og:image" content="https://wof-softwares.github.io/Docura/screenshots/screenshot-1.png">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="logo.svg">
-    <link rel="canonical" href="https://wof-softwares.github.io/Docura/">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Docura - A fast, elegant markdown editor built in 37 hours. Better than Typora, open source, and 23% lighter."
+        />
+        <meta
+            name="keywords"
+            content="markdown, editor, tauri, rust, react, typora, open source, linux"
+        />
+        <meta name="author" content="Docura Team" />
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#3b82f6">
-    <meta name="msapplication-TileColor" content="#3b82f6">
+        <!-- Open Graph / Social Media -->
+        <meta property="og:type" content="website" />
+        <meta
+            property="og:title"
+            content="Docura - Better Markdown Editor in 37 Hours"
+        />
+        <meta
+            property="og:description"
+            content="From Typora trial to production: Building a markdown editor that's 23% lighter, open source, and feature-rich."
+        />
+        <meta
+            property="og:url"
+            content="https://wof-softwares.github.io/Docura/"
+        />
+        <meta
+            property="og:image"
+            content="https://wof-softwares.github.io/Docura/screenshots/screenshot-1.png"
+        />
 
-    <!-- Robots -->
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+        <!-- Favicon -->
+        <link rel="icon" type="image/svg+xml" href="logo.svg" />
+        <link rel="canonical" href="https://wof-softwares.github.io/Docura/" />
 
-    <!-- Additional Open Graph enhancements -->
-    <meta property="og:site_name" content="Docura">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:type" content="website">
+        <!-- Theme Color -->
+        <meta name="theme-color" content="#3b82f6" />
+        <meta name="msapplication-TileColor" content="#3b82f6" />
 
-    <!-- Twitter Card tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@DocuraEditor">
-    <meta name="twitter:creator" content="@DocuraEditor">
-    <meta name="twitter:title" content="Docura - Better Markdown Editor in 37 Hours">
-    <meta name="twitter:description" content="From Typora trial to production: Building a markdown editor that's 23% lighter, open source, and feature-rich.">
-    <meta name="twitter:image" content="https://wof-softwares.github.io/Docura/screenshots/screenshot-1.png">
+        <!-- Robots -->
+        <meta
+            name="robots"
+            content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+        />
 
-    <!-- Article specific meta tags -->
-    <meta property="article:author" content="Docura Team">
-    <meta property="article:publisher" content="https://github.com/WOF-Softwares/Docura">
-    <meta property="article:section" content="Technology">
-    <meta property="article:tag" content="markdown">
-    <meta property="article:tag" content="editor">
-    <meta property="article:tag" content="tauri">
-    <meta property="article:tag" content="rust">
-    <meta property="article:tag" content="react">
-    <meta property="article:tag" content="open source">
+        <!-- Additional Open Graph enhancements -->
+        <meta property="og:site_name" content="Docura" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:type" content="website" />
 
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "SoftwareApplication",
-          "@id": "https://wof-softwares.github.io/Docura/#software",
-          "name": "Docura",
-          "version": "1.1",
-          "description": "A fast, elegant markdown editor built in 37 hours. Better than Typora, open source, and 23% lighter.",
-          "url": "https://wof-softwares.github.io/Docura/",
-          "downloadUrl": "https://github.com/WOF-Softwares/Docura",
-          "screenshot": "https://wof-softwares.github.io/Docura/screenshots/screenshot-1.png",
-          "operatingSystem": ["Linux", "Windows", "macOS"],
-          "applicationCategory": "TextEditor",
-          "applicationSubCategory": "Markdown Editor",
-          "softwareVersion": "1.1",
-          "fileSize": "12MB",
-          "memoryRequirements": "780MB RAM",
-          "author": {
-            "@type": "Organization",
-            "@id": "https://wof-softwares.github.io/Docura/#organization",
-            "name": "WOF-Softwares",
-            "url": "https://github.com/WOF-Softwares"
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD",
-            "availability": "https://schema.org/InStock"
-          },
-          "featureList": [
-            "Three Editing Modes (Code, Live with Modern/Classic options, Preview)",
-            "Live Editor Choice: Modern (Typora-like) or Classic (Split-pane)",
-            "Modern Welcome Screen with Time-Based Greetings",
-            "Professional Status Bar (Line/Col, Word/Char Count)",
-            "Quick Search (Ctrl+P) - VSCode-style file finder",
-            "Recent History (15 files/folders)",
-            "Multi-Window Support",
-            "Omarchy Integration",
-            "PDF Export",
-            "Interactive Checkboxes",
-            "12 Beautiful Themes",
-            "Comprehensive Keyboard Shortcuts",
-            "Toast Notifications",
-            "Context Menu",
-            "Smart Auto-Save",
-            "Image Paste from Clipboard",
-            "Ultra-Responsive Design",
-            "Tiling WM Support"
-          ],
-          "programmingLanguage": ["Rust", "JavaScript", "React"],
-          "datePublished": "2025-10-09",
-          "dateModified": "2025-10-12"
-        },
-        {
-          "@type": "Organization",
-          "@id": "https://wof-softwares.github.io/Docura/#organization",
-          "name": "WOF-Softwares",
-          "url": "https://github.com/WOF-Softwares",
-          "logo": "https://wof-softwares.github.io/Docura/logo.svg",
-          "sameAs": [
-            "https://github.com/WOF-Softwares/Docura"
-          ],
-          "foundingDate": "2025",
-          "description": "Independent software development focused on creating efficient, user-respecting applications."
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://wof-softwares.github.io/Docura/#website",
-          "url": "https://wof-softwares.github.io/Docura/",
-          "name": "Docura - Modern Markdown Editor",
-          "description": "Official website for Docura, a fast and elegant markdown editor built with Tauri and React.",
-          "publisher": {
-            "@id": "https://wof-softwares.github.io/Docura/#organization"
-          },
-          "inLanguage": "en-US"
-        },
-        {
-          "@type": "WebPage",
-          "@id": "https://wof-softwares.github.io/Docura/#webpage",
-          "url": "https://wof-softwares.github.io/Docura/",
-          "name": "Docura - From Typora Trial to Production in 37 Hours",
-          "isPartOf": {
-            "@id": "https://wof-softwares.github.io/Docura/#website"
-          },
-          "about": {
-            "@id": "https://wof-softwares.github.io/Docura/#software"
-          },
-          "description": "Docura is a modern, open-source markdown editor built with Tauri and React. 96% smaller than Typora with MORE features!",
-          "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://wof-softwares.github.io/Docura/"
-              }
-            ]
-          },
-          "primaryImageOfPage": "https://wof-softwares.github.io/Docura/screenshots/screenshot-1.png",
-          "inLanguage": "en-US",
-          "isFamilyFriendly": "true",
-          "mainEntity": {
-            "@id": "https://wof-softwares.github.io/Docura/#software"
-          }
-        }
-      ]
-    }
-    </script>
+        <!-- Twitter Card tags -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@DocuraEditor" />
+        <meta name="twitter:creator" content="@DocuraEditor" />
+        <meta
+            name="twitter:title"
+            content="Docura - Better Markdown Editor in 37 Hours"
+        />
+        <meta
+            name="twitter:description"
+            content="From Typora trial to production: Building a markdown editor that's 23% lighter, open source, and feature-rich."
+        />
+        <meta
+            name="twitter:image"
+            content="https://wof-softwares.github.io/Docura/screenshots/screenshot-1.png"
+        />
 
-    <title>Docura - From Typora Trial to Production in 37 Hours</title>
-    
-    <!-- Tailwind CSS with Typography Plugin -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'dark-primary': '#0d1117',
-                        'dark-secondary': '#161b22',
-                        'dark-tertiary': '#21262d',
-                        'border-dark': '#30363d',
-                        'text-primary': '#f0f6fc',
-                        'text-secondary': '#8b949e',
-                        'accent': '#3b82f6',
-                        'accent-hover': '#60a5fa',
-                        'success': '#10b981',
+        <!-- Article specific meta tags -->
+        <meta property="article:author" content="Docura Team" />
+        <meta
+            property="article:publisher"
+            content="https://github.com/WOF-Softwares/Docura"
+        />
+        <meta property="article:section" content="Technology" />
+        <meta property="article:tag" content="markdown" />
+        <meta property="article:tag" content="editor" />
+        <meta property="article:tag" content="tauri" />
+        <meta property="article:tag" content="rust" />
+        <meta property="article:tag" content="react" />
+        <meta property="article:tag" content="open source" />
+
+        <!-- JSON-LD Structured Data -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "SoftwareApplication",
+                        "@id": "https://wof-softwares.github.io/Docura/#software",
+                        "name": "Docura",
+                        "version": "1.1",
+                        "description": "A fast, elegant markdown editor built in 37 hours. Better than Typora, open source, and 23% lighter.",
+                        "url": "https://wof-softwares.github.io/Docura/",
+                        "downloadUrl": "https://github.com/WOF-Softwares/Docura",
+                        "screenshot": "https://wof-softwares.github.io/Docura/screenshots/screenshot-1.png",
+                        "operatingSystem": ["Linux", "Windows", "macOS"],
+                        "applicationCategory": "TextEditor",
+                        "applicationSubCategory": "Markdown Editor",
+                        "softwareVersion": "1.1",
+                        "fileSize": "12MB",
+                        "memoryRequirements": "780MB RAM",
+                        "author": {
+                            "@type": "Organization",
+                            "@id": "https://wof-softwares.github.io/Docura/#organization",
+                            "name": "WOF-Softwares",
+                            "url": "https://github.com/WOF-Softwares"
+                        },
+                        "offers": {
+                            "@type": "Offer",
+                            "price": "0",
+                            "priceCurrency": "USD",
+                            "availability": "https://schema.org/InStock"
+                        },
+                        "featureList": [
+                            "Three Editing Modes (Code, Live with Modern/Classic options, Preview)",
+                            "Live Editor Choice: Modern (Typora-like) or Classic (Split-pane)",
+                            "Modern Welcome Screen with Time-Based Greetings",
+                            "Professional Status Bar (Line/Col, Word/Char Count)",
+                            "Quick Search (Ctrl+P) - VSCode-style file finder",
+                            "Recent History (15 files/folders)",
+                            "Multi-Window Support",
+                            "Omarchy Integration",
+                            "Comprehensive Export System (8+ formats)",
+                            "PDF, HTML, JSON, RTF, MediaWiki Export",
+                            "Interactive Checkboxes",
+                            "12 Beautiful Themes",
+                            "Comprehensive Keyboard Shortcuts",
+                            "Toast Notifications",
+                            "Context Menu",
+                            "Smart Auto-Save",
+                            "Image Paste from Clipboard",
+                            "Ultra-Responsive Design",
+                            "Tiling WM Support"
+                        ],
+                        "programmingLanguage": ["Rust", "JavaScript", "React"],
+                        "datePublished": "2025-10-09",
+                        "dateModified": "2025-10-12"
                     },
-                    fontFamily: {
-                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    {
+                        "@type": "Organization",
+                        "@id": "https://wof-softwares.github.io/Docura/#organization",
+                        "name": "WOF-Softwares",
+                        "url": "https://github.com/WOF-Softwares",
+                        "logo": "https://wof-softwares.github.io/Docura/logo.svg",
+                        "sameAs": ["https://github.com/WOF-Softwares/Docura"],
+                        "foundingDate": "2025",
+                        "description": "Independent software development focused on creating efficient, user-respecting applications."
                     },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
+                    {
+                        "@type": "WebSite",
+                        "@id": "https://wof-softwares.github.io/Docura/#website",
+                        "url": "https://wof-softwares.github.io/Docura/",
+                        "name": "Docura - Modern Markdown Editor",
+                        "description": "Official website for Docura, a fast and elegant markdown editor built with Tauri and React.",
+                        "publisher": {
+                            "@id": "https://wof-softwares.github.io/Docura/#organization"
+                        },
+                        "inLanguage": "en-US"
                     },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                    {
+                        "@type": "WebPage",
+                        "@id": "https://wof-softwares.github.io/Docura/#webpage",
+                        "url": "https://wof-softwares.github.io/Docura/",
+                        "name": "Docura - From Typora Trial to Production in 37 Hours",
+                        "isPartOf": {
+                            "@id": "https://wof-softwares.github.io/Docura/#website"
+                        },
+                        "about": {
+                            "@id": "https://wof-softwares.github.io/Docura/#software"
+                        },
+                        "description": "Docura is a modern, open-source markdown editor built with Tauri and React. 96% smaller than Typora with MORE features!",
+                        "breadcrumb": {
+                            "@type": "BreadcrumbList",
+                            "itemListElement": [
+                                {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://wof-softwares.github.io/Docura/"
+                                }
+                            ]
+                        },
+                        "primaryImageOfPage": "https://wof-softwares.github.io/Docura/screenshots/screenshot-1.png",
+                        "inLanguage": "en-US",
+                        "isFamilyFriendly": "true",
+                        "mainEntity": {
+                            "@id": "https://wof-softwares.github.io/Docura/#software"
                         }
-                    },
-                    typography: ({ theme }) => ({
-                        DEFAULT: {
-                            css: {
-                                maxWidth: 'none',
-                                color: theme('colors.text-primary'),
-                                a: {
-                                    color: theme('colors.accent'),
-                                    '&:hover': {
-                                        color: theme('colors.accent-hover'),
-                                    },
-                                },
-                                code: {
-                                    color: theme('colors.accent'),
-                                    backgroundColor: theme('colors.dark-primary'),
-                                },
-                                'h1, h2, h3, h4, h5, h6': {
-                                    color: theme('colors.text-primary'),
-                                },
-                                strong: {
-                                    color: theme('colors.text-primary'),
-                                },
+                    }
+                ]
+            }
+        </script>
+
+        <title>Docura - From Typora Trial to Production in 37 Hours</title>
+
+        <!-- Tailwind CSS with Typography Plugin -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            "dark-primary": "#0d1117",
+                            "dark-secondary": "#161b22",
+                            "dark-tertiary": "#21262d",
+                            "border-dark": "#30363d",
+                            "text-primary": "#f0f6fc",
+                            "text-secondary": "#8b949e",
+                            accent: "#3b82f6",
+                            "accent-hover": "#60a5fa",
+                            success: "#10b981",
+                        },
+                        fontFamily: {
+                            sans: ["Inter", "system-ui", "sans-serif"],
+                        },
+                        animation: {
+                            float: "float 6s ease-in-out infinite",
+                        },
+                        keyframes: {
+                            float: {
+                                "0%, 100%": { transform: "translateY(0)" },
+                                "50%": { transform: "translateY(-10px)" },
                             },
                         },
-                    }),
-                }
-            },
-            plugins: [
-                // Typography plugin for blog content
-            ]
-        }
-    </script>
-    
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <!-- Marked.js for Markdown Parsing -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
-    <!-- Inter Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Custom Styles -->
-    <style>
-        :root {
-            --accent: #3b82f6;
-            --accent-hover: #60a5fa;
-            --success: #10b981;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--success) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .gradient-border {
-            position: relative;
-        }
-        
-        .gradient-border::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent) 0%, var(--success) 100%);
-        }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease;
-        }
-        
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .blog-card {
-            transition: all 0.3s ease;
-        }
-        
-        .blog-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .screenshot-hover {
-            transition: all 0.5s ease;
-        }
-        
-        .screenshot-hover:hover img {
-            transform: scale(1.05);
-        }
-        
-        /* Prose styles for markdown blog content */
-        .prose {
-            max-width: none;
-        }
-        
-        .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
-            font-weight: 600;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-        
-        .prose h1 { font-size: 2.25em; }
-        .prose h2 { font-size: 1.875em; }
-        .prose h3 { font-size: 1.5em; }
-        .prose h4 { font-size: 1.25em; }
-        
-        .prose p {
-            margin-bottom: 1.25rem;
-            line-height: 1.75;
-        }
-        
-        .prose a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        
-        .prose a:hover {
-            color: var(--accent-hover);
-            text-decoration: underline;
-        }
-        
-        .prose code {
-            color: var(--accent);
-            background-color: #1a1d24;
-            padding: 0.2rem 0.4rem;
-            border-radius: 0.25rem;
-            font-size: 0.875em;
-        }
-        
-        .prose pre {
-            background-color: #0d1117;
-            border: 1px solid var(--border-dark);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-        }
-        
-        .prose pre code {
-            background: none;
-            padding: 0;
-            font-size: 0.875rem;
-        }
-        
-        .prose ul, .prose ol {
-            margin: 1.25rem 0;
-            padding-left: 1.625rem;
-        }
-        
-        .prose li {
-            margin: 0.5rem 0;
-        }
-        
-        .prose blockquote {
-            border-left: 4px solid var(--accent);
-            padding-left: 1rem;
-            font-style: italic;
-            margin: 1.5rem 0;
-            color: var(--text-secondary);
-        }
-        
-        .prose table {
-            width: 100%;
-            margin: 1.5rem 0;
-            border-collapse: collapse;
-        }
-        
-        .prose th, .prose td {
-            border: 1px solid var(--border-dark);
-            padding: 0.75rem;
-            text-align: left;
-        }
-        
-        .prose th {
-            background-color: #0d1117;
-            font-weight: 600;
-        }
-        
-        .prose img {
-            border-radius: 0.5rem;
-            border: 1px solid var(--border-dark);
-            margin: 1.5rem 0;
-        }
-        
-        .prose strong {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-    </style>
-</head>
-<body class="bg-dark-primary text-text-primary min-h-screen" x-data="app()">
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-dark-primary/90 backdrop-blur-sm border-b border-border-dark">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="#" class="flex items-center space-x-3 transition-all duration-300 hover:scale-105">
-                <img src="logo.svg" alt="Docura Logo" class="w-10 h-10">
-                <span class="text-xl font-bold gradient-text">Docura</span>
-            </a>
-            
-            <div class="hidden md:flex space-x-8">
-                <a href="#features" class="text-text-secondary hover:text-text-primary transition-colors">Features</a>
-                <a href="#omakase" class="text-accent hover:text-accent-hover transition-colors font-semibold">🎨 Omarchy</a>
-                <a href="#screenshots" class="text-text-secondary hover:text-text-primary transition-colors">Screenshots</a>
-                <a href="#comparison" class="text-text-secondary hover:text-text-primary transition-colors">Comparison</a>
-                <a href="#blog" class="text-text-secondary hover:text-text-primary transition-colors">Blog</a>
-                <a href="#download" class="text-text-secondary hover:text-text-primary transition-colors">Download</a>
-            </div>
-            
-            <div class="flex items-center space-x-4">
-                <a href="https://github.com/WOF-Softwares/Docura" class="text-text-secondary hover:text-text-primary transition-colors">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
+                        typography: ({ theme }) => ({
+                            DEFAULT: {
+                                css: {
+                                    maxWidth: "none",
+                                    color: theme("colors.text-primary"),
+                                    a: {
+                                        color: theme("colors.accent"),
+                                        "&:hover": {
+                                            color: theme("colors.accent-hover"),
+                                        },
+                                    },
+                                    code: {
+                                        color: theme("colors.accent"),
+                                        backgroundColor: theme(
+                                            "colors.dark-primary",
+                                        ),
+                                    },
+                                    "h1, h2, h3, h4, h5, h6": {
+                                        color: theme("colors.text-primary"),
+                                    },
+                                    strong: {
+                                        color: theme("colors.text-primary"),
+                                    },
+                                },
+                            },
+                        }),
+                    },
+                },
+                plugins: [
+                    // Typography plugin for blog content
+                ],
+            };
+        </script>
+
+        <!-- Alpine.js -->
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
+
+        <!-- Marked.js for Markdown Parsing -->
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+        <!-- Inter Font -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Custom Styles -->
+        <style>
+            :root {
+                --accent: #3b82f6;
+                --accent-hover: #60a5fa;
+                --success: #10b981;
+            }
+
+            body {
+                font-family: "Inter", sans-serif;
+            }
+
+            .gradient-text {
+                background: linear-gradient(
+                    135deg,
+                    var(--accent) 0%,
+                    var(--success) 100%
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .gradient-border {
+                position: relative;
+            }
+
+            .gradient-border::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: linear-gradient(
+                    90deg,
+                    var(--accent) 0%,
+                    var(--success) 100%
+                );
+            }
+
+            .fade-in {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.6s ease;
+            }
+
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .blog-card {
+                transition: all 0.3s ease;
+            }
+
+            .blog-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .screenshot-hover {
+                transition: all 0.5s ease;
+            }
+
+            .screenshot-hover:hover img {
+                transform: scale(1.05);
+            }
+
+            /* Prose styles for markdown blog content */
+            .prose {
+                max-width: none;
+            }
+
+            .prose h1,
+            .prose h2,
+            .prose h3,
+            .prose h4,
+            .prose h5,
+            .prose h6 {
+                font-weight: 600;
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+                color: var(--text-primary);
+            }
+
+            .prose h1 {
+                font-size: 2.25em;
+            }
+            .prose h2 {
+                font-size: 1.875em;
+            }
+            .prose h3 {
+                font-size: 1.5em;
+            }
+            .prose h4 {
+                font-size: 1.25em;
+            }
+
+            .prose p {
+                margin-bottom: 1.25rem;
+                line-height: 1.75;
+            }
+
+            .prose a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+
+            .prose a:hover {
+                color: var(--accent-hover);
+                text-decoration: underline;
+            }
+
+            .prose code {
+                color: var(--accent);
+                background-color: #1a1d24;
+                padding: 0.2rem 0.4rem;
+                border-radius: 0.25rem;
+                font-size: 0.875em;
+            }
+
+            .prose pre {
+                background-color: #0d1117;
+                border: 1px solid var(--border-dark);
+                border-radius: 0.5rem;
+                padding: 1rem;
+                overflow-x: auto;
+                margin: 1.5rem 0;
+            }
+
+            .prose pre code {
+                background: none;
+                padding: 0;
+                font-size: 0.875rem;
+            }
+
+            .prose ul,
+            .prose ol {
+                margin: 1.25rem 0;
+                padding-left: 1.625rem;
+            }
+
+            .prose li {
+                margin: 0.5rem 0;
+            }
+
+            .prose blockquote {
+                border-left: 4px solid var(--accent);
+                padding-left: 1rem;
+                font-style: italic;
+                margin: 1.5rem 0;
+                color: var(--text-secondary);
+            }
+
+            .prose table {
+                width: 100%;
+                margin: 1.5rem 0;
+                border-collapse: collapse;
+            }
+
+            .prose th,
+            .prose td {
+                border: 1px solid var(--border-dark);
+                padding: 0.75rem;
+                text-align: left;
+            }
+
+            .prose th {
+                background-color: #0d1117;
+                font-weight: 600;
+            }
+
+            .prose img {
+                border-radius: 0.5rem;
+                border: 1px solid var(--border-dark);
+                margin: 1.5rem 0;
+            }
+
+            .prose strong {
+                font-weight: 600;
+                color: var(--text-primary);
+            }
+        </style>
+    </head>
+    <body class="bg-dark-primary text-text-primary min-h-screen" x-data="app()">
+        <!-- Navigation -->
+        <nav
+            class="sticky top-0 z-50 bg-dark-primary/90 backdrop-blur-sm border-b border-border-dark"
+        >
+            <div
+                class="container mx-auto px-4 py-4 flex justify-between items-center"
+            >
+                <a
+                    href="#"
+                    class="flex items-center space-x-3 transition-all duration-300 hover:scale-105"
+                >
+                    <img src="logo.svg" alt="Docura Logo" class="w-10 h-10" />
+                    <span class="text-xl font-bold gradient-text">Docura</span>
                 </a>
-                
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-text-secondary">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div x-show="mobileMenuOpen" class="md:hidden bg-dark-secondary border-t border-border-dark px-4 py-2">
-            <div class="flex flex-col space-y-3 py-2">
-                <a href="#features" class="text-text-secondary hover:text-text-primary transition-colors" @click="mobileMenuOpen = false">Features</a>
-                <a href="#omakase" class="text-accent hover:text-accent-hover transition-colors font-semibold" @click="mobileMenuOpen = false">🎨 Omarchy</a>
-                <a href="#screenshots" class="text-text-secondary hover:text-text-primary transition-colors" @click="mobileMenuOpen = false">Screenshots</a>
-                <a href="#comparison" class="text-text-secondary hover:text-text-primary transition-colors" @click="mobileMenuOpen = false">Comparison</a>
-                <a href="#blog" class="text-text-secondary hover:text-text-primary transition-colors" @click="mobileMenuOpen = false">Blog</a>
-                <a href="#download" class="text-text-secondary hover:text-text-primary transition-colors" @click="mobileMenuOpen = false">Download</a>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="py-16 md:py-24">
-        <div class="container mx-auto px-4 text-center">
-            <div class="mb-8 flex justify-center">
-                <img src="logo.svg" alt="Docura Logo" class="w-32 h-32 md:w-40 md:h-40 animate-float">
-            </div>
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 gradient-text">Docura v1.1</h1>
-            <p class="text-xl md:text-2xl text-text-secondary max-w-3xl mx-auto mb-6">
-                A modern, open-source markdown editor built with Tauri and React. 96% smaller than Typora with MORE features!
-            </p>
-            <div class="bg-dark-secondary rounded-lg p-4 max-w-2xl mx-auto mb-10 border border-accent">
-                <p class="text-lg text-accent font-semibold mb-2">🏠 NEW! Welcome Screen + Status Bar + Auto-Save + 25+ Features</p>
-                <p class="text-text-secondary">VSCode/Cursor-style welcome screen with time-based greetings! Professional status bar with stats! Plus: Smart auto-save, paste images, Quick Search (Ctrl+P), Recent History, Omarchy integration, Ultra-responsive design! <strong class="text-success">Typora has none of this!</strong> <a href="#features" class="text-accent underline">See all features →</a></p>
-            </div>
-            
-            <div class="flex flex-wrap justify-center gap-8 mb-12">
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-accent">2</div>
-                    <div class="text-sm text-text-secondary uppercase tracking-wider">Days Built</div>
+                <div class="hidden md:flex space-x-8">
+                    <a
+                        href="#features"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                        >Features</a
+                    >
+                    <a
+                        href="#omakase"
+                        class="text-accent hover:text-accent-hover transition-colors font-semibold"
+                        >🎨 Omarchy</a
+                    >
+                    <a
+                        href="#screenshots"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                        >Screenshots</a
+                    >
+                    <a
+                        href="#comparison"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                        >Comparison</a
+                    >
+                    <a
+                        href="#blog"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                        >Blog</a
+                    >
+                    <a
+                        href="#download"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                        >Download</a
+                    >
                 </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-success">96%</div>
-                    <div class="text-sm text-text-secondary uppercase tracking-wider">Less Disk Space</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-accent">12MB</div>
-                    <div class="text-sm text-text-secondary uppercase tracking-wider">vs 326MB</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-accent">25+</div>
-                    <div class="text-sm text-text-secondary uppercase tracking-wider">Day 2 Features</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-success">$0</div>
-                    <div class="text-sm text-text-secondary uppercase tracking-wider">vs $14.99</div>
-                </div>
-            </div>
-            
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="https://github.com/WOF-Softwares/Docura" class="bg-accent hover:bg-accent-hover text-black font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    View on GitHub
-                </a>
-                <a href="#download" class="bg-dark-tertiary hover:bg-dark-secondary border border-border-dark text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                    </svg>
-                    Download Now
-                </a>
-            </div>
-        </div>
-    </section>
 
-    <!-- Screenshots Section -->
-    <section id="screenshots" class="py-16 bg-dark-secondary">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">See It in Action</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent">
-                    <img src="screenshots/screenshot-1.png" alt="Docura main interface showing three editing modes" class="w-full h-auto transition-transform duration-500">
-                    <div class="p-4 text-center text-text-secondary">
-                        Three Editing Modes: Code, Live (WYSIWYG), and Preview
-                    </div>
-                </div>
-                <div class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent">
-                    <img src="screenshots/screenshot-2.png" alt="Docura theme selector with 12 beautiful themes" class="w-full h-auto transition-transform duration-500">
-                    <div class="p-4 text-center text-text-secondary">
-                        12 Beautiful Themes with Unified Styling
-                    </div>
-                </div>
-                <div class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent">
-                    <img src="screenshots/screenshot-3.png" alt="Docura document outline and navigation" class="w-full h-auto transition-transform duration-500">
-                    <div class="p-4 text-center text-text-secondary">
-                        Document Outline with Clickable Navigation
-                    </div>
-                </div>
-                <div class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent">
-                    <img src="screenshots/screenshot-4.png" alt="Docura export and print features" class="w-full h-auto transition-transform duration-500">
-                    <div class="p-4 text-center text-text-secondary">
-                        PDF Export & Print with Native Dialogs
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                <div class="flex items-center space-x-4">
+                    <a
+                        href="https://github.com/WOF-Softwares/Docura"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                    >
+                        <svg
+                            class="w-6 h-6"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                            />
+                        </svg>
+                    </a>
 
-    <!-- Welcome Screen Showcase -->
-    <section class="py-16 bg-gradient-to-b from-dark-secondary to-dark-primary">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-8 text-center gradient-text">🏠 Modern Welcome Screen - Like VSCode, But Better!</h2>
-            
-            <div class="max-w-5xl mx-auto">
-                <div class="bg-dark-tertiary rounded-xl p-8 border-2 border-accent mb-8">
-                    <div class="grid md:grid-cols-2 gap-8 mb-6">
-                        <div class="text-center">
-                            <div class="text-6xl mb-4">❌</div>
-                            <h3 class="text-2xl font-bold mb-3 text-error">Typora's Way</h3>
-                            <div class="bg-dark-primary rounded-lg p-4 text-left space-y-2">
-                                <p class="text-text-secondary">• No welcome screen</p>
-                                <p class="text-text-secondary">• Empty blank window</p>
-                                <p class="text-text-secondary">• <strong class="text-error">No guidance!</strong></p>
-                                <p class="text-text-secondary">• Confusing for new users</p>
-                                <p class="text-text-secondary">• Not responsive</p>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center">
-                            <div class="text-6xl mb-4">✅</div>
-                            <h3 class="text-2xl font-bold mb-3 text-success">Docura's Way</h3>
-                            <div class="bg-dark-primary rounded-lg p-4 text-left space-y-2">
-                                <p class="text-text-secondary">• Beautiful welcome screen</p>
-                                <p class="text-text-secondary">• Time-based greetings 🌅☀️🌆🌙</p>
-                                <p class="text-text-secondary">• <strong class="text-success">Quick actions!</strong></p>
-                                <p class="text-text-secondary">• Recent items at hand</p>
-                                <p class="text-text-secondary">• Ultra-responsive design</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-dark-primary rounded-lg p-6 border border-border-dark">
-                        <h4 class="text-center mb-4 text-accent font-bold text-lg">Docura's Welcome Screen Features:</h4>
-                        <div class="grid md:grid-cols-3 gap-4 text-sm">
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">🕐 Time-Based Greeting</p>
-                                <p class="text-text-secondary">Good Morning/Afternoon/Evening/Night with personalized username and emoji animations!</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">⚡ Quick Actions</p>
-                                <p class="text-text-secondary">New File, Open Folder, Open File, Themes - all in compact card layout</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">📜 Recent Items</p>
-                                <p class="text-text-secondary">Last 5 files/folders with full paths, click to open instantly</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">⌨️ Keyboard Shortcuts</p>
-                                <p class="text-text-secondary">All shortcuts displayed: Ctrl+N, Ctrl+O, Ctrl+P, Ctrl+S - learn as you go!</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">📱 Ultra-Responsive</p>
-                                <p class="text-text-secondary">Adapts to ANY screen: 4K, laptops, tablets, mobiles, high DPI, Wayland scaling!</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">🪟 Tiling WM Perfect</p>
-                                <p class="text-text-secondary">Works flawlessly in i3, sway, hyprland - even at 400px width!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center">
-                    <p class="text-2xl font-bold text-accent mb-2">💎 Welcome Screen Done RIGHT!</p>
-                    <p class="text-lg text-text-secondary">Inspired by VSCode & Cursor, but more compact and more responsive!</p>
-                    <p class="text-sm text-text-secondary mt-4">326 MB Typora shows nothing. 12 MB Docura welcomes you beautifully. 🎯</p>
+                    <button
+                        @click="mobileMenuOpen = !mobileMenuOpen"
+                        class="md:hidden text-text-secondary"
+                    >
+                        <svg
+                            class="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"
+                            ></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Status Bar Showcase -->
-    <section class="py-16 bg-dark-primary">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-8 text-center gradient-text">📊 Professional Status Bar - Like VSCode!</h2>
-            
-            <div class="max-w-5xl mx-auto">
-                <div class="bg-dark-tertiary rounded-xl p-8 border-2 border-accent mb-8">
-                    <div class="grid md:grid-cols-2 gap-8 mb-6">
-                        <div class="text-center">
-                            <div class="text-6xl mb-4">❌</div>
-                            <h3 class="text-2xl font-bold mb-3 text-error">Typora's Way</h3>
-                            <div class="bg-dark-primary rounded-lg p-4 text-left space-y-2">
-                                <p class="text-text-secondary">• No status bar</p>
-                                <p class="text-text-secondary">• <strong class="text-error">No stats!</strong></p>
-                                <p class="text-text-secondary">• No cursor position</p>
-                                <p class="text-text-secondary">• No word count</p>
-                                <p class="text-text-secondary">• Writing blind</p>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center">
-                            <div class="text-6xl mb-4">✅</div>
-                            <h3 class="text-2xl font-bold mb-3 text-success">Docura's Way</h3>
-                            <div class="bg-dark-primary rounded-lg p-4 text-left space-y-2">
-                                <p class="text-text-secondary">• Professional status bar</p>
-                                <p class="text-text-secondary">• <strong class="text-success">All stats visible!</strong></p>
-                                <p class="text-text-secondary">• Ln 20, Col 30 tracking</p>
-                                <p class="text-text-secondary">• Word/char counts</p>
-                                <p class="text-text-secondary">• Encoding, line endings, indentation</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-dark-primary rounded-lg p-6 border border-border-dark">
-                        <h4 class="text-center mb-4 text-accent font-bold text-lg">Docura's Status Bar Features:</h4>
-                        <div class="grid md:grid-cols-3 gap-4 text-sm">
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">📄 Current File</p>
-                                <p class="text-text-secondary">Always know which file you're editing with icon and filename display</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">📍 Line & Column</p>
-                                <p class="text-text-secondary">Real-time cursor position (Ln 20, Col 30) - updates as you type!</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">📝 Word Count</p>
-                                <p class="text-text-secondary">Live word count - perfect for writers with quotas</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">🔤 Character Count</p>
-                                <p class="text-text-secondary">Track character count for Twitter posts, SMS, metadata</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">🌍 Encoding</p>
-                                <p class="text-text-secondary">UTF-8, UTF-16, etc. - click to open settings and change</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">↩️ Line Ending</p>
-                                <p class="text-text-secondary">LF (Unix) or CRLF (Windows) - clickable to adjust</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">⌨️ Indentation</p>
-                                <p class="text-text-secondary">2 Spaces, 4 Spaces, or Tab - click to configure</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">⚙️ Quick Settings</p>
-                                <p class="text-text-secondary">Gear icon for instant access to all editor settings</p>
-                            </div>
-                            <div class="bg-dark-secondary rounded-lg p-4">
-                                <p class="font-semibold text-success mb-2">📱 Responsive</p>
-                                <p class="text-text-secondary">Adapts to screen size - hides less important items on small screens</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center">
-                    <p class="text-2xl font-bold text-accent mb-2">💎 Professional Tools for Professional Writers!</p>
-                    <p class="text-lg text-text-secondary">Inspired by VSCode, refined for markdown editing!</p>
-                    <p class="text-sm text-text-secondary mt-4">326 MB Typora gives you nothing. 12 MB Docura gives you everything. 🎯</p>
+            <!-- Mobile Menu -->
+            <div
+                x-show="mobileMenuOpen"
+                class="md:hidden bg-dark-secondary border-t border-border-dark px-4 py-2"
+            >
+                <div class="flex flex-col space-y-3 py-2">
+                    <a
+                        href="#features"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                        @click="mobileMenuOpen = false"
+                        >Features</a
+                    >
+                    <a
+                        href="#omakase"
+                        class="text-accent hover:text-accent-hover transition-colors font-semibold"
+                        @click="mobileMenuOpen = false"
+                        >🎨 Omarchy</a
+                    >
+                    <a
+                        href="#screenshots"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                        @click="mobileMenuOpen = false"
+                        >Screenshots</a
+                    >
+                    <a
+                        href="#comparison"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                        @click="mobileMenuOpen = false"
+                        >Comparison</a
+                    >
+                    <a
+                        href="#blog"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                        @click="mobileMenuOpen = false"
+                        >Blog</a
+                    >
+                    <a
+                        href="#download"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                        @click="mobileMenuOpen = false"
+                        >Download</a
+                    >
                 </div>
             </div>
-        </div>
-    </section>
+        </nav>
 
-    <!-- Features Section -->
-    <section id="features" class="py-16 bg-dark-secondary">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">Three Modes, One Editor + Day 2 Features!</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                <div class="bg-dark-secondary rounded-xl p-6 border border-border-dark transition-all duration-300 hover:border-accent hover:transform hover:-translate-y-2 gradient-border">
-                    <div class="text-4xl mb-4">📝</div>
-                    <h3 class="text-xl font-bold mb-2">Code Mode</h3>
-                    <p class="text-text-secondary">Pure markdown editing with Monaco Editor. Full VS Code experience with syntax highlighting for 12 themes.</p>
+        <!-- Hero Section -->
+        <section class="py-16 md:py-24">
+            <div class="container mx-auto px-4 text-center">
+                <div class="mb-8 flex justify-center">
+                    <img
+                        src="logo.svg"
+                        alt="Docura Logo"
+                        class="w-32 h-32 md:w-40 md:h-40 animate-float"
+                    />
                 </div>
-                
-                <div class="bg-dark-secondary rounded-xl p-6 border border-border-dark transition-all duration-300 hover:border-accent hover:transform hover:-translate-y-2 gradient-border">
-                    <div class="text-4xl mb-4">✍️</div>
-                    <h3 class="text-xl font-bold mb-2">Live Mode (Choose Your Style!)</h3>
-                    <p class="text-text-secondary"><strong>Modern:</strong> Pure Typora-like WYSIWYG experience. <strong>Classic:</strong> Split-pane with toolbar buttons. Switch anytime in Settings!</p>
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 gradient-text">
+                    Docura v1.1
+                </h1>
+                <p
+                    class="text-xl md:text-2xl text-text-secondary max-w-3xl mx-auto mb-6"
+                >
+                    A modern, open-source markdown editor built with Tauri and
+                    React. 96% smaller than Typora with MORE features!
+                </p>
+                <div
+                    class="bg-dark-secondary rounded-lg p-4 max-w-2xl mx-auto mb-10 border border-accent"
+                >
+                    <p class="text-lg text-accent font-semibold mb-2">
+                        🏠 NEW! Welcome Screen + Status Bar + Auto-Save + 25+
+                        Features
+                    </p>
+                    <p class="text-text-secondary">
+                        VSCode/Cursor-style welcome screen with time-based
+                        greetings! Professional status bar with stats! Plus:
+                        Smart auto-save, paste images, Quick Search (Ctrl+P),
+                        Recent History, Omarchy integration, Ultra-responsive
+                        design!
+                        <strong class="text-success"
+                            >Typora has none of this!</strong
+                        >
+                        <a href="#features" class="text-accent underline"
+                            >See all features →</a
+                        >
+                    </p>
                 </div>
-                
-                <div class="bg-dark-secondary rounded-xl p-6 border border-border-dark transition-all duration-300 hover:border-accent hover:transform hover:-translate-y-2 gradient-border">
-                    <div class="text-4xl mb-4">👁️</div>
-                    <h3 class="text-xl font-bold mb-2">Preview Mode</h3>
-                    <p class="text-text-secondary">Beautiful read-only rendering with Typora-inspired typography and interactive checkboxes.</p>
-                </div>
-            </div>
-            
-            <!-- Day 2 Features -->
-            <h3 class="text-2xl font-bold mb-8 text-center gradient-text">🎉 NEW! Day 2 Features</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-dark-tertiary rounded-lg p-5 border-2 border-accent hover:border-success transition-all relative">
-                    <div class="absolute top-2 right-2 bg-accent text-black text-xs font-bold px-2 py-1 rounded">NEW!</div>
-                    <div class="text-3xl mb-3">🏠</div>
-                    <h4 class="font-bold mb-2">Modern Welcome Screen</h4>
-                    <p class="text-sm text-text-secondary">VSCode/Cursor-style welcome with time-based greetings, quick actions, recent items, keyboard shortcuts. <strong class="text-accent">Typora doesn't have this!</strong></p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border-2 border-accent hover:border-success transition-all relative">
-                    <div class="absolute top-2 right-2 bg-accent text-black text-xs font-bold px-2 py-1 rounded">NEW!</div>
-                    <div class="text-3xl mb-3">📱</div>
-                    <h4 class="font-bold mb-2">Ultra-Responsive</h4>
-                    <p class="text-sm text-text-secondary">Welcome screen adapts perfectly to any screen size, high DPI, Wayland scaling (150-300%), tiling WMs. <strong class="text-accent">Typora's UI breaks!</strong></p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border-2 border-accent hover:border-success transition-all relative">
-                    <div class="absolute top-2 right-2 bg-accent text-black text-xs font-bold px-2 py-1 rounded">NEW!</div>
-                    <div class="text-3xl mb-3">📊</div>
-                    <h4 class="font-bold mb-2">Professional Status Bar</h4>
-                    <p class="text-sm text-text-secondary">VSCode-style status bar: line/column, word/char count, encoding, line ending, indentation. <strong class="text-accent">Typora has none of this!</strong></p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">🔍</div>
-                    <h4 class="font-bold mb-2">Quick Search (Ctrl+P)</h4>
-                    <p class="text-sm text-text-secondary">VSCode-style command palette to instantly find files in folder and recent items</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">📜</div>
-                    <h4 class="font-bold mb-2">Recent History</h4>
-                    <p class="text-sm text-text-secondary">Track last 15 files/folders with hover submenu for quick access</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">⌨️</div>
-                    <h4 class="font-bold mb-2">Keyboard Shortcuts</h4>
-                    <p class="text-sm text-text-secondary">Ctrl+P (Search), Ctrl+S, Ctrl+E (Export), Ctrl+Alt+P (Print) and more!</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">🔔</div>
-                    <h4 class="font-bold mb-2">Toast Notifications</h4>
-                    <p class="text-sm text-text-secondary">Beautiful feedback for every action - saves, opens, errors</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">🖼️</div>
-                    <h4 class="font-bold mb-2">Image Support</h4>
-                    <p class="text-sm text-text-secondary">Display local images in markdown with secure asset protocol</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">✅</div>
-                    <h4 class="font-bold mb-2">Interactive Todos</h4>
-                    <p class="text-sm text-text-secondary">Click checkboxes to toggle task lists in preview modes</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">🔴</div>
-                    <h4 class="font-bold mb-2">Unsaved Indicator</h4>
-                    <p class="text-sm text-text-secondary">Pulsing dot shows when file needs saving</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">🎯</div>
-                    <h4 class="font-bold mb-2">File Highlighting</h4>
-                    <p class="text-sm text-text-secondary">Current file highlighted in sidebar with accent border</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">📋</div>
-                    <h4 class="font-bold mb-2">Single File Mode</h4>
-                    <p class="text-sm text-text-secondary">Open files without folder now appear in sidebar</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">🎨</div>
-                    <h4 class="font-bold mb-2">Theme-Aware UI</h4>
-                    <p class="text-sm text-text-secondary">All new features match your selected theme perfectly</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">💻</div>
-                    <h4 class="font-bold mb-2">CLI Arguments</h4>
-                    <p class="text-sm text-text-secondary">Open from terminal: docura ., docura file.md</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">🪟</div>
-                    <h4 class="font-bold mb-2">Multi-Window (Respectful!)</h4>
-                    <p class="text-sm text-text-secondary">Asks YOUR choice! Unlike Typora's forced windows</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">🧠</div>
-                    <h4 class="font-bold mb-2">Smart Filename</h4>
-                    <p class="text-sm text-text-secondary">Live preview from H1 header or first line</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">📄</div>
-                    <h4 class="font-bold mb-2">New File (Ctrl+N)</h4>
-                    <p class="text-sm text-text-secondary">Create files instantly with smart save prompts</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">🖱️</div>
-                    <h4 class="font-bold mb-2">Context Menu</h4>
-                    <p class="text-sm text-text-secondary">Right-click menu with common actions (New, Open, Quick Search, Copy, Paste)</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">💾</div>
-                    <h4 class="font-bold mb-2">Auto-Save</h4>
-                    <p class="text-sm text-text-secondary">Smart auto-save 2 seconds after typing stops (toggle in Settings)</p>
-                </div>
-                
-                <div class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all">
-                    <div class="text-3xl mb-3">📸</div>
-                    <h4 class="font-bold mb-2">Image Paste</h4>
-                    <p class="text-sm text-text-secondary">Paste images from clipboard, auto-saves to assets/ folder</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Multi-Window Respect Section -->
-    <section class="py-16 bg-gradient-to-b from-dark-primary to-dark-secondary">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-8 text-center gradient-text">🪟 Multi-Window Done RIGHT</h2>
-            
-            <div class="max-w-5xl mx-auto">
-                <div class="bg-dark-tertiary rounded-xl p-8 border-2 border-accent mb-8">
-                    <div class="grid md:grid-cols-2 gap-8 mb-6">
-                        <div class="text-center">
-                            <div class="text-6xl mb-4">❌</div>
-                            <h3 class="text-2xl font-bold mb-3 text-error">Typora's Way</h3>
-                            <div class="bg-dark-primary rounded-lg p-4 text-left space-y-2">
-                                <p class="text-text-secondary">• Opens folder silently</p>
-                                <p class="text-text-secondary">• Creates multiple windows</p>
-                                <p class="text-text-secondary">• <strong class="text-error">No choice given!</strong></p>
-                                <p class="text-text-secondary">• User has to clean up</p>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center">
-                            <div class="text-6xl mb-4">✅</div>
-                            <h3 class="text-2xl font-bold mb-3 text-success">Docura's Way</h3>
-                            <div class="bg-dark-primary rounded-lg p-4 text-left space-y-2">
-                                <p class="text-text-secondary">• Detects existing folder</p>
-                                <p class="text-text-secondary">• Shows beautiful dialog</p>
-                                <p class="text-text-secondary">• <strong class="text-success">YOU decide!</strong></p>
-                                <p class="text-text-secondary">• Respects your workflow</p>
-                            </div>
+                <div class="flex flex-wrap justify-center gap-8 mb-12">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent">2</div>
+                        <div
+                            class="text-sm text-text-secondary uppercase tracking-wider"
+                        >
+                            Days Built
                         </div>
                     </div>
-                    
-                    <div class="bg-dark-primary rounded-lg p-6 border border-border-dark">
-                        <div class="text-center mb-4">
-                            <span class="text-accent font-bold text-lg">Docura asks YOU:</span>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-success">96%</div>
+                        <div
+                            class="text-sm text-text-secondary uppercase tracking-wider"
+                        >
+                            Less Disk Space
                         </div>
-                        <div class="bg-dark-secondary rounded-lg p-6 max-w-md mx-auto border border-accent">
-                            <p class="text-sm text-text-secondary mb-4">📁 You already have <strong class="text-white">ProjectA</strong> open.</p>
-                            <p class="text-white font-semibold mb-4">How would you like to proceed?</p>
-                            <div class="space-y-3">
-                                <div class="bg-accent text-dark-primary rounded-lg p-3 font-semibold">
-                                    🖥️  Open in New Window
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent">12MB</div>
+                        <div
+                            class="text-sm text-text-secondary uppercase tracking-wider"
+                        >
+                            vs 326MB
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent">25+</div>
+                        <div
+                            class="text-sm text-text-secondary uppercase tracking-wider"
+                        >
+                            Day 2 Features
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-success">$0</div>
+                        <div
+                            class="text-sm text-text-secondary uppercase tracking-wider"
+                        >
+                            vs $14.99
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a
+                        href="https://github.com/WOF-Softwares/Docura"
+                        class="bg-accent hover:bg-accent-hover text-black font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2"
+                    >
+                        <svg
+                            class="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                            />
+                        </svg>
+                        View on GitHub
+                    </a>
+                    <a
+                        href="#download"
+                        class="bg-dark-tertiary hover:bg-dark-secondary border border-border-dark text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2"
+                    >
+                        <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                            ></path>
+                        </svg>
+                        Download Now
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screenshots Section -->
+        <section id="screenshots" class="py-16 bg-dark-secondary">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-12 text-center gradient-text">
+                    See It in Action
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div
+                        class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent"
+                    >
+                        <img
+                            src="screenshots/screenshot-1.png"
+                            alt="Docura main interface showing three editing modes"
+                            class="w-full h-auto transition-transform duration-500"
+                        />
+                        <div class="p-4 text-center text-text-secondary">
+                            Three Editing Modes: Code, Live (WYSIWYG), and
+                            Preview
+                        </div>
+                    </div>
+                    <div
+                        class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent"
+                    >
+                        <img
+                            src="screenshots/screenshot-2.png"
+                            alt="Docura theme selector with 12 beautiful themes"
+                            class="w-full h-auto transition-transform duration-500"
+                        />
+                        <div class="p-4 text-center text-text-secondary">
+                            12 Beautiful Themes with Unified Styling
+                        </div>
+                    </div>
+                    <div
+                        class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent"
+                    >
+                        <img
+                            src="screenshots/screenshot-3.png"
+                            alt="Docura document outline and navigation"
+                            class="w-full h-auto transition-transform duration-500"
+                        />
+                        <div class="p-4 text-center text-text-secondary">
+                            Document Outline with Clickable Navigation
+                        </div>
+                    </div>
+                    <div
+                        class="screenshot-hover bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent"
+                    >
+                        <img
+                            src="screenshots/screenshot-4.png"
+                            alt="Docura export and print features"
+                            class="w-full h-auto transition-transform duration-500"
+                        />
+                        <div class="p-4 text-center text-text-secondary">
+                            Comprehensive Export System with 8+ Formats
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Welcome Screen Showcase -->
+        <section
+            class="py-16 bg-gradient-to-b from-dark-secondary to-dark-primary"
+        >
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-8 text-center gradient-text">
+                    🏠 Modern Welcome Screen - Like VSCode, But Better!
+                </h2>
+
+                <div class="max-w-5xl mx-auto">
+                    <div
+                        class="bg-dark-tertiary rounded-xl p-8 border-2 border-accent mb-8"
+                    >
+                        <div class="grid md:grid-cols-2 gap-8 mb-6">
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">❌</div>
+                                <h3 class="text-2xl font-bold mb-3 text-error">
+                                    Typora's Way
+                                </h3>
+                                <div
+                                    class="bg-dark-primary rounded-lg p-4 text-left space-y-2"
+                                >
+                                    <p class="text-text-secondary">
+                                        • No welcome screen
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Empty blank window
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        •
+                                        <strong class="text-error"
+                                            >No guidance!</strong
+                                        >
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Confusing for new users
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Not responsive
+                                    </p>
                                 </div>
-                                <div class="bg-dark-tertiary border border-border-dark rounded-lg p-3">
-                                    🔄 Replace This Folder
-                                </div>
-                                <div class="bg-dark-tertiary border border-border-dark rounded-lg p-3 text-text-secondary">
-                                    Cancel
+                            </div>
+
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">✅</div>
+                                <h3
+                                    class="text-2xl font-bold mb-3 text-success"
+                                >
+                                    Docura's Way
+                                </h3>
+                                <div
+                                    class="bg-dark-primary rounded-lg p-4 text-left space-y-2"
+                                >
+                                    <p class="text-text-secondary">
+                                        • Beautiful welcome screen
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Time-based greetings 🌅☀️🌆🌙
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        •
+                                        <strong class="text-success"
+                                            >Quick actions!</strong
+                                        >
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Recent items at hand
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Ultra-responsive design
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="text-center">
-                    <p class="text-2xl font-bold text-accent mb-2">💎 Better UX Through Respect</p>
-                    <p class="text-lg text-text-secondary">Your workflow. Your choice. Your control.</p>
-                    <p class="text-sm text-text-secondary mt-4">326 MB Typora forces decisions on you. 12 MB Docura asks YOU. 🎯</p>
-                </div>
-                
-                <div class="bg-dark-primary rounded-xl p-6 mt-8 border border-accent">
-                    <h3 class="text-xl font-bold text-center mb-4 text-accent">⚡ Why Docura Can Innovate Faster</h3>
-                    <div class="grid md:grid-cols-2 gap-6 text-sm">
-                        <div>
-                            <p class="font-semibold text-success mb-2">🚀 Docura (Solo + AI):</p>
-                            <ul class="space-y-1 text-text-secondary">
-                                <li>• User: "Please ask before opening window"</li>
-                                <li>• Developer: "Great idea!"</li>
-                                <li>• Claude AI: *helps implement*</li>
-                                <li>• <strong class="text-success">Fixed in 30 minutes!</strong> ⚡</li>
-                            </ul>
+
+                        <div
+                            class="bg-dark-primary rounded-lg p-6 border border-border-dark"
+                        >
+                            <h4
+                                class="text-center mb-4 text-accent font-bold text-lg"
+                            >
+                                Docura's Welcome Screen Features:
+                            </h4>
+                            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        🕐 Time-Based Greeting
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        Good Morning/Afternoon/Evening/Night
+                                        with personalized username and emoji
+                                        animations!
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        ⚡ Quick Actions
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        New File, Open Folder, Open File, Themes
+                                        - all in compact card layout
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        📜 Recent Items
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        Last 5 files/folders with full paths,
+                                        click to open instantly
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        ⌨️ Keyboard Shortcuts
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        All shortcuts displayed: Ctrl+N, Ctrl+O,
+                                        Ctrl+P, Ctrl+S - learn as you go!
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        📱 Ultra-Responsive
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        Adapts to ANY screen: 4K, laptops,
+                                        tablets, mobiles, high DPI, Wayland
+                                        scaling!
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        🪟 Tiling WM Perfect
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        Works flawlessly in i3, sway, hyprland -
+                                        even at 400px width!
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <p class="font-semibold text-error mb-2">🐌 Typora (Team + Bureaucracy):</p>
-                            <ul class="space-y-1 text-text-secondary">
-                                <li>• User: "Please ask before opening window"</li>
-                                <li>• PM: "Let's schedule a meeting"</li>
-                                <li>• Team: Design review → Sprint planning → QA</li>
-                                <li>• <strong class="text-error">Maybe in 6 months?</strong> 🐌</li>
-                            </ul>
-                        </div>
                     </div>
-                    <p class="text-center mt-4 text-accent font-semibold">2025 Reality: AI-assisted solo developers move FASTER and stay MORE user-centric! 💪</p>
+
+                    <div class="text-center">
+                        <p class="text-2xl font-bold text-accent mb-2">
+                            💎 Welcome Screen Done RIGHT!
+                        </p>
+                        <p class="text-lg text-text-secondary">
+                            Inspired by VSCode & Cursor, but more compact and
+                            more responsive!
+                        </p>
+                        <p class="text-sm text-text-secondary mt-4">
+                            326 MB Typora shows nothing. 12 MB Docura welcomes
+                            you beautifully. 🎯
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Omarchy Integration Section -->
-    <section id="omakase" class="py-16 bg-dark-secondary">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">🎨 Omarchy Integration - Built for DHH's Workflow</h2>
-            
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-dark-tertiary rounded-xl p-8 border border-border-dark mb-8">
-                    <div class="flex items-start gap-4 mb-6">
-                        <div class="text-5xl">🍣</div>
-                        <div>
-                            <h3 class="text-2xl font-bold mb-2">What is Omarchy?</h3>
-                            <p class="text-text-secondary leading-relaxed">
-                                <a href="https://omakub.org" class="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Omarchy</a> is DHH's (creator of Ruby on Rails) curated development environment for Arch Linux. It's opinionated, beautiful, and just works - like Rails for your entire dev setup.
+        <!-- Status Bar Showcase -->
+        <section class="py-16 bg-dark-primary">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-8 text-center gradient-text">
+                    📊 Professional Status Bar - Like VSCode!
+                </h2>
+
+                <div class="max-w-5xl mx-auto">
+                    <div
+                        class="bg-dark-tertiary rounded-xl p-8 border-2 border-accent mb-8"
+                    >
+                        <div class="grid md:grid-cols-2 gap-8 mb-6">
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">❌</div>
+                                <h3 class="text-2xl font-bold mb-3 text-error">
+                                    Typora's Way
+                                </h3>
+                                <div
+                                    class="bg-dark-primary rounded-lg p-4 text-left space-y-2"
+                                >
+                                    <p class="text-text-secondary">
+                                        • No status bar
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        •
+                                        <strong class="text-error"
+                                            >No stats!</strong
+                                        >
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • No cursor position
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • No word count
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Writing blind
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">✅</div>
+                                <h3
+                                    class="text-2xl font-bold mb-3 text-success"
+                                >
+                                    Docura's Way
+                                </h3>
+                                <div
+                                    class="bg-dark-primary rounded-lg p-4 text-left space-y-2"
+                                >
+                                    <p class="text-text-secondary">
+                                        • Professional status bar
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        •
+                                        <strong class="text-success"
+                                            >All stats visible!</strong
+                                        >
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Ln 20, Col 30 tracking
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Word/char counts
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Encoding, line endings, indentation
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-dark-primary rounded-lg p-6 border border-border-dark"
+                        >
+                            <h4
+                                class="text-center mb-4 text-accent font-bold text-lg"
+                            >
+                                Docura's Status Bar Features:
+                            </h4>
+                            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        📄 Current File
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        Always know which file you're editing
+                                        with icon and filename display
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        📍 Line & Column
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        Real-time cursor position (Ln 20, Col
+                                        30) - updates as you type!
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        📝 Word Count
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        Live word count - perfect for writers
+                                        with quotas
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        🔤 Character Count
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        Track character count for Twitter posts,
+                                        SMS, metadata
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        🌍 Encoding
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        UTF-8, UTF-16, etc. - click to open
+                                        settings and change
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        ↩️ Line Ending
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        LF (Unix) or CRLF (Windows) - clickable
+                                        to adjust
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        ⌨️ Indentation
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        2 Spaces, 4 Spaces, or Tab - click to
+                                        configure
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        ⚙️ Quick Settings
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        Gear icon for instant access to all
+                                        editor settings
+                                    </p>
+                                </div>
+                                <div class="bg-dark-secondary rounded-lg p-4">
+                                    <p class="font-semibold text-success mb-2">
+                                        📱 Responsive
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        Adapts to screen size - hides less
+                                        important items on small screens
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <p class="text-2xl font-bold text-accent mb-2">
+                            💎 Professional Tools for Professional Writers!
+                        </p>
+                        <p class="text-lg text-text-secondary">
+                            Inspired by VSCode, refined for markdown editing!
+                        </p>
+                        <p class="text-sm text-text-secondary mt-4">
+                            326 MB Typora gives you nothing. 12 MB Docura gives
+                            you everything. 🎯
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-16 bg-dark-secondary">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-12 text-center gradient-text">
+                    Three Modes, One Editor + Day 2 Features!
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div
+                        class="bg-dark-secondary rounded-xl p-6 border border-border-dark transition-all duration-300 hover:border-accent hover:transform hover:-translate-y-2 gradient-border"
+                    >
+                        <div class="text-4xl mb-4">📝</div>
+                        <h3 class="text-xl font-bold mb-2">Code Mode</h3>
+                        <p class="text-text-secondary">
+                            Pure markdown editing with Monaco Editor. Full VS
+                            Code experience with syntax highlighting for 12
+                            themes.
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-secondary rounded-xl p-6 border border-border-dark transition-all duration-300 hover:border-accent hover:transform hover:-translate-y-2 gradient-border"
+                    >
+                        <div class="text-4xl mb-4">✍️</div>
+                        <h3 class="text-xl font-bold mb-2">
+                            Live Mode (Choose Your Style!)
+                        </h3>
+                        <p class="text-text-secondary">
+                            <strong>Modern:</strong> Pure Typora-like WYSIWYG
+                            experience. <strong>Classic:</strong> Split-pane
+                            with toolbar buttons. Switch anytime in Settings!
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-secondary rounded-xl p-6 border border-border-dark transition-all duration-300 hover:border-accent hover:transform hover:-translate-y-2 gradient-border"
+                    >
+                        <div class="text-4xl mb-4">👁️</div>
+                        <h3 class="text-xl font-bold mb-2">Preview Mode</h3>
+                        <p class="text-text-secondary">
+                            Beautiful read-only rendering with Typora-inspired
+                            typography and interactive checkboxes.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Day 2 Features -->
+                <h3 class="text-2xl font-bold mb-8 text-center gradient-text">
+                    🎉 NEW! Day 2 Features
+                </h3>
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                >
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border-2 border-accent hover:border-success transition-all relative"
+                    >
+                        <div
+                            class="absolute top-2 right-2 bg-accent text-black text-xs font-bold px-2 py-1 rounded"
+                        >
+                            NEW!
+                        </div>
+                        <div class="text-3xl mb-3">🚀</div>
+                        <h4 class="font-bold mb-2">Comprehensive Export</h4>
+                        <p class="text-sm text-text-secondary">
+                            8+ export formats in beautiful submenu: PDF, HTML
+                            variants, JSON, RTF, MediaWiki.
+                            <strong class="text-accent"
+                                >Typora only has limited PDF export!</strong
+                            >
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border-2 border-accent hover:border-success transition-all relative"
+                    >
+                        <div
+                            class="absolute top-2 right-2 bg-accent text-black text-xs font-bold px-2 py-1 rounded"
+                        >
+                            NEW!
+                        </div>
+                        <div class="text-3xl mb-3">🏠</div>
+                        <h4 class="font-bold mb-2">Modern Welcome Screen</h4>
+                        <p class="text-sm text-text-secondary">
+                            VSCode/Cursor-style welcome with time-based
+                            greetings, quick actions, recent items, keyboard
+                            shortcuts.
+                            <strong class="text-accent"
+                                >Typora doesn't have this!</strong
+                            >
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border-2 border-accent hover:border-success transition-all relative"
+                    >
+                        <div
+                            class="absolute top-2 right-2 bg-accent text-black text-xs font-bold px-2 py-1 rounded"
+                        >
+                            NEW!
+                        </div>
+                        <div class="text-3xl mb-3">📱</div>
+                        <h4 class="font-bold mb-2">Ultra-Responsive</h4>
+                        <p class="text-sm text-text-secondary">
+                            Welcome screen adapts perfectly to any screen size,
+                            high DPI, Wayland scaling (150-300%), tiling WMs.
+                            <strong class="text-accent"
+                                >Typora's UI breaks!</strong
+                            >
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border-2 border-accent hover:border-success transition-all relative"
+                    >
+                        <div
+                            class="absolute top-2 right-2 bg-accent text-black text-xs font-bold px-2 py-1 rounded"
+                        >
+                            NEW!
+                        </div>
+                        <div class="text-3xl mb-3">📊</div>
+                        <h4 class="font-bold mb-2">Professional Status Bar</h4>
+                        <p class="text-sm text-text-secondary">
+                            VSCode-style status bar: line/column, word/char
+                            count, encoding, line ending, indentation.
+                            <strong class="text-accent"
+                                >Typora has none of this!</strong
+                            >
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">🔍</div>
+                        <h4 class="font-bold mb-2">Quick Search (Ctrl+P)</h4>
+                        <p class="text-sm text-text-secondary">
+                            VSCode-style command palette to instantly find files
+                            in folder and recent items
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">📜</div>
+                        <h4 class="font-bold mb-2">Recent History</h4>
+                        <p class="text-sm text-text-secondary">
+                            Track last 15 files/folders with hover submenu for
+                            quick access
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">🚀</div>
+                        <h4 class="font-bold mb-2">Comprehensive Export</h4>
+                        <p class="text-sm text-text-secondary">
+                            8+ formats: PDF, HTML variants, JSON, RTF,
+                            MediaWiki. Beautiful submenu interface with smart
+                            file dialogs!
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">🔔</div>
+                        <h4 class="font-bold mb-2">Toast Notifications</h4>
+                        <p class="text-sm text-text-secondary">
+                            Beautiful feedback for every action - saves, opens,
+                            errors
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">🖼️</div>
+                        <h4 class="font-bold mb-2">Image Support</h4>
+                        <p class="text-sm text-text-secondary">
+                            Display local images in markdown with secure asset
+                            protocol
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">✅</div>
+                        <h4 class="font-bold mb-2">Interactive Todos</h4>
+                        <p class="text-sm text-text-secondary">
+                            Click checkboxes to toggle task lists in preview
+                            modes
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">🔴</div>
+                        <h4 class="font-bold mb-2">Unsaved Indicator</h4>
+                        <p class="text-sm text-text-secondary">
+                            Pulsing dot shows when file needs saving
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">🎯</div>
+                        <h4 class="font-bold mb-2">File Highlighting</h4>
+                        <p class="text-sm text-text-secondary">
+                            Current file highlighted in sidebar with accent
+                            border
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">📋</div>
+                        <h4 class="font-bold mb-2">Single File Mode</h4>
+                        <p class="text-sm text-text-secondary">
+                            Open files without folder now appear in sidebar
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">🎨</div>
+                        <h4 class="font-bold mb-2">Theme-Aware UI</h4>
+                        <p class="text-sm text-text-secondary">
+                            All new features match your selected theme perfectly
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">💻</div>
+                        <h4 class="font-bold mb-2">CLI Arguments</h4>
+                        <p class="text-sm text-text-secondary">
+                            Open from terminal: docura ., docura file.md
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">🪟</div>
+                        <h4 class="font-bold mb-2">
+                            Multi-Window (Respectful!)
+                        </h4>
+                        <p class="text-sm text-text-secondary">
+                            Asks YOUR choice! Unlike Typora's forced windows
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">🧠</div>
+                        <h4 class="font-bold mb-2">Smart Filename</h4>
+                        <p class="text-sm text-text-secondary">
+                            Live preview from H1 header or first line
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">📄</div>
+                        <h4 class="font-bold mb-2">New File (Ctrl+N)</h4>
+                        <p class="text-sm text-text-secondary">
+                            Create files instantly with smart save prompts
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">🖱️</div>
+                        <h4 class="font-bold mb-2">Context Menu</h4>
+                        <p class="text-sm text-text-secondary">
+                            Right-click menu with common actions (New, Open,
+                            Quick Search, Copy, Paste)
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">💾</div>
+                        <h4 class="font-bold mb-2">Auto-Save</h4>
+                        <p class="text-sm text-text-secondary">
+                            Smart auto-save 2 seconds after typing stops (toggle
+                            in Settings)
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-tertiary rounded-lg p-5 border border-border-dark hover:border-accent transition-all"
+                    >
+                        <div class="text-3xl mb-3">📸</div>
+                        <h4 class="font-bold mb-2">Image Paste</h4>
+                        <p class="text-sm text-text-secondary">
+                            Paste images from clipboard, auto-saves to assets/
+                            folder
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Multi-Window Respect Section -->
+        <section
+            class="py-16 bg-gradient-to-b from-dark-primary to-dark-secondary"
+        >
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-8 text-center gradient-text">
+                    🪟 Multi-Window Done RIGHT
+                </h2>
+
+                <div class="max-w-5xl mx-auto">
+                    <div
+                        class="bg-dark-tertiary rounded-xl p-8 border-2 border-accent mb-8"
+                    >
+                        <div class="grid md:grid-cols-2 gap-8 mb-6">
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">❌</div>
+                                <h3 class="text-2xl font-bold mb-3 text-error">
+                                    Typora's Way
+                                </h3>
+                                <div
+                                    class="bg-dark-primary rounded-lg p-4 text-left space-y-2"
+                                >
+                                    <p class="text-text-secondary">
+                                        • Opens folder silently
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Creates multiple windows
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        •
+                                        <strong class="text-error"
+                                            >No choice given!</strong
+                                        >
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • User has to clean up
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">✅</div>
+                                <h3
+                                    class="text-2xl font-bold mb-3 text-success"
+                                >
+                                    Docura's Way
+                                </h3>
+                                <div
+                                    class="bg-dark-primary rounded-lg p-4 text-left space-y-2"
+                                >
+                                    <p class="text-text-secondary">
+                                        • Detects existing folder
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Shows beautiful dialog
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        •
+                                        <strong class="text-success"
+                                            >YOU decide!</strong
+                                        >
+                                    </p>
+                                    <p class="text-text-secondary">
+                                        • Respects your workflow
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-dark-primary rounded-lg p-6 border border-border-dark"
+                        >
+                            <div class="text-center mb-4">
+                                <span class="text-accent font-bold text-lg"
+                                    >Docura asks YOU:</span
+                                >
+                            </div>
+                            <div
+                                class="bg-dark-secondary rounded-lg p-6 max-w-md mx-auto border border-accent"
+                            >
+                                <p class="text-sm text-text-secondary mb-4">
+                                    📁 You already have
+                                    <strong class="text-white">ProjectA</strong>
+                                    open.
+                                </p>
+                                <p class="text-white font-semibold mb-4">
+                                    How would you like to proceed?
+                                </p>
+                                <div class="space-y-3">
+                                    <div
+                                        class="bg-accent text-dark-primary rounded-lg p-3 font-semibold"
+                                    >
+                                        🖥️ Open in New Window
+                                    </div>
+                                    <div
+                                        class="bg-dark-tertiary border border-border-dark rounded-lg p-3"
+                                    >
+                                        🔄 Replace This Folder
+                                    </div>
+                                    <div
+                                        class="bg-dark-tertiary border border-border-dark rounded-lg p-3 text-text-secondary"
+                                    >
+                                        Cancel
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <p class="text-2xl font-bold text-accent mb-2">
+                            💎 Better UX Through Respect
+                        </p>
+                        <p class="text-lg text-text-secondary">
+                            Your workflow. Your choice. Your control.
+                        </p>
+                        <p class="text-sm text-text-secondary mt-4">
+                            326 MB Typora forces decisions on you. 12 MB Docura
+                            asks YOU. 🎯
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-dark-primary rounded-xl p-6 mt-8 border border-accent"
+                    >
+                        <h3
+                            class="text-xl font-bold text-center mb-4 text-accent"
+                        >
+                            ⚡ Why Docura Can Innovate Faster
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6 text-sm">
+                            <div>
+                                <p class="font-semibold text-success mb-2">
+                                    🚀 Docura (Solo + AI):
+                                </p>
+                                <ul class="space-y-1 text-text-secondary">
+                                    <li>
+                                        • User: "Please ask before opening
+                                        window"
+                                    </li>
+                                    <li>• Developer: "Great idea!"</li>
+                                    <li>• Claude AI: *helps implement*</li>
+                                    <li>
+                                        •
+                                        <strong class="text-success"
+                                            >Fixed in 30 minutes!</strong
+                                        >
+                                        ⚡
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-error mb-2">
+                                    🐌 Typora (Team + Bureaucracy):
+                                </p>
+                                <ul class="space-y-1 text-text-secondary">
+                                    <li>
+                                        • User: "Please ask before opening
+                                        window"
+                                    </li>
+                                    <li>• PM: "Let's schedule a meeting"</li>
+                                    <li>
+                                        • Team: Design review → Sprint planning
+                                        → QA
+                                    </li>
+                                    <li>
+                                        •
+                                        <strong class="text-error"
+                                            >Maybe in 6 months?</strong
+                                        >
+                                        🐌
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="text-center mt-4 text-accent font-semibold">
+                            2025 Reality: AI-assisted solo developers move
+                            FASTER and stay MORE user-centric! 💪
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Omarchy Integration Section -->
+        <section id="omakase" class="py-16 bg-dark-secondary">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-12 text-center gradient-text">
+                    🎨 Omarchy Integration - Built for DHH's Workflow
+                </h2>
+
+                <div class="max-w-4xl mx-auto">
+                    <div
+                        class="bg-dark-tertiary rounded-xl p-8 border border-border-dark mb-8"
+                    >
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="text-5xl">🍣</div>
+                            <div>
+                                <h3 class="text-2xl font-bold mb-2">
+                                    What is Omarchy?
+                                </h3>
+                                <p class="text-text-secondary leading-relaxed">
+                                    <a
+                                        href="https://omakub.org"
+                                        class="text-accent hover:underline"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        >Omarchy</a
+                                    >
+                                    is DHH's (creator of Ruby on Rails) curated
+                                    development environment for Arch Linux. It's
+                                    opinionated, beautiful, and just works -
+                                    like Rails for your entire dev setup.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div
+                            class="bg-dark-tertiary rounded-lg p-6 border border-border-dark"
+                        >
+                            <div class="text-3xl mb-3">🔍</div>
+                            <h4 class="font-bold mb-2">Auto-Detection</h4>
+                            <p class="text-sm text-text-secondary">
+                                Docura automatically detects Omarchy and offers
+                                theme synchronization. Zero configuration
+                                needed!
+                            </p>
+                        </div>
+
+                        <div
+                            class="bg-dark-tertiary rounded-lg p-6 border border-border-dark"
+                        >
+                            <div class="text-3xl mb-3">🔄</div>
+                            <h4 class="font-bold mb-2">Real-time Sync</h4>
+                            <p class="text-sm text-text-secondary">
+                                Change your Omarchy theme in the terminal →
+                                Docura updates automatically every 30 seconds
+                            </p>
+                        </div>
+
+                        <div
+                            class="bg-dark-tertiary rounded-lg p-6 border border-border-dark"
+                        >
+                            <div class="text-3xl mb-3">🔒</div>
+                            <h4 class="font-bold mb-2">Respects Control</h4>
+                            <p class="text-sm text-text-secondary">
+                                When synced, Omarchy controls themes. Manual
+                                overrides are blocked - this is intentional and
+                                respectful!
+                            </p>
+                        </div>
+
+                        <div
+                            class="bg-dark-tertiary rounded-lg p-6 border border-border-dark"
+                        >
+                            <div class="text-3xl mb-3">🎨</div>
+                            <h4 class="font-bold mb-2">12 Theme Mappings</h4>
+                            <p class="text-sm text-text-secondary">
+                                Dracula, Catppuccin, Nord, Gruvbox, Tokyo Night,
+                                and more - all mapped perfectly
                             </p>
                         </div>
                     </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div class="bg-dark-tertiary rounded-lg p-6 border border-border-dark">
-                        <div class="text-3xl mb-3">🔍</div>
-                        <h4 class="font-bold mb-2">Auto-Detection</h4>
-                        <p class="text-sm text-text-secondary">Docura automatically detects Omarchy and offers theme synchronization. Zero configuration needed!</p>
-                    </div>
-                    
-                    <div class="bg-dark-tertiary rounded-lg p-6 border border-border-dark">
-                        <div class="text-3xl mb-3">🔄</div>
-                        <h4 class="font-bold mb-2">Real-time Sync</h4>
-                        <p class="text-sm text-text-secondary">Change your Omarchy theme in the terminal → Docura updates automatically every 30 seconds</p>
-                    </div>
-                    
-                    <div class="bg-dark-tertiary rounded-lg p-6 border border-border-dark">
-                        <div class="text-3xl mb-3">🔒</div>
-                        <h4 class="font-bold mb-2">Respects Control</h4>
-                        <p class="text-sm text-text-secondary">When synced, Omarchy controls themes. Manual overrides are blocked - this is intentional and respectful!</p>
-                    </div>
-                    
-                    <div class="bg-dark-tertiary rounded-lg p-6 border border-border-dark">
-                        <div class="text-3xl mb-3">🎨</div>
-                        <h4 class="font-bold mb-2">12 Theme Mappings</h4>
-                        <p class="text-sm text-text-secondary">Dracula, Catppuccin, Nord, Gruvbox, Tokyo Night, and more - all mapped perfectly</p>
+                    <div
+                        class="bg-gradient-to-r from-accent/10 to-success/10 rounded-xl p-8 border border-accent/30"
+                    >
+                        <h3
+                            class="text-xl font-bold mb-4 flex items-center gap-2"
+                        >
+                            <span>💎</span>
+                            <span>For DHH and the Ruby Community</span>
+                        </h3>
+                        <p class="text-text-secondary mb-4 leading-relaxed">
+                            This integration was built with deep respect for
+                            DHH's philosophy. When you enable Omarchy sync,
+                            Docura doesn't fight your setup - it embraces it.
+                        </p>
+                        <p class="text-text-secondary leading-relaxed">
+                            <strong class="text-text-primary"
+                                >Just like Rails respects convention, Docura
+                                respects Omarchy.</strong
+                            >
+                            Opinionated, simple, it just works. 🙏
+                        </p>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="bg-gradient-to-r from-accent/10 to-success/10 rounded-xl p-8 border border-accent/30">
-                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
-                        <span>💎</span>
-                        <span>For DHH and the Ruby Community</span>
+        <!-- Tech Stack Section -->
+        <section class="py-16 bg-dark-secondary">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-12 text-center gradient-text">
+                    The Tech Stack
+                </h2>
+
+                <p
+                    class="text-text-secondary text-center max-w-2xl mx-auto mb-8"
+                >
+                    Built with modern, performant technologies for the best user
+                    experience.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4 mb-12">
+                    <span
+                        class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black"
+                        >Tauri 2.8 (Rust)</span
+                    >
+                    <span
+                        class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black"
+                        >React 19</span
+                    >
+                    <span
+                        class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black"
+                        >Vite 7</span
+                    >
+                    <span
+                        class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black"
+                        >Monaco Editor</span
+                    >
+                    <span
+                        class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black"
+                        >WebKitGTK</span
+                    >
+                    <span
+                        class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black"
+                        >react-markdown</span
+                    >
+                    <span
+                        class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black"
+                        >remark-gfm</span
+                    >
+                    <span
+                        class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black"
+                        >jspdf</span
+                    >
+                </div>
+
+                <div class="max-w-3xl mx-auto">
+                    <h3 class="text-xl font-bold mb-4 text-center">
+                        Why Tauri + React?
                     </h3>
-                    <p class="text-text-secondary mb-4 leading-relaxed">
-                        This integration was built with deep respect for DHH's philosophy. When you enable Omarchy sync, Docura doesn't fight your setup - it embraces it.
+                    <ul class="text-text-secondary space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">•</span>
+                            <span
+                                ><strong>WebKitGTK vs Chromium:</strong> Tauri
+                                uses system WebKit instead of bundling Chromium.
+                                Result? 780 MB vs 1011 MB — 231 MB saved.</span
+                            >
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">•</span>
+                            <span
+                                ><strong>Rust Backend:</strong> Native
+                                performance and security. File I/O and system
+                                integration in Rust, not Node.js.</span
+                            >
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">•</span>
+                            <span
+                                ><strong>Native Integration:</strong> Respects
+                                system themes, uses native dialogs, integrates
+                                with tiling window managers.</span
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section id="comparison" class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-12 text-center gradient-text">
+                    Performance Comparison
+                </h2>
+
+                <div
+                    class="max-w-5xl mx-auto bg-dark-secondary rounded-xl overflow-hidden border border-border-dark"
+                >
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-dark-tertiary">
+                                <th class="py-4 px-6 text-left">Metric</th>
+                                <th class="py-4 px-6 text-left">Typora</th>
+                                <th class="py-4 px-6 text-left">Docura</th>
+                                <th class="py-4 px-6 text-left">Savings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-border-dark">
+                                <td class="py-4 px-6 font-semibold">
+                                    Disk Space
+                                </td>
+                                <td class="py-4 px-6">326 MB</td>
+                                <td class="py-4 px-6 text-success">12 MB</td>
+                                <td class="py-4 px-6 text-success font-bold">
+                                    ⚡ 96% smaller
+                                </td>
+                            </tr>
+                            <tr class="border-b border-border-dark">
+                                <td class="py-4 px-6 font-semibold">
+                                    RAM Usage
+                                </td>
+                                <td class="py-4 px-6">1011 MB</td>
+                                <td class="py-4 px-6 text-success">780 MB</td>
+                                <td class="py-4 px-6 text-success font-bold">
+                                    ⚡ 23% lighter
+                                </td>
+                            </tr>
+                            <tr class="border-b border-border-dark">
+                                <td class="py-4 px-6 font-semibold">
+                                    Download Size
+                                </td>
+                                <td class="py-4 px-6">80 MB</td>
+                                <td class="py-4 px-6 text-success">5 MB</td>
+                                <td class="py-4 px-6 text-success font-bold">
+                                    ⚡ 94% smaller
+                                </td>
+                            </tr>
+                            <tr class="border-b border-border-dark">
+                                <td class="py-4 px-6 font-semibold">
+                                    Welcome Screen
+                                </td>
+                                <td class="py-4 px-6">None 🙁</td>
+                                <td class="py-4 px-6 text-success">
+                                    VSCode-style! 🎉
+                                </td>
+                                <td class="py-4 px-6 text-success font-bold">
+                                    ✨ Better UX
+                                </td>
+                            </tr>
+                            <tr class="border-b border-border-dark">
+                                <td class="py-4 px-6 font-semibold">
+                                    Multi-Window UX
+                                </td>
+                                <td class="py-4 px-6">Forces choice 😤</td>
+                                <td class="py-4 px-6 text-success">
+                                    Asks YOU 🙏
+                                </td>
+                                <td class="py-4 px-6 text-success font-bold">
+                                    💎 User respect
+                                </td>
+                            </tr>
+                            <tr class="border-b border-border-dark">
+                                <td class="py-4 px-6 font-semibold">
+                                    Status Bar
+                                </td>
+                                <td class="py-4 px-6">None 🙁</td>
+                                <td class="py-4 px-6 text-success">
+                                    Professional! 📊
+                                </td>
+                                <td class="py-4 px-6 text-success font-bold">
+                                    ✨ Better info
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 font-semibold">Price</td>
+                                <td class="py-4 px-6">$14.99</td>
+                                <td class="py-4 px-6 text-success">$0.00</td>
+                                <td class="py-4 px-6 text-success font-bold">
+                                    💰 Save $14.99
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div
+                    class="text-text-secondary text-center mt-8 max-w-3xl mx-auto space-y-3"
+                >
+                    <p class="text-lg font-semibold text-text-primary">
+                        You could install 27 copies of Docura in Typora's disk
+                        space!
                     </p>
-                    <p class="text-text-secondary leading-relaxed">
-                        <strong class="text-text-primary">Just like Rails respects convention, Docura respects Omarchy.</strong> Opinionated, simple, it just works. 🙏
+                    <p>
+                        <strong>Why so efficient?</strong> No bundled Chromium,
+                        Rust backend, optimized React, and efficient WebKitGTK.
+                    </p>
+                    <p class="text-accent font-semibold">
+                        💎 Better yet: Docura has a beautiful welcome screen
+                        (Typora has none!), professional status bar (Typora has
+                        none!), RESPECTS your choices, and works perfectly
+                        everywhere! 🙏
                     </p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Tech Stack Section -->
-    <section class="py-16 bg-dark-secondary">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">The Tech Stack</h2>
-            
-            <p class="text-text-secondary text-center max-w-2xl mx-auto mb-8">
-                Built with modern, performant technologies for the best user experience.
-            </p>
-            
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">Tauri 2.8 (Rust)</span>
-                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">React 19</span>
-                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">Vite 7</span>
-                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">Monaco Editor</span>
-                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">WebKitGTK</span>
-                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">react-markdown</span>
-                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">remark-gfm</span>
-                <span class="bg-dark-tertiary text-text-secondary px-4 py-2 rounded-full border border-border-dark transition-all hover:bg-accent hover:text-black">jspdf</span>
-            </div>
-            
-            <div class="max-w-3xl mx-auto">
-                <h3 class="text-xl font-bold mb-4 text-center">Why Tauri + React?</h3>
-                <ul class="text-text-secondary space-y-3">
-                    <li class="flex items-start">
-                        <span class="text-accent mr-2">•</span>
-                        <span><strong>WebKitGTK vs Chromium:</strong> Tauri uses system WebKit instead of bundling Chromium. Result? 780 MB vs 1011 MB — 231 MB saved.</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-accent mr-2">•</span>
-                        <span><strong>Rust Backend:</strong> Native performance and security. File I/O and system integration in Rust, not Node.js.</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-accent mr-2">•</span>
-                        <span><strong>Native Integration:</strong> Respects system themes, uses native dialogs, integrates with tiling window managers.</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
+        <!-- Blog Section -->
+        <section id="blog" class="py-16 bg-dark-secondary">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-12 text-center gradient-text">
+                    From the Blog
+                </h2>
 
-    <!-- Comparison Section -->
-    <section id="comparison" class="py-16">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">Performance Comparison</h2>
-            
-            <div class="max-w-5xl mx-auto bg-dark-secondary rounded-xl overflow-hidden border border-border-dark">
-                <table class="w-full">
-                    <thead>
-                        <tr class="bg-dark-tertiary">
-                            <th class="py-4 px-6 text-left">Metric</th>
-                            <th class="py-4 px-6 text-left">Typora</th>
-                            <th class="py-4 px-6 text-left">Docura</th>
-                            <th class="py-4 px-6 text-left">Savings</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b border-border-dark">
-                            <td class="py-4 px-6 font-semibold">Disk Space</td>
-                            <td class="py-4 px-6">326 MB</td>
-                            <td class="py-4 px-6 text-success">12 MB</td>
-                            <td class="py-4 px-6 text-success font-bold">⚡ 96% smaller</td>
-                        </tr>
-                        <tr class="border-b border-border-dark">
-                            <td class="py-4 px-6 font-semibold">RAM Usage</td>
-                            <td class="py-4 px-6">1011 MB</td>
-                            <td class="py-4 px-6 text-success">780 MB</td>
-                            <td class="py-4 px-6 text-success font-bold">⚡ 23% lighter</td>
-                        </tr>
-                        <tr class="border-b border-border-dark">
-                            <td class="py-4 px-6 font-semibold">Download Size</td>
-                            <td class="py-4 px-6">80 MB</td>
-                            <td class="py-4 px-6 text-success">5 MB</td>
-                            <td class="py-4 px-6 text-success font-bold">⚡ 94% smaller</td>
-                        </tr>
-                        <tr class="border-b border-border-dark">
-                            <td class="py-4 px-6 font-semibold">Welcome Screen</td>
-                            <td class="py-4 px-6">None 🙁</td>
-                            <td class="py-4 px-6 text-success">VSCode-style! 🎉</td>
-                            <td class="py-4 px-6 text-success font-bold">✨ Better UX</td>
-                        </tr>
-                        <tr class="border-b border-border-dark">
-                            <td class="py-4 px-6 font-semibold">Multi-Window UX</td>
-                            <td class="py-4 px-6">Forces choice 😤</td>
-                            <td class="py-4 px-6 text-success">Asks YOU 🙏</td>
-                            <td class="py-4 px-6 text-success font-bold">💎 User respect</td>
-                        </tr>
-                        <tr class="border-b border-border-dark">
-                            <td class="py-4 px-6 font-semibold">Status Bar</td>
-                            <td class="py-4 px-6">None 🙁</td>
-                            <td class="py-4 px-6 text-success">Professional! 📊</td>
-                            <td class="py-4 px-6 text-success font-bold">✨ Better info</td>
-                        </tr>
-                        <tr>
-                            <td class="py-4 px-6 font-semibold">Price</td>
-                            <td class="py-4 px-6">$14.99</td>
-                            <td class="py-4 px-6 text-success">$0.00</td>
-                            <td class="py-4 px-6 text-success font-bold">💰 Save $14.99</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="text-text-secondary text-center mt-8 max-w-3xl mx-auto space-y-3">
-                <p class="text-lg font-semibold text-text-primary">You could install 27 copies of Docura in Typora's disk space!</p>
-                <p><strong>Why so efficient?</strong> No bundled Chromium, Rust backend, optimized React, and efficient WebKitGTK.</p>
-                <p class="text-accent font-semibold">💎 Better yet: Docura has a beautiful welcome screen (Typora has none!), professional status bar (Typora has none!), RESPECTS your choices, and works perfectly everywhere! 🙏</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Blog Section -->
-    <section id="blog" class="py-16 bg-dark-secondary">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">From the Blog</h2>
-            
-            <!-- Blog Posts Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" x-show="!selectedPost">
-                <template x-for="post in blogPosts" :key="post.slug">
-                    <div class="blog-card bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent cursor-pointer"
-                         @click="loadBlogPost(post)">
-                        <div class="p-6">
-                            <div class="flex items-center text-sm text-text-secondary mb-3">
-                                <span x-text="post.date"></span>
-                                <span class="mx-2">•</span>
-                                <span x-text="post.readTime"></span>
+                <!-- Blog Posts Grid -->
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                    x-show="!selectedPost"
+                >
+                    <template x-for="post in blogPosts" :key="post.slug">
+                        <div
+                            class="blog-card bg-dark-tertiary rounded-xl overflow-hidden border border-border-dark transition-all duration-300 hover:border-accent cursor-pointer"
+                            @click="loadBlogPost(post)"
+                        >
+                            <div class="p-6">
+                                <div
+                                    class="flex items-center text-sm text-text-secondary mb-3"
+                                >
+                                    <span x-text="post.date"></span>
+                                    <span class="mx-2">•</span>
+                                    <span x-text="post.readTime"></span>
+                                </div>
+                                <h3
+                                    class="text-xl font-bold mb-3"
+                                    x-text="post.title"
+                                ></h3>
+                                <p
+                                    class="text-text-secondary mb-4"
+                                    x-text="post.excerpt"
+                                ></p>
+                                <a
+                                    class="text-accent font-medium hover:text-accent-hover transition-colors flex items-center"
+                                >
+                                    Read More
+                                    <svg
+                                        class="w-4 h-4 ml-1"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M9 5l7 7-7 7"
+                                        ></path>
+                                    </svg>
+                                </a>
                             </div>
-                            <h3 class="text-xl font-bold mb-3" x-text="post.title"></h3>
-                            <p class="text-text-secondary mb-4" x-text="post.excerpt"></p>
-                            <a class="text-accent font-medium hover:text-accent-hover transition-colors flex items-center">
-                                Read More
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </a>
                         </div>
-                    </div>
-                </template>
-            </div>
-            
-            <!-- Single Blog Post View -->
-            <div x-show="selectedPost" class="max-w-4xl mx-auto">
-                <button @click="selectedPost = null; blogContent = ''" 
-                        class="mb-6 text-text-secondary hover:text-text-primary transition-colors flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                    Back to Blog
-                </button>
-                
-                <article class="bg-dark-tertiary rounded-xl p-8 border border-border-dark prose prose-invert prose-lg max-w-none
-                               prose-headings:gradient-text prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover
-                               prose-code:text-accent prose-code:bg-dark-primary prose-code:px-1 prose-code:py-0.5 prose-code:rounded
-                               prose-pre:bg-dark-primary prose-pre:border prose-pre:border-border-dark
-                               prose-blockquote:border-l-accent prose-blockquote:border-l-4 prose-blockquote:pl-4
-                               prose-table:border-border-dark prose-th:bg-dark-primary prose-td:border-border-dark
-                               prose-img:rounded-lg prose-img:border prose-img:border-border-dark"
-                         x-html="blogContent">
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- Download Section -->
-    <section id="download" class="py-16">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto bg-dark-secondary rounded-2xl p-8 md:p-12 border border-border-dark text-center">
-                <h2 class="text-3xl font-bold mb-4 gradient-text">Ready to Get Started?</h2>
-                <p class="text-text-secondary text-xl mb-8 max-w-2xl mx-auto">
-                    Download Docura today and experience a faster, more powerful markdown editor.
-                </p>
-                
-                <div class="flex flex-wrap justify-center gap-4 mb-8">
-                    <a href="#" class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2">
-                        <span>🐧</span> Linux
-                    </a>
-                    <a href="#" class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2">
-                        <span>🪟</span> Windows
-                    </a>
-                    <a href="#" class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2">
-                        <span>🍎</span> macOS
-                    </a>
+                    </template>
                 </div>
-                
-                <p class="text-text-secondary mb-8">
-                    Or build from source for the latest features:
-                </p>
-                
-                <div class="bg-dark-primary rounded-lg p-4 mb-8 text-left max-w-2xl mx-auto">
-                    <pre class="text-sm overflow-x-auto"><code class="text-text-primary">git clone https://github.com/WOF-Softwares/Docura.git
+
+                <!-- Single Blog Post View -->
+                <div x-show="selectedPost" class="max-w-4xl mx-auto">
+                    <button
+                        @click="selectedPost = null; blogContent = ''"
+                        class="mb-6 text-text-secondary hover:text-text-primary transition-colors flex items-center gap-2"
+                    >
+                        <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 19l-7-7 7-7"
+                            ></path>
+                        </svg>
+                        Back to Blog
+                    </button>
+
+                    <article
+                        class="bg-dark-tertiary rounded-xl p-8 border border-border-dark prose prose-invert prose-lg max-w-none prose-headings:gradient-text prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover prose-code:text-accent prose-code:bg-dark-primary prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-dark-primary prose-pre:border prose-pre:border-border-dark prose-blockquote:border-l-accent prose-blockquote:border-l-4 prose-blockquote:pl-4 prose-table:border-border-dark prose-th:bg-dark-primary prose-td:border-border-dark prose-img:rounded-lg prose-img:border prose-img:border-border-dark"
+                        x-html="blogContent"
+                    ></article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section id="download" class="py-16">
+            <div class="container mx-auto px-4">
+                <div
+                    class="max-w-4xl mx-auto bg-dark-secondary rounded-2xl p-8 md:p-12 border border-border-dark text-center"
+                >
+                    <h2 class="text-3xl font-bold mb-4 gradient-text">
+                        Ready to Get Started?
+                    </h2>
+                    <p
+                        class="text-text-secondary text-xl mb-8 max-w-2xl mx-auto"
+                    >
+                        Download Docura today and experience a faster, more
+                        powerful markdown editor.
+                    </p>
+
+                    <div class="flex flex-wrap justify-center gap-4 mb-8">
+                        <a
+                            href="#"
+                            class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2"
+                        >
+                            <span>🐧</span> Linux
+                        </a>
+                        <a
+                            href="#"
+                            class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2"
+                        >
+                            <span>🪟</span> Windows
+                        </a>
+                        <a
+                            href="#"
+                            class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2"
+                        >
+                            <span>🍎</span> macOS
+                        </a>
+                    </div>
+
+                    <p class="text-text-secondary mb-8">
+                        Or build from source for the latest features:
+                    </p>
+
+                    <div
+                        class="bg-dark-primary rounded-lg p-4 mb-8 text-left max-w-2xl mx-auto"
+                    >
+                        <pre
+                            class="text-sm overflow-x-auto"
+                        ><code class="text-text-primary">git clone https://github.com/WOF-Softwares/Docura.git
 cd Docura
 npm install
 ./dev.sh</code></pre>
-                </div>
-                
-                <p class="text-text-secondary">
-                    <strong>Requirements:</strong> Node.js 18+, Rust (via rustup), WebKitGTK 4.1
-                </p>
-            </div>
-        </div>
-    </section>
+                    </div>
 
-    <!-- Footer -->
-    <footer class="py-12 border-t border-border-dark">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-8">
-                <div class="flex justify-center items-center gap-3 mb-4">
-                    <img src="logo.svg" alt="Docura Logo" class="w-8 h-8">
-                    <span class="text-xl font-bold gradient-text">Docura v1.1</span>
+                    <p class="text-text-secondary">
+                        <strong>Requirements:</strong> Node.js 18+, Rust (via
+                        rustup), WebKitGTK 4.1
+                    </p>
                 </div>
-                <p class="text-text-secondary mb-2">Built with ❤️ in 2 days (October 9-11, 2025)</p>
-                <p class="text-text-secondary mb-6">Open source under Apache 2.0 License</p>
             </div>
-            
-            <!-- AI Tools Credit -->
-            <div class="max-w-4xl mx-auto mb-8 bg-dark-secondary rounded-lg p-6 border border-border-dark">
-                <h3 class="text-lg font-bold mb-4 text-center gradient-text">🤖 Built with AI Assistance</h3>
-                <p class="text-text-secondary text-center mb-4 text-sm">
-                    This project showcases the power of human creativity amplified by AI tools:
-                </p>
-                <div class="flex flex-wrap justify-center gap-3 text-sm">
-                    <span class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark">Cursor</span>
-                    <span class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark">Claude AI (Sonnet 3.5 & 4)</span>
-                    <span class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark">GitHub Copilot</span>
-                    <span class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark">Warp Terminal</span>
-                    <span class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark">DeepSeek</span>
-                    <span class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark">Bing Copilot</span>
-                </div>
-                <p class="text-text-secondary text-center mt-4 text-sm">
-                    <strong class="text-accent">Special thanks to Claude (Anthropic)</strong> - The primary AI powering most architecture decisions, problem-solving, and development throughout this project!
-                </p>
-                <p class="text-text-secondary text-center mt-2 text-xs italic">
-                    The future of software development is here! 🚀
-                </p>
-            </div>
-            
-            <div class="flex justify-center space-x-6">
-                <a href="https://github.com/WOF-Softwares/Docura" class="text-text-secondary hover:text-text-primary transition-colors">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </footer>
+        </section>
 
-    <script>
-        function app() {
-            return {
-                mobileMenuOpen: false,
-                activeTab: 'features',
-                blogPosts: [],
-                selectedPost: null,
-                blogContent: '',
-                
-                init() {
-                    // Load blog posts index
-                    this.loadBlogIndex();
-                    
-                    // Intersection Observer for fade-in animations
-                    const observer = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('visible');
-                            }
+        <!-- Footer -->
+        <footer class="py-12 border-t border-border-dark">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-8">
+                    <div class="flex justify-center items-center gap-3 mb-4">
+                        <img src="logo.svg" alt="Docura Logo" class="w-8 h-8" />
+                        <span class="text-xl font-bold gradient-text"
+                            >Docura v1.1</span
+                        >
+                    </div>
+                    <p class="text-text-secondary mb-2">
+                        Built with ❤️ in 2 days (October 9-11, 2025)
+                    </p>
+                    <p class="text-text-secondary mb-6">
+                        Open source under Apache 2.0 License
+                    </p>
+                </div>
+
+                <!-- AI Tools Credit -->
+                <div
+                    class="max-w-4xl mx-auto mb-8 bg-dark-secondary rounded-lg p-6 border border-border-dark"
+                >
+                    <h3
+                        class="text-lg font-bold mb-4 text-center gradient-text"
+                    >
+                        🤖 Built with AI Assistance
+                    </h3>
+                    <p class="text-text-secondary text-center mb-4 text-sm">
+                        This project showcases the power of human creativity
+                        amplified by AI tools:
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-3 text-sm">
+                        <span
+                            class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark"
+                            >Cursor</span
+                        >
+                        <span
+                            class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark"
+                            >Claude AI (Sonnet 3.5 & 4)</span
+                        >
+                        <span
+                            class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark"
+                            >GitHub Copilot</span
+                        >
+                        <span
+                            class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark"
+                            >Warp Terminal</span
+                        >
+                        <span
+                            class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark"
+                            >DeepSeek</span
+                        >
+                        <span
+                            class="bg-dark-tertiary px-3 py-1 rounded-full border border-border-dark"
+                            >Bing Copilot</span
+                        >
+                    </div>
+                    <p class="text-text-secondary text-center mt-4 text-sm">
+                        <strong class="text-accent"
+                            >Special thanks to Claude (Anthropic)</strong
+                        >
+                        - The primary AI powering most architecture decisions,
+                        problem-solving, and development throughout this
+                        project!
+                    </p>
+                    <p
+                        class="text-text-secondary text-center mt-2 text-xs italic"
+                    >
+                        The future of software development is here! 🚀
+                    </p>
+                </div>
+
+                <div class="flex justify-center space-x-6">
+                    <a
+                        href="https://github.com/WOF-Softwares/Docura"
+                        class="text-text-secondary hover:text-text-primary transition-colors"
+                    >
+                        <svg
+                            class="w-6 h-6"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                            />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            function app() {
+                return {
+                    mobileMenuOpen: false,
+                    activeTab: "features",
+                    blogPosts: [],
+                    selectedPost: null,
+                    blogContent: "",
+
+                    init() {
+                        // Load blog posts index
+                        this.loadBlogIndex();
+
+                        // Intersection Observer for fade-in animations
+                        const observer = new IntersectionObserver(
+                            (entries) => {
+                                entries.forEach((entry) => {
+                                    if (entry.isIntersecting) {
+                                        entry.target.classList.add("visible");
+                                    }
+                                });
+                            },
+                            { threshold: 0.1 },
+                        );
+
+                        document.querySelectorAll(".fade-in").forEach((el) => {
+                            observer.observe(el);
                         });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.fade-in').forEach(el => {
-                        observer.observe(el);
-                    });
-                },
-                
-                async loadBlogIndex() {
-                    try {
-                        const response = await fetch('blog/index.json');
-                        this.blogPosts = await response.json();
-                    } catch (error) {
-                        console.error('Error loading blog index:', error);
-                        this.blogPosts = [];
-                    }
-                },
-                
-                async loadBlogPost(post) {
-                    try {
-                        const response = await fetch(`blog/${post.file}`);
-                        let markdown = await response.text();
-                        
-                        // Remove frontmatter (--- delimited at top)
-                        markdown = markdown.replace(/^---[\s\S]*?---\n/, '');
-                        
-                        // Configure marked
-                        marked.setOptions({
-                            breaks: true,
-                            gfm: true,
-                            headerIds: true,
-                            mangle: false
-                        });
-                        
-                        // Convert markdown to HTML
-                        this.blogContent = marked.parse(markdown);
-                        this.selectedPost = post;
-                        
-                        // Scroll to top of blog section
-                        document.getElementById('blog').scrollIntoView({ behavior: 'smooth' });
-                    } catch (error) {
-                        console.error('Error loading blog post:', error);
-                        alert('Failed to load blog post. Please try again.');
-                    }
-                }
+                    },
+
+                    async loadBlogIndex() {
+                        try {
+                            const response = await fetch("blog/index.json");
+                            this.blogPosts = await response.json();
+                        } catch (error) {
+                            console.error("Error loading blog index:", error);
+                            this.blogPosts = [];
+                        }
+                    },
+
+                    async loadBlogPost(post) {
+                        try {
+                            const response = await fetch(`blog/${post.file}`);
+                            let markdown = await response.text();
+
+                            // Remove frontmatter (--- delimited at top)
+                            markdown = markdown.replace(
+                                /^---[\s\S]*?---\n/,
+                                "",
+                            );
+
+                            // Configure marked
+                            marked.setOptions({
+                                breaks: true,
+                                gfm: true,
+                                headerIds: true,
+                                mangle: false,
+                            });
+
+                            // Convert markdown to HTML
+                            this.blogContent = marked.parse(markdown);
+                            this.selectedPost = post;
+
+                            // Scroll to top of blog section
+                            document
+                                .getElementById("blog")
+                                .scrollIntoView({ behavior: "smooth" });
+                        } catch (error) {
+                            console.error("Error loading blog post:", error);
+                            alert(
+                                "Failed to load blog post. Please try again.",
+                            );
+                        }
+                    },
+                };
             }
-        }
-    </script>
-</body>
+        </script>
+    </body>
 </html>

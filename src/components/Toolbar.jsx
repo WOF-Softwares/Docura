@@ -1,14 +1,14 @@
-import React from 'react'
-import { 
-  Shuffle, 
+import React from "react";
+import {
+  Shuffle,
   RefreshCw,
   Maximize,
   Minimize,
   PanelLeftClose,
   PanelLeft,
-  Search
-} from 'lucide-react'
-import Menu from './Menu'
+  Search,
+} from "lucide-react";
+import Menu from "./Menu";
 
 const Toolbar = ({
   theme,
@@ -19,6 +19,13 @@ const Toolbar = ({
   onSave,
   onSaveAs,
   onExportPdf,
+  onExportHtml,
+  onExportHtmlPlain,
+  onExportHtmlTailwind,
+  onExportHtmlBootstrap,
+  onExportJson,
+  onExportRtf,
+  onExportMediaWiki,
   onPrint,
   onOpenThemeSelector,
   onOpenSettings,
@@ -34,7 +41,7 @@ const Toolbar = ({
   recentItems,
   onOpenRecentItem,
   onClearRecentItems,
-  onOpenQuickSearch
+  onOpenQuickSearch,
 }) => {
   return (
     <div className="toolbar">
@@ -46,6 +53,13 @@ const Toolbar = ({
           onSave={onSave}
           onSaveAs={onSaveAs}
           onExportPdf={onExportPdf}
+          onExportHtml={onExportHtml}
+          onExportHtmlPlain={onExportHtmlPlain}
+          onExportHtmlTailwind={onExportHtmlTailwind}
+          onExportHtmlBootstrap={onExportHtmlBootstrap}
+          onExportJson={onExportJson}
+          onExportRtf={onExportRtf}
+          onExportMediaWiki={onExportMediaWiki}
           onPrint={onPrint}
           onOpenThemeSelector={onOpenThemeSelector}
           onOpenSettings={onOpenSettings}
@@ -59,7 +73,7 @@ const Toolbar = ({
           onClearRecentItems={onClearRecentItems}
         />
       </div>
-      
+
       <div className="toolbar-section">
         <button
           className="toolbar-button quick-search-button"
@@ -70,7 +84,7 @@ const Toolbar = ({
           <span>Search</span>
         </button>
       </div>
-      
+
       <div className="toolbar-section">
         <button
           className="toolbar-button"
@@ -80,10 +94,10 @@ const Toolbar = ({
           <Shuffle size={16} />
           <span>Random</span>
         </button>
-        
+
         {omakaseAvailable && omakaseSyncEnabled && (
           <button
-            className={`omakase-sync-button ${isSyncing ? 'syncing' : ''}`}
+            className={`omakase-sync-button ${isSyncing ? "syncing" : ""}`}
             onClick={onOmakaseSync}
             title="Sync with Omakase theme"
           >
@@ -92,28 +106,32 @@ const Toolbar = ({
           </button>
         )}
       </div>
-      
-      <div className="toolbar-section" style={{ marginLeft: 'auto' }}>
+
+      <div className="toolbar-section" style={{ marginLeft: "auto" }}>
         <button
           className="toolbar-button"
           onClick={onToggleSidebar}
-          title={`${isSidebarVisible ? 'Hide' : 'Show'} Sidebar (Ctrl+B)`}
+          title={`${isSidebarVisible ? "Hide" : "Show"} Sidebar (Ctrl+B)`}
         >
-          {isSidebarVisible ? <PanelLeftClose size={16} /> : <PanelLeft size={16} />}
+          {isSidebarVisible ? (
+            <PanelLeftClose size={16} />
+          ) : (
+            <PanelLeft size={16} />
+          )}
           <span>Sidebar</span>
         </button>
-        
+
         <button
           className="toolbar-button"
           onClick={onToggleFullscreen}
-          title={`${isFullscreen ? 'Exit' : 'Enter'} Fullscreen (F11)`}
+          title={`${isFullscreen ? "Exit" : "Enter"} Fullscreen (F11)`}
         >
           {isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
           <span>Fullscreen</span>
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Toolbar
+export default Toolbar;
