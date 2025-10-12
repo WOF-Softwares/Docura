@@ -30,7 +30,7 @@ Docura includes a beautiful Typora-like markdown rendering system with 4 built-i
 2. Browse theme previews in the dialog
 3. Click on your preferred theme
 4. Click "Apply Theme"
-5. Your choice is automatically saved to `~/.local/share/dacura/config.json`
+5. Your choice is automatically saved to `~/.local/share/docura/config.json`
 
 ## Theme Features
 
@@ -49,7 +49,7 @@ Each theme includes styled support for:
 
 Themes are stored in:
 ```
-~/.local/share/dacura/config.json
+~/.local/share/docura/config.json
 ```
 
 Example configuration:
@@ -64,7 +64,7 @@ Example configuration:
 
 In future versions, you'll be able to create custom themes by placing them in:
 ```
-~/.local/share/dacura/themes/my-theme/
+~/.local/share/docura/themes/my-theme/
   ├── manifest.json
   └── style.css
 ```

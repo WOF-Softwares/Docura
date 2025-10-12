@@ -169,10 +169,19 @@ async fn print_document(_content: String) -> Result<String, String> {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct RecentItem {
+    path: String,
+    #[serde(rename = "type")]
+    item_type: String, // "file" or "folder"
+    name: String,
+    timestamp: i64,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct AppConfig {
     theme: String,
     #[serde(default)]
-    recent_files: Vec<String>,
+    recent_items: Vec<RecentItem>,
     #[serde(default)]
     omakase_sync: bool,
 }
@@ -181,7 +190,7 @@ impl Default for AppConfig {
     fn default() -> Self {
         AppConfig {
             theme: "dracula-dark".to_string(),
-            recent_files: Vec::new(),
+            recent_items: Vec::new(),
             omakase_sync: false,
         }
     }
@@ -194,7 +203,7 @@ fn get_config_dir() -> Result<PathBuf, String> {
     let config_dir = PathBuf::from(home_dir)
         .join(".local")
         .join("share")
-        .join("dacura");
+        .join("docura");
     
     // Create directory if it doesn't exist
     if !config_dir.exists() {
@@ -236,6 +245,60 @@ async fn save_config(config: AppConfig) -> Result<(), String> {
         .map_err(|e| format!("Failed to write config file: {}", e))?;
     
     log::info!("Config saved successfully");
+    Ok(())
+}
+
+#[command]
+async fn add_recent_item(path: String, item_type: String) -> Result<(), String> {
+    let mut config = load_config().await?;
+    
+    // Get name from path
+    let path_obj = Path::new(&path);
+    let name = path_obj
+        .file_name()
+        .and_then(|n| n.to_str())
+        .unwrap_or("Unknown")
+        .to_string();
+    
+    // Get current timestamp
+    let timestamp = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs() as i64)
+        .unwrap_or(0);
+    
+    // Remove existing entry with same path if exists
+    config.recent_items.retain(|item| item.path != path);
+    
+    // Add new item at the beginning
+    config.recent_items.insert(0, RecentItem {
+        path: path.clone(),
+        item_type,
+        name,
+        timestamp,
+    });
+    
+    // Keep only last 15 items
+    if config.recent_items.len() > 15 {
+        config.recent_items.truncate(15);
+    }
+    
+    save_config(config).await?;
+    log::info!("Added recent item: {}", path);
+    Ok(())
+}
+
+#[command]
+async fn get_recent_items() -> Result<Vec<RecentItem>, String> {
+    let config = load_config().await?;
+    Ok(config.recent_items)
+}
+
+#[command]
+async fn clear_recent_items() -> Result<(), String> {
+    let mut config = load_config().await?;
+    config.recent_items.clear();
+    save_config(config).await?;
+    log::info!("Cleared recent items");
     Ok(())
 }
 
@@ -462,7 +525,7 @@ async fn open_new_window(app: tauri::AppHandle, folder_path: Option<String>) -> 
     let is_tiling = detect_tiling_wm();
     
     // Create new window with appropriate decorations
-    let new_window = tauri::WebviewWindowBuilder::new(
+    let _new_window = tauri::WebviewWindowBuilder::new(
         &app,
         &window_label,
         tauri::WebviewUrl::App("index.html".into())
@@ -552,6 +615,9 @@ pub fn run() {
             print_document,
             load_config,
             save_config,
+            add_recent_item,
+            get_recent_items,
+            clear_recent_items,
             is_tiling_wm,
             grant_file_scope,
             check_omakase_command,

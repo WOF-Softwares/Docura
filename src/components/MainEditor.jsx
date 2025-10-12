@@ -316,7 +316,7 @@ const MainEditor = ({
     return (
       <div className="main-editor">
         <div className="welcome-screen">
-          <h1>Welcome to Dacura</h1>
+          <h1>Welcome to Docura</h1>
           <p>A Typora-like markdown editor</p>
           <div className="welcome-actions">
             <p>Open a folder or file to get started</p>

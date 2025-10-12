@@ -43,6 +43,7 @@ function App() {
   const [omakaseFont, setOmakaseFont] = useState(null)
   const [isFolderSwitchDialogOpen, setIsFolderSwitchDialogOpen] = useState(false)
   const [pendingFolderPath, setPendingFolderPath] = useState(null)
+  const [recentItems, setRecentItems] = useState([])
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
 
@@ -59,6 +60,9 @@ function App() {
   useEffect(() => {
     // Load config on mount
     loadAppConfig()
+    
+    // Load recent items
+    loadRecentItems()
     
     // Check if running in tiling WM
     invoke('is_tiling_wm').then((isTiling) => {
@@ -223,6 +227,21 @@ function App() {
         e.preventDefault()
         await newFile()
       }
+      // Ctrl+P for print
+      if (e.ctrlKey && !e.shiftKey && e.key === 'p') {
+        e.preventDefault()
+        await handlePrint()
+      }
+      // Ctrl+E for export to PDF
+      if (e.ctrlKey && e.key === 'e') {
+        e.preventDefault()
+        await handleExportToPdf()
+      }
+      // Ctrl+Shift+P for settings
+      if (e.ctrlKey && e.shiftKey && e.key === 'P') {
+        e.preventDefault()
+        setIsSettingsOpen(true)
+      }
     }
     
     window.addEventListener('keydown', handleKeyDown)
@@ -305,11 +324,40 @@ function App() {
         config: {
           theme: newTheme || currentTheme,
           omakase_sync: omakaseSync,
-          recent_files: []
+          recent_items: []
         }
       })
     } catch (error) {
       console.error('Error saving config:', error)
+    }
+  }
+
+  const loadRecentItems = async () => {
+    try {
+      const items = await invoke('get_recent_items')
+      setRecentItems(items)
+    } catch (error) {
+      console.error('Error loading recent items:', error)
+    }
+  }
+
+  const addRecentItem = async (path, type) => {
+    try {
+      await invoke('add_recent_item', { path, itemType: type })
+      await loadRecentItems()
+    } catch (error) {
+      console.error('Error adding recent item:', error)
+    }
+  }
+
+  const clearRecentItems = async () => {
+    try {
+      await invoke('clear_recent_items')
+      setRecentItems([])
+      toast.success('Recent items cleared')
+    } catch (error) {
+      console.error('Error clearing recent items:', error)
+      toast.error('Failed to clear recent items')
     }
   }
 
@@ -441,6 +489,10 @@ function App() {
       
       setCurrentFolder(folderPath)
       setFiles(folderFiles)
+      
+      // Add to recent items
+      await addRecentItem(folderPath, 'folder')
+      
       toast.success(`Opened folder: ${folderPath.split('/').pop()}`)
     } catch (error) {
       console.error('❌ Error opening folder:', error)
@@ -504,6 +556,9 @@ function App() {
           path: selected,
           type: 'file'
         }])
+        
+        // Add to recent items
+        await addRecentItem(selected, 'file')
         
         toast.success(`Opened: ${selected.split('/').pop()}`)
       }
@@ -725,11 +780,54 @@ function App() {
       setOriginalContent(content)
       setIsEditing(true)
       extractHeaders(content)
+      
+      // Add to recent items
+      await addRecentItem(filePath, 'file')
+      
       const fileName = filePath.split('/').pop()
       toast.success(`Opened: ${fileName}`)
     } catch (error) {
       console.error('Error reading file:', error)
       toast.error('Failed to open file')
+    }
+  }
+  
+  const openRecentItem = async (item) => {
+    try {
+      if (item.type === 'folder') {
+        // Check if a folder is already open
+        if (currentFolder) {
+          setPendingFolderPath(item.path)
+          setIsFolderSwitchDialogOpen(true)
+        } else {
+          await openFolderDirect(item.path)
+        }
+      } else {
+        // Open file
+        await invoke('grant_file_scope', { filePath: item.path })
+        const content = await readTextFile(item.path)
+        setCurrentFile(item.path)
+        setFileContent(content)
+        setOriginalContent(content)
+        setIsEditing(true)
+        extractHeaders(content)
+        setCurrentFolder(null)
+        
+        const fileName = item.path.split('/').pop()
+        setFiles([{
+          name: fileName,
+          path: item.path,
+          type: 'file'
+        }])
+        
+        // Add to recent items (moves it to top)
+        await addRecentItem(item.path, 'file')
+        
+        toast.success(`Opened: ${fileName}`)
+      }
+    } catch (error) {
+      console.error('Error opening recent item:', error)
+      toast.error('Failed to open item')
     }
   }
 
@@ -838,6 +936,9 @@ function App() {
         omakaseSyncEnabled={omakaseSyncEnabled}
         onOmakaseSync={handleOmakaseSync}
         isSyncing={isSyncing}
+        recentItems={recentItems}
+        onOpenRecentItem={openRecentItem}
+        onClearRecentItems={clearRecentItems}
       />
       )}
       

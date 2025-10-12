@@ -109,7 +109,7 @@ New components:
 
 Omakase sync preference is saved in:
 ```
-~/.local/share/dacura/config.json
+~/.local/share/docura/config.json
 ```
 
 ```json

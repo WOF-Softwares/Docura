@@ -29,7 +29,10 @@ const Toolbar = ({
   omakaseAvailable,
   omakaseSyncEnabled,
   onOmakaseSync,
-  isSyncing
+  isSyncing,
+  recentItems,
+  onOpenRecentItem,
+  onClearRecentItems
 }) => {
   return (
     <div className="toolbar">
@@ -49,6 +52,9 @@ const Toolbar = ({
           hasFile={hasFile}
           isFullscreen={isFullscreen}
           isSidebarVisible={isSidebarVisible}
+          recentItems={recentItems}
+          onOpenRecentItem={onOpenRecentItem}
+          onClearRecentItems={onClearRecentItems}
         />
       </div>
       

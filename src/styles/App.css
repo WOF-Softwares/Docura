@@ -685,6 +685,24 @@
     margin: 6px 8px;
 }
 
+/* Recent items styles */
+.menu-item.recent-item {
+    padding: 8px 16px;
+}
+
+.recent-item-name {
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 220px;
+}
+
+.menu-section-title {
+    display: flex;
+    align-items: center;
+}
+
 /* Settings Dialog */
 .settings-overlay {
     position: fixed;

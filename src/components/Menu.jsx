@@ -12,7 +12,11 @@ import {
   Palette,
   Maximize2,
   PanelLeftClose,
-  PanelLeftOpen
+  PanelLeftOpen,
+  Clock,
+  Folder,
+  File,
+  Trash2
 } from 'lucide-react'
 
 const Menu = ({ 
@@ -29,7 +33,10 @@ const Menu = ({
   onToggleSidebar,
   hasFile,
   isFullscreen,
-  isSidebarVisible
+  isSidebarVisible,
+  recentItems,
+  onOpenRecentItem,
+  onClearRecentItems
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef(null)
@@ -115,6 +122,42 @@ const Menu = ({
           <div className="menu-divider"></div>
 
           <div className="menu-section">
+            <div className="menu-section-title">
+              <Clock size={14} style={{ marginRight: '6px' }} />
+              Recent
+            </div>
+            {recentItems && recentItems.length > 0 ? (
+              <>
+                {recentItems.map((item, index) => (
+                  <button
+                    key={index}
+                    className="menu-item recent-item"
+                    onClick={() => handleMenuClick(() => onOpenRecentItem(item))}
+                    title={item.path}
+                  >
+                    {item.type === 'folder' ? <Folder size={14} /> : <File size={14} />}
+                    <span className="recent-item-name">{item.name}</span>
+                  </button>
+                ))}
+                <div className="menu-divider"></div>
+                <button
+                  className="menu-item"
+                  onClick={() => handleMenuClick(onClearRecentItems)}
+                >
+                  <Trash2 size={14} />
+                  <span>Clear Recent</span>
+                </button>
+              </>
+            ) : (
+              <div className="menu-item" style={{ opacity: 0.5, cursor: 'default' }}>
+                <span>No recent items</span>
+              </div>
+            )}
+          </div>
+
+          <div className="menu-divider"></div>
+
+          <div className="menu-section">
             <div className="menu-section-title">Export</div>
             <button 
               className="menu-item" 
@@ -123,6 +166,7 @@ const Menu = ({
             >
               <FileDown size={16} />
               <span>Export to PDF</span>
+              <span className="menu-shortcut">Ctrl+E</span>
             </button>
             <button 
               className="menu-item" 
@@ -131,6 +175,7 @@ const Menu = ({
             >
               <Printer size={16} />
               <span>Print</span>
+              <span className="menu-shortcut">Ctrl+P</span>
             </button>
           </div>
 
@@ -173,6 +218,7 @@ const Menu = ({
             >
               <Settings size={16} />
               <span>Settings</span>
+              <span className="menu-shortcut">Ctrl+Shift+P</span>
             </button>
           </div>
         </div>
