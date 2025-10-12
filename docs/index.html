@@ -2111,142 +2111,62 @@
                     Complete guides to help you master Docura! From getting started to advanced features.
                 </p>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                    <!-- Getting Started -->
-                    <a
-                        href="wiki/getting-started.md"
-                        class="blog-card bg-dark-tertiary rounded-xl p-6 border border-border-dark hover:border-accent transition-all cursor-pointer block"
-                    >
-                        <div class="flex items-center mb-3">
-                            <span class="text-4xl mr-3">🚀</span>
-                            <div>
-                                <h3 class="text-xl font-bold">Getting Started</h3>
-                                <span class="text-xs text-success">Beginner</span>
+                <!-- Wiki Guides Grid -->
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
+                    x-show="!selectedGuide"
+                >
+                    <template x-for="guide in wikiGuides" :key="guide.slug">
+                        <div
+                            class="blog-card bg-dark-tertiary rounded-xl p-6 border border-border-dark transition-all duration-300 hover:border-accent cursor-pointer"
+                            @click="loadWikiGuide(guide)"
+                        >
+                            <div class="flex items-center mb-3">
+                                <span class="text-4xl mr-3" x-text="guide.icon"></span>
+                                <div>
+                                    <h3 class="text-xl font-bold" x-text="guide.title"></h3>
+                                    <span
+                                        class="text-xs"
+                                        :class="guide.difficulty === 'Beginner' ? 'text-success' : 'text-accent'"
+                                        x-text="guide.difficulty"
+                                    ></span>
+                                </div>
+                            </div>
+                            <p class="text-text-secondary text-sm mb-3" x-text="guide.description"></p>
+                            <div class="flex items-center justify-between text-xs text-text-secondary">
+                                <span x-text="'⏱️ ' + guide.readTime"></span>
+                                <span class="text-accent">Read guide →</span>
                             </div>
                         </div>
-                        <p class="text-text-secondary text-sm mb-3">
-                            Learn the basics of using Docura: first launch, creating files, essential shortcuts, and interface overview.
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-text-secondary">
-                            <span>⏱️ 5 min read</span>
-                            <span class="text-accent">Start here →</span>
-                        </div>
-                    </a>
-
-                    <!-- Editing Modes -->
-                    <a
-                        href="wiki/editing-modes.md"
-                        class="blog-card bg-dark-tertiary rounded-xl p-6 border border-border-dark hover:border-accent transition-all cursor-pointer block"
-                    >
-                        <div class="flex items-center mb-3">
-                            <span class="text-4xl mr-3">✍️</span>
-                            <div>
-                                <h3 class="text-xl font-bold">Editing Modes</h3>
-                                <span class="text-xs text-success">Beginner</span>
-                            </div>
-                        </div>
-                        <p class="text-text-secondary text-sm mb-3">
-                            Master Code, Live (Modern/Classic), and Preview modes. Choose the perfect workflow for your task.
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-text-secondary">
-                            <span>⏱️ 7 min read</span>
-                            <span class="text-accent">Learn more →</span>
-                        </div>
-                    </a>
-
-                    <!-- Keyboard Shortcuts -->
-                    <a
-                        href="wiki/keyboard-shortcuts.md"
-                        class="blog-card bg-dark-tertiary rounded-xl p-6 border border-border-dark hover:border-accent transition-all cursor-pointer block"
-                    >
-                        <div class="flex items-center mb-3">
-                            <span class="text-4xl mr-3">⌨️</span>
-                            <div>
-                                <h3 class="text-xl font-bold">Keyboard Shortcuts</h3>
-                                <span class="text-xs text-accent">Intermediate</span>
-                            </div>
-                        </div>
-                        <p class="text-text-secondary text-sm mb-3">
-                            Become 10x faster with essential shortcuts: file operations, search, export, and more.
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-text-secondary">
-                            <span>⏱️ 6 min read</span>
-                            <span class="text-accent">Master it →</span>
-                        </div>
-                    </a>
-
-                    <!-- Themes -->
-                    <a
-                        href="wiki/themes.md"
-                        class="blog-card bg-dark-tertiary rounded-xl p-6 border border-border-dark hover:border-accent transition-all cursor-pointer block"
-                    >
-                        <div class="flex items-center mb-3">
-                            <span class="text-4xl mr-3">🎨</span>
-                            <div>
-                                <h3 class="text-xl font-bold">Themes</h3>
-                                <span class="text-xs text-success">Beginner</span>
-                            </div>
-                        </div>
-                        <p class="text-text-secondary text-sm mb-3">
-                            Explore 12 beautiful themes (dark & light) with Omarchy integration for perfect customization.
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-text-secondary">
-                            <span>⏱️ 8 min read</span>
-                            <span class="text-accent">Customize →</span>
-                        </div>
-                    </a>
-
-                    <!-- Export Features -->
-                    <a
-                        href="wiki/export-features.md"
-                        class="blog-card bg-dark-tertiary rounded-xl p-6 border border-border-dark hover:border-accent transition-all cursor-pointer block"
-                    >
-                        <div class="flex items-center mb-3">
-                            <span class="text-4xl mr-3">🚀</span>
-                            <div>
-                                <h3 class="text-xl font-bold">Export Features</h3>
-                                <span class="text-xs text-accent">Intermediate</span>
-                            </div>
-                        </div>
-                        <p class="text-text-secondary text-sm mb-3">
-                            Export to PDF, HTML (Standard/Tailwind/Bootstrap), JSON, RTF, and MediaWiki formats.
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-text-secondary">
-                            <span>⏱️ 10 min read</span>
-                            <span class="text-accent">Share work →</span>
-                        </div>
-                    </a>
-
-                    <!-- Images -->
-                    <a
-                        href="wiki/images.md"
-                        class="blog-card bg-dark-tertiary rounded-xl p-6 border border-border-dark hover:border-accent transition-all cursor-pointer block"
-                    >
-                        <div class="flex items-center mb-3">
-                            <span class="text-4xl mr-3">🖼️</span>
-                            <div>
-                                <h3 class="text-xl font-bold">Working with Images</h3>
-                                <span class="text-xs text-accent">Intermediate</span>
-                            </div>
-                        </div>
-                        <p class="text-text-secondary text-sm mb-3">
-                            Add local and online images seamlessly. Paste from clipboard (Ctrl+V) auto-saves to assets folder!
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-text-secondary">
-                            <span>⏱️ 8 min read</span>
-                            <span class="text-accent">Add visuals →</span>
-                        </div>
-                    </a>
+                    </template>
                 </div>
 
-                <!-- View All Wiki Button -->
-                <div class="text-center mt-12">
-                    <a
-                        href="wiki/index.md"
-                        class="inline-block bg-accent hover:bg-accent-hover text-black font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:-translate-y-1"
+                <!-- Single Wiki Guide View -->
+                <div x-show="selectedGuide" class="max-w-4xl mx-auto">
+                    <button
+                        @click="selectedGuide = null; wikiContent = ''"
+                        class="mb-6 text-text-secondary hover:text-text-primary transition-colors flex items-center gap-2"
                     >
-                        📚 View Complete Wiki
-                    </a>
+                        <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 19l-7-7 7-7"
+                            ></path>
+                        </svg>
+                        Back to All Guides
+                    </button>
+
+                    <article
+                        class="bg-dark-tertiary rounded-xl p-8 border border-border-dark prose prose-invert prose-lg max-w-none prose-headings:gradient-text prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover prose-code:text-accent prose-code:bg-dark-primary prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-dark-primary prose-pre:border prose-pre:border-border-dark prose-blockquote:border-l-accent prose-blockquote:border-l-4 prose-blockquote:pl-4 prose-table:border-border-dark prose-th:bg-dark-primary prose-td:border-border-dark prose-img:rounded-lg prose-img:border prose-img:border-border-dark"
+                        x-html="wikiContent"
+                    ></article>
                 </div>
             </div>
         </section>
@@ -2410,10 +2330,15 @@ npm install
                     blogPosts: [],
                     selectedPost: null,
                     blogContent: "",
+                    wikiGuides: [],
+                    selectedGuide: null,
+                    wikiContent: "",
 
                     init() {
                         // Load blog posts index
                         this.loadBlogIndex();
+                        // Load wiki guides index
+                        this.loadWikiIndex();
 
                         // Intersection Observer for fade-in animations
                         const observer = new IntersectionObserver(
@@ -2473,6 +2398,51 @@ npm install
                             console.error("Error loading blog post:", error);
                             alert(
                                 "Failed to load blog post. Please try again.",
+                            );
+                        }
+                    },
+
+                    async loadWikiIndex() {
+                        try {
+                            const response = await fetch("wiki/index.json");
+                            this.wikiGuides = await response.json();
+                        } catch (error) {
+                            console.error("Error loading wiki index:", error);
+                            this.wikiGuides = [];
+                        }
+                    },
+
+                    async loadWikiGuide(guide) {
+                        try {
+                            const response = await fetch(`wiki/${guide.file}`);
+                            let markdown = await response.text();
+
+                            // Remove frontmatter (--- delimited at top)
+                            markdown = markdown.replace(
+                                /^---[\s\S]*?---\n/,
+                                "",
+                            );
+
+                            // Configure marked
+                            marked.setOptions({
+                                breaks: true,
+                                gfm: true,
+                                headerIds: true,
+                                mangle: false,
+                            });
+
+                            // Convert markdown to HTML
+                            this.wikiContent = marked.parse(markdown);
+                            this.selectedGuide = guide;
+
+                            // Scroll to top of wiki section
+                            document
+                                .getElementById("wiki")
+                                .scrollIntoView({ behavior: "smooth" });
+                        } catch (error) {
+                            console.error("Error loading wiki guide:", error);
+                            alert(
+                                "Failed to load wiki guide. Please try again.",
                             );
                         }
                     },
