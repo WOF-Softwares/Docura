@@ -256,58 +256,65 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 | Feature | Typora | Docura | Winner |
 |---------|--------|--------|--------|
 | **Editing Modes** | 1 (Inline only) | 3 (Code + Live + Preview) | 🏆 **Docura** |
-| **Split View** | ❌ No | ✅ Yes - See source + preview | 🏆 **Docura** |
-| **Toolbar Buttons** | Limited | Full MS Word-style toolbar | 🏆 **Docura** |
-| **Learning Curve** | Steep | Gentle - Visual + Educational | 🏆 **Docura** |
-| **Markdown Visibility** | Hidden | Always visible when needed | 🏆 **Docura** |
-| **Best for Beginners** | ❌ Confusing | ✅ Intuitive | 🏆 **Docura** |
+| **Live Editor Options** | ❌ No choice | ✅ Classic (Split-pane) + Modern (Typora-like) | 🏆 **Docura** |
+| **Code Editor** | Basic | Monaco (VSCode-level) | 🏆 **Docura** |
+| **WYSIWYG Quality** | Good | Excellent (Vditor + MDEditor) | 🏆 **Docura** |
+| **User Choice** | ❌ Forced workflow | ✅ Choose your editing style | 🏆 **Docura** |
+| **Learning Curve** | Steep | Gentle - Multiple learning paths | 🏆 **Docura** |
+| **Best for Beginners** | ❌ Confusing | ✅ Multiple approaches | 🏆 **Docura** |
 | **Best for Pros** | ✅ Good | ✅ Better (more options) | 🏆 **Docura** |
 | **Themes** | 6 | 12 (6 bases × light/dark) | 🏆 **Docura** |
 | **Theme Consistency** | Partial | Full (UI + Editor + Preview) | 🏆 **Docura** |
-| **Code Editor Theming** | Basic | Monaco with custom themes | 🏆 **Docura** |
 | **Interactive Checkboxes** | ✅ Yes | ✅ Yes + Better UX | 🏆 **Docura** |
 | **Outline Navigation** | ✅ Yes | ✅ Yes + Smooth scrolling | 🏆 **Docura** |
-| **PDF Export** | ✅ Yes | ✅ Yes + Native dialogs | 🏆 **Tie** |
-| **Print Preview** | ✅ Yes | ✅ Yes + PDF preview dialog | 🏆 **Docura** |
-| **Fullscreen Mode** | ✅ Yes | ✅ Yes + Hides all UI | 🏆 **Docura** |
 | **Tiling WM Support** | ❌ No | ✅ Auto-detection & titlebar hide | 🏆 **Docura** |
 | **Disk Space** | ~326 MB | ~12 MB (96% less!) | 🏆 **Docura** |
 | **Memory Usage** | ~1011 MB | ~780 MB (23% less!) | 🏆 **Docura** |
-| **Download Size** | ~80 MB | ~5 MB (94% smaller) | 🏆 **Docura** |
 | **Open Source** | ❌ No | ✅ Yes (Apache 2.0) | 🏆 **Docura** |
 | **Price** | $14.99 | 🆓 Free | 🏆 **Docura** |
 
-### 🎯 The Docura Advantage
+### 🎯 The Docura Revolution
 
-**Three Editing Modes for Every User:**
+**Three Editing Modes + Two Live Editor Styles = Ultimate Flexibility:**
 
 1. **Code Mode** 📝
-   - Raw markdown editing with Monaco editor
-   - Syntax highlighting for 12 beautiful themes
-   - Line numbers, code folding, and all IDE features
-   - Perfect for power users who love markdown
+   - Professional Monaco editor (same as VSCode)
+   - Full syntax highlighting with 12 custom themes
+   - Advanced features: IntelliSense, minimap, smooth scrolling
+   - Perfect for markdown purists and developers
 
-2. **Live Mode** ✍️ (The Innovation!)
-   - **WYSIWYG editing with split preview**
-   - Type markdown on the left, see rendered output on the right
-   - Toolbar buttons like MS Word (Bold, Italic, Headers, etc.)
-   - Educational - learn markdown by seeing the connection
-   - Perfect for beginners AND experts
+2. **Live Mode** ✍️ (Choose Your Style!)
+   - **🎨 Modern (Vditor)** - Pure Typora-like WYSIWYG experience
+     - True WYSIWYG editing with instant rendering
+     - Clean, distraction-free interface
+     - Perfect for writers who want seamless flow
+   - **📱 Classic (MDEditor)** - Dual-pane split view
+     - Side-by-side source and preview
+     - Toolbar with formatting buttons
+     - Educational - see markdown + rendered simultaneously
+   - **⚙️ User Choice** - Switch anytime in Settings → Editor Settings!
 
 3. **Preview Mode** 👁️
-   - Read-only rendered markdown
-   - Beautiful Typora-inspired typography
-   - Interactive checkboxes that update the source
+   - Beautiful read-only rendered markdown
+   - Typora-inspired typography and layout
    - Clickable outline navigation with smooth scrolling
+   - Perfect for reading and presenting
 
-**Why This Approach is Revolutionary:**
+### 🚀 Why This Approach is Revolutionary
 
-- **Accessible** to MS Word users (toolbar buttons)
-- **Powerful** for markdown experts (raw editing)
-- **Educational** (see markdown source + rendered output simultaneously)
-- **Flexible** (switch modes based on your workflow)
+**From FocusWriter → Typora → Docura Evolution:**
+- **FocusWriter**: Distraction-free but limited
+- **Typora**: Great WYSIWYG but one-size-fits-all
+- **🏆 Docura**: Best of all worlds with USER CHOICE!
 
-Typora forces you into one way of working. **Docura lets you choose your adventure!**
+**The Flexibility Advantage:**
+- **Writers**: Use Modern mode for pure WYSIWYG flow
+- **Developers**: Use Code mode for precise control
+- **Learners**: Use Classic mode to see source + preview
+- **Readers**: Use Preview mode for consumption
+- **Everyone**: Switch modes based on your current task!
+
+**No other editor gives you this level of choice and quality!**
 
 ---
 
