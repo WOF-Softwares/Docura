@@ -184,6 +184,8 @@ pub struct AppConfig {
     recent_items: Vec<RecentItem>,
     #[serde(default)]
     omakase_sync: bool,
+    #[serde(default)]
+    auto_save: bool,
 }
 
 impl Default for AppConfig {
@@ -192,6 +194,7 @@ impl Default for AppConfig {
             theme: "dracula-dark".to_string(),
             recent_items: Vec::new(),
             omakase_sync: false,
+            auto_save: true, // Default to enabled
         }
     }
 }
@@ -554,6 +557,53 @@ async fn open_new_window(app: tauri::AppHandle, folder_path: Option<String>) -> 
     Ok(())
 }
 
+#[command]
+async fn save_clipboard_image(
+    file_path: String,
+    image_data: String, // Base64 encoded image data
+    image_name: String,
+) -> Result<String, String> {
+    use base64::{engine::general_purpose, Engine as _};
+    
+    // Get the directory of the markdown file
+    let file_path_obj = Path::new(&file_path);
+    let dir = file_path_obj.parent()
+        .ok_or("Could not get parent directory")?;
+    
+    // Create assets folder next to the markdown file
+    let assets_dir = dir.join("assets");
+    if !assets_dir.exists() {
+        fs::create_dir_all(&assets_dir)
+            .map_err(|e| format!("Failed to create assets directory: {}", e))?;
+    }
+    
+    // Generate unique filename if file already exists
+    let mut final_name = image_name.clone();
+    let mut counter = 1;
+    let name_without_ext = image_name.rsplit_once('.').map(|(n, _)| n).unwrap_or(&image_name);
+    let ext = image_name.rsplit_once('.').map(|(_, e)| e).unwrap_or("png");
+    
+    while assets_dir.join(&final_name).exists() {
+        final_name = format!("{}-{}.{}", name_without_ext, counter, ext);
+        counter += 1;
+    }
+    
+    let image_path = assets_dir.join(&final_name);
+    
+    // Decode base64 image data
+    let image_bytes = general_purpose::STANDARD.decode(image_data)
+        .map_err(|e| format!("Failed to decode image data: {}", e))?;
+    
+    // Save image to disk
+    fs::write(&image_path, image_bytes)
+        .map_err(|e| format!("Failed to save image: {}", e))?;
+    
+    log::info!("Saved clipboard image to: {:?}", image_path);
+    
+    // Return relative path for markdown
+    Ok(format!("assets/{}", final_name))
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Get CLI arguments
@@ -623,7 +673,8 @@ pub fn run() {
             check_omakase_command,
             get_omakase_theme,
             get_omakase_font,
-            open_new_window
+            open_new_window,
+            save_clipboard_image
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

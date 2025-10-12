@@ -560,10 +560,10 @@ All themes are consistently applied across:
 
 ### 🚧 Phase 5: Enhanced Features (Next)
 - [x] Search in file content (Ctrl+F)
-- [ ] Find & Replace (Ctrl+H)
+- [x] Find & Replace (Ctrl+H)
 - [ ] Auto-save option
 - [ ] Custom CSS theme support
-- [ ] Image paste from clipboard
+- [] Image paste from clipboard
 
 ### 🔮 Phase 6: Advanced Features
 - [ ] Split pane editing (vertical/horizontal)

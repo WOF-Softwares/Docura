@@ -7,7 +7,9 @@ const SettingsDialog = ({
   onClose, 
   omakaseSyncEnabled, 
   onOmakaseSyncToggle,
-  onSyncNow 
+  onSyncNow,
+  autoSaveEnabled,
+  onAutoSaveToggle
 }) => {
   const [omakaseStatus, setOmakaseStatus] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -103,10 +105,23 @@ const SettingsDialog = ({
             )}
           </div>
 
-          {/* Future settings sections */}
+          {/* General Settings */}
           <div className="settings-section">
             <h3>⚙️ General</h3>
-            <p className="coming-soon">More settings coming soon...</p>
+            
+            <div className="settings-option">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={autoSaveEnabled}
+                  onChange={(e) => onAutoSaveToggle(e.target.checked)}
+                />
+                <span>Enable Auto-Save</span>
+              </label>
+              <p className="option-description">
+                Automatically save your file 2 seconds after you stop typing. Only works with saved files (not "Untitled" documents).
+              </p>
+            </div>
           </div>
         </div>
 

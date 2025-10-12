@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useCallback } from 'react'
 import Editor from '@monaco-editor/react'
 import MDEditor from '@uiw/react-md-editor'
 import { Code, Eye, Edit3 } from 'lucide-react'
+import { invoke } from '@tauri-apps/api/core'
+import toast from 'react-hot-toast'
 import { makeCheckboxesInteractive, toggleCheckboxByText, extractCheckboxes } from '../utils/checkboxHandler'
 
 // Monaco theme configurations
@@ -324,6 +326,99 @@ const MainEditor = ({
     
     return () => clearTimeout(timeoutId)
   }, [activeTab, handleCheckboxToggle]) // Removed fileContent and displayContent to prevent loops
+
+  // Handle image paste from clipboard
+  useEffect(() => {
+    const handlePaste = async (e) => {
+      // Only handle if we have a current file (can't save to untitled)
+      if (!currentFile) {
+        return
+      }
+
+      const items = e.clipboardData?.items
+      if (!items) return
+
+      // Check if clipboard contains an image
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i]
+        
+        if (item.type.indexOf('image') !== -1) {
+          e.preventDefault()
+          
+          const blob = item.getAsFile()
+          if (!blob) continue
+
+          try {
+            // Convert blob to base64
+            const reader = new FileReader()
+            reader.onload = async () => {
+              const base64Data = reader.result.split(',')[1] // Remove data:image/png;base64, prefix
+              
+              // Generate filename with timestamp
+              const timestamp = Date.now()
+              const extension = blob.type.split('/')[1] || 'png'
+              const imageName = `pasted-image-${timestamp}.${extension}`
+              
+              toast.loading('Saving image...', { id: 'image-paste' })
+              
+              try {
+                // Save image via Rust command
+                const relativePath = await invoke('save_clipboard_image', {
+                  filePath: currentFile,
+                  imageData: base64Data,
+                  imageName
+                })
+                
+                // Insert markdown image syntax at cursor position
+                const markdownSyntax = `![${imageName}](${relativePath})`
+                
+                // Insert into editor based on active tab
+                if (activeTab === 'code' && editorRef.current) {
+                  // Monaco editor
+                  const editor = editorRef.current
+                  const position = editor.getPosition()
+                  editor.executeEdits('paste-image', [{
+                    range: {
+                      startLineNumber: position.lineNumber,
+                      startColumn: position.column,
+                      endLineNumber: position.lineNumber,
+                      endColumn: position.column
+                    },
+                    text: markdownSyntax
+                  }])
+                  editor.setPosition({
+                    lineNumber: position.lineNumber,
+                    column: position.column + markdownSyntax.length
+                  })
+                } else {
+                  // For Live and Preview modes, append to content
+                  // (MDEditor doesn't provide easy cursor position access)
+                  const currentContent = fileContentRef.current
+                  const newContent = currentContent + '\n' + markdownSyntax
+                  onContentChange(newContent)
+                }
+                
+                toast.success('Image pasted successfully!', { id: 'image-paste' })
+              } catch (error) {
+                console.error('Failed to save pasted image:', error)
+                toast.error('Failed to save image: ' + error, { id: 'image-paste' })
+              }
+            }
+            
+            reader.readAsDataURL(blob)
+          } catch (error) {
+            console.error('Error processing pasted image:', error)
+            toast.error('Failed to process image')
+          }
+          
+          break // Only handle first image
+        }
+      }
+    }
+
+    document.addEventListener('paste', handlePaste)
+    return () => document.removeEventListener('paste', handlePaste)
+  }, [currentFile, activeTab, onContentChange])
 
 
   if (!isEditing && !currentFile) {

@@ -48,8 +48,11 @@ function App() {
   const [recentItems, setRecentItems] = useState([])
   const [isQuickOpenVisible, setIsQuickOpenVisible] = useState(false)
   const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, hasSelection: false })
+  const [autoSaveEnabled, setAutoSaveEnabled] = useState(true)
+  const [isAutoSaving, setIsAutoSaving] = useState(false)
   const previewRef = useRef(null)
   const syncIntervalRef = useRef(null)
+  const autoSaveTimeoutRef = useRef(null)
 
   // Available themes for random cycling
   const availableThemes = [
@@ -172,6 +175,43 @@ function App() {
       setHasUnsavedChanges(false)
     }
   }, [fileContent, originalContent])
+
+  useEffect(() => {
+    // Smart auto-save: debounced save after user stops typing
+    if (autoSaveEnabled && currentFile && hasUnsavedChanges && fileContent !== '') {
+      // Clear any pending auto-save
+      if (autoSaveTimeoutRef.current) {
+        clearTimeout(autoSaveTimeoutRef.current)
+      }
+      
+      // Set up new auto-save after 2 seconds of inactivity
+      autoSaveTimeoutRef.current = setTimeout(async () => {
+        try {
+          setIsAutoSaving(true)
+          await writeTextFile(currentFile, fileContent)
+          setOriginalContent(fileContent)
+          setHasUnsavedChanges(false)
+          console.log('✅ Auto-saved:', currentFile)
+          // Show a subtle toast
+          toast.success('Auto-saved', {
+            duration: 1500,
+            icon: '💾',
+          })
+        } catch (error) {
+          console.error('Auto-save failed:', error)
+          toast.error('Auto-save failed')
+        } finally {
+          setIsAutoSaving(false)
+        }
+      }, 2000) // 2 seconds delay
+    }
+    
+    return () => {
+      if (autoSaveTimeoutRef.current) {
+        clearTimeout(autoSaveTimeoutRef.current)
+      }
+    }
+  }, [autoSaveEnabled, currentFile, hasUnsavedChanges, fileContent, originalContent])
 
   useEffect(() => {
     // Convert image paths when content or file changes
@@ -367,17 +407,21 @@ function App() {
       if (config && config.omakase_sync !== undefined) {
         setOmakaseSyncEnabled(config.omakase_sync)
       }
+      if (config && config.auto_save !== undefined) {
+        setAutoSaveEnabled(config.auto_save)
+      }
     } catch (error) {
       console.error('Error loading config:', error)
     }
   }
 
-  const saveAppConfig = async (newTheme, omakaseSync = omakaseSyncEnabled) => {
+  const saveAppConfig = async (newTheme, omakaseSync = omakaseSyncEnabled, autoSave = autoSaveEnabled) => {
     try {
       await invoke('save_config', {
         config: {
           theme: newTheme || currentTheme,
           omakase_sync: omakaseSync,
+          auto_save: autoSave,
           recent_items: []
         }
       })
@@ -961,7 +1005,7 @@ function App() {
   
   const handleOmakaseSyncToggle = (enabled) => {
     setOmakaseSyncEnabled(enabled)
-    saveAppConfig(currentTheme, enabled)
+    saveAppConfig(currentTheme, enabled, autoSaveEnabled)
     
     if (enabled) {
       toast.success('Omarchy auto-sync enabled')
@@ -969,6 +1013,19 @@ function App() {
       handleOmakaseSync()
     } else {
       toast('Omarchy auto-sync disabled')
+    }
+  }
+
+  const handleAutoSaveToggle = (enabled) => {
+    setAutoSaveEnabled(enabled)
+    saveAppConfig(currentTheme, omakaseSyncEnabled, enabled)
+    
+    if (enabled) {
+      toast.success('Auto-save enabled')
+    } else {
+      toast('Auto-save disabled', {
+        icon: '⏸️',
+      })
     }
   }
 
@@ -1086,6 +1143,8 @@ function App() {
         omakaseSyncEnabled={omakaseSyncEnabled}
         onOmakaseSyncToggle={handleOmakaseSyncToggle}
         onSyncNow={handleOmakaseSync}
+        autoSaveEnabled={autoSaveEnabled}
+        onAutoSaveToggle={handleAutoSaveToggle}
       />
 
       <FolderSwitchDialog
