@@ -235,6 +235,7 @@ const MainEditor = ({
   markdownTheme
 }) => {
   const monacoRef = useRef(null)
+  const editorRef = useRef(null) // Reference to the editor instance
   const previewRef = useRef(null)
   const livePreviewRef = useRef(null)
   const fileContentRef = useRef(fileContent) // Use ref to avoid recreating callback
@@ -255,12 +256,25 @@ const MainEditor = ({
     }
   }, [monacoRef.current])
 
+  // Apply theme when it changes
+  useEffect(() => {
+    if (monacoRef.current && markdownTheme) {
+      monacoRef.current.editor.setTheme(markdownTheme)
+    }
+  }, [markdownTheme])
+
+
   const handleEditorMount = (editor, monaco) => {
     monacoRef.current = monaco
+    editorRef.current = editor
     // Define all themes on mount
     Object.entries(monacoThemes).forEach(([themeName, themeData]) => {
       monaco.editor.defineTheme(themeName, themeData)
     })
+    // Set initial theme
+    if (markdownTheme) {
+      monaco.editor.setTheme(markdownTheme)
+    }
   }
 
   const handleEditorChange = (value) => {
@@ -358,6 +372,7 @@ const MainEditor = ({
       <div className="editor-content">
         {activeTab === 'code' ? (
           <Editor
+            key={currentFile || 'new-file'} // Force remount on file change to clear history
             height="100%"
             defaultLanguage="markdown"
             value={fileContent}
