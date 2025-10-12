@@ -11,7 +11,9 @@ const SettingsDialog = ({
   autoSaveEnabled,
   onAutoSaveToggle,
   editorSettings,
-  onEditorSettingsChange
+  onEditorSettingsChange,
+  liveEditorType,
+  onLiveEditorTypeChange
 }) => {
   const [omakaseStatus, setOmakaseStatus] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -156,6 +158,23 @@ const SettingsDialog = ({
                 <div className="settings-section">
                   <h3>📝 Editor</h3>
                   
+                  <div className="settings-option">
+                    <label className="setting-label">
+                      Live Editor Type
+                    </label>
+                    <select
+                      className="setting-select"
+                      value={liveEditorType || 'modern'}
+                      onChange={(e) => onLiveEditorTypeChange(e.target.value)}
+                    >
+                      <option value="classic">Classic (MDEditor)</option>
+                      <option value="modern">Modern (Vditor - Typora-like)</option>
+                    </select>
+                    <p className="option-description">
+                      Choose the editor for Live mode. Classic is the original split-pane editor, Modern provides a Typora-like WYSIWYG experience.
+                    </p>
+                  </div>
+
                   <div className="settings-option">
                     <label className="setting-label">
                       Default Indentation

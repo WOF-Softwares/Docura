@@ -243,7 +243,8 @@ const MainEditor = ({
   onNewFile,
   onOpenRecentItem,
   onCursorPositionChange,
-  onOpenThemeSelector
+  onOpenThemeSelector,
+  liveEditorType = 'modern'
 }) => {
   const monacoRef = useRef(null)
   const editorRef = useRef(null) // Reference to the editor instance
@@ -514,14 +515,31 @@ const MainEditor = ({
             className="wysiwyg-editor" 
             data-color-mode={markdownTheme?.includes('dark') ? 'dark' : 'light'}
           >
-            <VditorEditor
-              value={fileContent}
-              onChange={(value) => handleEditorChange(value || '')}
-              height="100%"
-              theme={markdownTheme?.includes('dark') ? 'dark' : 'light'}
-              mode="wysiwyg"
-              currentFile={currentFile}
-            />
+            {liveEditorType === 'modern' ? (
+              <VditorEditor
+                value={fileContent}
+                onChange={(value) => handleEditorChange(value || '')}
+                height="100%"
+                theme={markdownTheme?.includes('dark') ? 'dark' : 'light'}
+                mode="wysiwyg"
+                currentFile={currentFile}
+              />
+            ) : (
+              <MDEditor
+                value={fileContent}
+                onChange={(value) => handleEditorChange(value || '')}
+                height="100%"
+                preview="live"
+                hideToolbar={false}
+                enableScroll={true}
+                visibleDragbar={false}
+                highlightEnable={true}
+                previewOptions={{
+                  // Use display content for preview side with converted image paths
+                  value: displayContent || fileContent
+                }}
+              />
+            )}
           </div>
         ) : (
           <div 

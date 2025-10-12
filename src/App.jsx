@@ -53,6 +53,7 @@ function App() {
   const [recentItems, setRecentItems] = useState([])
   const [isQuickOpenVisible, setIsQuickOpenVisible] = useState(false)
   const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, hasSelection: false })
+  const [liveEditorType, setLiveEditorType] = useState('modern') // 'classic' or 'modern'
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(true)
   const [isAutoSaving, setIsAutoSaving] = useState(false)
   const [unsavedChangesDialog, setUnsavedChangesDialog] = useState({ visible: false, onSave: null, onDontSave: null, onCancel: null })
@@ -602,18 +603,22 @@ function App() {
       if (config && config.auto_save !== undefined) {
         setAutoSaveEnabled(config.auto_save)
       }
+      if (config && config.live_editor_type) {
+        setLiveEditorType(config.live_editor_type)
+      }
     } catch (error) {
       console.error('Error loading config:', error)
     }
   }
 
-  const saveAppConfig = async (newTheme, omakaseSync = omakaseSyncEnabled, autoSave = autoSaveEnabled) => {
+  const saveAppConfig = async (newTheme, omakaseSync = omakaseSyncEnabled, autoSave = autoSaveEnabled, liveEditor = liveEditorType) => {
     try {
       await invoke('save_config', {
         config: {
           theme: newTheme || currentTheme,
           omakase_sync: omakaseSync,
           auto_save: autoSave,
+          live_editor_type: liveEditor,
           recent_items: []
         }
       })
@@ -1556,6 +1561,17 @@ function App() {
     setEditorSettings(newSettings)
     // TODO: Persist editor settings to config
   }
+
+  const handleLiveEditorTypeChange = async (newType) => {
+    setLiveEditorType(newType)
+    await saveAppConfig(currentTheme, omakaseSyncEnabled, autoSaveEnabled, newType)
+    
+    if (newType === 'modern') {
+      toast.success('Switched to Modern editor (Vditor)')
+    } else {
+      toast.success('Switched to Classic editor (MDEditor)')
+    }
+  }
   
   // Calculate word count
   const getWordCount = () => {
@@ -1673,6 +1689,7 @@ function App() {
           onOpenRecentItem={openRecentItem}
           onCursorPositionChange={setCursorPosition}
           onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
+          liveEditorType={liveEditorType}
         />
       </div>
 
@@ -1716,6 +1733,8 @@ function App() {
         onAutoSaveToggle={handleAutoSaveToggle}
         editorSettings={editorSettings}
         onEditorSettingsChange={handleEditorSettingsChange}
+        liveEditorType={liveEditorType}
+        onLiveEditorTypeChange={handleLiveEditorTypeChange}
       />
 
       <FolderSwitchDialog

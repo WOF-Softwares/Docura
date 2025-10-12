@@ -193,6 +193,12 @@ pub struct AppConfig {
     omakase_sync: bool,
     #[serde(default)]
     auto_save: bool,
+    #[serde(default = "default_live_editor_type")]
+    live_editor_type: String,
+}
+
+fn default_live_editor_type() -> String {
+    "modern".to_string()
 }
 
 impl Default for AppConfig {
@@ -202,6 +208,7 @@ impl Default for AppConfig {
             recent_items: Vec::new(),
             omakase_sync: false,
             auto_save: true, // Default to enabled
+            live_editor_type: "modern".to_string(),
         }
     }
 }
