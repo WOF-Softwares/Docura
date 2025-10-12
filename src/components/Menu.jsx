@@ -16,7 +16,8 @@ import {
   Clock,
   Folder,
   File,
-  Trash2
+  Trash2,
+  ChevronRight
 } from 'lucide-react'
 
 const Menu = ({ 
@@ -39,12 +40,15 @@ const Menu = ({
   onClearRecentItems
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isRecentSubmenuOpen, setIsRecentSubmenuOpen] = useState(false)
   const menuRef = useRef(null)
+  const recentSubmenuRef = useRef(null)
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsOpen(false)
+        setIsRecentSubmenuOpen(false)
       }
     }
 
@@ -54,9 +58,17 @@ const Menu = ({
     }
   }, [isOpen])
 
+  // Close submenu when main menu closes
+  useEffect(() => {
+    if (!isOpen) {
+      setIsRecentSubmenuOpen(false)
+    }
+  }, [isOpen])
+
   const handleMenuClick = (action) => {
     action()
     setIsOpen(false)
+    setIsRecentSubmenuOpen(false)
   }
 
   return (
@@ -122,37 +134,49 @@ const Menu = ({
           <div className="menu-divider"></div>
 
           <div className="menu-section">
-            <div className="menu-section-title">
-              <Clock size={14} style={{ marginRight: '6px' }} />
-              Recent
+            <div 
+              className="menu-item menu-item-submenu"
+              onMouseEnter={() => setIsRecentSubmenuOpen(true)}
+              onMouseLeave={() => setIsRecentSubmenuOpen(false)}
+            >
+              <Clock size={16} />
+              <span>Recent</span>
+              <ChevronRight size={16} className="submenu-arrow" />
+              
+              {isRecentSubmenuOpen && (
+                <div className="menu-submenu" ref={recentSubmenuRef}>
+                  {recentItems && recentItems.length > 0 ? (
+                    <>
+                      <div className="menu-submenu-items">
+                        {recentItems.map((item, index) => (
+                          <button
+                            key={index}
+                            className="menu-item recent-item"
+                            onClick={() => handleMenuClick(() => onOpenRecentItem(item))}
+                            title={item.path}
+                          >
+                            {item.type === 'folder' ? <Folder size={14} /> : <File size={14} />}
+                            <span className="recent-item-name">{item.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                      <div className="menu-divider"></div>
+                      <button
+                        className="menu-item"
+                        onClick={() => handleMenuClick(onClearRecentItems)}
+                      >
+                        <Trash2 size={14} />
+                        <span>Clear Recent</span>
+                      </button>
+                    </>
+                  ) : (
+                    <div className="menu-item" style={{ opacity: 0.5, cursor: 'default' }}>
+                      <span>No recent items</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-            {recentItems && recentItems.length > 0 ? (
-              <>
-                {recentItems.map((item, index) => (
-                  <button
-                    key={index}
-                    className="menu-item recent-item"
-                    onClick={() => handleMenuClick(() => onOpenRecentItem(item))}
-                    title={item.path}
-                  >
-                    {item.type === 'folder' ? <Folder size={14} /> : <File size={14} />}
-                    <span className="recent-item-name">{item.name}</span>
-                  </button>
-                ))}
-                <div className="menu-divider"></div>
-                <button
-                  className="menu-item"
-                  onClick={() => handleMenuClick(onClearRecentItems)}
-                >
-                  <Trash2 size={14} />
-                  <span>Clear Recent</span>
-                </button>
-              </>
-            ) : (
-              <div className="menu-item" style={{ opacity: 0.5, cursor: 'default' }}>
-                <span>No recent items</span>
-              </div>
-            )}
           </div>
 
           <div className="menu-divider"></div>
