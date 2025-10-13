@@ -1,5 +1,15 @@
 [
   {
+    "slug": "focus-typewriter-modes",
+    "file": "focus-typewriter-modes.md",
+    "title": "Focus Mode & Typewriter Mode",
+    "description": "Master distraction-free writing with Focus Mode (F8) and Typewriter Mode (F9) - BETTER than Typora!",
+    "category": "Writing Modes",
+    "icon": "🎯",
+    "difficulty": "Beginner",
+    "readTime": "8 min read"
+  },
+  {
     "slug": "getting-started",
     "file": "getting-started.md",
     "title": "Getting Started with Docura",
