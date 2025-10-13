@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { invoke } from '@tauri-apps/api/core'
-import { FileText, Folder, FolderOpen, File, Clock, Zap, Lightbulb, Palette } from 'lucide-react'
+import { FileText, Folder, FolderOpen, File, Clock, Zap, Lightbulb, Palette, Heart, Sparkles } from 'lucide-react'
 import '../styles/WelcomeScreen.css'
 
 function WelcomeScreen({ 
@@ -40,6 +40,10 @@ function WelcomeScreen({
       setGreeting({ text: 'Good Night', emoji: '🌙' })
     }
   }, [])
+
+  const openDonate = () => {
+    window.open('https://wof-softwares.github.io/Docura/donate_me.html', '_blank')
+  }
 
   const quickActions = [
     {
@@ -82,7 +86,7 @@ function WelcomeScreen({
             {greeting.text}, {username}!
           </h1>
           <p className="welcome-subtitle">
-            Welcome to <span className="app-name">Docura</span>
+            Welcome to <span className="app-name">Docura</span> — Your Writing Operating System
           </p>
         </div>
 
@@ -153,6 +157,23 @@ function WelcomeScreen({
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Support Banner */}
+        <div className="welcome-support-banner">
+          <div className="support-content">
+            <div className="support-icon">
+              <Heart size={20} className="heart-icon" />
+            </div>
+            <div className="support-text">
+              <h3>Love Docura?</h3>
+              <p>Help keep it free, open-source, and awesome!</p>
+            </div>
+            <button className="support-button" onClick={openDonate}>
+              <Sparkles size={16} />
+              Support Development
+            </button>
           </div>
         </div>
       </div>
