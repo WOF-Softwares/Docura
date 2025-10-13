@@ -43,6 +43,15 @@ This document provides a comprehensive guide for implementing Dropbox synchroniz
 - Background sync with visual indicators
 - Enhanced context menus and sidebar functionality
 
+### 🔐 Security & Privacy
+
+Docura uses **App Folder access** for Dropbox integration:
+- ✅ Only accesses `/Apps/Docura/` folder in your Dropbox
+- ✅ Cannot access any other files or folders in your Dropbox
+- ✅ More secure and privacy-friendly
+- ✅ Clear separation of synced files
+- ✅ Users feel safer granting limited permissions
+
 ## 🌊 System Flow Architecture
 
 ```mermaid

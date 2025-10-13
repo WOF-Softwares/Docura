@@ -44,10 +44,11 @@ impl Default for DropboxAuthConfig {
 }
 
 /// Generate the OAuth authorization URL
+/// Uses App Folder access for better security and privacy
 pub fn get_auth_url() -> String {
     let config = DropboxAuthConfig::default();
     format!(
-        "https://www.dropbox.com/oauth2/authorize?client_id={}&response_type=code&redirect_uri={}&token_access_type=offline",
+        "https://www.dropbox.com/oauth2/authorize?client_id={}&response_type=code&redirect_uri={}&token_access_type=offline&scope=files.content.write files.content.read",
         config.client_id,
         urlencoding::encode(&config.redirect_uri)
     )

@@ -129,6 +129,10 @@ const SettingsDialog = ({
                         <span>Connect your Dropbox account to automatically sync your markdown files across devices.</span>
                       </div>
                       
+                      <div className="settings-info" style={{ marginTop: '12px', backgroundColor: 'var(--bg-tertiary)' }}>
+                        <span>📁 Files will be synced to <code style={{ backgroundColor: 'var(--bg-primary)', padding: '2px 6px', borderRadius: '3px', fontFamily: 'monospace', fontSize: '12px', color: 'var(--accent-color)' }}>/Apps/Docura/</code> folder in your Dropbox</span>
+                      </div>
+                      
                       <button 
                         className="sync-button"
                         onClick={onDropboxAuth}

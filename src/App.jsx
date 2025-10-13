@@ -17,6 +17,7 @@ import ContextMenu from "./components/ContextMenu";
 import UnsavedChangesDialog from "./components/UnsavedChangesDialog";
 import RecoveryDialog from "./components/RecoveryDialog";
 import StatusBar from "./components/StatusBar";
+import OAuthDialog from "./components/OAuthDialog";
 import { exportToPDF, generatePDFBlob } from "./utils/pdfExport";
 import { convertMarkdownImagePaths } from "./utils/imagePathConverter";
 import { isOmakaseEnvironment, syncWithOmakase } from "./utils/omakaseSync";
@@ -101,6 +102,8 @@ function App() {
   const [dropboxStatus, setDropboxStatus] = useState({ connected: false });
   const [dropboxSyncEnabled, setDropboxSyncEnabled] = useState(false);
   const [syncFolders, setSyncFolders] = useState([]);
+  const [isOAuthDialogOpen, setIsOAuthDialogOpen] = useState(false);
+  const [oauthUrl, setOauthUrl] = useState('');
   const previewRef = useRef(null);
   const syncIntervalRef = useRef(null);
   const autoSaveTimeoutRef = useRef(null);
@@ -2077,19 +2080,26 @@ const openRecentItem = async (item) => {
   const handleDropboxAuth = async () => {
     try {
       const authUrl = await startDropboxOAuth();
+      setOauthUrl(authUrl);
+      setIsOAuthDialogOpen(true);
       
-      // Show dialog with OAuth URL
-      // User can copy-paste or we can open in browser
-      const code = prompt(
-        `Please visit this URL to authorize Docura:\n\n${authUrl}\n\nAfter authorization, paste the code here:`
-      );
-      
-      if (code && code.trim()) {
-        await exchangeDropboxCode(code.trim());
-        await loadDropboxStatus();
-        await loadSyncFolders();
-        toast.success("Dropbox connected successfully!");
-      }
+      // Automatically open URL in browser
+      setTimeout(() => {
+        window.open(authUrl, '_blank');
+      }, 500);
+    } catch (error) {
+      console.error("Dropbox auth error:", error);
+      toast.error("Failed to start Dropbox auth: " + error.message);
+    }
+  };
+
+  const handleOAuthCodeSubmit = async (code) => {
+    try {
+      setIsOAuthDialogOpen(false);
+      await exchangeDropboxCode(code);
+      await loadDropboxStatus();
+      await loadSyncFolders();
+      toast.success("Dropbox connected successfully!");
     } catch (error) {
       console.error("Dropbox auth error:", error);
       toast.error("Failed to connect Dropbox: " + error.message);
@@ -2475,6 +2485,13 @@ const openRecentItem = async (item) => {
             ? recoveryDialog.tempFile.content.substring(0, 200)
             : ""
         }
+      />
+
+      <OAuthDialog
+        isOpen={isOAuthDialogOpen}
+        onClose={() => setIsOAuthDialogOpen(false)}
+        authUrl={oauthUrl}
+        onCodeSubmit={handleOAuthCodeSubmit}
       />
 
       <Toaster
