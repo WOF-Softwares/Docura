@@ -340,7 +340,9 @@ const MainEditor = ({
   onOpenRecentItem,
   onCursorPositionChange,
   onOpenThemeSelector,
-  liveEditorType = 'modern'
+  liveEditorType = 'modern',
+  focusMode = false,
+  typewriterMode = false
 }) => {
   const monacoRef = useRef(null)
   const editorRef = useRef(null) // Reference to the editor instance
@@ -619,6 +621,8 @@ const MainEditor = ({
                 theme={markdownTheme?.includes('dark') ? 'dark' : 'light'}
                 mode="wysiwyg"
                 currentFile={currentFile}
+                focusMode={focusMode}
+                typewriterMode={typewriterMode}
               />
             ) : (
               <MDEditor

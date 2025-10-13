@@ -561,6 +561,56 @@
     --vditor-border-color: var(--border-color) !important;
 }
 
+/* Focus Mode - Dim other paragraphs */
+.vditor-wysiwyg[data-focus="true"] > p,
+.vditor-wysiwyg[data-focus="true"] > h1,
+.vditor-wysiwyg[data-focus="true"] > h2,
+.vditor-wysiwyg[data-focus="true"] > h3,
+.vditor-wysiwyg[data-focus="true"] > h4,
+.vditor-wysiwyg[data-focus="true"] > h5,
+.vditor-wysiwyg[data-focus="true"] > h6,
+.vditor-wysiwyg[data-focus="true"] > ul,
+.vditor-wysiwyg[data-focus="true"] > ol,
+.vditor-wysiwyg[data-focus="true"] > blockquote,
+.vditor-wysiwyg[data-focus="true"] > pre,
+.vditor-wysiwyg[data-focus="true"] > table {
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.vditor-wysiwyg[data-focus="true"] > p:hover,
+.vditor-wysiwyg[data-focus="true"] > h1:hover,
+.vditor-wysiwyg[data-focus="true"] > h2:hover,
+.vditor-wysiwyg[data-focus="true"] > h3:hover,
+.vditor-wysiwyg[data-focus="true"] > h4:hover,
+.vditor-wysiwyg[data-focus="true"] > h5:hover,
+.vditor-wysiwyg[data-focus="true"] > h6:hover,
+.vditor-wysiwyg[data-focus="true"] > ul:hover,
+.vditor-wysiwyg[data-focus="true"] > ol:hover,
+.vditor-wysiwyg[data-focus="true"] > blockquote:hover,
+.vditor-wysiwyg[data-focus="true"] > pre:hover,
+.vditor-wysiwyg[data-focus="true"] > table:hover,
+.vditor-wysiwyg[data-focus="true"] > p:focus-within,
+.vditor-wysiwyg[data-focus="true"] > h1:focus-within,
+.vditor-wysiwyg[data-focus="true"] > h2:focus-within,
+.vditor-wysiwyg[data-focus="true"] > h3:focus-within,
+.vditor-wysiwyg[data-focus="true"] > h4:focus-within,
+.vditor-wysiwyg[data-focus="true"] > h5:focus-within,
+.vditor-wysiwyg[data-focus="true"] > h6:focus-within,
+.vditor-wysiwyg[data-focus="true"] > ul:focus-within,
+.vditor-wysiwyg[data-focus="true"] > ol:focus-within,
+.vditor-wysiwyg[data-focus="true"] > blockquote:focus-within,
+.vditor-wysiwyg[data-focus="true"] > pre:focus-within,
+.vditor-wysiwyg[data-focus="true"] > table:focus-within {
+    opacity: 1;
+}
+
+/* Typewriter Mode - Center cursor vertically */
+.vditor-wysiwyg[data-typewriter="true"] {
+    padding-top: 50vh !important;
+    padding-bottom: 50vh !important;
+}
+
 /* Override Chinese text in Vditor headings dropdown */
 .vditor-toolbar .vditor-tooltipped--headings .vditor-panel--input button span {
     font-size: 0 !important;

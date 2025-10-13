@@ -7,6 +7,8 @@ import {
   PanelLeftClose,
   PanelLeft,
   Search,
+  Target,
+  AlignCenter,
 } from "lucide-react";
 import Menu from "./Menu";
 
@@ -42,6 +44,10 @@ const Toolbar = ({
   onOpenRecentItem,
   onClearRecentItems,
   onOpenQuickSearch,
+  focusMode,
+  typewriterMode,
+  onToggleFocusMode,
+  onToggleTypewriterMode,
 }) => {
   return (
     <div className="toolbar">
@@ -108,6 +114,32 @@ const Toolbar = ({
       </div>
 
       <div className="toolbar-section" style={{ marginLeft: "auto" }}>
+        <button
+          className={`toolbar-button ${focusMode ? "active" : ""}`}
+          onClick={onToggleFocusMode}
+          title="Focus Mode (F8)"
+          style={focusMode ? { 
+            backgroundColor: "var(--accent-color)", 
+            color: "white" 
+          } : {}}
+        >
+          <Target size={16} />
+          <span>Focus</span>
+        </button>
+
+        <button
+          className={`toolbar-button ${typewriterMode ? "active" : ""}`}
+          onClick={onToggleTypewriterMode}
+          title="Typewriter Mode (F9)"
+          style={typewriterMode ? { 
+            backgroundColor: "var(--accent-color)", 
+            color: "white" 
+          } : {}}
+        >
+          <AlignCenter size={16} />
+          <span>Typewriter</span>
+        </button>
+
         <button
           className="toolbar-button"
           onClick={onToggleSidebar}

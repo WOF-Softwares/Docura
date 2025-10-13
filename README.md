@@ -8,12 +8,11 @@
 
 Docura is not just another markdown editor - it's the foundation for the **ultimate writing environment**. Currently a powerful native desktop app designed for Linux systems, built with Rust (Tauri) and React, combining the best features of Typora, VS Code, Medium, and Notion into one beautiful, lightweight application.
 
-
 **Coming Soon:** AI assistance, real-time collaboration, advanced publishing, and intelligent writing analytics. [See our future vision →](#-future-vision---v20-and-beyond)
 
 ## 🎉 **DHH APPROVED!** - Omarchy Integration
 
-> **"Very nice! Love the active Omarchy sync integration 👌"**  
+> **"Very nice! Love the active Omarchy sync integration 👌"**
 > — DHH (David Heinemeier Hansson), Creator of Ruby on Rails & Omarchy
 
 **Docura now syncs seamlessly with [Omarchy](https://omakub.org) - and DHH loves it!**
@@ -40,7 +39,16 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 
 **Day 2 brings a MASSIVE feature update!** Docura keeps getting better:
 
+### 🆕 Day 4 Features (October 13, 2025)
+
+- **🎯 Focus Mode** (F8): Typora-style focus writing - dims other paragraphs, highlights current block
+- **⌨️ Typewriter Mode** (F9): Centers cursor vertically for distraction-free writing
+- **✨ Visual Feedback**: Toolbar buttons show active state with accent color
+- **🎨 Smooth Transitions**: Beautiful fade effects when toggling modes
+- **🔧 Smart Integration**: Works seamlessly with Vditor's modern WYSIWYG editor
+
 ### 🆕 Day 3 Features (October 12, 2025)
+
 - **🚀 Comprehensive Export System**: Now supports 8+ export formats in a beautiful submenu!
   - **PDF Export** (with Ctrl+E shortcut)
   - **HTML Export** (Standard, Plain, Tailwind CSS, Bootstrap)
@@ -53,6 +61,7 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 - **⚡ Error Handling**: Comprehensive validation and user feedback
 
 ### 🆕 Day 2 Features (October 11, 2025)
+
 - 🏠 **Modern Welcome Screen** - VSCode/Cursor-style welcome with time-based greetings, quick actions, recent items, keyboard shortcuts! **Typora doesn't have this!** ✨
 - 📱 **Ultra-Responsive Design** - Welcome screen adapts perfectly to any screen size, high DPI displays, Wayland scaling, and tiling WMs!
 - 🎨 **Omarchy Integration** - Auto-sync with DHH's Omarchy themes! Respects Omarchy control when enabled
@@ -80,8 +89,11 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 - 📸 **Image Paste** - Paste images directly from clipboard, automatically saves to assets folder
 
 ### 📦 v1.0 Core Features
+
 - ✅ **Three Editing Modes** - Code, Live (WYSIWYG), and Preview
 - ✅ **17 Beautiful Themes** - Unified across entire application (12 classic + 5 Omarchy-exact)
+- ✅ **Focus Mode** - Typora-style distraction-free writing (F8)
+- ✅ **Typewriter Mode** - Center cursor vertically for flow (F9)
 - ✅ **PDF Export** - High-quality PDF generation with native save dialogs
 - ✅ **Print Support** - PDF preview dialog with system print integration
 - ✅ **Fullscreen Mode** - Distraction-free writing (F11)
@@ -98,20 +110,20 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 
 **Built in less than 2 days, with continuous improvements!**
 
-| Milestone | Time | Duration |
-|-----------|------|----------|
-| 🚀 **Started** | October 9, 10:12 PM | Day 0 |
-| ⚙️ **Core features built** | Overnight | ~12 hours |
-| 🎨 **Themes, toolbar, live preview** | October 10 | Day 1 |
-| 📂 **File access, outline linking** | October 10, late | Day 1 |
-| 🖨️ **Export, print, native dialogs** | October 11, morning | Day 2 |
-| ✅ **v1.0 Released** | October 11, 11:29 AM | **37 hours!** |
-| 🎉 **Day 2 Features** | October 11, evening | Day 2 |
-| ⌨️ **Keyboard shortcuts, toasts** | October 11 | Day 2 |
-| 🖼️ **Image loading, checkboxes** | October 11 | Day 2 |
-| 🎯 **File indicators, highlights** | October 11 | Day 2 |
-| 💻 **CLI args, multi-window** | October 11, late evening | Day 2 |
-| 🧠 **Smart filename preview** | October 11, late evening | Day 2 |
+| Milestone                                   | Time                     | Duration            |
+| ------------------------------------------- | ------------------------ | ------------------- |
+| 🚀**Started**                         | October 9, 10:12 PM      | Day 0               |
+| ⚙️**Core features built**           | Overnight                | ~12 hours           |
+| 🎨**Themes, toolbar, live preview**   | October 10               | Day 1               |
+| 📂**File access, outline linking**    | October 10, late         | Day 1               |
+| 🖨️**Export, print, native dialogs** | October 11, morning      | Day 2               |
+| ✅**v1.0 Released**                   | October 11, 11:29 AM     | **37 hours!** |
+| 🎉**Day 2 Features**                  | October 11, evening      | Day 2               |
+| ⌨️**Keyboard shortcuts, toasts**    | October 11               | Day 2               |
+| 🖼️**Image loading, checkboxes**     | October 11               | Day 2               |
+| 🎯**File indicators, highlights**     | October 11               | Day 2               |
+| 💻**CLI args, multi-window**          | October 11, late evening | Day 2               |
+| 🧠**Smart filename preview**          | October 11, late evening | Day 2               |
 
 **From zero to feature-rich in 2 days!** ⚡
 **17 major features on Day 2 alone!** 🎉
@@ -162,11 +174,13 @@ How would you like to proceed?
 ```
 
 **Why this matters:**
+
 - ✅ **Typora:** Silently creates multiple windows (no choice!)
 - ✅ **Docura:** Respects YOUR preference (you decide!)
 - ✅ **Result:** Better UX through user control! 🎯
 
 **Technical Excellence:**
+
 - Multi-window support with Tauri's strict security model (harder than Electron!)
 - Each window respects tiling WM settings automatically
 - Full file operations in every window
@@ -177,6 +191,7 @@ How would you like to proceed?
 ### **Why Docura Can Be Better:**
 
 **The Advantage of AI-Assisted Solo Development:**
+
 - 🚀 **Docura:** 1 developer + Claude AI = Rapid innovation, instant user feedback implementation
 - 🐌 **Typora:** Team + meetings + bureaucracy = Slow decisions, can't fix simple UX issues
 - ⚡ **Result:** User requests "please ask before opening window" → Fixed in 30 minutes!
@@ -204,6 +219,7 @@ How would you like to proceed?
 ### 🎯 The Philosophy
 
 When you enable Omarchy sync, **Docura respects that choice**:
+
 - ❌ Manual theme changes are blocked
 - ⚠️ Clear warnings if you try to change themes
 - ✅ Must disable sync in Settings to regain manual control
@@ -223,20 +239,20 @@ Change your theme in the terminal → Docura updates automatically! ✨
 
 **After DHH's feedback, we added EXACT theme implementations!**
 
-| Omarchy Theme | Docura Theme | Status |
-|---------------|--------------|--------|
-| Dracula | Dracula Dark | ✅ Exact match |
-| Catppuccin | Cappuccino Dark | ✅ Exact match |
-| Catppuccin Latte | Cappuccino Light | ✅ Exact match |
-| Nord | Nord Dark | ✅ Exact match |
-| **Gruvbox** | **Gruvbox Dark** | 🆕 **NEW! Exact colors!** |
-| **Tokyo Night** | **Tokyo Night** | 🆕 **NEW! Exact colors!** |
-| **Everforest** | **Everforest Dark** | 🆕 **NEW! Exact colors!** |
-| **Kanagawa** | **Kanagawa** | 🆕 **NEW! Exact colors!** |
-| **Rose Pine** | **Rose Pine** | 🆕 **NEW! Exact colors!** |
-| Ristretto | Cappuccino Dark | ✅ Similar aesthetic |
-| Matte Black | GitHub Dark | ✅ Similar aesthetic |
-| Osaka Jade | Nord Light | ✅ Similar aesthetic |
+| Omarchy Theme         | Docura Theme              | Status                         |
+| --------------------- | ------------------------- | ------------------------------ |
+| Dracula               | Dracula Dark              | ✅ Exact match                 |
+| Catppuccin            | Cappuccino Dark           | ✅ Exact match                 |
+| Catppuccin Latte      | Cappuccino Light          | ✅ Exact match                 |
+| Nord                  | Nord Dark                 | ✅ Exact match                 |
+| **Gruvbox**     | **Gruvbox Dark**    | 🆕**NEW! Exact colors!** |
+| **Tokyo Night** | **Tokyo Night**     | 🆕**NEW! Exact colors!** |
+| **Everforest**  | **Everforest Dark** | 🆕**NEW! Exact colors!** |
+| **Kanagawa**    | **Kanagawa**        | 🆕**NEW! Exact colors!** |
+| **Rose Pine**   | **Rose Pine**       | 🆕**NEW! Exact colors!** |
+| Ristretto             | Cappuccino Dark           | ✅ Similar aesthetic           |
+| Matte Black           | GitHub Dark               | ✅ Similar aesthetic           |
+| Osaka Jade            | Nord Light                | ✅ Similar aesthetic           |
 
 **5 brand new themes added to perfectly match Omarchy!** 🎨
 
@@ -260,18 +276,22 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 <div align="center">
 
 ### Three Editing Modes
+
 ![Docura Main Interface](screenshots/screenshot-1.png)
 *Code, Live (WYSIWYG), and Preview modes in one powerful editor*
 
 ### 17 Beautiful Themes (NEW: 5 Omarchy-Exact!)
+
 ![Theme Selector](screenshots/screenshot-2.png)
 *Unified theming across UI, editor, and preview - Now with DHH-approved Omarchy themes!*
 
 ### Document Outline Navigation
+
 ![Document Outline](screenshots/screenshot-3.png)
 *Clickable headings with smooth scrolling*
 
 ### Comprehensive Export System
+
 ![Export Features](screenshots/screenshot-4.png)
 *Native save dialogs and print preview*
 
@@ -283,37 +303,38 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 
 ## 🌟 Why Docura is Better Than Typora
 
-| Feature | Typora | Docura | Winner |
-|---------|--------|--------|--------|
-| **Editing Modes** | 1 (Inline only) | 3 (Code + Live + Preview) | 🏆 **Docura** |
-| **Live Editor Options** | ❌ No choice | ✅ Classic (Split-pane) + Modern (Typora-like) | 🏆 **Docura** |
-| **Code Editor** | Basic | Monaco (VSCode-level) | 🏆 **Docura** |
-| **WYSIWYG Quality** | Good | Excellent (Vditor + MDEditor) | 🏆 **Docura** |
-| **User Choice** | ❌ Forced workflow | ✅ Choose your editing style | 🏆 **Docura** |
-| **Learning Curve** | Steep | Gentle - Multiple learning paths | 🏆 **Docura** |
-| **Best for Beginners** | ❌ Confusing | ✅ Multiple approaches | 🏆 **Docura** |
-| **Best for Pros** | ✅ Good | ✅ Better (more options) | 🏆 **Docura** |
-| **Themes** | 6 | 17 (12 + 5 Omarchy themes) | 🏆 **Docura** |
-| **Theme Consistency** | Partial | Full (UI + Editor + Preview) | 🏆 **Docura** |
-| **Interactive Checkboxes** | ✅ Yes | ✅ Yes + Better UX | 🏆 **Docura** |
-| **Outline Navigation** | ✅ Yes | ✅ Yes + Smooth scrolling | 🏆 **Docura** |
-| **Tiling WM Support** | ❌ No | ✅ Auto-detection & titlebar hide | 🏆 **Docura** |
-| **Disk Space** | ~326 MB | ~12 MB (96% less!) | 🏆 **Docura** |
-| **Memory Usage** | ~1011 MB | ~780 MB (23% less!) | 🏆 **Docura** |
-| **Open Source** | ❌ No | ✅ Yes (Apache 2.0) | 🏆 **Docura** |
-| **Price** | $14.99 | 🆓 Free | 🏆 **Docura** |
+| Feature                          | Typora             | Docura                                         | Winner             |
+| -------------------------------- | ------------------ | ---------------------------------------------- | ------------------ |
+| **Editing Modes**          | 1 (Inline only)    | 3 (Code + Live + Preview)                      | 🏆**Docura** |
+| **Live Editor Options**    | ❌ No choice       | ✅ Classic (Split-pane) + Modern (Typora-like) | 🏆**Docura** |
+| **Code Editor**            | Basic              | Monaco (VSCode-level)                          | 🏆**Docura** |
+| **WYSIWYG Quality**        | Good               | Excellent (Vditor + MDEditor)                  | 🏆**Docura** |
+| **User Choice**            | ❌ Forced workflow | ✅ Choose your editing style                   | 🏆**Docura** |
+| **Learning Curve**         | Steep              | Gentle - Multiple learning paths               | 🏆**Docura** |
+| **Best for Beginners**     | ❌ Confusing       | ✅ Multiple approaches                         | 🏆**Docura** |
+| **Best for Pros**          | ✅ Good            | ✅ Better (more options)                       | 🏆**Docura** |
+| **Themes**                 | 6                  | 17 (12 + 5 Omarchy themes)                     | 🏆**Docura** |
+| **Theme Consistency**      | Partial            | Full (UI + Editor + Preview)                   | 🏆**Docura** |
+| **Interactive Checkboxes** | ✅ Yes             | ✅ Yes + Better UX                             | 🏆**Docura** |
+| **Outline Navigation**     | ✅ Yes             | ✅ Yes + Smooth scrolling                      | 🏆**Docura** |
+| **Tiling WM Support**      | ❌ No              | ✅ Auto-detection & titlebar hide              | 🏆**Docura** |
+| **Disk Space**             | ~326 MB            | ~12 MB (96% less!)                             | 🏆**Docura** |
+| **Memory Usage**           | ~1011 MB           | ~780 MB (23% less!)                            | 🏆**Docura** |
+| **Open Source**            | ❌ No              | ✅ Yes (Apache 2.0)                            | 🏆**Docura** |
+| **Price**                  | $14.99             | 🆓 Free                                        | 🏆**Docura** |
 
 ### 🎯 The Docura Revolution
 
 **Three Editing Modes + Two Live Editor Styles = Ultimate Flexibility:**
 
 1. **Code Mode** 📝
+
    - Professional Monaco editor (same as VSCode)
    - Full syntax highlighting with 12 custom themes
    - Advanced features: IntelliSense, minimap, smooth scrolling
    - Perfect for markdown purists and developers
-
 2. **Live Mode** ✍️ (Choose Your Style!)
+
    - **🎨 Modern (Vditor)** - Pure Typora-like WYSIWYG experience
      - True WYSIWYG editing with instant rendering
      - Clean, distraction-free interface
@@ -323,8 +344,8 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
      - Toolbar with formatting buttons
      - Educational - see markdown + rendered simultaneously
    - **⚙️ User Choice** - Switch anytime in Settings → Editor Settings!
-
 3. **Preview Mode** 👁️
+
    - Beautiful read-only rendered markdown
    - Typora-inspired typography and layout
    - Clickable outline navigation with smooth scrolling
@@ -333,11 +354,13 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 ### 🚀 Why This Approach is Revolutionary
 
 **From FocusWriter → Typora → Docura Evolution:**
+
 - **FocusWriter**: Distraction-free but limited
 - **Typora**: Great WYSIWYG but one-size-fits-all
 - **🏆 Docura**: Best of all worlds with USER CHOICE!
 
 **The Flexibility Advantage:**
+
 - **Writers**: Use Modern mode for pure WYSIWYG flow
 - **Developers**: Use Code mode for precise control
 - **Learners**: Use Classic mode to see source + preview
@@ -351,6 +374,7 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 ## ✨ Features
 
 ### 📝 Editing & Rendering
+
 - 🎨 **Three Editing Modes** - Code, Live (WYSIWYG), and Preview
 - 💻 **Monaco Editor** - The same editor as VS Code with full features
 - ✍️ **WYSIWYG Editor** - Split-pane markdown editing with live preview
@@ -361,6 +385,7 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 - 🎯 **Syntax Highlighting** - For code blocks in 12 custom themes
 
 ### 🎨 Theming System
+
 - 🌈 **17 Beautiful Themes** - 12 classic themes + 5 Omarchy-exact themes
   - **Classic Themes:** Dracula, Cappuccino, Nord, Solarized, Monokai, GitHub (light/dark variants)
   - **🎉 NEW Omarchy Themes:** Tokyo Night, Everforest, Gruvbox, Rose Pine, Kanagawa
@@ -370,6 +395,7 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 - 🎲 **Random Theme** - Discover new themes with one click
 
 ### 📂 File Management & Navigation
+
 - 📁 **Folder Explorer** - Recursive directory tree with expand/collapse
 - 📄 **Multiple File Support** - Quick switching between markdown files
 - 🔍 **Quick Search (Ctrl+P)** - Instantly find files VSCode-style
@@ -393,6 +419,7 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 - 📸 **Image Paste** - Paste images from clipboard, saves to assets/ folder automatically
 
 ### 📄 Export & Print
+
 - 🚀 **Comprehensive Export System** - 8+ formats in beautiful submenu interface
   - 📑 **PDF Export** - Beautiful PDFs with theme styling (Ctrl+E)
   - 🌐 **HTML Exports** - Standard, Plain, Tailwind CSS, Bootstrap variants
@@ -406,18 +433,24 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 - ⚡ **Error Handling** - Comprehensive validation and user feedback
 
 ### 🗺️ Navigation
+
 - 📑 **Document Outline** - Automatic heading extraction (h1-h6)
 - 🎯 **Click to Navigate** - Jump to any section with smooth scrolling
 - 👁️ **Auto-Preview Switch** - Clicking outline switches to preview mode
 - 🔍 **Visual Hierarchy** - Indented outline showing document structure
 
-### 🪟 Window Management
+### 🪟 Window & Writing Modes
+
 - 🖥️ **Tiling WM Detection** - Auto-detects i3, sway, Hyprland, bspwm, etc.
 - 🎬 **Fullscreen Mode** (F11) - Distraction-free writing
+- 🎯 **Focus Mode** (F8) - Typora-style focus writing with dimmed paragraphs
+- ⌨️ **Typewriter Mode** (F9) - Centered cursor for flow writing
 - 📐 **Sidebar Toggle** (Ctrl+B) - Show/hide file explorer
 - 🎯 **Smart UI** - Hides toolbar and sidebar in fullscreen
+- ✨ **Visual Feedback** - Active mode indicators in toolbar
 
 ### ⌨️ Keyboard Shortcuts
+
 - **Ctrl+P** - Quick Search (find files instantly)
 - **Ctrl+S** - Save current file
 - **Ctrl+Shift+S** - Save As (with dialog)
@@ -428,17 +461,21 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 - **Ctrl+Alt+P** - Print (preview dialog)
 - **Ctrl+Shift+P** - Settings
 - **Ctrl+B** - Toggle sidebar visibility
+- **F8** - Toggle Focus Mode (dim other paragraphs)
+- **F9** - Toggle Typewriter Mode (center cursor)
 - **F11** - Toggle fullscreen mode
 
-*VSCode-level keyboard shortcuts!* ⚡
+*Typora-level keyboard shortcuts!* ⚡
 
 ### 🚀 Performance
+
 - ⚡ **23% Less Memory** than Typora (780 MB vs 1011 MB)
 - 🦀 **Rust Backend** - Native performance and safety
 - 🌐 **System WebKit** - No bundled Chromium
 - 📦 **Small Binary** - Efficient resource usage
 
 ### 🔒 Privacy & Security
+
 - 🔐 **Offline-first** - All data stays on your machine
 - 🚫 **No Telemetry** - Zero tracking or data collection
 - 📍 **Local Storage** - Files never leave your computer
@@ -448,17 +485,17 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 
 ## 🧱 Tech Stack
 
-| Layer       | Technology |
-|-------------|------------|
-| **Backend** | [Tauri 2.8](https://tauri.app) - Rust-based desktop framework |
-| **Frontend** | React 19 + Vite 7 |
-| **Code Editor** | [Monaco Editor](https://microsoft.github.io/monaco-editor/) (VS Code's editor) |
-| **WYSIWYG Editor** | [@uiw/react-md-editor](https://github.com/uiwjs/react-md-editor) |
-| **Markdown** | [react-markdown](https://github.com/remarkjs/react-markdown) with [remark-gfm](https://github.com/remarkjs/remark-gfm) |
-| **Syntax Highlighting** | [Prism](https://prismjs.com/) via react-syntax-highlighter |
-| **File I/O** | Tauri plugins (fs, dialog) |
-| **Renderer** | WebKitGTK (system native) |
-| **Styling** | Custom CSS with CSS variables + modern-normalize |
+| Layer                         | Technology                                                                                                       |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Backend**             | [Tauri 2.8](https://tauri.app) - Rust-based desktop framework                                                       |
+| **Frontend**            | React 19 + Vite 7                                                                                                |
+| **Code Editor**         | [Monaco Editor](https://microsoft.github.io/monaco-editor/) (VS Code's editor)                                      |
+| **WYSIWYG Editor**      | [@uiw/react-md-editor](https://github.com/uiwjs/react-md-editor)                                                    |
+| **Markdown**            | [react-markdown](https://github.com/remarkjs/react-markdown) with [remark-gfm](https://github.com/remarkjs/remark-gfm) |
+| **Syntax Highlighting** | [Prism](https://prismjs.com/) via react-syntax-highlighter                                                          |
+| **File I/O**            | Tauri plugins (fs, dialog)                                                                                       |
+| **Renderer**            | WebKitGTK (system native)                                                                                        |
+| **Styling**             | Custom CSS with CSS variables + modern-normalize                                                                 |
 
 ---
 
@@ -466,14 +503,15 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 
 Tested on Linux (Arch) with both applications:
 
-| Metric | Typora (Electron) | Docura (Tauri) | Savings |
-|--------|-------------------|----------------|---------|
-| **Disk Space** | 326 MB | 12 MB | **-314 MB (96%)** ⚡ |
-| **RAM Usage** | 1011 MB | 780 MB | **-231 MB (23%)** ⚡ |
-| **Download Size** | 80 MB | 5 MB | **-75 MB (94%)** ⚡ |
-| **Price** | $14.99 | $0.00 | **$14.99 saved** 💰 |
+| Metric                  | Typora (Electron) | Docura (Tauri) | Savings                    |
+| ----------------------- | ----------------- | -------------- | -------------------------- |
+| **Disk Space**    | 326 MB            | 12 MB          | **-314 MB (96%)** ⚡ |
+| **RAM Usage**     | 1011 MB           | 780 MB         | **-231 MB (23%)** ⚡ |
+| **Download Size** | 80 MB             | 5 MB           | **-75 MB (94%)** ⚡  |
+| **Price**         | $14.99            | $0.00          | **$14.99 saved** 💰  |
 
 ### 🎯 Key Takeaways
+
 - **96% less disk space** - You could install **27 copies** of Docura in Typora's space!
 - **23% less RAM** - 231 MB saved (enough to run another app!)
 - **94% smaller download** - Faster to download and install
@@ -553,6 +591,7 @@ scripts/build-prod.sh --release
 ### Package Locations
 
 After building:
+
 - **Source packages**: `packaging/arch/`
 - **Website downloads**: `docs/downloads/` (auto-copied on release)
 - **GitHub releases**: Attached to release automatically
@@ -620,6 +659,7 @@ npm run tauri:build
 Docura includes **17 professionally designed themes** (12 classic + 5 Omarchy-exact):
 
 ### Dark Themes 🌙
+
 - **Dracula Dark** - Purple and cyan accents with deep backgrounds
 - **Cappuccino Dark** - Warm coffee-inspired tones
 - **Nord Dark** - Cool arctic color palette
@@ -628,6 +668,7 @@ Docura includes **17 professionally designed themes** (12 classic + 5 Omarchy-ex
 - **GitHub Dark** - Professional clean dark theme
 
 ### 🎉 NEW! Omarchy-Exact Themes (DHH Approved!)
+
 - **Tokyo Night** 🆕 - Modern dark with purple accents
 - **Everforest Dark** 🆕 - Forest greens and warm earth tones
 - **Gruvbox Dark** 🆕 - Retro warm palette with orange highlights
@@ -635,6 +676,7 @@ Docura includes **17 professionally designed themes** (12 classic + 5 Omarchy-ex
 - **Kanagawa** 🆕 - Japanese-inspired muted purples and blues
 
 ### Light Themes ☀️
+
 - **Dracula Light** - Bright variant with signature colors
 - **Cappuccino Light** - Gentle warm beige tones
 - **Nord Light** - Clean scandinavian aesthetic
@@ -643,6 +685,7 @@ Docura includes **17 professionally designed themes** (12 classic + 5 Omarchy-ex
 - **GitHub Light** - Classic clean white theme
 
 All themes are consistently applied across:
+
 - Application UI (toolbar, sidebar, tabs)
 - Monaco code editor with syntax highlighting
 - WYSIWYG editor and toolbar
@@ -655,46 +698,52 @@ All themes are consistently applied across:
 > 💡 **Looking for the big picture?** Check out our [Enhanced Roadmap](#-enhanced-roadmap) for Docura's revolutionary future vision!
 
 ### ✅ Phase 1: Core Editor (Complete!)
-- [x] Tauri + React project setup
-- [x] Monaco Editor integration with custom themes
-- [x] Three editing modes (Code, Live, Preview)
-- [x] WYSIWYG markdown editor
-- [x] File open/save dialogs
-- [x] Modern UI layout with sidebar
+
+- [X] Tauri + React project setup
+- [X] Monaco Editor integration with custom themes
+- [X] Three editing modes (Code, Live, Preview)
+- [X] WYSIWYG markdown editor
+- [X] File open/save dialogs
+- [X] Modern UI layout with sidebar
 
 ### ✅ Phase 2: Features & Polish (Complete!)
-- [x] 17 beautiful themes with full consistency (12 classic + 5 Omarchy-exact)
-- [x] Folder tree sidebar with recursive browsing
-- [x] Document outline with navigation
-- [x] Interactive checkboxes in markdown
-- [x] Fullscreen mode (F11)
-- [x] Sidebar toggle (Ctrl+B)
-- [x] Tiling window manager support
-- [x] Theme persistence
-- [x] Smooth scrolling navigation
+
+- [X] 17 beautiful themes with full consistency (12 classic + 5 Omarchy-exact)
+- [X] Folder tree sidebar with recursive browsing
+- [X] Document outline with navigation
+- [X] Interactive checkboxes in markdown
+- [X] Fullscreen mode (F11)
+- [X] Sidebar toggle (Ctrl+B)
+- [X] Tiling window manager support
+- [X] Theme persistence
+- [X] Smooth scrolling navigation
 
 ### ✅ Phase 3: Export & Print (Complete!)
-- [x] Export to PDF functionality with native dialogs
-- [x] Print support with PDF preview dialog
-- [x] Styled PDF output matching themes
-- [x] Native file save integration
+
+- [X] Export to PDF functionality with native dialogs
+- [X] Print support with PDF preview dialog
+- [X] Styled PDF output matching themes
+- [X] Native file save integration
 
 ### ✅ Phase 4: Enhanced Navigation (Complete!)
-- [x] Recent files list with persistent storage
-- [x] Quick Search (Ctrl+P) - VSCode-style file finder
-- [x] Recent history submenu with hover activation
-- [x] Keyboard shortcuts for all major operations
-- [x] Context menu (right-click) support
+
+- [X] Recent files list with persistent storage
+- [X] Quick Search (Ctrl+P) - VSCode-style file finder
+- [X] Recent history submenu with hover activation
+- [X] Keyboard shortcuts for all major operations
+- [X] Context menu (right-click) support
 
 ### ✅ Phase 5: Enhanced Features (Complete!)
-- [x] Search in file content (Ctrl+F)
-- [x] Find & Replace (Ctrl+H)
-- [x] **Auto-save option** - Smart debounced auto-save (2 seconds after stopping typing)
-- [x] **Image paste from clipboard** - Paste images directly, saves to assets folder
-- [x] Advanced Welcome screen
-- [x] Modern and elegan status bar in bottom (stats, ..)
+
+- [X] Search in file content (Ctrl+F)
+- [X] Find & Replace (Ctrl+H)
+- [X] **Auto-save option** - Smart debounced auto-save (2 seconds after stopping typing)
+- [X] **Image paste from clipboard** - Paste images directly, saves to assets folder
+- [X] Advanced Welcome screen
+- [X] Modern and elegan status bar in bottom (stats, ..)
 
 ### 🔮 Phase 6: Advanced Features
+
 - [ ] Split pane editing (vertical/horizontal)
 - [ ] Vim keybindings mode
 - [ ] Diagram support (Mermaid, PlantUML)
@@ -706,12 +755,13 @@ All themes are consistently applied across:
 - [ ] Custome theme and styles by install or download
 
 ### 📦 Phase 8: Distribution
+
 - [ ] AppImage packaging
-- [x] AUR and xz package for Arch Linux based distro
-- [x] `.deb` package for Debian/Ubuntu and all debain based distros
-- [x] `.rpm` package for Redhat/Fedora and other rpm based distros
+- [X] AUR and xz package for Arch Linux based distro
+- [X] `.deb` package for Debian/Ubuntu and all debain based distros
+- [X] `.rpm` package for Redhat/Fedora and other rpm based distros
 - [ ] Flatpak support
-- [x] **Version 1.0 Released!** 🎉
+- [X] **Version 1.0 Released!** 🎉
 
 ---
 
@@ -754,6 +804,7 @@ We welcome contributions! Docura is built by the community, for the community.
 Apache 2.0 — see [LICENSE](LICENSE)
 
 This means you can:
+
 - ✅ Use commercially
 - ✅ Modify
 - ✅ Distribute
@@ -775,6 +826,7 @@ This means you can:
 ## 🙏 Acknowledgments
 
 ### Inspiration & Tools
+
 - Inspired by [Typora](https://typora.io/) - The excellent markdown editor (we made it better!)
 - Built with [Tauri](https://tauri.app/) - The future of desktop applications
 - Powered by [Monaco Editor](https://microsoft.github.io/monaco-editor/) - VSCode's editor
@@ -783,6 +835,7 @@ This means you can:
 ### 💎 Special Thanks to DHH
 
 **To [DHH](https://dhh.dk/) (David Heinemeier Hansson):**
+
 - For creating **Ruby on Rails** - transformed how we build web applications
 - For building **[Omarchy](https://omakub.org)** - beautiful, opinionated developer experience for Arch Linux
 - For inspiring us to build tools that are opinionated, simple, and respect user choices
@@ -822,6 +875,7 @@ Docura is evolving into more than just a markdown editor - it's becoming your **
 ### 🎯 Recently Added Elite Features
 
 #### 🚀 Comprehensive Export System (NEW!)
+
 - **8+ Export Formats**: PDF, HTML variants, JSON, RTF, MediaWiki
 - **Smart Interface**: Beautiful submenu with organized format categories
 - **Framework Integration**: Tailwind CSS and Bootstrap HTML exports
@@ -832,30 +886,35 @@ Docura is evolving into more than just a markdown editor - it's becoming your **
 ### 🎯 Upcoming Elite Features
 
 #### 🤖 AI-Powered Writing Suite
+
 - **Smart Completions** - Write faster with AI-assisted suggestions
 - **One-Click Rewrites** - Improve clarity, expand ideas, change tone
 - **Automatic Summarization** - Extract key points from long documents
 - **Multilingual Support** - Write and translate across languages seamlessly
 
 #### 👥 Real-time Collaboration
+
 - **Google Docs-style Editing** - Multiple cursors, live presence
 - **Comments & Threads** - Discuss changes without leaving the editor
 - **Version Control** - Git-like history with visual diffs
 - **Team Workspaces** - Organization-level document management
 
 #### 🎨 Ultimate Customization
+
 - **Plugin Ecosystem** - Extend functionality with community plugins
 - **CSS Injection** - Complete UI customization
 - **Custom Keybindings** - Remap every action to your workflow
 - **Layout Presets** - Save and switch between workspace setups
 
 #### 📈 Productivity Intelligence
+
 - **Writing Analytics** - Track focus time, word counts, streaks
 - **Smart Goals** - Set and achieve writing targets with AI coaching
 - **Readability Optimization** - Hemingway-style writing improvements
 - **Time Tracking** - Understand your writing patterns and habits
 
 #### 🌐 Advanced Publishing
+
 - **One-Click Publishing** - Direct to blogs, documentation sites
 - **Ebook Generation** - Create professional ePub/Mobi files
 - **Slide Deck Export** - Convert markdown to beautiful presentations
@@ -866,6 +925,7 @@ Docura is evolving into more than just a markdown editor - it's becoming your **
 **Traditional editors are stuck in the past.** They treat writing as a solitary, static activity.
 
 **Docura sees writing as:**
+
 - 🤝 **Collaborative** - Work together in real-time
 - 🧠 **Intelligent** - AI that helps you think better
 - 📊 **Data-Driven** - Insights to improve your craft
@@ -883,14 +943,16 @@ We're building the **writing environment of the future** - where the tool disapp
 ## 🗓️ Enhanced Roadmap
 
 ### 🔥 Phase 7: Intelligence & Customization (Q1 2026)
+
 - [ ] AI Writing Assistant integration
 - [ ] Plugin system architecture
 - [ ] Advanced customization (CSS, keybindings)
 - [ ] Writing analytics dashboard
-- [x] Semantic search across documents
+- [X] Semantic search across documents
 - [ ] Custom export templates
 
 ### 🚀 Phase 8: Collaboration & Ecosystem (Q2 2026)
+
 - [ ] Real-time multiplayer editing
 - [ ] Commenting & annotation system
 - [ ] Version control with visual diffs
@@ -899,6 +961,7 @@ We're building the **writing environment of the future** - where the tool disapp
 - [ ] Team workspaces and permissions
 
 ### 🌟 Phase 9: Platform Vision (H2 2026)
+
 - [ ] Mobile companion apps
 - [ ] Offline-first sync architecture
 - [ ] Enterprise features
@@ -913,10 +976,12 @@ We're building the **writing environment of the future** - where the tool disapp
 ### Why Docura Will Surpass Everything
 
 **Current State:**
+
 - 🐌 Traditional editors: Slow innovation, siloed features
 - 💡 Docura: Rapid iteration, integrated experience
 
 **Our Advantage:**
+
 - ⚡ **AI-Assisted Development** - We move at light speed
 - 🎯 **User-Centric Focus** - Features users actually want
 - 🔓 **Open Source** - Community drives innovation

@@ -15,7 +15,9 @@ const VditorEditor = ({
   height = '100%',
   theme = 'dark',
   mode = 'wysiwyg',
-  currentFile
+  currentFile,
+  focusMode = false,
+  typewriterMode = false
 }) => {
   const containerRef = useRef(null)
   const vditorRef = useRef(null)
@@ -82,8 +84,11 @@ const VditorEditor = ({
         'bold', 'italic', 'strike', '|',
         'line', 'quote', 'list', 'ordered-list', 'check', '|',
         'code', 'inline-code', '|', 'upload', 'link', 'table', '|',
-        'undo', 'redo', '|', 'fullscreen', 'edit-mode'
+        'undo', 'redo', '|', 'fullscreen', 'edit-mode', '|',
+        'content-theme', 'code-theme', 'outline'
       ],
+      typewriterMode: typewriterMode,
+      focus: focusMode,
       input: (value) => {
         if (onChange) {
           onChange(value)
@@ -128,6 +133,34 @@ const VditorEditor = ({
       vditorRef.current.setTheme(theme, theme === 'dark' ? 'dark' : 'light')
     }
   }, [theme, isInitialized])
+
+  useEffect(() => {
+    if (vditorRef.current && isInitialized) {
+      // Toggle typewriter mode
+      const wysiwyg = vditorRef.current.vditor.wysiwyg
+      if (wysiwyg && wysiwyg.element) {
+        if (typewriterMode) {
+          wysiwyg.element.setAttribute('data-typewriter', 'true')
+        } else {
+          wysiwyg.element.removeAttribute('data-typewriter')
+        }
+      }
+    }
+  }, [typewriterMode, isInitialized])
+
+  useEffect(() => {
+    if (vditorRef.current && isInitialized) {
+      // Toggle focus mode
+      const wysiwyg = vditorRef.current.vditor.wysiwyg
+      if (wysiwyg && wysiwyg.element) {
+        if (focusMode) {
+          wysiwyg.element.setAttribute('data-focus', 'true')
+        } else {
+          wysiwyg.element.removeAttribute('data-focus')
+        }
+      }
+    }
+  }, [focusMode, isInitialized])
 
   return (
     <div 

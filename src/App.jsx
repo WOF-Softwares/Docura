@@ -80,6 +80,8 @@ function App() {
     encoding: "UTF-8",
   });
   const [cursorPosition, setCursorPosition] = useState({ line: 1, column: 1 });
+  const [focusMode, setFocusMode] = useState(false);
+  const [typewriterMode, setTypewriterMode] = useState(false);
   const previewRef = useRef(null);
   const syncIntervalRef = useRef(null);
   const autoSaveTimeoutRef = useRef(null);
@@ -515,6 +517,16 @@ function App() {
       if (e.ctrlKey && !e.shiftKey && !e.altKey && e.key === "p") {
         e.preventDefault();
         setIsQuickOpenVisible(true);
+      }
+      // F8 for Focus Mode
+      if (e.key === "F8") {
+        e.preventDefault();
+        toggleFocusMode();
+      }
+      // F9 for Typewriter Mode
+      if (e.key === "F9") {
+        e.preventDefault();
+        toggleTypewriterMode();
       }
     };
 
@@ -1993,6 +2005,30 @@ const openRecentItem = async (item) => {
     setIsSidebarVisible((prev) => !prev);
   };
 
+  const toggleFocusMode = () => {
+    setFocusMode((prev) => {
+      const newValue = !prev;
+      if (newValue) {
+        toast.success("Focus Mode enabled (F8)", { icon: "🎯" });
+      } else {
+        toast("Focus Mode disabled", { icon: "👁️" });
+      }
+      return newValue;
+    });
+  };
+
+  const toggleTypewriterMode = () => {
+    setTypewriterMode((prev) => {
+      const newValue = !prev;
+      if (newValue) {
+        toast.success("Typewriter Mode enabled (F9)", { icon: "⌨️" });
+      } else {
+        toast("Typewriter Mode disabled", { icon: "📝" });
+      }
+      return newValue;
+    });
+  };
+
   // Context menu handlers
   const handleContextMenuCopy = () => {
     document.execCommand("copy");
@@ -2044,6 +2080,10 @@ const openRecentItem = async (item) => {
           onOpenRecentItem={openRecentItem}
           onClearRecentItems={clearRecentItems}
           onOpenQuickSearch={() => setIsQuickOpenVisible(true)}
+          focusMode={focusMode}
+          typewriterMode={typewriterMode}
+          onToggleFocusMode={toggleFocusMode}
+          onToggleTypewriterMode={toggleTypewriterMode}
         />
       )}
 
@@ -2084,6 +2124,8 @@ const openRecentItem = async (item) => {
           onCursorPositionChange={setCursorPosition}
           onOpenThemeSelector={() => setIsThemeSelectorOpen(true)}
           liveEditorType={liveEditorType}
+          focusMode={focusMode}
+          typewriterMode={typewriterMode}
         />
       </div>
 
