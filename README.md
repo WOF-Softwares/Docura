@@ -385,6 +385,7 @@ Only one sync provider can be active at a time:
 | **Live Editor Options**    | ❌ No choice       | ✅ Classic (Split-pane) + Modern (Typora-like) | 🏆**Docura** |
 | **Code Editor**            | Basic              | Monaco (VSCode-level)                          | 🏆**Docura** |
 | **WYSIWYG Quality**        | Good               | Excellent (Vditor + MDEditor)                  | 🏆**Docura** |
+| **Cloud Sync**             | ❌ No              | ✅ Dropbox (App Folder, secure!)               | 🏆**Docura** |
 | **User Choice**            | ❌ Forced workflow | ✅ Choose your editing style                   | 🏆**Docura** |
 | **Learning Curve**         | Steep              | Gentle - Multiple learning paths               | 🏆**Docura** |
 | **Best for Beginners**     | ❌ Confusing       | ✅ Multiple approaches                         | 🏆**Docura** |
@@ -469,6 +470,16 @@ Only one sync provider can be active at a time:
 - 👌 **DHH Approved** - Exact Omarchy theme matching
 - 💾 **Theme Persistence** - Your choice is saved between sessions
 - 🎲 **Random Theme** - Discover new themes with one click
+
+### ☁️ Cloud Sync
+
+- ☁️ **Dropbox Integration** - Your documents, everywhere you are!
+- 🔐 **App Folder Security** - Only accesses `/Apps/Docura Sync/` folder
+- 🔄 **Auto-Sync** - Saves automatically sync to cloud
+- 📁 **Multiple Folders** - Sync as many folders as you need
+- 🔒 **OAuth 2.0** - Secure authentication, no passwords
+- 🆓 **Free & Unlimited** - No subscriptions required
+- 📊 **Status:** Submitted to Dropbox for production approval on **October 13, 2025**
 
 ### 📂 File Management & Navigation
 
