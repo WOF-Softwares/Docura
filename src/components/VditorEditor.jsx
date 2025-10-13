@@ -87,8 +87,10 @@ const VditorEditor = ({
         'undo', 'redo', '|', 'fullscreen', 'edit-mode', '|',
         'content-theme', 'code-theme', 'outline'
       ],
-      typewriterMode: typewriterMode,
-      focus: focusMode,
+      // Fix for customWysiwygToolbar error - provide empty function
+      customWysiwygToolbar: () => {},
+      // Note: Vditor doesn't have built-in typewriterMode or focus options
+      // We'll handle these manually via CSS and data attributes
       input: (value) => {
         if (onChange) {
           onChange(value)
@@ -96,6 +98,11 @@ const VditorEditor = ({
       },
       after: () => {
         setIsInitialized(true)
+        
+        // Apply initial modes if enabled
+        if (focusMode || typewriterMode) {
+          console.log('📝 Vditor initialized, applying modes:', { focusMode, typewriterMode })
+        }
       },
       upload: {
         accept: 'image/*',
@@ -136,28 +143,58 @@ const VditorEditor = ({
 
   useEffect(() => {
     if (vditorRef.current && isInitialized) {
-      // Toggle typewriter mode
-      const wysiwyg = vditorRef.current.vditor.wysiwyg
-      if (wysiwyg && wysiwyg.element) {
+      // Toggle typewriter mode - try multiple element paths
+      const vditor = vditorRef.current.vditor
+      
+      // Try to get the wysiwyg element
+      let targetElement = null
+      if (vditor?.wysiwyg?.element) {
+        targetElement = vditor.wysiwyg.element
+      } else if (vditor?.element) {
+        // Try the vditor element itself
+        const wysiwygEl = vditor.element.querySelector('.vditor-wysiwyg')
+        if (wysiwygEl) targetElement = wysiwygEl
+      }
+      
+      if (targetElement) {
         if (typewriterMode) {
-          wysiwyg.element.setAttribute('data-typewriter', 'true')
+          targetElement.setAttribute('data-typewriter', 'true')
+          console.log('✅ Typewriter mode enabled on:', targetElement.className)
         } else {
-          wysiwyg.element.removeAttribute('data-typewriter')
+          targetElement.removeAttribute('data-typewriter')
+          console.log('❌ Typewriter mode disabled')
         }
+      } else {
+        console.warn('⚠️ Could not find Vditor wysiwyg element for typewriter mode')
       }
     }
   }, [typewriterMode, isInitialized])
 
   useEffect(() => {
     if (vditorRef.current && isInitialized) {
-      // Toggle focus mode
-      const wysiwyg = vditorRef.current.vditor.wysiwyg
-      if (wysiwyg && wysiwyg.element) {
+      // Toggle focus mode - try multiple element paths
+      const vditor = vditorRef.current.vditor
+      
+      // Try to get the wysiwyg element
+      let targetElement = null
+      if (vditor?.wysiwyg?.element) {
+        targetElement = vditor.wysiwyg.element
+      } else if (vditor?.element) {
+        // Try the vditor element itself
+        const wysiwygEl = vditor.element.querySelector('.vditor-wysiwyg')
+        if (wysiwygEl) targetElement = wysiwygEl
+      }
+      
+      if (targetElement) {
         if (focusMode) {
-          wysiwyg.element.setAttribute('data-focus', 'true')
+          targetElement.setAttribute('data-focus', 'true')
+          console.log('✅ Focus mode enabled on:', targetElement.className)
         } else {
-          wysiwyg.element.removeAttribute('data-focus')
+          targetElement.removeAttribute('data-focus')
+          console.log('❌ Focus mode disabled')
         }
+      } else {
+        console.warn('⚠️ Could not find Vditor wysiwyg element for focus mode')
       }
     }
   }, [focusMode, isInitialized])

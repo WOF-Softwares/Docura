@@ -561,54 +561,72 @@
     --vditor-border-color: var(--border-color) !important;
 }
 
-/* Focus Mode - Dim other paragraphs */
-.vditor-wysiwyg[data-focus="true"] > p,
-.vditor-wysiwyg[data-focus="true"] > h1,
-.vditor-wysiwyg[data-focus="true"] > h2,
-.vditor-wysiwyg[data-focus="true"] > h3,
-.vditor-wysiwyg[data-focus="true"] > h4,
-.vditor-wysiwyg[data-focus="true"] > h5,
-.vditor-wysiwyg[data-focus="true"] > h6,
-.vditor-wysiwyg[data-focus="true"] > ul,
-.vditor-wysiwyg[data-focus="true"] > ol,
-.vditor-wysiwyg[data-focus="true"] > blockquote,
-.vditor-wysiwyg[data-focus="true"] > pre,
-.vditor-wysiwyg[data-focus="true"] > table {
-    opacity: 0.3;
+/* Focus Mode - Dim other paragraphs with dramatic effect */
+/* Apply to the entire Vditor container for visual overlay effect */
+.vditor-wysiwyg[data-focus="true"]::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+    z-index: 1;
     transition: opacity 0.3s ease;
 }
 
-.vditor-wysiwyg[data-focus="true"] > p:hover,
-.vditor-wysiwyg[data-focus="true"] > h1:hover,
-.vditor-wysiwyg[data-focus="true"] > h2:hover,
-.vditor-wysiwyg[data-focus="true"] > h3:hover,
-.vditor-wysiwyg[data-focus="true"] > h4:hover,
-.vditor-wysiwyg[data-focus="true"] > h5:hover,
-.vditor-wysiwyg[data-focus="true"] > h6:hover,
-.vditor-wysiwyg[data-focus="true"] > ul:hover,
-.vditor-wysiwyg[data-focus="true"] > ol:hover,
-.vditor-wysiwyg[data-focus="true"] > blockquote:hover,
-.vditor-wysiwyg[data-focus="true"] > pre:hover,
-.vditor-wysiwyg[data-focus="true"] > table:hover,
-.vditor-wysiwyg[data-focus="true"] > p:focus-within,
-.vditor-wysiwyg[data-focus="true"] > h1:focus-within,
-.vditor-wysiwyg[data-focus="true"] > h2:focus-within,
-.vditor-wysiwyg[data-focus="true"] > h3:focus-within,
-.vditor-wysiwyg[data-focus="true"] > h4:focus-within,
-.vditor-wysiwyg[data-focus="true"] > h5:focus-within,
-.vditor-wysiwyg[data-focus="true"] > h6:focus-within,
-.vditor-wysiwyg[data-focus="true"] > ul:focus-within,
-.vditor-wysiwyg[data-focus="true"] > ol:focus-within,
-.vditor-wysiwyg[data-focus="true"] > blockquote:focus-within,
-.vditor-wysiwyg[data-focus="true"] > pre:focus-within,
-.vditor-wysiwyg[data-focus="true"] > table:focus-within {
-    opacity: 1;
+/* Make all content dimmed by default */
+.vditor-wysiwyg[data-focus="true"] * {
+    position: relative;
+    z-index: 0;
+    opacity: 0.25 !important;
+    transition: opacity 0.3s ease, filter 0.3s ease;
+    filter: blur(0.5px);
 }
 
-/* Typewriter Mode - Center cursor vertically */
+/* Highlight current/active element */
+.vditor-wysiwyg[data-focus="true"] *:hover,
+.vditor-wysiwyg[data-focus="true"] *:focus,
+.vditor-wysiwyg[data-focus="true"] *:focus-within {
+    opacity: 1 !important;
+    z-index: 2 !important;
+    filter: blur(0px) !important;
+}
+
+/* Style for focused block - add subtle highlight */
+.vditor-wysiwyg[data-focus="true"] *:hover,
+.vditor-wysiwyg[data-focus="true"] *:focus-within {
+    background: rgba(99, 102, 241, 0.05) !important;
+    border-radius: 4px;
+    padding: 8px;
+    margin: -8px;
+}
+
+/* Typewriter Mode - Center cursor vertically with padding */
 .vditor-wysiwyg[data-typewriter="true"] {
     padding-top: 50vh !important;
     padding-bottom: 50vh !important;
+    transition: padding 0.3s ease;
+}
+
+/* Add visual indicator for typewriter mode */
+.vditor-wysiwyg[data-typewriter="true"]::after {
+    content: '';
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        var(--accent-color) 20%, 
+        var(--accent-color) 80%, 
+        transparent
+    );
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 10;
 }
 
 /* Override Chinese text in Vditor headings dropdown */
