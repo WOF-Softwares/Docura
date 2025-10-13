@@ -305,16 +305,12 @@ function App() {
   }, []); // Remove dependencies and only register once
 
   useEffect(() => {
-    // Setup Omakase sync interval if enabled
+    // Setup theme provider sync interval if enabled
     if (omakaseSyncEnabled && omakaseAvailable) {
       console.log("🎨 Starting Omakase auto-sync (every 30 seconds)");
-
-      // Sync immediately
-      handleOmakaseSync();
-
-      // Then sync every 30 seconds
+      handleThemeSync();
       syncIntervalRef.current = setInterval(() => {
-        handleOmakaseSync();
+        handleThemeSync();
       }, 30000);
 
       return () => {
@@ -323,8 +319,21 @@ function App() {
           console.log("🎨 Stopped Omakase auto-sync");
         }
       };
+    } else if (plasmaSyncEnabled && plasmaAvailable) {
+      console.log("🎨 Starting Plasma auto-sync (every 30 seconds)");
+      handleThemeSync();
+      syncIntervalRef.current = setInterval(() => {
+        handleThemeSync();
+      }, 30000);
+
+      return () => {
+        if (syncIntervalRef.current) {
+          clearInterval(syncIntervalRef.current);
+          console.log("🎨 Stopped Plasma auto-sync");
+        }
+      };
     }
-  }, [omakaseSyncEnabled, omakaseAvailable]);
+  }, [omakaseSyncEnabled, omakaseAvailable, plasmaSyncEnabled, plasmaAvailable]);
 
   useEffect(() => {
     // Track unsaved changes
@@ -722,6 +731,7 @@ function App() {
   const saveAppConfig = async (
     newTheme,
     omakaseSync = omakaseSyncEnabled,
+    plasmaSync = plasmaSyncEnabled,
     autoSave = autoSaveEnabled,
     liveEditor = liveEditorType,
   ) => {
@@ -730,6 +740,7 @@ function App() {
         config: {
           theme: newTheme || currentTheme,
           omakase_sync: omakaseSync,
+          plasma_sync: plasmaSync,
           auto_save: autoSave,
           live_editor_type: liveEditor,
           recent_items: [],
@@ -1912,53 +1923,91 @@ const openRecentItem = async (item) => {
     saveAppConfig(newTheme);
   };
 
-  const handleOmakaseSync = async () => {
-    if (!omakaseAvailable) return;
-
+  const handleThemeSync = async () => {
     setIsSyncing(true);
-    const success = await syncWithOmakase((newTheme) => {
-      if (newTheme !== currentTheme) {
-        setCurrentTheme(newTheme);
-        saveAppConfig(newTheme);
-        toast.success(`Synced with Omarchy: ${newTheme}`);
-      }
-    });
 
-    // Also sync font if available
-    try {
-      const font = await invoke("get_omakase_font");
-      if (font && font !== omakaseFont) {
-        setOmakaseFont(font);
-        applyEditorFont(font);
-        console.log(`🔤 Updated Omarchy font: ${font}`);
+    if (omakaseSyncEnabled && omakaseAvailable) {
+      // Sync with Omakase
+      const success = await syncWithOmakase((newTheme) => {
+        if (newTheme !== currentTheme) {
+          setCurrentTheme(newTheme);
+          saveAppConfig(newTheme);
+          toast.success(`Synced with Omarchy: ${newTheme}`);
+        }
+      });
+
+      // Also sync font if available
+      try {
+        const font = await invoke("get_omakase_font");
+        if (font && font !== omakaseFont) {
+          setOmakaseFont(font);
+          applyEditorFont(font);
+          console.log(`🔤 Updated Omarchy font: ${font}`);
+        }
+      } catch (error) {
+        // Font not available, that's okay
       }
-    } catch (error) {
-      // Font not available, that's okay
+
+      if (!success) {
+        console.log("Omarchy sync failed or theme unchanged");
+      }
+    } else if (plasmaSyncEnabled && plasmaAvailable) {
+      // Sync with Plasma
+      const success = await syncWithPlasma((newTheme) => {
+        if (newTheme !== currentTheme) {
+          setCurrentTheme(newTheme);
+          saveAppConfig(newTheme);
+          toast.success(`Synced with Plasma: ${newTheme}`);
+        }
+      });
+
+      if (!success) {
+        console.log("Plasma sync failed or theme unchanged");
+      }
     }
 
     setTimeout(() => setIsSyncing(false), 500);
-
-    if (!success) {
-      console.log("Omarchy sync failed or theme unchanged");
-    }
   };
 
   const handleOmakaseSyncToggle = (enabled) => {
+    if (enabled && plasmaSyncEnabled) {
+      // Disable Plasma if enabling Omakase
+      setPlasmaSyncEnabled(false);
+    }
+    
     setOmakaseSyncEnabled(enabled);
-    saveAppConfig(currentTheme, enabled, autoSaveEnabled);
+    setSyncProvider(enabled ? 'omakase' : null);
+    saveAppConfig(currentTheme, enabled, plasmaSyncEnabled && !enabled, autoSaveEnabled);
 
     if (enabled) {
       toast.success("Omarchy auto-sync enabled");
-      // Sync immediately when enabled
-      handleOmakaseSync();
+      handleThemeSync();
     } else {
       toast("Omarchy auto-sync disabled");
     }
   };
 
+  const handlePlasmaSyncToggle = (enabled) => {
+    if (enabled && omakaseSyncEnabled) {
+      // Disable Omakase if enabling Plasma
+      setOmakaseSyncEnabled(false);
+    }
+    
+    setPlasmaSyncEnabled(enabled);
+    setSyncProvider(enabled ? 'plasma' : null);
+    saveAppConfig(currentTheme, omakaseSyncEnabled && !enabled, enabled, autoSaveEnabled);
+
+    if (enabled) {
+      toast.success("Plasma auto-sync enabled");
+      handleThemeSync();
+    } else {
+      toast("Plasma auto-sync disabled");
+    }
+  };
+
   const handleAutoSaveToggle = (enabled) => {
     setAutoSaveEnabled(enabled);
-    saveAppConfig(currentTheme, omakaseSyncEnabled, enabled);
+    saveAppConfig(currentTheme, omakaseSyncEnabled, plasmaSyncEnabled, enabled);
 
     if (enabled) {
       toast.success("Auto-save enabled");
@@ -1979,6 +2028,7 @@ const openRecentItem = async (item) => {
     await saveAppConfig(
       currentTheme,
       omakaseSyncEnabled,
+      plasmaSyncEnabled,
       autoSaveEnabled,
       newType,
     );
@@ -2093,7 +2143,10 @@ const openRecentItem = async (item) => {
           isSidebarVisible={isSidebarVisible}
           omakaseAvailable={omakaseAvailable}
           omakaseSyncEnabled={omakaseSyncEnabled}
-          onOmakaseSync={handleOmakaseSync}
+          plasmaAvailable={plasmaAvailable}
+          plasmaSyncEnabled={plasmaSyncEnabled}
+          syncProvider={syncProvider}
+          onThemeSync={handleThemeSync}
           isSyncing={isSyncing}
           recentItems={recentItems}
           onOpenRecentItem={openRecentItem}
@@ -2190,7 +2243,10 @@ const openRecentItem = async (item) => {
         onClose={() => setIsSettingsOpen(false)}
         omakaseSyncEnabled={omakaseSyncEnabled}
         onOmakaseSyncToggle={handleOmakaseSyncToggle}
-        onSyncNow={handleOmakaseSync}
+        plasmaSyncEnabled={plasmaSyncEnabled}
+        onPlasmaSyncToggle={handlePlasmaSyncToggle}
+        onSyncNow={handleThemeSync}
+        syncProvider={syncProvider}
         autoSaveEnabled={autoSaveEnabled}
         onAutoSaveToggle={handleAutoSaveToggle}
         editorSettings={editorSettings}
