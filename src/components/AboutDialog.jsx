@@ -23,7 +23,7 @@ const AboutDialog = ({ isOpen, onClose }) => {
         </div>
 
         {/* Body */}
-        <div className="settings-body" style={{ padding: '32px' }}>
+        <div className="settings-body" style={{ padding: '32px', maxHeight: '70vh', overflowY: 'auto' }}>
           
           {/* Logo & Tagline */}
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
@@ -48,7 +48,7 @@ const AboutDialog = ({ isOpen, onClose }) => {
             backgroundColor: 'var(--bg-secondary)', 
             borderRadius: '12px', 
             padding: '20px',
-            marginBottom: '24px',
+            marginBottom: '16px',
             border: '1px solid var(--border-color)'
           }}>
             <h4 style={{ 
@@ -154,17 +154,47 @@ const AboutDialog = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* Special Thanks */}
+          {/* Special Thanks - Claude AI */}
           <div style={{ 
             backgroundColor: 'var(--bg-secondary)', 
             borderRadius: '12px', 
             padding: '20px',
-            marginBottom: '24px',
+            marginBottom: '16px',
             border: '1px solid var(--border-color)'
           }}>
             <h4 style={{ 
               fontSize: '16px', 
-              marginBottom: '16px', 
+              marginBottom: '12px', 
+              color: 'var(--text-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              <Zap size={18} />
+              Special Thanks
+            </h4>
+            
+            <div>
+              <p style={{ color: 'var(--accent-color)', fontWeight: 'bold', marginBottom: '4px' }}>
+                🤖 Claude AI (Anthropic)
+              </p>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>
+                Primary AI partner - architecture, problem-solving, and making Docura possible!
+              </p>
+            </div>
+          </div>
+
+          {/* Special Thanks - DHH */}
+          <div style={{ 
+            backgroundColor: 'var(--bg-secondary)', 
+            borderRadius: '12px', 
+            padding: '20px',
+            marginBottom: '16px',
+            border: '1px solid var(--border-color)'
+          }}>
+            <h4 style={{ 
+              fontSize: '16px', 
+              marginBottom: '12px', 
               color: 'var(--text-primary)',
               display: 'flex',
               alignItems: 'center',
@@ -174,25 +204,14 @@ const AboutDialog = ({ isOpen, onClose }) => {
               Special Thanks
             </h4>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '14px' }}>
-              <div>
-                <p style={{ color: 'var(--accent-color)', fontWeight: 'bold', marginBottom: '4px' }}>
-                  🤖 Claude AI (Anthropic)
-                </p>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>
-                  Primary AI partner - architecture, problem-solving, and making Docura possible!
-                </p>
-              </div>
-
-              <div>
-                <p style={{ color: 'var(--accent-color)', fontWeight: 'bold', marginBottom: '4px' }}>
-                  💎 DHH (David Heinemeier Hansson)
-                </p>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>
-                  For creating <strong>HEY</strong> (best email ever!), <strong>Ruby on Rails</strong> (web revolution), 
-                  and <strong>Omarchy</strong> (opinionated excellence). Your philosophy inspires us! 🙏
-                </p>
-              </div>
+            <div>
+              <p style={{ color: 'var(--accent-color)', fontWeight: 'bold', marginBottom: '4px' }}>
+                💎 DHH (David Heinemeier Hansson)
+              </p>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>
+                For creating <strong>HEY</strong> (best email ever!), <strong>Ruby on Rails</strong> (web revolution), 
+                and <strong>Omarchy</strong> (opinionated excellence). Your philosophy inspires us! 🙏
+              </p>
             </div>
           </div>
 
@@ -201,7 +220,7 @@ const AboutDialog = ({ isOpen, onClose }) => {
             backgroundColor: 'var(--bg-secondary)', 
             borderRadius: '12px', 
             padding: '20px',
-            marginBottom: '24px',
+            marginBottom: '16px',
             border: '1px solid var(--border-color)'
           }}>
             <h4 style={{ 
@@ -220,6 +239,7 @@ const AboutDialog = ({ isOpen, onClose }) => {
             <div style={{ 
               display: 'flex', 
               gap: '12px', 
+              flexWrap: 'wrap',
               fontSize: '13px',
               color: 'var(--text-secondary)'
             }}>
