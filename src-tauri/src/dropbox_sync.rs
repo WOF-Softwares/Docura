@@ -34,15 +34,19 @@ pub struct SyncFolder {
 impl Default for DropboxAuthConfig {
     fn default() -> Self {
         Self {
-            client_id: std::env::var("DROPBOX_CLIENT_ID")
-                .unwrap_or_else(|_| "YOUR_CLIENT_ID".to_string()),
-            client_secret: std::env::var("DROPBOX_CLIENT_SECRET")
-                .unwrap_or_else(|_| "YOUR_CLIENT_SECRET".to_string()),
-            // Support both localhost (dev) and GitHub Pages (production)
-            // Set DROPBOX_REDIRECT_URI env var to use custom URL
-            // Example: https://yourusername.github.io/Docura/oauth-redirect.html
-            redirect_uri: std::env::var("DROPBOX_REDIRECT_URI")
-                .unwrap_or_else(|_| "http://localhost:8080/oauth/callback".to_string()),
+            // Use compile-time env vars (set during build) with fallback to runtime
+            client_id: option_env!("DROPBOX_CLIENT_ID")
+                .map(|s| s.to_string())
+                .or_else(|| std::env::var("DROPBOX_CLIENT_ID").ok())
+                .unwrap_or_else(|| "YOUR_CLIENT_ID".to_string()),
+            client_secret: option_env!("DROPBOX_CLIENT_SECRET")
+                .map(|s| s.to_string())
+                .or_else(|| std::env::var("DROPBOX_CLIENT_SECRET").ok())
+                .unwrap_or_else(|| "YOUR_CLIENT_SECRET".to_string()),
+            redirect_uri: option_env!("DROPBOX_REDIRECT_URI")
+                .map(|s| s.to_string())
+                .or_else(|| std::env::var("DROPBOX_REDIRECT_URI").ok())
+                .unwrap_or_else(|| "https://wof-softwares.github.io/Docura/oauth-redirect.html".to_string()),
         }
     }
 }

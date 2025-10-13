@@ -140,6 +140,19 @@ npm run --prefix "$ROOT_DIR" build
 
 # Build .deb and .rpm with Tauri v2 CLI via npm script
 log "Building Tauri packages (.deb and .rpm)"
+
+# Pass Dropbox environment variables to the build if they exist
+export DROPBOX_CLIENT_ID="${DROPBOX_CLIENT_ID:-}"
+export DROPBOX_CLIENT_SECRET="${DROPBOX_CLIENT_SECRET:-}"
+export DROPBOX_REDIRECT_URI="${DROPBOX_REDIRECT_URI:-https://wof-softwares.github.io/Docura/oauth-redirect.html}"
+
+if [[ -n "$DROPBOX_CLIENT_ID" ]]; then
+  log "Building with Dropbox credentials from environment"
+else
+  warn "DROPBOX_CLIENT_ID not set - Dropbox sync will not work in production build"
+  warn "Set environment variables before building: DROPBOX_CLIENT_ID, DROPBOX_CLIENT_SECRET"
+fi
+
 npm run --prefix "$ROOT_DIR" tauri:build -- --bundles deb,rpm
 
 # Locate .deb artifact
