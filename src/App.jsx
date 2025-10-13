@@ -2190,7 +2190,12 @@ const openRecentItem = async (item) => {
   // Add current folder to sync from sidebar
   const handleAddCurrentFolderToSync = async (folderPath = null) => {
     const pathToAdd = folderPath || currentFolder;
-    if (!pathToAdd) return;
+    
+    // Validate pathToAdd is a string
+    if (!pathToAdd || typeof pathToAdd !== 'string') {
+      console.error('Invalid path:', pathToAdd);
+      return;
+    }
     
     // Check if already in sync
     if (syncFolders?.some(f => f.localPath === pathToAdd)) {

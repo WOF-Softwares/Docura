@@ -316,9 +316,14 @@ const Sidebar = ({
                 className="context-menu-item"
                 onClick={() => {
                   // This file's folder should be added to sync
-                  const folderPath = contextMenu.item.path.substring(0, contextMenu.item.path.lastIndexOf('/'))
-                  if (onAddCurrentFolderToSync) {
-                    onAddCurrentFolderToSync(folderPath)
+                  const filePath = contextMenu.item.path
+                  const lastSlash = filePath.lastIndexOf('/')
+                  
+                  if (lastSlash > 0) {
+                    const folderPath = filePath.substring(0, lastSlash)
+                    if (onAddCurrentFolderToSync) {
+                      onAddCurrentFolderToSync(folderPath)
+                    }
                   }
                   setContextMenu(null)
                 }}
