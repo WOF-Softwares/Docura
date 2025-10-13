@@ -233,8 +233,8 @@ function App() {
           setCurrentFolder(null);
           const fileName = filePath.split("/").pop();
           setFiles([{ name: fileName, path: filePath, type: "file" }]);
-          // Switch to preview mode to ensure content is visible
-          setActiveTab('preview');
+          // Switch to code mode (stable, won't freeze on render)
+          setActiveTab('code');
           toast.success(`Opened: ${fileName}`);
         } catch (error) {
           console.error("Error opening file from CLI:", error);
@@ -1322,8 +1322,8 @@ function App() {
           },
         ]);
 
-        // Switch to preview mode to ensure content is visible
-        setActiveTab('preview');
+        // Switch to code mode (stable, won't freeze on render)
+        setActiveTab('code');
 
         // Add to recent items
         await addRecentItem(selected, "file");
@@ -1846,8 +1846,8 @@ function App() {
     setIsEditing(true);
     extractHeaders(content);
 
-    // Switch to preview mode to ensure content is visible
-    setActiveTab('preview');
+    // Switch to code mode (stable, won't freeze on render)
+    setActiveTab('code');
 
     // Add to recent items
     await addRecentItem(filePath, "file");
@@ -1911,8 +1911,8 @@ const openRecentItem = async (item) => {
           },
         ]);
 
-        // Switch to preview mode to ensure content is visible
-        setActiveTab('preview');
+        // Switch to code mode (stable, won't freeze on render)
+        setActiveTab('code');
 
         // Add to recent items (moves it to top)
         await addRecentItem(item.path, "file");
@@ -1959,8 +1959,8 @@ const openRecentItem = async (item) => {
       setIsEditing(true);
       extractHeaders(content);
 
-      // Switch to preview mode to ensure content is visible
-      setActiveTab('preview');
+      // Switch to code mode (stable, won't freeze on render)
+      setActiveTab('code');
 
       // Add to recent items
       await addRecentItem(filePath, "file");
