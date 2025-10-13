@@ -24,9 +24,9 @@ import { exportToPDF, generatePDFBlob } from "./utils/pdfExport";
 import { convertMarkdownImagePaths } from "./utils/imagePathConverter";
 import { isOmakaseEnvironment, syncWithOmakase } from "./utils/omakaseSync";
 import { isPlasmaEnvironment, syncWithPlasma } from "./utils/plasmaSync";
-import { 
-  getDropboxStatus, 
-  getDropboxSyncFolders, 
+import {
+  getDropboxStatus,
+  getDropboxSyncFolders,
   startDropboxOAuth,
   exchangeDropboxCode,
   disconnectDropbox,
@@ -35,7 +35,7 @@ import {
   toggleDropboxSync,
   syncFileToDropbox,
   shouldSyncFile,
-  syncFolderNow
+  syncFolderNow,
 } from "./utils/dropboxSync";
 import "./styles/App.css";
 import "./styles/ThemeSelector.css";
@@ -107,8 +107,9 @@ function App() {
   const [dropboxSyncEnabled, setDropboxSyncEnabled] = useState(false);
   const [syncFolders, setSyncFolders] = useState([]);
   const [isOAuthDialogOpen, setIsOAuthDialogOpen] = useState(false);
-  const [oauthUrl, setOauthUrl] = useState('');
-  const [isDropboxFilesDialogOpen, setIsDropboxFilesDialogOpen] = useState(false);
+  const [oauthUrl, setOauthUrl] = useState("");
+  const [isDropboxFilesDialogOpen, setIsDropboxFilesDialogOpen] =
+    useState(false);
   const previewRef = useRef(null);
   const syncIntervalRef = useRef(null);
   const autoSaveTimeoutRef = useRef(null);
@@ -187,67 +188,61 @@ function App() {
     // Check for theme providers (Omakase & Plasma)
     checkThemeProviders();
 
-    // Set up CLI event listeners (WINDOW-SPECIFIC)
-    console.log("🎧 Setting up window-specific CLI event listeners...");
-    const currentWindow = getCurrentWindow();
-    let unlistenFolder, unlistenFile;
+    // Check for CLI arguments after component mounts
+    const checkCliArgs = async () => {
+      try {
+        console.log("🎧 Checking for CLI arguments...");
+        const cliArg = await invoke("get_cli_args");
 
-    // Use window-specific listen instead of global listen
-    currentWindow
-      .listen("cli-open-folder", async (event) => {
-        const folderPath = event.payload;
-        console.log("📁 CLI: Received cli-open-folder event:", folderPath);
-        console.log("📁 Event details:", event);
-        try {
-          console.log("📂 Granting file scope...");
-          await invoke("grant_file_scope", { filePath: folderPath });
-          console.log("✅ File scope granted");
+        if (cliArg) {
+          console.log("📄 CLI: Found argument:", cliArg);
+          const path = cliArg;
 
-          console.log("📂 Setting current folder state...");
-          setCurrentFolder(folderPath);
+          // Check if it's a directory or file by trying to read it
+          try {
+            // Grant file scope first
+            await invoke("grant_file_scope", { filePath: path });
 
-          console.log("📂 Getting folder files...");
-          const folderFiles = await invoke("get_folder_files", { folderPath });
-          console.log(`✅ Got ${folderFiles.length} files`);
+            // Try to get folder files - if this succeeds, it's a directory
+            try {
+              const folderFiles = await invoke("get_folder_files", {
+                folderPath: path,
+              });
+              console.log("📁 CLI: Opening folder:", path);
+              console.log(`📂 Got ${folderFiles.length} files`);
 
-          setFiles(folderFiles);
-          toast.success(`Opened folder: ${folderPath.split("/").pop()}`);
-        } catch (error) {
-          console.error("❌ Error opening folder from CLI:", error);
-          toast.error("Failed to open folder");
+              setCurrentFolder(path);
+              setFiles(folderFiles);
+              toast.success(`Opened folder: ${path.split("/").pop()}`);
+            } catch (folderError) {
+              // Not a folder, try as file
+              console.log("📄 CLI: Opening file:", path);
+              const content = await readTextFile(path);
+              setCurrentFile(path);
+              setFileContent(content);
+              setOriginalContent(content);
+              setIsEditing(true);
+              extractHeaders(content);
+              setCurrentFolder(null);
+              const fileName = path.split("/").pop();
+              setFiles([{ name: fileName, path: path, type: "file" }]);
+              // Switch to code mode (stable, won't freeze on render)
+              setActiveTab("code");
+              toast.success(`Opened: ${fileName}`);
+            }
+          } catch (error) {
+            console.error("❌ Error opening CLI path:", error);
+            toast.error("Failed to open from command line");
+          }
+        } else {
+          console.log("📄 CLI: No arguments found");
         }
-      })
-      .then((fn) => {
-        unlistenFolder = fn;
-        console.log("✅ CLI folder listener registered for this window");
-      });
+      } catch (error) {
+        console.error("Error checking CLI args:", error);
+      }
+    };
 
-    currentWindow
-      .listen("cli-open-file", async (event) => {
-        const filePath = event.payload;
-        console.log("📄 CLI: Opening file:", filePath);
-        try {
-          await invoke("grant_file_scope", { filePath });
-          const content = await readTextFile(filePath);
-          setCurrentFile(filePath);
-          setFileContent(content);
-          setOriginalContent(content);
-          setIsEditing(true);
-          extractHeaders(content);
-          setCurrentFolder(null);
-          const fileName = filePath.split("/").pop();
-          setFiles([{ name: fileName, path: filePath, type: "file" }]);
-          // Switch to code mode (stable, won't freeze on render)
-          setActiveTab('code');
-          toast.success(`Opened: ${fileName}`);
-        } catch (error) {
-          console.error("Error opening file from CLI:", error);
-          toast.error("Failed to open file");
-        }
-      })
-      .then((fn) => {
-        unlistenFile = fn;
-      });
+    checkCliArgs();
 
     // Cleanup
     return () => {
@@ -255,8 +250,6 @@ function App() {
         "unhandledrejection",
         handleUnhandledRejection,
       );
-      if (unlistenFolder) unlistenFolder();
-      if (unlistenFile) unlistenFile();
     };
   }, []); // Only run once on mount
 
@@ -360,7 +353,12 @@ function App() {
         }
       };
     }
-  }, [omakaseSyncEnabled, omakaseAvailable, plasmaSyncEnabled, plasmaAvailable]);
+  }, [
+    omakaseSyncEnabled,
+    omakaseAvailable,
+    plasmaSyncEnabled,
+    plasmaAvailable,
+  ]);
 
   useEffect(() => {
     // Track unsaved changes
@@ -400,7 +398,7 @@ function App() {
           setOriginalContent(fileContent);
           setHasUnsavedChanges(false);
           console.log("✅ Auto-saved:", currentFile);
-          
+
           // Show a subtle toast
           toast.success("Auto-saved", {
             duration: 1500,
@@ -703,7 +701,7 @@ function App() {
     setOmakaseAvailable(omakaseAvail);
     if (omakaseAvail) {
       console.log("🎨 Omarchy detected!");
-      
+
       // Get Omarchy font
       try {
         const font = await invoke("get_omakase_font");
@@ -730,11 +728,11 @@ function App() {
       if (config) {
         if (config.omakase_sync !== undefined) {
           setOmakaseSyncEnabled(config.omakase_sync);
-          if (config.omakase_sync) setSyncProvider('omakase');
+          if (config.omakase_sync) setSyncProvider("omakase");
         }
         if (config.plasma_sync !== undefined) {
           setPlasmaSyncEnabled(config.plasma_sync);
-          if (config.plasma_sync) setSyncProvider('plasma');
+          if (config.plasma_sync) setSyncProvider("plasma");
         }
       }
     } catch (error) {
@@ -1327,7 +1325,7 @@ function App() {
         ]);
 
         // Switch to code mode (stable, won't freeze on render)
-        setActiveTab('code');
+        setActiveTab("code");
 
         // Add to recent items
         await addRecentItem(selected, "file");
@@ -1840,31 +1838,31 @@ function App() {
           console.log("🗑️ Deleted temp file when switching files");
         } catch (error) {
           console.error("Failed to delete temp file:", error);
+        }
+        setCurrentTempId(null);
       }
-      setCurrentTempId(null);
+
+      setCurrentFile(filePath);
+      setFileContent(content);
+      setOriginalContent(content);
+      setIsEditing(true);
+      extractHeaders(content);
+
+      // Switch to code mode (stable, won't freeze on render)
+      setActiveTab("code");
+
+      // Add to recent items
+      await addRecentItem(filePath, "file");
+
+      const fileName = filePath.split("/").pop();
+      toast.success(`Opened: ${fileName}`);
+    } catch (error) {
+      console.error("Error reading file:", error);
+      toast.error("Failed to open file");
     }
+  };
 
-    setCurrentFile(filePath);
-    setFileContent(content);
-    setOriginalContent(content);
-    setIsEditing(true);
-    extractHeaders(content);
-
-    // Switch to code mode (stable, won't freeze on render)
-    setActiveTab('code');
-
-    // Add to recent items
-    await addRecentItem(filePath, "file");
-
-    const fileName = filePath.split("/").pop();
-    toast.success(`Opened: ${fileName}`);
-  } catch (error) {
-    console.error("Error reading file:", error);
-    toast.error("Failed to open file");
-  }
-};
-
-const openRecentItem = async (item) => {
+  const openRecentItem = async (item) => {
     try {
       // Check for unsaved changes first
       if (hasUnsavedChanges && fileContent.trim() !== "") {
@@ -1916,7 +1914,7 @@ const openRecentItem = async (item) => {
         ]);
 
         // Switch to code mode (stable, won't freeze on render)
-        setActiveTab('code');
+        setActiveTab("code");
 
         // Add to recent items (moves it to top)
         await addRecentItem(item.path, "file");
@@ -1964,7 +1962,7 @@ const openRecentItem = async (item) => {
       extractHeaders(content);
 
       // Switch to code mode (stable, won't freeze on render)
-      setActiveTab('code');
+      setActiveTab("code");
 
       // Add to recent items
       await addRecentItem(filePath, "file");
@@ -2050,10 +2048,15 @@ const openRecentItem = async (item) => {
       // Disable Plasma if enabling Omakase
       setPlasmaSyncEnabled(false);
     }
-    
+
     setOmakaseSyncEnabled(enabled);
-    setSyncProvider(enabled ? 'omakase' : null);
-    saveAppConfig(currentTheme, enabled, plasmaSyncEnabled && !enabled, autoSaveEnabled);
+    setSyncProvider(enabled ? "omakase" : null);
+    saveAppConfig(
+      currentTheme,
+      enabled,
+      plasmaSyncEnabled && !enabled,
+      autoSaveEnabled,
+    );
 
     if (enabled) {
       toast.success("Omarchy auto-sync enabled");
@@ -2068,10 +2071,15 @@ const openRecentItem = async (item) => {
       // Disable Omakase if enabling Plasma
       setOmakaseSyncEnabled(false);
     }
-    
+
     setPlasmaSyncEnabled(enabled);
-    setSyncProvider(enabled ? 'plasma' : null);
-    saveAppConfig(currentTheme, omakaseSyncEnabled && !enabled, enabled, autoSaveEnabled);
+    setSyncProvider(enabled ? "plasma" : null);
+    saveAppConfig(
+      currentTheme,
+      omakaseSyncEnabled && !enabled,
+      enabled,
+      autoSaveEnabled,
+    );
 
     if (enabled) {
       toast.success("Plasma auto-sync enabled");
@@ -2087,10 +2095,10 @@ const openRecentItem = async (item) => {
       const authUrl = await startDropboxOAuth();
       setOauthUrl(authUrl);
       setIsOAuthDialogOpen(true);
-      
+
       // Automatically open URL in browser
       setTimeout(() => {
-        window.open(authUrl, '_blank');
+        window.open(authUrl, "_blank");
       }, 500);
     } catch (error) {
       console.error("Dropbox auth error:", error);
@@ -2128,15 +2136,15 @@ const openRecentItem = async (item) => {
     try {
       // Open folder picker dialog
       const localPath = await open({ directory: true, multiple: false });
-      
+
       if (localPath) {
         // Ask for Dropbox subfolder name
-        const folderName = localPath.split('/').pop();
+        const folderName = localPath.split("/").pop();
         const subfolder = prompt(
-          'Enter a name for this folder in Dropbox:',
-          folderName
+          "Enter a name for this folder in Dropbox:",
+          folderName,
         );
-        
+
         if (subfolder && subfolder.trim()) {
           await addDropboxSyncFolder(localPath, subfolder.trim());
           await loadSyncFolders();
@@ -2164,9 +2172,13 @@ const openRecentItem = async (item) => {
     try {
       const result = await syncFolderNow(index);
       if (result.synced > 0) {
-        toast.success(`✅ Synced ${result.synced} file${result.synced > 1 ? 's' : ''} to Dropbox`);
+        toast.success(
+          `✅ Synced ${result.synced} file${result.synced > 1 ? "s" : ""} to Dropbox`,
+        );
       } else if (result.failed > 0) {
-        toast.error(`❌ Failed to sync ${result.failed} file${result.failed > 1 ? 's' : ''}`);
+        toast.error(
+          `❌ Failed to sync ${result.failed} file${result.failed > 1 ? "s" : ""}`,
+        );
       } else {
         toast.info("ℹ️ No markdown files found to sync");
       }
@@ -2181,61 +2193,72 @@ const openRecentItem = async (item) => {
   // Sync current folder from sidebar
   const handleSyncCurrentFolder = async () => {
     if (!currentFolder || !syncFolders) return;
-    
-    const folderIndex = syncFolders.findIndex(f => f.localPath === currentFolder);
+
+    const folderIndex = syncFolders.findIndex(
+      (f) => f.localPath === currentFolder,
+    );
     if (folderIndex === -1) {
       toast.error("Current folder is not in sync list");
       return;
     }
-    
+
     await handleSyncFolderNow(folderIndex);
   };
 
   // Add current folder to sync from sidebar
   const handleAddCurrentFolderToSync = async (folderPath = null) => {
     const pathToAdd = folderPath || currentFolder;
-    
+
     // Validate pathToAdd is a string
-    if (!pathToAdd || typeof pathToAdd !== 'string') {
-      console.error('Invalid path:', pathToAdd);
+    if (!pathToAdd || typeof pathToAdd !== "string") {
+      console.error("Invalid path:", pathToAdd);
       return;
     }
-    
+
     // Check if already in sync
-    if (syncFolders?.some(f => f.localPath === pathToAdd)) {
+    if (syncFolders?.some((f) => f.localPath === pathToAdd)) {
       toast.info("📁 Folder already in sync list");
       return;
     }
-    
+
     // Open dialog to get subfolder name
-    const folderName = pathToAdd.split('/').pop() || 'Documents';
-    const subfolder = prompt(`Enter Dropbox subfolder name for "${folderName}":`, folderName);
-    
+    const folderName = pathToAdd.split("/").pop() || "Documents";
+    const subfolder = prompt(
+      `Enter Dropbox subfolder name for "${folderName}":`,
+      folderName,
+    );
+
     if (!subfolder) return;
-    
+
     try {
       await addDropboxSyncFolder(pathToAdd, subfolder);
-      
+
       // Reload sync folders
       const folders = await getDropboxSyncFolders();
       setSyncFolders(folders);
-      
+
       // Auto-sync the newly added folder immediately!
-      const newFolderIndex = folders.findIndex(f => f.localPath === pathToAdd);
+      const newFolderIndex = folders.findIndex(
+        (f) => f.localPath === pathToAdd,
+      );
       if (newFolderIndex !== -1) {
         toast.success(`✅ Added "${folderName}" to sync! Syncing now...`);
-        
+
         // Sync immediately
         try {
           const result = await syncFolderNow(newFolderIndex);
           if (result.synced > 0) {
-            toast.success(`🎉 Synced ${result.synced} file${result.synced > 1 ? 's' : ''} to Dropbox!`);
+            toast.success(
+              `🎉 Synced ${result.synced} file${result.synced > 1 ? "s" : ""} to Dropbox!`,
+            );
           } else {
             toast.info("📁 Folder added! No markdown files to sync yet.");
           }
         } catch (syncError) {
           console.error("Auto-sync failed:", syncError);
-          toast.warning("⚠️ Folder added but sync failed. Click cloud icon to retry.");
+          toast.warning(
+            "⚠️ Folder added but sync failed. Click cloud icon to retry.",
+          );
         }
       } else {
         toast.success(`✅ Added "${folderName}" to Dropbox sync!`);
@@ -2250,7 +2273,7 @@ const openRecentItem = async (item) => {
     try {
       await toggleDropboxSync(enabled);
       setDropboxSyncEnabled(enabled);
-      
+
       if (enabled) {
         toast.success("Dropbox auto-sync enabled");
       } else {
@@ -2296,7 +2319,7 @@ const openRecentItem = async (item) => {
       setOriginalContent(content);
       setIsEditing(true);
       extractHeaders(content);
-      
+
       // Download to local folder (ask user where to save)
       const localPath = await save({
         defaultPath: `~/Downloads/${fileName}`,
@@ -2311,7 +2334,7 @@ const openRecentItem = async (item) => {
       if (localPath) {
         // Save to local disk
         await writeTextFile(localPath, content);
-        
+
         // Grant file scope
         try {
           await invoke("grant_file_scope", { filePath: localPath });
@@ -2333,7 +2356,7 @@ const openRecentItem = async (item) => {
         ]);
 
         // Switch to code mode (stable)
-        setActiveTab('code');
+        setActiveTab("code");
 
         // Add to recent items
         await addRecentItem(localPath, "file");
@@ -2351,8 +2374,8 @@ const openRecentItem = async (item) => {
             isUntitled: true,
           },
         ]);
-        
-        setActiveTab('code');
+
+        setActiveTab("code");
         toast.success(`Opened from Dropbox: ${fileName}`);
       }
     } catch (error) {
@@ -2700,10 +2723,7 @@ const openRecentItem = async (item) => {
         dropboxStatus={dropboxStatus}
       />
 
-      <AboutDialog
-        isOpen={isAboutOpen}
-        onClose={() => setIsAboutOpen(false)}
-      />
+      <AboutDialog isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
 
       <Toaster
         position="bottom-right"

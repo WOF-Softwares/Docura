@@ -457,7 +457,7 @@ pub struct SyncFolder {
     #[serde(alias = "local_path")]
     #[serde(rename = "localPath")]
     local_path: String,
-    
+
     #[serde(alias = "dropbox_path")]
     #[serde(rename = "dropboxPath")]
     dropbox_path: String,
@@ -1130,33 +1130,33 @@ async fn dropbox_get_auth_url() -> String {
 async fn dropbox_exchange_code(code: String) -> Result<(), String> {
     let tokens = dropbox_sync::exchange_code_for_token(&code).await?;
     let user_info = dropbox_sync::get_user_info(&tokens.access_token).await?;
-    
+
     // Load current config
     let mut config = load_config().await?;
-    
+
     // Update Dropbox credentials
     config.dropbox.access_token = Some(tokens.access_token);
     config.dropbox.refresh_token = tokens.refresh_token;
     config.dropbox.email = Some(user_info.email);
-    
+
     // Save config
     save_config(config).await?;
-    
+
     Ok(())
 }
 
 #[command]
 async fn dropbox_disconnect() -> Result<(), String> {
     let mut config = load_config().await?;
-    
+
     // Preserve sync folders when disconnecting
     let sync_folders = config.dropbox.sync_folders.clone();
-    
+
     // Clear authentication but keep sync folder configuration
     config.dropbox = DropboxConfig::default();
     config.dropbox.sync_folders = sync_folders;
     config.dropbox_sync_enabled = false;
-    
+
     save_config(config).await?;
     log::info!("Disconnected from Dropbox (sync folders preserved)");
     Ok(())
@@ -1165,17 +1165,15 @@ async fn dropbox_disconnect() -> Result<(), String> {
 #[command]
 async fn dropbox_get_status() -> Result<serde_json::Value, String> {
     let config = load_config().await?;
-    
+
     if let Some(access_token) = &config.dropbox.access_token {
         // Try to get user info to verify token is still valid
         match dropbox_sync::get_user_info(access_token).await {
-            Ok(user_info) => {
-                Ok(serde_json::json!({
-                    "connected": true,
-                    "email": user_info.email,
-                    "targetFolder": config.dropbox.target_folder,
-                }))
-            }
+            Ok(user_info) => Ok(serde_json::json!({
+                "connected": true,
+                "email": user_info.email,
+                "targetFolder": config.dropbox.target_folder,
+            })),
             Err(_) => {
                 // Token might be expired, try to refresh
                 if let Some(refresh_token) = &config.dropbox.refresh_token {
@@ -1185,18 +1183,16 @@ async fn dropbox_get_status() -> Result<serde_json::Value, String> {
                             let mut config = config.clone();
                             config.dropbox.access_token = Some(new_tokens.access_token);
                             save_config(config.clone()).await?;
-                            
+
                             Ok(serde_json::json!({
                                 "connected": true,
                                 "email": config.dropbox.email,
                                 "targetFolder": config.dropbox.target_folder,
                             }))
                         }
-                        Err(_) => {
-                            Ok(serde_json::json!({
-                                "connected": false
-                            }))
-                        }
+                        Err(_) => Ok(serde_json::json!({
+                            "connected": false
+                        })),
                     }
                 } else {
                     Ok(serde_json::json!({
@@ -1221,9 +1217,12 @@ async fn dropbox_set_target_folder(folder_name: String) -> Result<(), String> {
 }
 
 #[command]
-async fn dropbox_add_sync_folder(local_path: String, dropbox_subfolder: String) -> Result<(), String> {
+async fn dropbox_add_sync_folder(
+    local_path: String,
+    dropbox_subfolder: String,
+) -> Result<(), String> {
     let mut config = load_config().await?;
-    
+
     // Create the Dropbox path
     // With App Folder, root is already /Apps/Docura Sync/
     let dropbox_path = if config.dropbox.target_folder.is_empty() {
@@ -1231,12 +1230,12 @@ async fn dropbox_add_sync_folder(local_path: String, dropbox_subfolder: String) 
     } else {
         format!("/{}/{}", config.dropbox.target_folder, dropbox_subfolder)
     };
-    
+
     config.dropbox.sync_folders.push(SyncFolder {
         local_path,
         dropbox_path,
     });
-    
+
     save_config(config).await?;
     Ok(())
 }
@@ -1244,7 +1243,7 @@ async fn dropbox_add_sync_folder(local_path: String, dropbox_subfolder: String) 
 #[command]
 async fn dropbox_remove_sync_folder(index: usize) -> Result<(), String> {
     let mut config = load_config().await?;
-    
+
     if index < config.dropbox.sync_folders.len() {
         config.dropbox.sync_folders.remove(index);
         save_config(config).await?;
@@ -1271,69 +1270,85 @@ async fn dropbox_toggle_sync(enabled: bool) -> Result<(), String> {
 #[command]
 async fn dropbox_sync_file(local_path: String, content: String) -> Result<(), String> {
     let config = load_config().await?;
-    
+
     if !config.dropbox_sync_enabled {
         return Err("Dropbox sync is not enabled".to_string());
     }
-    
-    let access_token = config.dropbox.access_token
+
+    let access_token = config
+        .dropbox
+        .access_token
         .ok_or("Not connected to Dropbox")?;
-    
+
     // Find which sync folder this file belongs to
-    let sync_folder = config.dropbox.sync_folders.iter()
+    let sync_folder = config
+        .dropbox
+        .sync_folders
+        .iter()
         .find(|f| local_path.starts_with(&f.local_path))
         .ok_or("File is not in a synced folder")?;
-    
+
     // Calculate relative path and create Dropbox path
-    let relative_path = local_path.strip_prefix(&sync_folder.local_path)
+    let relative_path = local_path
+        .strip_prefix(&sync_folder.local_path)
         .ok_or("Failed to calculate relative path")?;
     let dropbox_path = format!("{}/{}", sync_folder.dropbox_path, relative_path);
-    
+
     // Upload the file
     dropbox_sync::upload_file(
         &access_token,
         &local_path,
         &dropbox_path,
-        content.into_bytes()
-    ).await?;
-    
+        content.into_bytes(),
+    )
+    .await?;
+
     Ok(())
 }
 
 #[command]
 async fn dropbox_sync_folder_now(folder_index: usize) -> Result<serde_json::Value, String> {
     let config = load_config().await?;
-    
+
     if !config.dropbox_sync_enabled {
         return Err("Dropbox sync is not enabled".to_string());
     }
-    
-    let access_token = config.dropbox.access_token
+
+    let access_token = config
+        .dropbox
+        .access_token
         .ok_or("Not connected to Dropbox")?;
-    
-    let sync_folder = config.dropbox.sync_folders.get(folder_index)
+
+    let sync_folder = config
+        .dropbox
+        .sync_folders
+        .get(folder_index)
         .ok_or("Invalid folder index")?;
-    
+
     // Get all markdown files in the folder
     let mut files_synced = 0;
     let mut files_failed = 0;
-    
+
     if let Ok(entries) = std::fs::read_dir(&sync_folder.local_path) {
         for entry in entries.flatten() {
             let path = entry.path();
             if path.is_file() && path.extension().and_then(|s| s.to_str()) == Some("md") {
                 if let Ok(content) = std::fs::read(&path) {
-                    let relative_path = path.strip_prefix(&sync_folder.local_path)
-                        .ok().and_then(|p| p.to_str())
+                    let relative_path = path
+                        .strip_prefix(&sync_folder.local_path)
+                        .ok()
+                        .and_then(|p| p.to_str())
                         .unwrap_or("");
                     let dropbox_path = format!("{}/{}", sync_folder.dropbox_path, relative_path);
-                    
+
                     match dropbox_sync::upload_file(
                         &access_token,
                         path.to_str().unwrap_or(""),
                         &dropbox_path,
-                        content
-                    ).await {
+                        content,
+                    )
+                    .await
+                    {
                         Ok(_) => files_synced += 1,
                         Err(_) => files_failed += 1,
                     }
@@ -1341,7 +1356,7 @@ async fn dropbox_sync_folder_now(folder_index: usize) -> Result<serde_json::Valu
             }
         }
     }
-    
+
     Ok(serde_json::json!({
         "synced": files_synced,
         "failed": files_failed
@@ -1351,40 +1366,54 @@ async fn dropbox_sync_folder_now(folder_index: usize) -> Result<serde_json::Valu
 #[command]
 async fn dropbox_list_files(path: String) -> Result<Vec<serde_json::Value>, String> {
     let config = load_config().await?;
-    
-    let access_token = config.dropbox.access_token
+
+    let access_token = config
+        .dropbox
+        .access_token
         .ok_or("Not connected to Dropbox")?;
-    
+
     // Prepend /Apps/Docura Sync to the path
     let full_path = if path == "/" || path.is_empty() {
         "".to_string() // Root of app folder
     } else {
         path
     };
-    
+
     dropbox_sync::list_files_with_metadata(&access_token, &full_path).await
 }
 
 #[command]
 async fn dropbox_download_file(dropbox_path: String) -> Result<String, String> {
     let config = load_config().await?;
-    
-    let access_token = config.dropbox.access_token
+
+    let access_token = config
+        .dropbox
+        .access_token
         .ok_or("Not connected to Dropbox")?;
-    
+
     dropbox_sync::download_file_content(&access_token, &dropbox_path).await
+}
+
+#[command]
+async fn get_cli_args() -> Result<Option<String>, String> {
+    let args: Vec<String> = env::args().collect();
+    if args.len() > 1 {
+        let arg = &args[1];
+        let path = Path::new(arg);
+
+        if path.exists() {
+            Ok(Some(arg.clone()))
+        } else {
+            log::warn!("CLI: Path does not exist: {}", arg);
+            Ok(None)
+        }
+    } else {
+        Ok(None)
+    }
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    // Get CLI arguments
-    let args: Vec<String> = env::args().collect();
-    let cli_arg = if args.len() > 1 {
-        Some(args[1].clone())
-    } else {
-        None
-    };
-
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
@@ -1406,25 +1435,6 @@ pub fn run() {
                 } else {
                     log::info!("Standard WM detected, showing decorations");
                     let _ = window.set_decorations(true);
-                }
-            }
-
-            // Handle CLI arguments
-            if let Some(arg) = cli_arg {
-                let path = Path::new(&arg);
-
-                if path.exists() {
-                    if path.is_dir() {
-                        // Open folder - emit only to main window
-                        log::info!("CLI: Opening folder: {}", arg);
-                        let _ = app.emit_to("main", "cli-open-folder", arg);
-                    } else if path.is_file() {
-                        // Open file - emit only to main window
-                        log::info!("CLI: Opening file: {}", arg);
-                        let _ = app.emit_to("main", "cli-open-file", arg);
-                    }
-                } else {
-                    log::warn!("CLI: Path does not exist: {}", arg);
                 }
             }
 
@@ -1476,7 +1486,8 @@ pub fn run() {
             dropbox_sync_file,
             dropbox_sync_folder_now,
             dropbox_list_files,
-            dropbox_download_file
+            dropbox_download_file,
+            get_cli_args
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
