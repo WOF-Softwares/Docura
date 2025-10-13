@@ -1,7 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Github, Mail, Heart, Code, Zap } from 'lucide-react';
+import { getVersion } from '@tauri-apps/api/app';
 
 const AboutDialog = ({ isOpen, onClose }) => {
+  const [appVersion, setAppVersion] = useState('Loading...');
+
+  useEffect(() => {
+    // Load version from Tauri (reads from tauri.conf.json at build time)
+    const loadVersion = async () => {
+      try {
+        const version = await getVersion();
+        setAppVersion(version);
+      } catch (error) {
+        console.error('Failed to load version:', error);
+        setAppVersion('1.0.0'); // Fallback
+      }
+    };
+
+    if (isOpen) {
+      loadVersion();
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const openLink = (url) => {
@@ -39,7 +59,7 @@ const AboutDialog = ({ isOpen, onClose }) => {
               fontWeight: 'bold',
               fontSize: '14px'
             }}>
-              Version 1.0.6 • Built in 37 Hours! ⚡
+              Version {appVersion} • Built in 37 Hours! ⚡
             </p>
           </div>
 
