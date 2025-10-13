@@ -453,9 +453,13 @@ pub struct TempFile {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-#[serde(rename_all = "camelCase")]
 pub struct SyncFolder {
+    #[serde(alias = "local_path")]
+    #[serde(rename = "localPath")]
     local_path: String,
+    
+    #[serde(alias = "dropbox_path")]
+    #[serde(rename = "dropboxPath")]
     dropbox_path: String,
 }
 
