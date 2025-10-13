@@ -25,6 +25,7 @@ import {
   AlignLeft,
   Newspaper,
   Cloud,
+  Info,
 } from "lucide-react";
 
 const Menu = ({
@@ -54,6 +55,7 @@ const Menu = ({
   onClearRecentItems,
   onOpenFromDropbox,
   dropboxConnected,
+  onOpenAbout,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isRecentSubmenuOpen, setIsRecentSubmenuOpen] = useState(false);
@@ -362,6 +364,13 @@ const Menu = ({
               <Settings size={16} />
               <span>Settings</span>
               <span className="menu-shortcut">Ctrl+Shift+P</span>
+            </button>
+            <button
+              className="menu-item"
+              onClick={() => handleMenuClick(onOpenAbout)}
+            >
+              <Info size={16} />
+              <span>About Docura</span>
             </button>
           </div>
         </div>

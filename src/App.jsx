@@ -19,6 +19,7 @@ import RecoveryDialog from "./components/RecoveryDialog";
 import StatusBar from "./components/StatusBar";
 import OAuthDialog from "./components/OAuthDialog";
 import DropboxFilesDialog from "./components/DropboxFilesDialog";
+import AboutDialog from "./components/AboutDialog";
 import { exportToPDF, generatePDFBlob } from "./utils/pdfExport";
 import { convertMarkdownImagePaths } from "./utils/imagePathConverter";
 import { isOmakaseEnvironment, syncWithOmakase } from "./utils/omakaseSync";
@@ -60,6 +61,7 @@ function App() {
   const [isPDFPreviewOpen, setIsPDFPreviewOpen] = useState(false);
   const [pdfBlob, setPdfBlob] = useState(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [omakaseAvailable, setOmakaseAvailable] = useState(false);
   const [omakaseSyncEnabled, setOmakaseSyncEnabled] = useState(false);
   const [plasmaAvailable, setPlasmaAvailable] = useState(false);
@@ -2512,6 +2514,7 @@ const openRecentItem = async (item) => {
           onToggleTypewriterMode={toggleTypewriterMode}
           onOpenFromDropbox={handleOpenFromDropbox}
           dropboxConnected={dropboxStatus?.connected || false}
+          onOpenAbout={() => setIsAboutOpen(true)}
         />
       )}
 
@@ -2695,6 +2698,11 @@ const openRecentItem = async (item) => {
         onClose={() => setIsDropboxFilesDialogOpen(false)}
         onDownloadFile={handleDownloadFromDropbox}
         dropboxStatus={dropboxStatus}
+      />
+
+      <AboutDialog
+        isOpen={isAboutOpen}
+        onClose={() => setIsAboutOpen(false)}
       />
 
       <Toaster

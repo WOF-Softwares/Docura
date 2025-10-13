@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Docura - Donate 💝</title>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .emoji-large {
+            font-size: 80px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 16px;
+        }
+
+        .amount-display {
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .emoji-reaction {
+            font-size: 120px;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .amount-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .amount-message {
+            color: #718096;
+            font-size: 18px;
+            min-height: 28px;
+        }
+
+        .slider-container {
+            margin: 40px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+            transition: all 0.2s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: #764ba2;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .slider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            background: #764ba2;
+        }
+
+        .quick-amounts {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .quick-amount {
+            padding: 12px 24px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            color: #4a5568;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-amount:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .quick-amount.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .donate-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 32px;
+        }
+
+        .donate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .info-box {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 32px;
+        }
+
+        .info-box p {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" x-data="{
+        amount: 5,
+        getEmoji() {
+            if (this.amount <= 1) return '😐';
+            if (this.amount <= 3) return '🙂';
+            if (this.amount <= 5) return '😊';
+            if (this.amount <= 10) return '😄';
+            if (this.amount <= 20) return '🤗';
+            if (this.amount <= 50) return '🥳';
+            if (this.amount <= 100) return '🤩';
+            return '😍';
+        },
+        getMessage() {
+            if (this.amount <= 1) return 'Every little bit helps!';
+            if (this.amount <= 3) return 'Thank you for your support!';
+            if (this.amount <= 5) return 'You\'re amazing! 💙';
+            if (this.amount <= 10) return 'You rock! This helps a lot!';
+            if (this.amount <= 20) return 'Wow! You\'re incredibly generous!';
+            if (this.amount <= 50) return 'AMAZING! You\'re making a huge difference!';
+            if (this.amount <= 100) return 'INCREDIBLE! You\'re a superhero! 🦸';
+            return 'LEGENDARY! You\'re keeping Docura alive! 🚀';
+        },
+        setAmount(value) {
+            this.amount = value;
+        }
+    }">
+        <div class="header">
+            <span class="emoji-large">💝</span>
+            <h1>Support Docura Development</h1>
+            <p class="subtitle">Help keep Docura free, open-source, and awesome!</p>
+        </div>
+
+        <div class="amount-display">
+            <span class="emoji-reaction" x-text="getEmoji()"></span>
+            <div class="amount-value">$<span x-text="amount"></span></div>
+            <div class="amount-message" x-text="getMessage()"></div>
+        </div>
+
+        <div class="quick-amounts">
+            <button 
+                class="quick-amount" 
+                :class="{ 'active': amount === 1 }"
+                @click="setAmount(1)">
+                $1
+            </button>
+            <button 
+                class="quick-amount" 
+                :class="{ 'active': amount === 5 }"
+                @click="setAmount(5)">
+                $5
+            </button>
+            <button 
+                class="quick-amount" 
+                :class="{ 'active': amount === 10 }"
+                @click="setAmount(10)">
+                $10
+            </button>
+            <button 
+                class="quick-amount" 
+                :class="{ 'active': amount === 25 }"
+                @click="setAmount(25)">
+                $25
+            </button>
+            <button 
+                class="quick-amount" 
+                :class="{ 'active': amount === 50 }"
+                @click="setAmount(50)">
+                $50
+            </button>
+            <button 
+                class="quick-amount" 
+                :class="{ 'active': amount === 100 }"
+                @click="setAmount(100)">
+                $100
+            </button>
+        </div>
+
+        <div class="slider-container">
+            <input 
+                type="range" 
+                min="1" 
+                max="200" 
+                x-model="amount" 
+                class="slider"
+            >
+        </div>
+
+        <button class="donate-button">
+            💳 Donate $<span x-text="amount"></span> (Coming Soon!)
+        </button>
+
+        <div class="info-box">
+            <p>
+                <strong>🎯 Where Your Money Goes:</strong><br>
+                • 🛠️ Development & maintenance<br>
+                • ☁️ Server & infrastructure costs<br>
+                • 🎨 Design & UX improvements<br>
+                • 🆓 Keeping Docura FREE forever!
+            </p>
+        </div>
+
+        <div class="info-box" style="margin-top: 16px; border-left-color: #48bb78;">
+            <p>
+                <strong>✨ Why Donate?</strong><br>
+                Docura is 100% free and open-source. Your support helps us compete with $14.99 Typora while staying free! Built with love by a solo developer + Claude AI. Every dollar keeps the dream alive! 💙
+            </p>
+        </div>
+
+        <div class="info-box" style="margin-top: 16px; border-left-color: #ed8936;">
+            <p>
+                <strong>🚀 Payment Methods (Coming Soon):</strong><br>
+                We're setting up: PayPal, Stripe, GitHub Sponsors, Buy Me a Coffee, and crypto options. Check back soon! For now, star us on ⭐ <a href="https://github.com/WOF-Softwares/Docura" target="_blank">GitHub</a>!
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>
+                Made with ❤️ by <a href="mailto:ehsan.tork@hey.com">Ehsan Tork</a><br>
+                <a href="https://wof-softwares.github.io/Docura/">← Back to Docura</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+
