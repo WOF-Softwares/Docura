@@ -6,6 +6,9 @@ use std::path::{Path, PathBuf};
 use tauri::{command, Emitter, Manager};
 use tauri_plugin_fs::FsExt;
 
+// KDE Plasma theme sync module
+mod plasma_sync;
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct FileItem {
     name: String,
@@ -1051,6 +1054,22 @@ async fn get_username() -> Result<String, String> {
     }
 }
 
+// ============================================
+// 🎨 KDE Plasma Theme Sync Commands
+// ============================================
+
+/// Check if running under KDE Plasma
+#[command]
+async fn is_plasma_available() -> bool {
+    plasma_sync::PlasmaThemeDetector::is_plasma_available()
+}
+
+/// Get current Plasma color scheme
+#[command]
+async fn get_plasma_theme() -> Result<plasma_sync::PlasmaColorScheme, String> {
+    plasma_sync::PlasmaThemeDetector::detect_current_scheme()
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Get CLI arguments
@@ -1135,7 +1154,10 @@ pub fn run() {
             delete_temp_file,
             clear_all_temp_files,
             quit_app,
-            get_username
+            get_username,
+            // Plasma theme sync
+            is_plasma_available,
+            get_plasma_theme
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
