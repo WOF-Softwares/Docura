@@ -49,6 +49,14 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
   - **ONLY free, open-source markdown editor with cloud sync!**
   - **Status:** Submitted to Dropbox for approval on **October 13, 2025** 🚀
 
+- **🌍 Open from Dropbox** - TRUE Cross-Device Workflow! 🔥
+  - 📁 Browse and download files directly from Dropbox cloud
+  - 🔄 Work on phone/tablet → Edit on desktop workflow
+  - 🌐 Beautiful file browser with search and folders
+  - 📥 Smart download to ~/Downloads with local editing
+  - **TYPORA DOESN'T HAVE THIS!** 🎉
+  - Upload anywhere → Download and edit anywhere else!
+
 ### 🆕 Day 4 Features (October 13, 2025)
 
 - **🎯 Focus Mode** (F8): Typora-style focus writing - dynamic overlay dims everything except current block (ADHD-friendly!)
@@ -386,6 +394,8 @@ Only one sync provider can be active at a time:
 | **Code Editor**            | Basic              | Monaco (VSCode-level)                          | 🏆**Docura** |
 | **WYSIWYG Quality**        | Good               | Excellent (Vditor + MDEditor)                  | 🏆**Docura** |
 | **Cloud Sync**             | ❌ No              | ✅ Dropbox (App Folder, secure!)               | 🏆**Docura** |
+| **Open from Cloud**        | ❌ No              | ✅ Browse & download from Dropbox              | 🏆**Docura** |
+| **Cross-Device Workflow**  | ❌ No              | ✅ Upload on phone → Edit on desktop           | 🏆**Docura** |
 | **User Choice**            | ❌ Forced workflow | ✅ Choose your editing style                   | 🏆**Docura** |
 | **Learning Curve**         | Steep              | Gentle - Multiple learning paths               | 🏆**Docura** |
 | **Best for Beginners**     | ❌ Confusing       | ✅ Multiple approaches                         | 🏆**Docura** |
@@ -471,7 +481,7 @@ Only one sync provider can be active at a time:
 - 💾 **Theme Persistence** - Your choice is saved between sessions
 - 🎲 **Random Theme** - Discover new themes with one click
 
-### ☁️ Cloud Sync
+### ☁️ Cloud Sync & Cross-Device Workflow
 
 - ☁️ **Dropbox Integration** - Your documents, everywhere you are!
 - 🔐 **App Folder Security** - Only accesses `/Apps/Docura Sync/` folder
@@ -480,6 +490,15 @@ Only one sync provider can be active at a time:
 - 🔒 **OAuth 2.0** - Secure authentication, no passwords
 - 🆓 **Free & Unlimited** - No subscriptions required
 - 📊 **Status:** Submitted to Dropbox for production approval on **October 13, 2025**
+
+- **🌍 Open from Dropbox** - Revolutionary cross-device workflow!
+  - 📂 Browse your Dropbox `/Apps/Docura/` folder directly in-app
+  - 🔍 Search and filter cloud files with beautiful UI
+  - 📥 Download files to local disk with one click
+  - 🌐 True cross-device: Upload on mobile → Download on desktop
+  - 🗂️ Breadcrumb navigation for easy folder browsing
+  - 📊 File metadata display (size, type)
+  - **Typora can't do this!** Only Docura has this feature! 🔥
 
 ### 📂 File Management & Navigation
 
