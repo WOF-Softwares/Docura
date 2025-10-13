@@ -132,9 +132,11 @@ export async function toggleDropboxSync(enabled) {
  */
 export async function syncFileToDropbox(localPath, content) {
   try {
+    console.log('📤 Syncing to Dropbox:', localPath);
     await invoke('dropbox_sync_file', { localPath, content });
+    console.log('✅ Sync successful:', localPath);
   } catch (error) {
-    console.error('Failed to sync file to Dropbox:', error);
+    console.error('❌ Failed to sync file to Dropbox:', error);
     throw error;
   }
 }
@@ -160,12 +162,26 @@ export async function startDropboxOAuth() {
  */
 export function shouldSyncFile(filePath, syncFolders) {
   if (!filePath || !syncFolders || syncFolders.length === 0) {
+    console.log('❌ Sync check failed:', { filePath, syncFolders: syncFolders?.length || 0 });
     return false;
   }
   
-  return syncFolders.some(folder => 
-    filePath.startsWith(folder.localPath)
-  );
+  console.log('🔍 Checking if should sync:', { 
+    filePath, 
+    syncFolders: syncFolders.map(f => ({ 
+      localPath: f.localPath, 
+      dropboxPath: f.dropboxPath 
+    }))
+  });
+  
+  const shouldSync = syncFolders.some(folder => {
+    const matches = filePath.startsWith(folder.localPath);
+    console.log(`  ${matches ? '✅' : '❌'} ${filePath} vs ${folder.localPath}`);
+    return matches;
+  });
+  
+  console.log(`${shouldSync ? '✅' : '❌'} Final decision: ${shouldSync ? 'SYNC' : 'NO SYNC'}`);
+  return shouldSync;
 }
 
 /**
