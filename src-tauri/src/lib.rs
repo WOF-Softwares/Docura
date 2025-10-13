@@ -9,6 +9,9 @@ use tauri_plugin_fs::FsExt;
 // KDE Plasma theme sync module
 mod plasma_sync;
 
+// Dropbox sync module
+mod dropbox_sync;
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct FileItem {
     name: String,
@@ -450,6 +453,38 @@ pub struct TempFile {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct SyncFolder {
+    local_path: String,
+    dropbox_path: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct DropboxConfig {
+    #[serde(default)]
+    access_token: Option<String>,
+    #[serde(default)]
+    refresh_token: Option<String>,
+    #[serde(default)]
+    email: Option<String>,
+    #[serde(default)]
+    target_folder: String,
+    #[serde(default)]
+    sync_folders: Vec<SyncFolder>,
+}
+
+impl Default for DropboxConfig {
+    fn default() -> Self {
+        Self {
+            access_token: None,
+            refresh_token: None,
+            email: None,
+            target_folder: "My Documents".to_string(),
+            sync_folders: Vec::new(),
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct AppConfig {
     theme: String,
     #[serde(default)]
@@ -462,6 +497,10 @@ pub struct AppConfig {
     auto_save: bool,
     #[serde(default = "default_live_editor_type")]
     live_editor_type: String,
+    #[serde(default)]
+    dropbox: DropboxConfig,
+    #[serde(default)]
+    dropbox_sync_enabled: bool,
 }
 
 fn default_live_editor_type() -> String {
@@ -477,6 +516,8 @@ impl Default for AppConfig {
             plasma_sync: false,
             auto_save: true, // Default to enabled
             live_editor_type: "modern".to_string(),
+            dropbox: DropboxConfig::default(),
+            dropbox_sync_enabled: false,
         }
     }
 }
@@ -1073,6 +1114,174 @@ async fn get_plasma_theme() -> Result<plasma_sync::PlasmaColorScheme, String> {
     plasma_sync::PlasmaThemeDetector::detect_current_scheme()
 }
 
+// Dropbox sync commands
+
+#[command]
+async fn dropbox_get_auth_url() -> String {
+    dropbox_sync::get_auth_url()
+}
+
+#[command]
+async fn dropbox_exchange_code(code: String) -> Result<(), String> {
+    let tokens = dropbox_sync::exchange_code_for_token(&code).await?;
+    let user_info = dropbox_sync::get_user_info(&tokens.access_token).await?;
+    
+    // Load current config
+    let mut config = load_config().await?;
+    
+    // Update Dropbox credentials
+    config.dropbox.access_token = Some(tokens.access_token);
+    config.dropbox.refresh_token = tokens.refresh_token;
+    config.dropbox.email = Some(user_info.email);
+    
+    // Save config
+    save_config(config).await?;
+    
+    Ok(())
+}
+
+#[command]
+async fn dropbox_disconnect() -> Result<(), String> {
+    let mut config = load_config().await?;
+    config.dropbox = DropboxConfig::default();
+    config.dropbox_sync_enabled = false;
+    save_config(config).await?;
+    Ok(())
+}
+
+#[command]
+async fn dropbox_get_status() -> Result<serde_json::Value, String> {
+    let config = load_config().await?;
+    
+    if let Some(access_token) = &config.dropbox.access_token {
+        // Try to get user info to verify token is still valid
+        match dropbox_sync::get_user_info(access_token).await {
+            Ok(user_info) => {
+                Ok(serde_json::json!({
+                    "connected": true,
+                    "email": user_info.email,
+                    "targetFolder": config.dropbox.target_folder,
+                }))
+            }
+            Err(_) => {
+                // Token might be expired, try to refresh
+                if let Some(refresh_token) = &config.dropbox.refresh_token {
+                    match dropbox_sync::refresh_access_token(refresh_token).await {
+                        Ok(new_tokens) => {
+                            // Update config with new tokens
+                            let mut config = config.clone();
+                            config.dropbox.access_token = Some(new_tokens.access_token);
+                            save_config(config.clone()).await?;
+                            
+                            Ok(serde_json::json!({
+                                "connected": true,
+                                "email": config.dropbox.email,
+                                "targetFolder": config.dropbox.target_folder,
+                            }))
+                        }
+                        Err(_) => {
+                            Ok(serde_json::json!({
+                                "connected": false
+                            }))
+                        }
+                    }
+                } else {
+                    Ok(serde_json::json!({
+                        "connected": false
+                    }))
+                }
+            }
+        }
+    } else {
+        Ok(serde_json::json!({
+            "connected": false
+        }))
+    }
+}
+
+#[command]
+async fn dropbox_set_target_folder(folder_name: String) -> Result<(), String> {
+    let mut config = load_config().await?;
+    config.dropbox.target_folder = folder_name;
+    save_config(config).await?;
+    Ok(())
+}
+
+#[command]
+async fn dropbox_add_sync_folder(local_path: String, dropbox_subfolder: String) -> Result<(), String> {
+    let mut config = load_config().await?;
+    
+    // Create the Dropbox path using target folder + subfolder
+    let dropbox_path = format!("/{}/{}", config.dropbox.target_folder, dropbox_subfolder);
+    
+    config.dropbox.sync_folders.push(SyncFolder {
+        local_path,
+        dropbox_path,
+    });
+    
+    save_config(config).await?;
+    Ok(())
+}
+
+#[command]
+async fn dropbox_remove_sync_folder(index: usize) -> Result<(), String> {
+    let mut config = load_config().await?;
+    
+    if index < config.dropbox.sync_folders.len() {
+        config.dropbox.sync_folders.remove(index);
+        save_config(config).await?;
+        Ok(())
+    } else {
+        Err("Invalid folder index".to_string())
+    }
+}
+
+#[command]
+async fn dropbox_get_sync_folders() -> Result<Vec<SyncFolder>, String> {
+    let config = load_config().await?;
+    Ok(config.dropbox.sync_folders)
+}
+
+#[command]
+async fn dropbox_toggle_sync(enabled: bool) -> Result<(), String> {
+    let mut config = load_config().await?;
+    config.dropbox_sync_enabled = enabled;
+    save_config(config).await?;
+    Ok(())
+}
+
+#[command]
+async fn dropbox_sync_file(local_path: String, content: String) -> Result<(), String> {
+    let config = load_config().await?;
+    
+    if !config.dropbox_sync_enabled {
+        return Err("Dropbox sync is not enabled".to_string());
+    }
+    
+    let access_token = config.dropbox.access_token
+        .ok_or("Not connected to Dropbox")?;
+    
+    // Find which sync folder this file belongs to
+    let sync_folder = config.dropbox.sync_folders.iter()
+        .find(|f| local_path.starts_with(&f.local_path))
+        .ok_or("File is not in a synced folder")?;
+    
+    // Calculate relative path and create Dropbox path
+    let relative_path = local_path.strip_prefix(&sync_folder.local_path)
+        .ok_or("Failed to calculate relative path")?;
+    let dropbox_path = format!("{}/{}", sync_folder.dropbox_path, relative_path);
+    
+    // Upload the file
+    dropbox_sync::upload_file(
+        &access_token,
+        &local_path,
+        &dropbox_path,
+        content.into_bytes()
+    ).await?;
+    
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Get CLI arguments
@@ -1160,7 +1369,18 @@ pub fn run() {
             get_username,
             // Plasma theme sync
             is_plasma_available,
-            get_plasma_theme
+            get_plasma_theme,
+            // Dropbox sync
+            dropbox_get_auth_url,
+            dropbox_exchange_code,
+            dropbox_disconnect,
+            dropbox_get_status,
+            dropbox_set_target_folder,
+            dropbox_add_sync_folder,
+            dropbox_remove_sync_folder,
+            dropbox_get_sync_folders,
+            dropbox_toggle_sync,
+            dropbox_sync_file
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

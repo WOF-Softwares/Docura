@@ -17,7 +17,15 @@ const SettingsDialog = ({
   onEditorSettingsChange,
   liveEditorType,
   onLiveEditorTypeChange,
-  syncProvider // 'omakase' or 'plasma'
+  syncProvider, // 'omakase' or 'plasma'
+  dropboxSyncEnabled,
+  onDropboxSyncToggle,
+  dropboxStatus,
+  onDropboxAuth,
+  onDropboxDisconnect,
+  onAddSyncFolder,
+  onRemoveSyncFolder,
+  syncFolders
 }) => {
   const [omakaseStatus, setOmakaseStatus] = useState(null)
   const [plasmaStatus, setPlasmaStatus] = useState(null)
@@ -70,6 +78,12 @@ const SettingsDialog = ({
               ⚙️ General
             </button>
             <button
+              className={`settings-tab ${activeTab === 'sync' ? 'active' : ''}`}
+              onClick={() => setActiveTab('sync')}
+            >
+              ☁️ Cloud Sync
+            </button>
+            <button
               className={`settings-tab ${activeTab === 'advanced' ? 'active' : ''}`}
               onClick={() => setActiveTab('advanced')}
             >
@@ -82,150 +96,259 @@ const SettingsDialog = ({
             {/* General Tab */}
             {activeTab === 'general' && (
               <>
-          {/* Omakase Sync Section */}
-          <div className="settings-section">
-            <h3>🎨 Omakase Integration</h3>
-            
-            {loading ? (
-              <div className="settings-loading">
-                <RefreshCw size={16} className="spin" />
-                <span>Checking Omakase status...</span>
-              </div>
-            ) : omakaseStatus?.available ? (
-              <>
-                <div className="settings-info success">
-                  <Check size={16} />
-                  <span>Omakase detected!</span>
-                </div>
-                
-                <div className="settings-details">
-                  <div className="detail-row">
-                    <span className="detail-label">Current Theme:</span>
-                    <span className="detail-value">{omakaseStatus.theme}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Current Font:</span>
-                    <span className="detail-value">{omakaseStatus.font}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Mapped to:</span>
-                    <span className="detail-value accent">{omakaseStatus.mappedTheme}</span>
+                <div className="settings-section">
+                  <h3>⚙️ General</h3>
+                  
+                  <div className="settings-option">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={autoSaveEnabled}
+                        onChange={(e) => onAutoSaveToggle(e.target.checked)}
+                      />
+                      <span>Enable Auto-Save</span>
+                    </label>
+                    <p className="option-description">
+                      Automatically save your file 2 seconds after you stop typing. Only works with saved files (not "Untitled" documents).
+                    </p>
                   </div>
                 </div>
-
-                <div className="settings-option">
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      checked={omakaseSyncEnabled}
-                      onChange={(e) => onOmakaseSyncToggle(e.target.checked)}
-                      disabled={plasmaSyncEnabled}
-                    />
-                    <span>Auto-sync with Omakase theme</span>
-                  </label>
-                  <p className="option-description">
-                    Automatically update Docura's theme when Omakase theme changes (checks every 30 seconds)
-                    {plasmaSyncEnabled && <span className="text-error"> • Disabled (Plasma sync is active)</span>}
-                  </p>
-                </div>
-
-                <button 
-                  className="sync-button"
-                  onClick={onSyncNow}
-                  disabled={!omakaseSyncEnabled}
-                >
-                  <RefreshCw size={16} />
-                  Sync Now
-                </button>
               </>
-            ) : (
-              <div className="settings-info">
-                <span>Omakase not detected. Install <a href="https://omakase.app" target="_blank" rel="noopener noreferrer">Omakase</a> to enable theme synchronization.</span>
-              </div>
             )}
-          </div>
 
-          {/* Plasma Sync Section */}
-          <div className="settings-section">
-            <h3>🎨 KDE Plasma Integration</h3>
-            
-            {loading ? (
-              <div className="settings-loading">
-                <RefreshCw size={16} className="spin" />
-                <span>Checking Plasma status...</span>
-              </div>
-            ) : plasmaStatus?.available ? (
+            {/* Cloud Sync Tab */}
+            {activeTab === 'sync' && (
               <>
-                <div className="settings-info success">
-                  <Check size={16} />
-                  <span>KDE Plasma detected!</span>
-                </div>
-                
-                <div className="settings-details">
-                  <div className="detail-row">
-                    <span className="detail-label">Color Scheme:</span>
-                    <span className="detail-value">{plasmaStatus.scheme}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Theme Mode:</span>
-                    <span className="detail-value">{plasmaStatus.isDark ? 'Dark' : 'Light'}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">Mapped to:</span>
-                    <span className="detail-value accent">{plasmaStatus.theme}</span>
-                  </div>
+                {/* Dropbox Sync Section */}
+                <div className="settings-section">
+                  <h3>☁️ Dropbox Sync</h3>
+                  
+                  {!dropboxStatus?.connected ? (
+                    <>
+                      <div className="settings-info">
+                        <span>Connect your Dropbox account to automatically sync your markdown files across devices.</span>
+                      </div>
+                      
+                      <button 
+                        className="sync-button"
+                        onClick={onDropboxAuth}
+                      >
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M6 2L0 6l6 4 6-4-6-4zm6 9l-6 4 6 4 6-4-6-4zm-6 9l6 4 6-4-6-4-6 4z"/>
+                        </svg>
+                        Connect Dropbox
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="settings-info success">
+                        <Check size={16} />
+                        <span>Dropbox connected!</span>
+                      </div>
+                      
+                      <div className="settings-details">
+                        <div className="detail-row">
+                          <span className="detail-label">Account:</span>
+                          <span className="detail-value">{dropboxStatus.email}</span>
+                        </div>
+                        <div className="detail-row">
+                          <span className="detail-label">Target Folder:</span>
+                          <span className="detail-value">{dropboxStatus.targetFolder || 'My Documents'}</span>
+                        </div>
+                      </div>
+
+                      <div className="settings-option">
+                        <label className="checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={dropboxSyncEnabled}
+                            onChange={(e) => onDropboxSyncToggle(e.target.checked)}
+                          />
+                          <span>Enable Dropbox Auto-Sync</span>
+                        </label>
+                        <p className="option-description">
+                          Automatically sync your markdown files to Dropbox when they change
+                        </p>
+                      </div>
+
+                      {/* Sync Folders Management */}
+                      <div className="settings-subsection">
+                        <h4 className="subsection-title">Synced Folders</h4>
+                        <p className="option-description">
+                          Select local folders to sync with Dropbox
+                        </p>
+                        
+                        {syncFolders && syncFolders.length > 0 ? (
+                          <div className="sync-folders-list">
+                            {syncFolders.map((folder, index) => (
+                              <div key={index} className="sync-folder-item">
+                                <div className="folder-info">
+                                  <span className="folder-icon">📁</span>
+                                  <div className="folder-paths">
+                                    <div className="local-path">{folder.localPath}</div>
+                                    <div className="dropbox-path">→ {folder.dropboxPath}</div>
+                                  </div>
+                                </div>
+                                <button
+                                  className="remove-folder-btn"
+                                  onClick={() => onRemoveSyncFolder(index)}
+                                  title="Remove folder"
+                                >
+                                  <X size={16} />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="settings-info">
+                            <span>No folders configured for sync yet.</span>
+                          </div>
+                        )}
+                        
+                        <button 
+                          className="add-folder-btn"
+                          onClick={onAddSyncFolder}
+                          disabled={!dropboxSyncEnabled}
+                        >
+                          + Add Folder to Sync
+                        </button>
+                      </div>
+
+                      <button 
+                        className="disconnect-btn"
+                        onClick={onDropboxDisconnect}
+                      >
+                        Disconnect Dropbox
+                      </button>
+                    </>
+                  )}
                 </div>
 
-                <div className="settings-option">
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      checked={plasmaSyncEnabled}
-                      onChange={(e) => onPlasmaSyncToggle(e.target.checked)}
-                      disabled={omakaseSyncEnabled}
-                    />
-                    <span>Auto-sync with Plasma color scheme</span>
-                  </label>
-                  <p className="option-description">
-                    Automatically update Docura's theme when Plasma color scheme changes (checks every 30 seconds)
-                    {omakaseSyncEnabled && <span className="text-error"> • Disabled (Omakase sync is active)</span>}
-                  </p>
+                {/* Omakase Sync Section */}
+                <div className="settings-section">
+                  <h3>🎨 Omakase Theme Sync</h3>
+                  
+                  {loading ? (
+                    <div className="settings-loading">
+                      <RefreshCw size={16} className="spin" />
+                      <span>Checking Omakase status...</span>
+                    </div>
+                  ) : omakaseStatus?.available ? (
+                    <>
+                      <div className="settings-info success">
+                        <Check size={16} />
+                        <span>Omakase detected!</span>
+                      </div>
+                      
+                      <div className="settings-details">
+                        <div className="detail-row">
+                          <span className="detail-label">Current Theme:</span>
+                          <span className="detail-value">{omakaseStatus.theme}</span>
+                        </div>
+                        <div className="detail-row">
+                          <span className="detail-label">Current Font:</span>
+                          <span className="detail-value">{omakaseStatus.font}</span>
+                        </div>
+                        <div className="detail-row">
+                          <span className="detail-label">Mapped to:</span>
+                          <span className="detail-value accent">{omakaseStatus.mappedTheme}</span>
+                        </div>
+                      </div>
+
+                      <div className="settings-option">
+                        <label className="checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={omakaseSyncEnabled}
+                            onChange={(e) => onOmakaseSyncToggle(e.target.checked)}
+                            disabled={plasmaSyncEnabled}
+                          />
+                          <span>Auto-sync with Omakase theme</span>
+                        </label>
+                        <p className="option-description">
+                          Automatically update Docura's theme when Omakase theme changes (checks every 30 seconds)
+                          {plasmaSyncEnabled && <span className="text-error"> • Disabled (Plasma sync is active)</span>}
+                        </p>
+                      </div>
+
+                      <button 
+                        className="sync-button"
+                        onClick={onSyncNow}
+                        disabled={!omakaseSyncEnabled}
+                      >
+                        <RefreshCw size={16} />
+                        Sync Now
+                      </button>
+                    </>
+                  ) : (
+                    <div className="settings-info">
+                      <span>Omakase not detected. Install <a href="https://omakase.app" target="_blank" rel="noopener noreferrer">Omakase</a> to enable theme synchronization.</span>
+                    </div>
+                  )}
                 </div>
 
-                <button 
-                  className="sync-button"
-                  onClick={onSyncNow}
-                  disabled={!plasmaSyncEnabled}
-                >
-                  <RefreshCw size={16} />
-                  Sync Now
-                </button>
-              </>
-            ) : (
-              <div className="settings-info">
-                <span>KDE Plasma not detected. This feature is only available when running under KDE Plasma 5 or 6.</span>
-              </div>
-            )}
-          </div>
+                {/* Plasma Sync Section */}
+                <div className="settings-section">
+                  <h3>🎨 KDE Plasma Theme Sync</h3>
+                  
+                  {loading ? (
+                    <div className="settings-loading">
+                      <RefreshCw size={16} className="spin" />
+                      <span>Checking Plasma status...</span>
+                    </div>
+                  ) : plasmaStatus?.available ? (
+                    <>
+                      <div className="settings-info success">
+                        <Check size={16} />
+                        <span>KDE Plasma detected!</span>
+                      </div>
+                      
+                      <div className="settings-details">
+                        <div className="detail-row">
+                          <span className="detail-label">Color Scheme:</span>
+                          <span className="detail-value">{plasmaStatus.scheme}</span>
+                        </div>
+                        <div className="detail-row">
+                          <span className="detail-label">Theme Mode:</span>
+                          <span className="detail-value">{plasmaStatus.isDark ? 'Dark' : 'Light'}</span>
+                        </div>
+                        <div className="detail-row">
+                          <span className="detail-label">Mapped to:</span>
+                          <span className="detail-value accent">{plasmaStatus.theme}</span>
+                        </div>
+                      </div>
 
-          {/* General Settings */}
-          <div className="settings-section">
-            <h3>⚙️ General</h3>
-            
-            <div className="settings-option">
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={autoSaveEnabled}
-                  onChange={(e) => onAutoSaveToggle(e.target.checked)}
-                />
-                <span>Enable Auto-Save</span>
-              </label>
-              <p className="option-description">
-                Automatically save your file 2 seconds after you stop typing. Only works with saved files (not "Untitled" documents).
-              </p>
-            </div>
-          </div>
+                      <div className="settings-option">
+                        <label className="checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={plasmaSyncEnabled}
+                            onChange={(e) => onPlasmaSyncToggle(e.target.checked)}
+                            disabled={omakaseSyncEnabled}
+                          />
+                          <span>Auto-sync with Plasma color scheme</span>
+                        </label>
+                        <p className="option-description">
+                          Automatically update Docura's theme when Plasma color scheme changes (checks every 30 seconds)
+                          {omakaseSyncEnabled && <span className="text-error"> • Disabled (Omakase sync is active)</span>}
+                        </p>
+                      </div>
+
+                      <button 
+                        className="sync-button"
+                        onClick={onSyncNow}
+                        disabled={!plasmaSyncEnabled}
+                      >
+                        <RefreshCw size={16} />
+                        Sync Now
+                      </button>
+                    </>
+                  ) : (
+                    <div className="settings-info">
+                      <span>KDE Plasma not detected. This feature is only available when running under KDE Plasma 5 or 6.</span>
+                    </div>
+                  )}
+                </div>
               </>
             )}
 
