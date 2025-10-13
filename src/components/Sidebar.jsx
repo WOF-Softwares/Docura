@@ -222,7 +222,7 @@ const Sidebar = ({
                   {dropboxSyncEnabled && !isCurrentFolderSynced() && onAddCurrentFolderToSync && (
                     <button
                       className="panel-action-button add-sync"
-                      onClick={onAddCurrentFolderToSync}
+                      onClick={() => onAddCurrentFolderToSync()}
                       title="Add folder to Dropbox sync"
                     >
                       <FolderPlus size={14} />
