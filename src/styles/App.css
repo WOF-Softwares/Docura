@@ -561,46 +561,34 @@
     --vditor-border-color: var(--border-color) !important;
 }
 
-/* Focus Mode - Dim other paragraphs with dramatic effect */
-/* Apply to the entire Vditor container for visual overlay effect */
-.vditor-wysiwyg[data-focus="true"]::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    pointer-events: none;
-    z-index: 1;
-    transition: opacity 0.3s ease;
-}
+/* Focus Mode - Now handled by JavaScript overlay with clip-path cutout! */
+/* The overlay is created dynamically and follows the active element */
+/* This approach is 100% reliable regardless of Vditor's DOM structure */
 
-/* Make all content dimmed by default */
-.vditor-wysiwyg[data-focus="true"] * {
-    position: relative;
-    z-index: 0;
-    opacity: 0.25 !important;
-    transition: opacity 0.3s ease, filter 0.3s ease;
-    filter: blur(0.5px);
-}
-
-/* Highlight current/active element */
-.vditor-wysiwyg[data-focus="true"] *:hover,
-.vditor-wysiwyg[data-focus="true"] *:focus,
-.vditor-wysiwyg[data-focus="true"] *:focus-within {
-    opacity: 1 !important;
-    z-index: 2 !important;
-    filter: blur(0px) !important;
-}
-
-/* Style for focused block - add subtle highlight */
-.vditor-wysiwyg[data-focus="true"] *:hover,
-.vditor-wysiwyg[data-focus="true"] *:focus-within {
-    background: rgba(99, 102, 241, 0.05) !important;
-    border-radius: 4px;
-    padding: 8px;
-    margin: -8px;
+/* Optional: Add subtle highlight to focused element */
+.vditor-wysiwyg[data-focus="true"] p:hover,
+.vditor-wysiwyg[data-focus="true"] h1:hover,
+.vditor-wysiwyg[data-focus="true"] h2:hover,
+.vditor-wysiwyg[data-focus="true"] h3:hover,
+.vditor-wysiwyg[data-focus="true"] h4:hover,
+.vditor-wysiwyg[data-focus="true"] h5:hover,
+.vditor-wysiwyg[data-focus="true"] h6:hover,
+.vditor-wysiwyg[data-focus="true"] ul:hover,
+.vditor-wysiwyg[data-focus="true"] ol:hover,
+.vditor-wysiwyg[data-focus="true"] blockquote:hover,
+.vditor-wysiwyg[data-focus="true"] pre:hover,
+.vditor-wysiwyg[data-focus="true"] table:hover,
+.vditor-wysiwyg[data-focus="true"] p:focus-within,
+.vditor-wysiwyg[data-focus="true"] h1:focus-within,
+.vditor-wysiwyg[data-focus="true"] h2:focus-within,
+.vditor-wysiwyg[data-focus="true"] h3:focus-within,
+.vditor-wysiwyg[data-focus="true"] h4:focus-within,
+.vditor-wysiwyg[data-focus="true"] h5:focus-within,
+.vditor-wysiwyg[data-focus="true"] h6:focus-within {
+    background: rgba(99, 102, 241, 0.08) !important;
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.2);
+    transition: all 0.2s ease;
 }
 
 /* Typewriter Mode - Center cursor vertically with padding */

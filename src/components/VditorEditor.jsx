@@ -85,7 +85,7 @@ const VditorEditor = ({
         'line', 'quote', 'list', 'ordered-list', 'check', '|',
         'code', 'inline-code', '|', 'upload', 'link', 'table', '|',
         'undo', 'redo', '|', 'fullscreen', 'edit-mode', '|',
-        'content-theme', 'code-theme', 'outline'
+         'outline'
       ],
       // Fix for customWysiwygToolbar error - provide empty function
       customWysiwygToolbar: () => {},
@@ -172,15 +172,14 @@ const VditorEditor = ({
 
   useEffect(() => {
     if (vditorRef.current && isInitialized) {
-      // Toggle focus mode - try multiple element paths
+      // Toggle focus mode with overlay approach
       const vditor = vditorRef.current.vditor
       
-      // Try to get the wysiwyg element
+      // Find the wysiwyg element
       let targetElement = null
       if (vditor?.wysiwyg?.element) {
         targetElement = vditor.wysiwyg.element
       } else if (vditor?.element) {
-        // Try the vditor element itself
         const wysiwygEl = vditor.element.querySelector('.vditor-wysiwyg')
         if (wysiwygEl) targetElement = wysiwygEl
       }
@@ -189,9 +188,77 @@ const VditorEditor = ({
         if (focusMode) {
           targetElement.setAttribute('data-focus', 'true')
           console.log('✅ Focus mode enabled on:', targetElement.className)
+          
+          // Create overlay element
+          const overlay = document.createElement('div')
+          overlay.id = 'focus-mode-overlay'
+          overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            pointer-events: none;
+            z-index: 9998;
+            transition: clip-path 0.3s ease;
+          `
+          
+          // Add overlay to body
+          document.body.appendChild(overlay)
+          
+          // Function to update cutout based on active element
+          const updateCutout = () => {
+            const activeEl = targetElement.querySelector('p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, ul:hover, ol:hover, blockquote:hover, pre:hover, table:hover') ||
+                            targetElement.querySelector('p:focus-within, h1:focus-within, h2:focus-within, h3:focus-within, h4:focus-within, h5:focus-within, h6:focus-within, ul:focus-within, ol:focus-within, blockquote:focus-within, pre:focus-within, table:focus-within') ||
+                            targetElement.querySelector('p, h1, h2, h3, h4, h5, h6') // Fallback to first element
+            
+            if (activeEl) {
+              const rect = activeEl.getBoundingClientRect()
+              const padding = 16
+              
+              // Create clip-path with hole for active element
+              const clipPath = `polygon(
+                0% 0%,
+                0% 100%,
+                ${rect.left - padding}px 100%,
+                ${rect.left - padding}px ${rect.top - padding}px,
+                ${rect.right + padding}px ${rect.top - padding}px,
+                ${rect.right + padding}px ${rect.bottom + padding}px,
+                ${rect.left - padding}px ${rect.bottom + padding}px,
+                ${rect.left - padding}px 100%,
+                100% 100%,
+                100% 0%
+              )`
+              
+              overlay.style.clipPath = clipPath
+            }
+          }
+          
+          // Update cutout on mouse move and click
+          targetElement.addEventListener('mousemove', updateCutout)
+          targetElement.addEventListener('click', updateCutout)
+          targetElement.addEventListener('keyup', updateCutout)
+          
+          // Initial cutout
+          setTimeout(updateCutout, 100)
+          
+          // Store cleanup function
+          targetElement._focusModeCleanup = () => {
+            targetElement.removeEventListener('mousemove', updateCutout)
+            targetElement.removeEventListener('click', updateCutout)
+            targetElement.removeEventListener('keyup', updateCutout)
+            overlay.remove()
+          }
         } else {
           targetElement.removeAttribute('data-focus')
           console.log('❌ Focus mode disabled')
+          
+          // Cleanup overlay
+          if (targetElement._focusModeCleanup) {
+            targetElement._focusModeCleanup()
+            targetElement._focusModeCleanup = null
+          }
         }
       } else {
         console.warn('⚠️ Could not find Vditor wysiwyg element for focus mode')

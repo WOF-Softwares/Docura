@@ -7,7 +7,6 @@
 
 A comprehensive blog post exploring document formats, explaining why Markdown is superior for modern work, especially in the AI era!
 
----
 
 ## 📄 Blog Post Details
 
