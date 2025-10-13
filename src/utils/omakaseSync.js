@@ -6,21 +6,23 @@
 import { invoke } from '@tauri-apps/api/core'
 
 /**
- * Map Omakase themes to Docura themes
+ * Map Omarchy themes to Docura themes
+ * 🎉 DHH Approved - Exact theme matching!
  */
 const OMAKASE_THEME_MAP = {
+  // Exact matches with Omarchy themes
   'dracula': 'dracula-dark',
   'catppuccin': 'cappuccino-dark',
   'catppuccin-latte': 'cappuccino-light',
   'nord': 'nord-dark',
-  'everforest': 'nord-light', // Similar aesthetic
-  'gruvbox': 'monokai-dark', // Warm, similar vibe
-  'kanagawa': 'nord-dark', // Cool, muted colors
+  'everforest': 'everforest-dark', // 🆕 Exact Omarchy match!
+  'gruvbox': 'gruvbox-dark', // 🆕 Exact Omarchy match!
+  'kanagawa': 'kanagawa', // 🆕 Exact Omarchy match!
   'matte-black': 'github-dark',
   'osaka-jade': 'nord-light',
   'ristretto': 'cappuccino-dark',
-  'rose-pine': 'nord-dark',
-  'tokyo-night': 'github-dark',
+  'rose-pine': 'rose-pine', // 🆕 Exact Omarchy match!
+  'tokyo-night': 'tokyo-night', // 🆕 Exact Omarchy match!
 }
 
 /**

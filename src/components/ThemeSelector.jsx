@@ -5,6 +5,7 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange, omakaseSy
   const [selectedTheme, setSelectedTheme] = useState(currentTheme)
 
   const themes = [
+    // Classic Themes (Light + Dark)
     {
       id: 'dracula',
       name: 'Dracula',
@@ -14,10 +15,10 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange, omakaseSy
           bg: '#f8f8f2',
           primary: '#6272a4',
           accent: '#50fa7b',
-          text: '#282a36'
+          text: '#282A36'
         },
         dark: {
-          bg: '#282a36',
+          bg: '#282A36',
           primary: '#bd93f9',
           accent: '#8be9fd',
           text: '#f8f8f2'
@@ -118,6 +119,82 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange, omakaseSy
           text: '#f0f6fc'
         }
       }
+    },
+    // 🎉 NEW! Omarchy-Exact Themes (DHH Approved!)
+    {
+      id: 'tokyo-night',
+      name: 'Tokyo Night',
+      description: '🆕 Modern dark with purple accents (Omarchy)',
+      category: 'omarchy',
+      darkOnly: true,
+      variants: {
+        dark: {
+          bg: '#1a1b26',
+          primary: '#7aa2f7',
+          accent: '#bb9af7',
+          text: '#c0caf5'
+        }
+      }
+    },
+    {
+      id: 'everforest-dark',
+      name: 'Everforest',
+      description: '🆕 Forest greens and earth tones (Omarchy)',
+      category: 'omarchy',
+      darkOnly: true,
+      variants: {
+        dark: {
+          bg: '#2d353b',
+          primary: '#a7c080',
+          accent: '#7fbbb3',
+          text: '#d3c6aa'
+        }
+      }
+    },
+    {
+      id: 'gruvbox-dark',
+      name: 'Gruvbox',
+      description: '🆕 Retro warm orange palette (Omarchy)',
+      category: 'omarchy',
+      darkOnly: true,
+      variants: {
+        dark: {
+          bg: '#282828',
+          primary: '#fabd2f',
+          accent: '#fe8019',
+          text: '#ebdbb2'
+        }
+      }
+    },
+    {
+      id: 'rose-pine',
+      name: 'Rose Pine',
+      description: '🆕 Elegant rosé and lavender (Omarchy)',
+      category: 'omarchy',
+      darkOnly: true,
+      variants: {
+        dark: {
+          bg: '#191724',
+          primary: '#ebbcba',
+          accent: '#c4a7e7',
+          text: '#e0def4'
+        }
+      }
+    },
+    {
+      id: 'kanagawa',
+      name: 'Kanagawa',
+      description: '🆕 Japanese-inspired muted colors (Omarchy)',
+      category: 'omarchy',
+      darkOnly: true,
+      variants: {
+        dark: {
+          bg: '#1f1f28',
+          primary: '#957fb8',
+          accent: '#7e9cd8',
+          text: '#dcd7ba'
+        }
+      }
     }
   ]
 
@@ -127,6 +204,11 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange, omakaseSy
   }
 
   const getCurrentVariant = (theme) => {
+    // Handle dark-only themes (Omarchy themes)
+    if (theme.darkOnly) {
+      return theme.variants.dark
+    }
+    
     // Extract the current theme variant from the selectedTheme
     const parts = selectedTheme.split('-')
     const isCurrentThemeDark = parts.includes('dark')
@@ -141,7 +223,7 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange, omakaseSy
         <div className="theme-selector-header">
           <div className="theme-selector-title">
             <Palette size={20} />
-            <h2>Select Theme</h2>
+            <h2>Select Theme (17 Available)</h2>
           </div>
           <button className="close-button" onClick={onClose}>
             <X size={20} />
@@ -159,40 +241,90 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange, omakaseSy
             </div>
           )}
           
-          <div className="themes-grid">
-            {themes.map((theme) => {
-              const currentVariant = getCurrentVariant(theme)
-              const themeId = `${theme.id}-${selectedTheme.includes('dark') ? 'dark' : 'light'}`
-              const isSelected = selectedTheme.startsWith(theme.id)
-              
-              return (
-                <div
-                  key={theme.id}
-                  className={`theme-card ${isSelected ? 'selected' : ''} ${omakaseSyncEnabled ? 'disabled' : ''}`}
-                  onClick={() => !omakaseSyncEnabled && setSelectedTheme(themeId)}
-                >
-                  <div className="theme-preview" style={{ backgroundColor: currentVariant.bg }}>
-                    <div className="theme-preview-header" style={{ backgroundColor: currentVariant.primary }}>
-                      <div className="theme-preview-dot" />
-                      <div className="theme-preview-dot" />
-                      <div className="theme-preview-dot" />
+          {/* Classic Themes Section */}
+          <div className="theme-section">
+            <div className="theme-section-header">
+              <h3>Classic Themes</h3>
+              <span className="theme-section-badge">12 themes</span>
+            </div>
+            <div className="themes-grid">
+              {themes.filter(t => !t.category).map((theme) => {
+                const currentVariant = getCurrentVariant(theme)
+                const themeId = `${theme.id}-${selectedTheme.includes('dark') ? 'dark' : 'light'}`
+                const isSelected = selectedTheme === themeId || selectedTheme.startsWith(theme.id)
+                
+                return (
+                  <div
+                    key={theme.id}
+                    className={`theme-card ${isSelected ? 'selected' : ''} ${omakaseSyncEnabled ? 'disabled' : ''}`}
+                    onClick={() => !omakaseSyncEnabled && setSelectedTheme(themeId)}
+                  >
+                    <div className="theme-preview" style={{ backgroundColor: currentVariant.bg }}>
+                      <div className="theme-preview-header" style={{ backgroundColor: currentVariant.primary }}>
+                        <div className="theme-preview-dot" />
+                        <div className="theme-preview-dot" />
+                        <div className="theme-preview-dot" />
+                      </div>
+                      <div className="theme-preview-content">
+                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.text, opacity: 0.8 }} />
+                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.accent, opacity: 0.6, width: '80%' }} />
+                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.text, opacity: 0.4, width: '90%' }} />
+                      </div>
                     </div>
-                    <div className="theme-preview-content">
-                      <div className="theme-preview-line" style={{ backgroundColor: currentVariant.text, opacity: 0.8 }} />
-                      <div className="theme-preview-line" style={{ backgroundColor: currentVariant.accent, opacity: 0.6, width: '80%' }} />
-                      <div className="theme-preview-line" style={{ backgroundColor: currentVariant.text, opacity: 0.4, width: '90%' }} />
+                    <div className="theme-info">
+                      <h3>{theme.name}</h3>
+                      <p>{theme.description}</p>
                     </div>
+                    {isSelected && (
+                      <div className="theme-selected-badge">✓</div>
+                    )}
                   </div>
-                  <div className="theme-info">
-                    <h3>{theme.name}</h3>
-                    <p>{theme.description}</p>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Omarchy Themes Section */}
+          <div className="theme-section">
+            <div className="theme-section-header">
+              <h3>🎉 Omarchy Themes (DHH Approved!)</h3>
+              <span className="theme-section-badge">5 New!</span>
+            </div>
+            <div className="themes-grid">
+              {themes.filter(t => t.category === 'omarchy').map((theme) => {
+                const currentVariant = getCurrentVariant(theme)
+                const themeId = theme.id
+                const isSelected = selectedTheme === themeId
+                
+                return (
+                  <div
+                    key={theme.id}
+                    className={`theme-card ${isSelected ? 'selected' : ''} ${omakaseSyncEnabled ? 'disabled' : ''}`}
+                    onClick={() => !omakaseSyncEnabled && setSelectedTheme(themeId)}
+                  >
+                    <div className="theme-preview" style={{ backgroundColor: currentVariant.bg }}>
+                      <div className="theme-preview-header" style={{ backgroundColor: currentVariant.primary }}>
+                        <div className="theme-preview-dot" />
+                        <div className="theme-preview-dot" />
+                        <div className="theme-preview-dot" />
+                      </div>
+                      <div className="theme-preview-content">
+                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.text, opacity: 0.8 }} />
+                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.accent, opacity: 0.6, width: '80%' }} />
+                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.text, opacity: 0.4, width: '90%' }} />
+                      </div>
+                    </div>
+                    <div className="theme-info">
+                      <h3>{theme.name} 👌</h3>
+                      <p>{theme.description}</p>
+                    </div>
+                    {isSelected && (
+                      <div className="theme-selected-badge">✓</div>
+                    )}
                   </div>
-                  {isSelected && (
-                    <div className="theme-selected-badge">✓</div>
-                  )}
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
           </div>
         </div>
 

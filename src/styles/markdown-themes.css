@@ -395,6 +395,83 @@
     --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
+/* 🎨 OMARCHY-EXACT THEMES - DHH Approved! 🎉 */
+
+/* Tokyo Night Theme */
+[data-theme="tokyo-night"] {
+    --text-strong: #bb9af7;
+    --text-emphasis: #ff9e64;
+    --code-block-bg: var(--code-bg);
+    --code-block-color: var(--code-color);
+    --blockquote-bg: var(--bg-secondary);
+    --blockquote-color: var(--text-primary);
+    --table-bg: var(--bg-primary);
+    --table-header-bg: var(--bg-secondary);
+    --table-header-color: var(--text-primary);
+    --table-alt-bg: var(--bg-tertiary);
+    --shadow-color: rgba(122, 162, 247, 0.2);
+}
+
+/* Everforest Theme */
+[data-theme="everforest-dark"] {
+    --text-strong: #e67e80;
+    --text-emphasis: #d699b6;
+    --code-block-bg: var(--code-bg);
+    --code-block-color: var(--code-color);
+    --blockquote-bg: var(--bg-secondary);
+    --blockquote-color: var(--text-primary);
+    --table-bg: var(--bg-primary);
+    --table-header-bg: var(--bg-secondary);
+    --table-header-color: var(--text-primary);
+    --table-alt-bg: var(--bg-tertiary);
+    --shadow-color: rgba(167, 192, 128, 0.2);
+}
+
+/* Gruvbox Theme */
+[data-theme="gruvbox-dark"] {
+    --text-strong: #fb4934;
+    --text-emphasis: #fe8019;
+    --code-block-bg: var(--code-bg);
+    --code-block-color: var(--code-color);
+    --blockquote-bg: var(--bg-secondary);
+    --blockquote-color: var(--text-primary);
+    --table-bg: var(--bg-primary);
+    --table-header-bg: var(--bg-secondary);
+    --table-header-color: var(--text-primary);
+    --table-alt-bg: var(--bg-tertiary);
+    --shadow-color: rgba(254, 128, 25, 0.2);
+}
+
+/* Rose Pine Theme */
+[data-theme="rose-pine"] {
+    --text-strong: #eb6f92;
+    --text-emphasis: #f6c177;
+    --code-block-bg: var(--code-bg);
+    --code-block-color: var(--code-color);
+    --blockquote-bg: var(--bg-secondary);
+    --blockquote-color: var(--text-primary);
+    --table-bg: var(--bg-primary);
+    --table-header-bg: var(--bg-secondary);
+    --table-header-color: var(--text-primary);
+    --table-alt-bg: var(--bg-tertiary);
+    --shadow-color: rgba(235, 188, 186, 0.2);
+}
+
+/* Kanagawa Theme */
+[data-theme="kanagawa"] {
+    --text-strong: #d27e99;
+    --text-emphasis: #ffa066;
+    --code-block-bg: var(--code-bg);
+    --code-block-color: var(--code-color);
+    --blockquote-bg: var(--bg-secondary);
+    --blockquote-color: var(--text-primary);
+    --table-bg: var(--bg-primary);
+    --table-header-bg: var(--bg-secondary);
+    --table-header-color: var(--text-primary);
+    --table-alt-bg: var(--bg-tertiary);
+    --shadow-color: rgba(149, 127, 184, 0.2);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .markdown-preview {

@@ -295,6 +295,123 @@
   --text-emphasis: #e36209;
 }
 
+/* 🎨 OMARCHY-EXACT THEMES - DHH Approved! 🎉 */
+
+/* Tokyo Night Theme */
+[data-theme="tokyo-night"] {
+  --bg-primary: #1a1b26;
+  --bg-secondary: #24283b;
+  --bg-tertiary: #364a82;
+  --text-primary: #c0caf5;
+  --text-secondary: #9aa5ce;
+  --border-color: #292e42;
+  --accent-color: #7aa2f7;
+  --accent-hover: #7dcfff;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  
+  --heading-color: #7aa2f7;
+  --heading-border: 1px solid #292e42;
+  --code-bg: #24283b;
+  --code-color: #bb9af7;
+  --blockquote-border: #7aa2f7;
+  --link-color: #7aa2f7;
+  --link-hover: #7dcfff;
+  --text-strong: #bb9af7;
+  --text-emphasis: #ff9e64;
+}
+
+/* Everforest Theme */
+[data-theme="everforest-dark"] {
+  --bg-primary: #2d353b;
+  --bg-secondary: #3d484d;
+  --bg-tertiary: #4a555b;
+  --text-primary: #d3c6aa;
+  --text-secondary: #a7c080;
+  --border-color: #475258;
+  --accent-color: #a7c080;
+  --accent-hover: #83c092;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  
+  --heading-color: #a7c080;
+  --heading-border: 1px solid #475258;
+  --code-bg: #3d484d;
+  --code-color: #7fbbb3;
+  --blockquote-border: #a7c080;
+  --link-color: #a7c080;
+  --link-hover: #83c092;
+  --text-strong: #e67e80;
+  --text-emphasis: #d699b6;
+}
+
+/* Gruvbox Theme */
+[data-theme="gruvbox-dark"] {
+  --bg-primary: #282828;
+  --bg-secondary: #3c3836;
+  --bg-tertiary: #504945;
+  --text-primary: #ebdbb2;
+  --text-secondary: #d5c4a1;
+  --border-color: #504945;
+  --accent-color: #fe8019;
+  --accent-hover: #fabd2f;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  
+  --heading-color: #fabd2f;
+  --heading-border: 1px solid #504945;
+  --code-bg: #3c3836;
+  --code-color: #8ec07c;
+  --blockquote-border: #fe8019;
+  --link-color: #83a598;
+  --link-hover: #8ec07c;
+  --text-strong: #fb4934;
+  --text-emphasis: #fe8019;
+}
+
+/* Rose Pine Theme */
+[data-theme="rose-pine"] {
+  --bg-primary: #191724;
+  --bg-secondary: #26233a;
+  --bg-tertiary: #403d52;
+  --text-primary: #e0def4;
+  --text-secondary: #908caa;
+  --border-color: #403d52;
+  --accent-color: #ebbcba;
+  --accent-hover: #f6c177;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  
+  --heading-color: #ebbcba;
+  --heading-border: 1px solid #403d52;
+  --code-bg: #26233a;
+  --code-color: #c4a7e7;
+  --blockquote-border: #ebbcba;
+  --link-color: #9ccfd8;
+  --link-hover: #ebbcba;
+  --text-strong: #eb6f92;
+  --text-emphasis: #f6c177;
+}
+
+/* Kanagawa Theme */
+[data-theme="kanagawa"] {
+  --bg-primary: #1f1f28;
+  --bg-secondary: #363646;
+  --bg-tertiary: #54546d;
+  --text-primary: #dcd7ba;
+  --text-secondary: #c8c093;
+  --border-color: #54546d;
+  --accent-color: #957fb8;
+  --accent-hover: #7e9cd8;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  
+  --heading-color: #957fb8;
+  --heading-border: 1px solid #54546d;
+  --code-bg: #363646;
+  --code-color: #7e9cd8;
+  --blockquote-border: #957fb8;
+  --link-color: #7fb4ca;
+  --link-hover: #7e9cd8;
+  --text-strong: #d27e99;
+  --text-emphasis: #ffa066;
+}
+
 /* Reset and base styles */
 * {
   margin: 0;
