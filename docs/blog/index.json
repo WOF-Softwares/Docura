@@ -1,5 +1,13 @@
 [
   {
+    "slug": "fixing-cli-timing-race-condition-bug",
+    "title": "Fixing the CLI Timing Race Condition Bug: A Real-World Debugging Journey",
+    "date": "October 14, 2025",
+    "readTime": "12 min read",
+    "excerpt": "How we fixed Docura's CLI functionality that wasn't opening files and folders. A deep dive into race conditions, timing issues, and the lessons learned from debugging modern app architectures.",
+    "file": "fixing-cli-timing-race-condition-bug.md"
+  },
+  {
     "slug": "modern-development-choosing-tools-wisely",
     "title": "Modern Development: Choosing Tools Wisely, Not Just Using Them Blindly",
     "date": "October 14, 2025",
