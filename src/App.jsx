@@ -2211,7 +2211,9 @@ const openRecentItem = async (item) => {
     
     try {
       await addDropboxSyncFolder(pathToAdd, subfolder);
-      await loadDropboxSyncFolders();
+      // Reload sync folders
+      const folders = await getDropboxSyncFolders();
+      setSyncFolders(folders);
       toast.success(`✅ Added "${folderName}" to Dropbox sync!`);
     } catch (error) {
       console.error("Failed to add folder to sync:", error);
