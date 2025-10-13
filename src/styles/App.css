@@ -591,30 +591,94 @@
     transition: all 0.2s ease;
 }
 
-/* Typewriter Mode - Center cursor vertically with padding */
+/* Typewriter Mode - Typora-style vertical centering with margin auto! */
 .vditor-wysiwyg[data-typewriter="true"] {
-    padding-top: 50vh !important;
-    padding-bottom: 50vh !important;
-    transition: padding 0.3s ease;
+    /* For long documents: padding creates space */
+    padding-top: calc(50vh - 60px) !important;
+    padding-bottom: calc(50vh - 60px) !important;
+    /* For short documents: min-height + margin auto centers content */
+    min-height: 100vh !important;
+    box-sizing: border-box !important;
+    transition: all 0.3s ease;
 }
 
-/* Add visual indicator for typewriter mode */
+/* Center short documents vertically using margin auto */
+.vditor-wysiwyg[data-typewriter="true"] > :first-child {
+    margin-top: auto !important;
+    /* Small gap before first line (Typora-style UX psychology) */
+    padding-top: 2rem !important;
+}
+
+.vditor-wysiwyg[data-typewriter="true"] > :last-child {
+    margin-bottom: auto !important;
+}
+
+/* DRAMATIC visual indicator for typewriter mode - You'll DEFINITELY notice this! */
+.vditor-wysiwyg[data-typewriter="true"]::before {
+    content: '✍️ TYPEWRITER MODE - Cursor Centered';
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    background: var(--accent-color);
+    color: white;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+    animation: typewriterPulse 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes typewriterPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+}
+
+/* Center line indicator - BRIGHT and OBVIOUS */
 .vditor-wysiwyg[data-typewriter="true"]::after {
     content: '';
     position: fixed;
     left: 0;
     right: 0;
     top: 50%;
-    height: 2px;
+    height: 3px;
     background: linear-gradient(90deg, 
         transparent, 
-        var(--accent-color) 20%, 
-        var(--accent-color) 80%, 
+        rgba(99, 102, 241, 0.3) 10%,
+        var(--accent-color) 40%, 
+        var(--accent-color) 60%, 
+        rgba(99, 102, 241, 0.3) 90%,
         transparent
     );
-    opacity: 0.3;
+    opacity: 0.7;
     pointer-events: none;
-    z-index: 10;
+    z-index: 999;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+}
+
+/* Highlight the active line being typed */
+.vditor-wysiwyg[data-typewriter="true"] p:focus-within,
+.vditor-wysiwyg[data-typewriter="true"] h1:focus-within,
+.vditor-wysiwyg[data-typewriter="true"] h2:focus-within,
+.vditor-wysiwyg[data-typewriter="true"] h3:focus-within,
+.vditor-wysiwyg[data-typewriter="true"] h4:focus-within,
+.vditor-wysiwyg[data-typewriter="true"] h5:focus-within,
+.vditor-wysiwyg[data-typewriter="true"] h6:focus-within {
+    background: rgba(99, 102, 241, 0.12) !important;
+    border-radius: 8px;
+    padding: 8px 12px !important;
+    margin-left: -12px !important;
+    margin-right: -12px !important;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+    transition: all 0.3s ease;
 }
 
 /* Override Chinese text in Vditor headings dropdown */

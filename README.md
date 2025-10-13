@@ -41,8 +41,8 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 
 ### 🆕 Day 4 Features (October 13, 2025)
 
-- **🎯 Focus Mode** (F8): Typora-style focus writing - dims other paragraphs, highlights current block
-- **⌨️ Typewriter Mode** (F9): Centers cursor vertically for distraction-free writing
+- **🎯 Focus Mode** (F8): Typora-style focus writing - dynamic overlay dims everything except current block (ADHD-friendly!)
+- **⌨️ Typewriter Mode** (F9): **Actively scrolls to keep cursor centered on screen** - you'll see a bright center line + "TYPEWRITER MODE" badge!
 - **✨ Visual Feedback**: Toolbar buttons show active state with accent color
 - **🎨 Smooth Transitions**: Beautiful fade effects when toggling modes
 - **🔧 Smart Integration**: Works seamlessly with Vditor's modern WYSIWYG editor
@@ -92,8 +92,8 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 
 - ✅ **Three Editing Modes** - Code, Live (WYSIWYG), and Preview
 - ✅ **17 Beautiful Themes** - Unified across entire application (12 classic + 5 Omarchy-exact)
-- ✅ **Focus Mode** - Typora-style distraction-free writing (F8)
-- ✅ **Typewriter Mode** - Center cursor vertically for flow (F9)
+- ✅ **Focus Mode** - Dynamic overlay spotlight on current paragraph (F8) - ADHD-friendly! 🎯
+- ✅ **Typewriter Mode** - Auto-scrolling to keep cursor centered (F9) - Just like a real typewriter! ⌨️
 - ✅ **PDF Export** - High-quality PDF generation with native save dialogs
 - ✅ **Print Support** - PDF preview dialog with system print integration
 - ✅ **Fullscreen Mode** - Distraction-free writing (F11)
@@ -443,8 +443,8 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 
 - 🖥️ **Tiling WM Detection** - Auto-detects i3, sway, Hyprland, bspwm, etc.
 - 🎬 **Fullscreen Mode** (F11) - Distraction-free writing
-- 🎯 **Focus Mode** (F8) - Typora-style focus writing with dimmed paragraphs
-- ⌨️ **Typewriter Mode** (F9) - Centered cursor for flow writing
+- 🎯 **Focus Mode** (F8) - Dynamic overlay spotlight - you'll LOVE this for focused writing! (ADHD-friendly)
+- ⌨️ **Typewriter Mode** (F9) - **Auto-scrolls to keep cursor centered** - watch the magic happen! ✨
 - 📐 **Sidebar Toggle** (Ctrl+B) - Show/hide file explorer
 - 🎯 **Smart UI** - Hides toolbar and sidebar in fullscreen
 - ✨ **Visual Feedback** - Active mode indicators in toolbar
@@ -461,8 +461,8 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 - **Ctrl+Alt+P** - Print (preview dialog)
 - **Ctrl+Shift+P** - Settings
 - **Ctrl+B** - Toggle sidebar visibility
-- **F8** - Toggle Focus Mode (dim other paragraphs)
-- **F9** - Toggle Typewriter Mode (center cursor)
+- **F8** - Toggle Focus Mode (dynamic overlay spotlight - dims everything except current block) 🎯
+- **F9** - Toggle Typewriter Mode (auto-scroll to keep cursor centered - you'll DEFINITELY notice this!) ⌨️✨
 - **F11** - Toggle fullscreen mode
 
 *Typora-level keyboard shortcuts!* ⚡

@@ -143,7 +143,7 @@ const VditorEditor = ({
 
   useEffect(() => {
     if (vditorRef.current && isInitialized) {
-      // Toggle typewriter mode - try multiple element paths
+      // Toggle typewriter mode with active centering
       const vditor = vditorRef.current.vditor
       
       // Try to get the wysiwyg element
@@ -151,7 +151,6 @@ const VditorEditor = ({
       if (vditor?.wysiwyg?.element) {
         targetElement = vditor.wysiwyg.element
       } else if (vditor?.element) {
-        // Try the vditor element itself
         const wysiwygEl = vditor.element.querySelector('.vditor-wysiwyg')
         if (wysiwygEl) targetElement = wysiwygEl
       }
@@ -159,13 +158,79 @@ const VditorEditor = ({
       if (targetElement) {
         if (typewriterMode) {
           targetElement.setAttribute('data-typewriter', 'true')
-          console.log('✅ Typewriter mode enabled on:', targetElement.className)
+          console.log('✅ Typewriter mode enabled - Cursor always centered! ⌨️')
+          
+          // Function to center the current line
+          const centerCurrentLine = () => {
+            // Get cursor position
+            const selection = window.getSelection()
+            if (selection && selection.rangeCount > 0) {
+              const range = selection.getRangeAt(0)
+              const container = range.commonAncestorContainer
+              const element = container.nodeType === 3 ? container.parentElement : container
+              const currentLine = element.closest('p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, pre, table, div')
+              
+              if (currentLine && targetElement.contains(currentLine)) {
+                const lineRect = currentLine.getBoundingClientRect()
+                const viewportCenter = window.innerHeight / 2
+                const lineCenter = lineRect.top + (lineRect.height / 2)
+                const scrollOffset = lineCenter - viewportCenter
+                
+                // Smooth scroll to center the line
+                window.scrollBy({
+                  top: scrollOffset,
+                  behavior: 'smooth'
+                })
+              }
+            }
+          }
+          
+          // Center on various events
+          const handleTypewriterUpdate = () => {
+            setTimeout(centerCurrentLine, 50) // Small delay for DOM update
+          }
+          
+          targetElement.addEventListener('input', handleTypewriterUpdate)
+          targetElement.addEventListener('keydown', handleTypewriterUpdate)
+          targetElement.addEventListener('click', handleTypewriterUpdate)
+          document.addEventListener('selectionchange', handleTypewriterUpdate)
+          
+          // Center every 200ms for continuous centering
+          const typewriterInterval = setInterval(centerCurrentLine, 200)
+          
+          // Initial center
+          setTimeout(centerCurrentLine, 100)
+          
+          // Store cleanup
+          targetElement._typewriterCleanup = () => {
+            targetElement.removeEventListener('input', handleTypewriterUpdate)
+            targetElement.removeEventListener('keydown', handleTypewriterUpdate)
+            targetElement.removeEventListener('click', handleTypewriterUpdate)
+            document.removeEventListener('selectionchange', handleTypewriterUpdate)
+            clearInterval(typewriterInterval)
+            console.log('🧹 Typewriter mode cleanup')
+          }
         } else {
           targetElement.removeAttribute('data-typewriter')
           console.log('❌ Typewriter mode disabled')
+          
+          // Cleanup
+          if (targetElement._typewriterCleanup) {
+            targetElement._typewriterCleanup()
+            targetElement._typewriterCleanup = null
+          }
         }
       } else {
         console.warn('⚠️ Could not find Vditor wysiwyg element for typewriter mode')
+      }
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      const vditor = vditorRef.current?.vditor
+      const targetElement = vditor?.wysiwyg?.element || vditor?.element?.querySelector('.vditor-wysiwyg')
+      if (targetElement?._typewriterCleanup) {
+        targetElement._typewriterCleanup()
       }
     }
   }, [typewriterMode, isInitialized])
@@ -187,7 +252,11 @@ const VditorEditor = ({
       if (targetElement) {
         if (focusMode) {
           targetElement.setAttribute('data-focus', 'true')
-          console.log('✅ Focus mode enabled on:', targetElement.className)
+          console.log('✅ Focus mode enabled - ADHD-friendly! 🎯')
+          
+          // Remove any existing overlay first (safety check)
+          const existingOverlay = document.getElementById('focus-mode-overlay')
+          if (existingOverlay) existingOverlay.remove()
           
           // Create overlay element
           const overlay = document.createElement('div')
@@ -207,13 +276,47 @@ const VditorEditor = ({
           // Add overlay to body
           document.body.appendChild(overlay)
           
+          let lastActiveElement = null
+          
+          // Function to get current active element
+          const getActiveElement = () => {
+            // Priority 1: Element with cursor (selection)
+            const selection = window.getSelection()
+            if (selection && selection.rangeCount > 0) {
+              const range = selection.getRangeAt(0)
+              const container = range.commonAncestorContainer
+              const element = container.nodeType === 3 ? container.parentElement : container
+              const closestBlock = element.closest('p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, pre, table, div')
+              if (closestBlock && targetElement.contains(closestBlock)) {
+                return closestBlock
+              }
+            }
+            
+            // Priority 2: Focused element (keyboard navigation)
+            const focused = document.activeElement
+            if (focused && targetElement.contains(focused)) {
+              const closestBlock = focused.closest('p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, pre, table, div')
+              if (closestBlock) return closestBlock
+            }
+            
+            // Priority 3: Hovered element (mouse)
+            const hovered = targetElement.querySelector('p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, ul:hover, ol:hover, blockquote:hover, pre:hover, table:hover')
+            if (hovered) return hovered
+            
+            // Priority 4: Element with focus-within
+            const focusWithin = targetElement.querySelector('p:focus-within, h1:focus-within, h2:focus-within, h3:focus-within, h4:focus-within, h5:focus-within, h6:focus-within, ul:focus-within, ol:focus-within, blockquote:focus-within, pre:focus-within, table:focus-within')
+            if (focusWithin) return focusWithin
+            
+            // Fallback: Keep last active or use first element
+            return lastActiveElement || targetElement.querySelector('p, h1, h2, h3, h4, h5, h6')
+          }
+          
           // Function to update cutout based on active element
           const updateCutout = () => {
-            const activeEl = targetElement.querySelector('p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, ul:hover, ol:hover, blockquote:hover, pre:hover, table:hover') ||
-                            targetElement.querySelector('p:focus-within, h1:focus-within, h2:focus-within, h3:focus-within, h4:focus-within, h5:focus-within, h6:focus-within, ul:focus-within, ol:focus-within, blockquote:focus-within, pre:focus-within, table:focus-within') ||
-                            targetElement.querySelector('p, h1, h2, h3, h4, h5, h6') // Fallback to first element
+            const activeEl = getActiveElement()
             
             if (activeEl) {
+              lastActiveElement = activeEl
               const rect = activeEl.getBoundingClientRect()
               const padding = 16
               
@@ -235,10 +338,16 @@ const VditorEditor = ({
             }
           }
           
-          // Update cutout on mouse move and click
+          // Update on various events
           targetElement.addEventListener('mousemove', updateCutout)
           targetElement.addEventListener('click', updateCutout)
           targetElement.addEventListener('keyup', updateCutout)
+          targetElement.addEventListener('keydown', updateCutout)
+          targetElement.addEventListener('input', updateCutout)
+          document.addEventListener('selectionchange', updateCutout)
+          
+          // Update periodically for cursor movement
+          const intervalId = setInterval(updateCutout, 100)
           
           // Initial cutout
           setTimeout(updateCutout, 100)
@@ -248,20 +357,41 @@ const VditorEditor = ({
             targetElement.removeEventListener('mousemove', updateCutout)
             targetElement.removeEventListener('click', updateCutout)
             targetElement.removeEventListener('keyup', updateCutout)
+            targetElement.removeEventListener('keydown', updateCutout)
+            targetElement.removeEventListener('input', updateCutout)
+            document.removeEventListener('selectionchange', updateCutout)
+            clearInterval(intervalId)
             overlay.remove()
+            console.log('🧹 Focus mode cleanup: overlay removed')
           }
         } else {
           targetElement.removeAttribute('data-focus')
           console.log('❌ Focus mode disabled')
           
-          // Cleanup overlay
+          // BULLETPROOF cleanup - multiple safety checks
           if (targetElement._focusModeCleanup) {
             targetElement._focusModeCleanup()
             targetElement._focusModeCleanup = null
           }
+          
+          // Extra safety: Remove overlay by ID if it exists
+          const overlay = document.getElementById('focus-mode-overlay')
+          if (overlay) {
+            overlay.remove()
+            console.log('🧹 Safety cleanup: removed lingering overlay')
+          }
         }
       } else {
         console.warn('⚠️ Could not find Vditor wysiwyg element for focus mode')
+      }
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      const overlay = document.getElementById('focus-mode-overlay')
+      if (overlay) {
+        overlay.remove()
+        console.log('🧹 Component unmount: overlay removed')
       }
     }
   }, [focusMode, isInitialized])
