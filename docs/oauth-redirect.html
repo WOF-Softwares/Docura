@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docura - Dropbox Authorization</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #1a202c;
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .status {
+            margin: 24px 0;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.loading {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .code-box {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 24px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            color: #2d3748;
+            word-break: break-all;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 8px;
+        }
+
+        .btn:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #718096;
+        }
+
+        .btn-secondary:hover {
+            background: #4a5568;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .instructions {
+            background: #edf2f7;
+            border-left: 4px solid #667eea;
+            padding: 16px;
+            margin: 24px 0;
+            text-align: left;
+            border-radius: 4px;
+        }
+
+        .instructions h3 {
+            color: #2d3748;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #4a5568;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .instructions li {
+            margin: 4px 0;
+        }
+
+        .footer {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" x-data="oauthHandler()">
+        <div class="logo">☁️</div>
+        <h1>Dropbox Authorization</h1>
+        
+        <!-- Loading State -->
+        <div x-show="status === 'loading'" class="status loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 8px;">Processing authorization...</p>
+        </div>
+
+        <!-- Success State -->
+        <div x-show="status === 'success'" class="status success">
+            <p>✅ Authorization successful!</p>
+        </div>
+
+        <!-- Error State -->
+        <div x-show="status === 'error'" class="status error">
+            <p>❌ <span x-text="errorMessage"></span></p>
+        </div>
+
+        <!-- Authorization Code Display -->
+        <template x-if="authCode">
+            <div>
+                <div class="code-box" x-text="authCode"></div>
+                
+                <div class="instructions">
+                    <h3>📋 Next Steps:</h3>
+                    <ol>
+                        <li>Copy the code above</li>
+                        <li>Go back to Docura</li>
+                        <li>Paste it in the authorization dialog</li>
+                        <li>Click "Connect Dropbox"</li>
+                    </ol>
+                </div>
+
+                <button @click="copyCode" class="btn" x-show="!copied">
+                    📋 Copy Code
+                </button>
+                <button class="btn" x-show="copied" disabled>
+                    ✅ Copied!
+                </button>
+                
+                <button @click="openApp" class="btn btn-secondary" x-show="canUseDeepLink">
+                    🚀 Open Docura
+                </button>
+            </div>
+        </template>
+
+        <div class="footer">
+            <p>
+                Secure OAuth 2.0 authentication for 
+                <a href="https://github.com/yourusername/docura" target="_blank">Docura</a>
+            </p>
+            <p style="margin-top: 8px;">
+                <a href="privacy.html">Privacy Policy</a> • 
+                <a href="index.html">Back to Home</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function oauthHandler() {
+            return {
+                status: 'loading',
+                authCode: null,
+                errorMessage: '',
+                copied: false,
+                canUseDeepLink: false,
+                wsConnection: null,
+
+                init() {
+                    // Parse URL for OAuth code or error
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const code = urlParams.get('code');
+                    const error = urlParams.get('error');
+                    const errorDescription = urlParams.get('error_description');
+
+                    if (error) {
+                        this.status = 'error';
+                        this.errorMessage = errorDescription || error;
+                        return;
+                    }
+
+                    if (!code) {
+                        this.status = 'error';
+                        this.errorMessage = 'No authorization code received';
+                        return;
+                    }
+
+                    this.authCode = code;
+                    this.status = 'success';
+
+                    // Try to communicate with desktop app
+                    this.tryWebSocket();
+                    this.tryDeepLink();
+                },
+
+                tryWebSocket() {
+                    // Try to connect to local WebSocket server (if app is running)
+                    try {
+                        this.wsConnection = new WebSocket('ws://localhost:9527');
+                        
+                        this.wsConnection.onopen = () => {
+                            console.log('WebSocket connected');
+                            this.wsConnection.send(JSON.stringify({
+                                type: 'dropbox_oauth',
+                                code: this.authCode
+                            }));
+                        };
+
+                        this.wsConnection.onerror = (error) => {
+                            console.log('WebSocket not available:', error);
+                            // Fallback to manual code entry
+                        };
+
+                        this.wsConnection.onmessage = (event) => {
+                            const response = JSON.parse(event.data);
+                            if (response.success) {
+                                this.status = 'success';
+                                setTimeout(() => {
+                                    window.close();
+                                }, 2000);
+                            }
+                        };
+                    } catch (error) {
+                        console.log('WebSocket error:', error);
+                    }
+                },
+
+                tryDeepLink() {
+                    // Check if deep link protocol is available
+                    if (navigator.userAgent.includes('Windows') || 
+                        navigator.userAgent.includes('Mac') || 
+                        navigator.userAgent.includes('Linux')) {
+                        this.canUseDeepLink = true;
+                    }
+                },
+
+                copyCode() {
+                    navigator.clipboard.writeText(this.authCode).then(() => {
+                        this.copied = true;
+                        setTimeout(() => {
+                            this.copied = false;
+                        }, 3000);
+                    }).catch(err => {
+                        console.error('Failed to copy:', err);
+                        // Fallback: select text
+                        const codeBox = document.querySelector('.code-box');
+                        const range = document.createRange();
+                        range.selectNodeContents(codeBox);
+                        const selection = window.getSelection();
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                    });
+                },
+
+                openApp() {
+                    // Try to open app with deep link
+                    const deepLink = `docura://oauth/dropbox?code=${encodeURIComponent(this.authCode)}`;
+                    window.location.href = deepLink;
+                    
+                    // Fallback: show instructions if app doesn't open
+                    setTimeout(() => {
+                        alert('If Docura didn\'t open, please copy the code manually and paste it in the app.');
+                    }, 2000);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+
