@@ -2319,6 +2319,49 @@ body.dark .match-type-badge.content {
   color: #ef4444;
 }
 
+/* Sidebar Context Menu */
+.sidebar-context-menu {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-width: 180px;
+  overflow: hidden;
+  animation: fadeInScale 0.15s ease;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.context-menu-item:hover:not(.disabled) {
+  background-color: var(--hover-bg);
+}
+
+.context-menu-item.disabled {
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .add-folder-btn {
   display: flex;
   align-items: center;

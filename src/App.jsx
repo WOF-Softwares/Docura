@@ -2174,6 +2174,46 @@ const openRecentItem = async (item) => {
     }
   };
 
+  // Sync current folder from sidebar
+  const handleSyncCurrentFolder = async () => {
+    if (!currentFolder || !syncFolders) return;
+    
+    const folderIndex = syncFolders.findIndex(f => f.localPath === currentFolder);
+    if (folderIndex === -1) {
+      toast.error("Current folder is not in sync list");
+      return;
+    }
+    
+    await handleSyncFolderNow(folderIndex);
+  };
+
+  // Add current folder to sync from sidebar
+  const handleAddCurrentFolderToSync = async (folderPath = null) => {
+    const pathToAdd = folderPath || currentFolder;
+    if (!pathToAdd) return;
+    
+    // Check if already in sync
+    if (syncFolders?.some(f => f.localPath === pathToAdd)) {
+      toast.info("📁 Folder already in sync list");
+      return;
+    }
+    
+    // Open dialog to get subfolder name
+    const folderName = pathToAdd.split('/').pop() || 'Documents';
+    const subfolder = prompt(`Enter Dropbox subfolder name for "${folderName}":`, folderName);
+    
+    if (!subfolder) return;
+    
+    try {
+      await addSyncFolder(pathToAdd, subfolder);
+      await loadDropboxSyncFolders();
+      toast.success(`✅ Added "${folderName}" to Dropbox sync!`);
+    } catch (error) {
+      console.error("Failed to add folder to sync:", error);
+      toast.error("Failed to add folder: " + error.message);
+    }
+  };
+
   const handleDropboxSyncToggle = async (enabled) => {
     try {
       await toggleDropboxSync(enabled);
@@ -2361,6 +2401,11 @@ const openRecentItem = async (item) => {
             onHeaderClick={handleHeaderClick}
             currentFile={currentFile}
             hasUnsavedChanges={hasUnsavedChanges}
+            // Dropbox sync props
+            dropboxSyncEnabled={dropboxSyncEnabled}
+            syncFolders={syncFolders}
+            onSyncCurrentFolder={handleSyncCurrentFolder}
+            onAddCurrentFolderToSync={handleAddCurrentFolderToSync}
           />
         )}
 
