@@ -368,10 +368,10 @@ if $DO_TAG || $DO_RELEASE; then
         sed -i -E "s/(\"softwareVersion\":\s*\")[^\"]+(\",)/\1$NEW_VERSION\2/" "$DOCS_HTML"
         sed -i -E "s/Docura v[0-9]+\.[0-9]+\.[0-9]*/Docura v$NEW_VERSION/g" "$DOCS_HTML"
         
-        # Update download links for packages
-        sed -i -E "s|downloads/${BASE_NAME_LOWER}-bin-[0-9]+\.[0-9]+\.[0-9]+-1-x86_64\.pkg\.tar\.[a-z]+|downloads/${BASE_NAME_LOWER}-bin-${APP_VERSION}-1-x86_64.pkg.tar.xz|g" "$DOCS_HTML"
-        sed -i -E "s|downloads/${BASE_NAME_LOWER}_[0-9]+\.[0-9]+\.[0-9]+_amd64\.deb|downloads/${BASE_NAME_LOWER}_${APP_VERSION}_amd64.deb|g" "$DOCS_HTML"
-        sed -i -E "s|downloads/${BASE_NAME_LOWER}-[0-9]+\.[0-9]+\.[0-9]+-1\.x86_64\.rpm|downloads/${BASE_NAME_LOWER}-${APP_VERSION}-1.x86_64.rpm|g" "$DOCS_HTML"
+        # Update download links for packages (preserves target="_blank" and download attributes)
+        sed -i -E "s|(href=\"downloads/${BASE_NAME_LOWER}-bin-)[0-9]+\.[0-9]+\.[0-9]+(-1-x86_64\.pkg\.tar\.[a-z]+\")|\1${APP_VERSION}\2|g" "$DOCS_HTML"
+        sed -i -E "s|(href=\"downloads/${BASE_NAME_LOWER}_)[0-9]+\.[0-9]+\.[0-9]+(_amd64\.deb\")|\1${APP_VERSION}\2|g" "$DOCS_HTML"
+        sed -i -E "s|(href=\"downloads/${BASE_NAME_LOWER}-)[0-9]+\.[0-9]+\.[0-9]+(-1\.x86_64\.rpm\")|\1${APP_VERSION}\2|g" "$DOCS_HTML"
         
         # Update installation commands
         sed -i -E "s|(sudo pacman -U ${BASE_NAME_LOWER}-bin-)[0-9]+\.[0-9]+\.[0-9]+(-1-x86_64\.pkg\.tar\.[a-z]+)|\1${APP_VERSION}\2|g" "$DOCS_HTML"
