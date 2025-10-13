@@ -38,7 +38,11 @@ impl Default for DropboxAuthConfig {
                 .unwrap_or_else(|_| "YOUR_CLIENT_ID".to_string()),
             client_secret: std::env::var("DROPBOX_CLIENT_SECRET")
                 .unwrap_or_else(|_| "YOUR_CLIENT_SECRET".to_string()),
-            redirect_uri: "http://localhost:8080/oauth/callback".to_string(),
+            // Support both localhost (dev) and GitHub Pages (production)
+            // Set DROPBOX_REDIRECT_URI env var to use custom URL
+            // Example: https://yourusername.github.io/Docura/oauth-redirect.html
+            redirect_uri: std::env::var("DROPBOX_REDIRECT_URI")
+                .unwrap_or_else(|_| "http://localhost:8080/oauth/callback".to_string()),
         }
     }
 }

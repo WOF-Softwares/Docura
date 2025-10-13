@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Docura</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: #f7fafc;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        h2 {
+            color: #1a202c;
+            font-size: 24px;
+            margin: 32px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        h3 {
+            color: #2d3748;
+            font-size: 18px;
+            margin: 24px 0 12px 0;
+        }
+
+        p {
+            margin: 12px 0;
+            color: #4a5568;
+        }
+
+        ul, ol {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+
+        li {
+            margin: 8px 0;
+            color: #4a5568;
+        }
+
+        .highlight {
+            background: #edf2f7;
+            border-left: 4px solid #667eea;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .highlight strong {
+            color: #667eea;
+        }
+
+        .contact {
+            background: #f7fafc;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .contact a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .contact a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .last-updated {
+            background: #edf2f7;
+            padding: 12px;
+            border-radius: 4px;
+            text-align: center;
+            color: #4a5568;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        table th {
+            background: #edf2f7;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📄 Privacy Policy</h1>
+        <p>Docura - Markdown Editor with Cloud Sync</p>
+    </div>
+
+    <div class="container">
+        <div class="last-updated">
+            <strong>Last Updated:</strong> January 13, 2025
+        </div>
+
+        <h2>1. Introduction</h2>
+        <p>
+            Docura ("we", "our", or "the app") is committed to protecting your privacy. This Privacy Policy explains how we handle your data when you use our markdown editor application with optional Dropbox synchronization.
+        </p>
+
+        <div class="highlight">
+            <strong>Key Point:</strong> Docura is a local-first application. Your data stays on your device. We do not collect, store, or transmit your personal information or documents to our servers. All data processing happens locally on your computer.
+        </div>
+
+        <h2>2. Information We Collect</h2>
+        
+        <h3>2.1 Local Data</h3>
+        <p>Docura stores the following data <strong>locally on your device only</strong>:</p>
+        <ul>
+            <li><strong>Document Files:</strong> Your markdown files and their content</li>
+            <li><strong>Application Settings:</strong> Your preferences (theme, editor settings, etc.)</li>
+            <li><strong>Recent Files List:</strong> Paths to recently opened files and folders</li>
+            <li><strong>Temporary Files:</strong> Auto-save and crash recovery data</li>
+        </ul>
+
+        <h3>2.2 Dropbox Integration (Optional)</h3>
+        <p>If you choose to enable Dropbox synchronization, we store:</p>
+        <ul>
+            <li><strong>OAuth Tokens:</strong> Access and refresh tokens for Dropbox API (stored locally, encrypted)</li>
+            <li><strong>Sync Configuration:</strong> Folder mappings between your local system and Dropbox</li>
+            <li><strong>Dropbox Account Email:</strong> Used only for display in settings</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Important:</strong> Dropbox sync uses App Folder access. Docura can ONLY access files within <code>/Apps/Docura/</code> folder in your Dropbox. We cannot access any other files or folders in your Dropbox account.
+        </div>
+
+        <h2>3. How We Use Your Information</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data Type</th>
+                    <th>Purpose</th>
+                    <th>Storage Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Document Content</td>
+                    <td>Display, edit, and save your work</td>
+                    <td>Local device only</td>
+                </tr>
+                <tr>
+                    <td>App Settings</td>
+                    <td>Customize your experience</td>
+                    <td>Local device only</td>
+                </tr>
+                <tr>
+                    <td>Dropbox Tokens</td>
+                    <td>Authenticate with Dropbox API</td>
+                    <td>Local device (encrypted)</td>
+                </tr>
+                <tr>
+                    <td>Sync Configuration</td>
+                    <td>Map local folders to Dropbox</td>
+                    <td>Local device only</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>4. Data Sharing and Third Parties</h2>
+
+        <h3>4.1 Dropbox</h3>
+        <p>
+            When you enable Dropbox sync, your markdown files are transmitted directly from your device to Dropbox's servers using their official API. This communication is:
+        </p>
+        <ul>
+            <li><strong>Encrypted in transit</strong> using HTTPS/TLS</li>
+            <li><strong>Direct:</strong> We do not relay or store your files on our servers</li>
+            <li><strong>Limited:</strong> Only files you choose to sync are transmitted</li>
+            <li><strong>App Folder only:</strong> Restricted to <code>/Apps/Docura/</code> folder</li>
+        </ul>
+        <p>
+            Dropbox's handling of your data is governed by their own 
+            <a href="https://www.dropbox.com/privacy" target="_blank">Privacy Policy</a>.
+        </p>
+
+        <h3>4.2 No Other Third Parties</h3>
+        <p>
+            We do not share your data with any other third parties. We do not use:
+        </p>
+        <ul>
+            <li>❌ Analytics services</li>
+            <li>❌ Advertising networks</li>
+            <li>❌ Crash reporting services</li>
+            <li>❌ Marketing platforms</li>
+            <li>❌ Data brokers</li>
+        </ul>
+
+        <h2>5. Data Storage and Security</h2>
+
+        <h3>5.1 Local Storage</h3>
+        <p>All data is stored locally on your device in:</p>
+        <ul>
+            <li><strong>Linux:</strong> <code>~/.local/share/docura/</code></li>
+            <li><strong>macOS:</strong> <code>~/Library/Application Support/docura/</code></li>
+            <li><strong>Windows:</strong> <code>%APPDATA%\docura\</code></li>
+        </ul>
+
+        <h3>5.2 Security Measures</h3>
+        <ul>
+            <li><strong>Encrypted Tokens:</strong> Dropbox OAuth tokens are encrypted at rest</li>
+            <li><strong>Secure Communication:</strong> All API calls use HTTPS/TLS encryption</li>
+            <li><strong>No Cloud Storage:</strong> We don't operate servers or cloud storage</li>
+            <li><strong>Local Processing:</strong> All document processing happens on your device</li>
+        </ul>
+
+        <h2>6. Your Rights and Control</h2>
+
+        <h3>6.1 Access and Deletion</h3>
+        <p>You have complete control over your data:</p>
+        <ul>
+            <li><strong>View Data:</strong> All data is stored in standard formats (JSON, plain text)</li>
+            <li><strong>Export Data:</strong> Use File → Export to save in various formats</li>
+            <li><strong>Delete Data:</strong> Uninstalling the app removes all local data</li>
+            <li><strong>Revoke Dropbox:</strong> Click "Disconnect" in settings or revoke in Dropbox console</li>
+        </ul>
+
+        <h3>6.2 Dropbox Permissions</h3>
+        <p>You can manage Dropbox permissions at any time:</p>
+        <ul>
+            <li>Revoke access in <a href="https://www.dropbox.com/account/connected_apps" target="_blank">Dropbox Connected Apps</a></li>
+            <li>Delete <code>/Apps/Docura/</code> folder to remove synced data</li>
+            <li>Disconnect in Docura settings (Settings → Cloud Sync → Disconnect)</li>
+        </ul>
+
+        <h2>7. Children's Privacy</h2>
+        <p>
+            Docura does not knowingly collect or store personal information from children under 13. The app is designed for general use and does not require age verification.
+        </p>
+
+        <h2>8. International Users</h2>
+        <p>
+            Docura is a local-first application that works entirely on your device. If you use Dropbox sync, your data may be transferred to Dropbox's servers, which may be located in various countries. Please refer to <a href="https://www.dropbox.com/privacy" target="_blank">Dropbox's Privacy Policy</a> for information about international data transfers.
+        </p>
+
+        <h2>9. Open Source</h2>
+        <p>
+            Docura is open source software. You can review our code, verify our privacy claims, and even build the app yourself from source. Our repository is available at:
+        </p>
+        <p style="text-align: center; margin: 16px 0;">
+            <a href="https://github.com/YOURUSERNAME/Docura" target="_blank" style="color: #667eea; font-weight: 600;">
+                github.com/YOURUSERNAME/Docura
+            </a>
+        </p>
+
+        <h2>10. Changes to This Policy</h2>
+        <p>
+            We may update this Privacy Policy from time to time. When we do:
+        </p>
+        <ul>
+            <li>We will update the "Last Updated" date at the top of this page</li>
+            <li>We will notify users of significant changes through the app</li>
+            <li>The updated policy will be available at this URL</li>
+        </ul>
+        <p>
+            Continued use of the app after changes indicates acceptance of the updated policy.
+        </p>
+
+        <h2>11. Data Retention</h2>
+        <p>
+            <strong>Local Data:</strong> Retained until you delete it or uninstall the app<br>
+            <strong>Dropbox Data:</strong> Retained in your Dropbox until you delete it<br>
+            <strong>OAuth Tokens:</strong> Stored locally until you disconnect Dropbox
+        </p>
+
+        <h2>12. Legal Compliance</h2>
+        <p>
+            Docura complies with applicable data protection laws including:
+        </p>
+        <ul>
+            <li>General Data Protection Regulation (GDPR) - EU</li>
+            <li>California Consumer Privacy Act (CCPA) - California, USA</li>
+            <li>Personal Information Protection and Electronic Documents Act (PIPEDA) - Canada</li>
+        </ul>
+        <p>
+            Since we don't collect or store personal data on our servers, most data protection obligations fall to the user and their chosen cloud provider (if any).
+        </p>
+
+        <h2>13. Contact Us</h2>
+        <div class="contact">
+            <p>If you have questions about this Privacy Policy or Docura's privacy practices, please contact us:</p>
+            <ul>
+                <li><strong>Email:</strong> <a href="mailto:YOUR-EMAIL@example.com">YOUR-EMAIL@example.com</a></li>
+                <li><strong>GitHub Issues:</strong> <a href="https://github.com/YOURUSERNAME/Docura/issues" target="_blank">github.com/YOURUSERNAME/Docura/issues</a></li>
+                <li><strong>Website:</strong> <a href="https://YOURUSERNAME.github.io/Docura" target="_blank">YOURUSERNAME.github.io/Docura</a></li>
+            </ul>
+        </div>
+
+        <h2>14. Summary</h2>
+        <div class="highlight">
+            <p><strong>In Plain English:</strong></p>
+            <ul style="margin-top: 12px;">
+                <li>✅ Your documents stay on your computer</li>
+                <li>✅ We don't have servers that store your data</li>
+                <li>✅ Dropbox sync is optional and uses App Folder (limited access)</li>
+                <li>✅ All processing happens locally on your device</li>
+                <li>✅ No tracking, no analytics, no ads</li>
+                <li>✅ You have complete control over your data</li>
+                <li>✅ Open source - you can verify everything</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>
+            <a href="index.html">← Back to Docura</a> | 
+            <a href="oauth-redirect.html">OAuth Redirect</a> | 
+            <a href="https://github.com/YOURUSERNAME/Docura" target="_blank">GitHub</a>
+        </p>
+        <p style="margin-top: 12px;">
+            © 2025 Docura. Open Source under MIT License.
+        </p>
+    </div>
+</body>
+</html>
+
