@@ -21,6 +21,18 @@ import { exportToPDF, generatePDFBlob } from "./utils/pdfExport";
 import { convertMarkdownImagePaths } from "./utils/imagePathConverter";
 import { isOmakaseEnvironment, syncWithOmakase } from "./utils/omakaseSync";
 import { isPlasmaEnvironment, syncWithPlasma } from "./utils/plasmaSync";
+import { 
+  getDropboxStatus, 
+  getDropboxSyncFolders, 
+  startDropboxOAuth,
+  exchangeDropboxCode,
+  disconnectDropbox,
+  addDropboxSyncFolder,
+  removeDropboxSyncFolder,
+  toggleDropboxSync,
+  syncFileToDropbox,
+  shouldSyncFile
+} from "./utils/dropboxSync";
 import "./styles/App.css";
 import "./styles/ThemeSelector.css";
 import "./styles/markdown-themes.css";
@@ -86,6 +98,9 @@ function App() {
   const [cursorPosition, setCursorPosition] = useState({ line: 1, column: 1 });
   const [focusMode, setFocusMode] = useState(false);
   const [typewriterMode, setTypewriterMode] = useState(false);
+  const [dropboxStatus, setDropboxStatus] = useState({ connected: false });
+  const [dropboxSyncEnabled, setDropboxSyncEnabled] = useState(false);
+  const [syncFolders, setSyncFolders] = useState([]);
   const previewRef = useRef(null);
   const syncIntervalRef = useRef(null);
   const autoSaveTimeoutRef = useRef(null);
@@ -139,6 +154,10 @@ function App() {
 
     // Load recent items
     loadRecentItems();
+
+    // Load Dropbox status and sync folders
+    loadDropboxStatus();
+    loadSyncFolders();
 
     // Check for temp files (crash recovery) - ONLY ONCE on mount
     if (!recoveryChecked) {
@@ -373,11 +392,24 @@ function App() {
           setOriginalContent(fileContent);
           setHasUnsavedChanges(false);
           console.log("✅ Auto-saved:", currentFile);
+          
           // Show a subtle toast
           toast.success("Auto-saved", {
             duration: 1500,
             icon: "💾",
           });
+
+          // Sync to Dropbox if enabled and file is in a synced folder
+          if (dropboxSyncEnabled && currentFile) {
+            if (shouldSyncFile(currentFile, syncFolders)) {
+              try {
+                await syncFileToDropbox(currentFile, fileContent);
+                console.log("✅ Auto-synced to Dropbox");
+              } catch (error) {
+                console.error("Dropbox auto-sync failed:", error);
+              }
+            }
+          }
         } catch (error) {
           console.error("Auto-save failed:", error);
           toast.error("Auto-save failed");
@@ -398,6 +430,8 @@ function App() {
     hasUnsavedChanges,
     fileContent,
     originalContent,
+    dropboxSyncEnabled,
+    syncFolders,
   ]);
 
   useEffect(() => {
@@ -723,8 +757,29 @@ function App() {
       if (config && config.live_editor_type) {
         setLiveEditorType(config.live_editor_type);
       }
+      if (config && config.dropbox_sync_enabled !== undefined) {
+        setDropboxSyncEnabled(config.dropbox_sync_enabled);
+      }
     } catch (error) {
       console.error("Error loading config:", error);
+    }
+  };
+
+  const loadDropboxStatus = async () => {
+    try {
+      const status = await getDropboxStatus();
+      setDropboxStatus(status);
+    } catch (error) {
+      console.error("Error loading Dropbox status:", error);
+    }
+  };
+
+  const loadSyncFolders = async () => {
+    try {
+      const folders = await getDropboxSyncFolders();
+      setSyncFolders(folders);
+    } catch (error) {
+      console.error("Error loading sync folders:", error);
     }
   };
 
@@ -1295,6 +1350,19 @@ function App() {
         setHasUnsavedChanges(false);
         const fileName = currentFile.split("/").pop();
         toast.success(`Saved: ${fileName}`);
+
+        // Sync to Dropbox if enabled and file is in a synced folder
+        if (dropboxSyncEnabled && currentFile) {
+          if (shouldSyncFile(currentFile, syncFolders)) {
+            try {
+              await syncFileToDropbox(currentFile, fileContent);
+              console.log("✅ Synced to Dropbox:", fileName);
+            } catch (error) {
+              console.error("Dropbox sync failed:", error);
+              // Don't show error toast to avoid interrupting user flow
+            }
+          }
+        }
       } catch (error) {
         console.error("Error saving file:", error);
         toast.error("Failed to save file");
@@ -2005,6 +2073,94 @@ const openRecentItem = async (item) => {
     }
   };
 
+  // Dropbox sync handlers
+  const handleDropboxAuth = async () => {
+    try {
+      const authUrl = await startDropboxOAuth();
+      
+      // Show dialog with OAuth URL
+      // User can copy-paste or we can open in browser
+      const code = prompt(
+        `Please visit this URL to authorize Docura:\n\n${authUrl}\n\nAfter authorization, paste the code here:`
+      );
+      
+      if (code && code.trim()) {
+        await exchangeDropboxCode(code.trim());
+        await loadDropboxStatus();
+        await loadSyncFolders();
+        toast.success("Dropbox connected successfully!");
+      }
+    } catch (error) {
+      console.error("Dropbox auth error:", error);
+      toast.error("Failed to connect Dropbox: " + error.message);
+    }
+  };
+
+  const handleDropboxDisconnect = async () => {
+    try {
+      await disconnectDropbox();
+      setDropboxStatus({ connected: false });
+      setSyncFolders([]);
+      setDropboxSyncEnabled(false);
+      toast.success("Dropbox disconnected");
+    } catch (error) {
+      console.error("Dropbox disconnect error:", error);
+      toast.error("Failed to disconnect Dropbox");
+    }
+  };
+
+  const handleAddSyncFolder = async () => {
+    try {
+      // Open folder picker dialog
+      const localPath = await open({ directory: true, multiple: false });
+      
+      if (localPath) {
+        // Ask for Dropbox subfolder name
+        const folderName = localPath.split('/').pop();
+        const subfolder = prompt(
+          'Enter a name for this folder in Dropbox:',
+          folderName
+        );
+        
+        if (subfolder && subfolder.trim()) {
+          await addDropboxSyncFolder(localPath, subfolder.trim());
+          await loadSyncFolders();
+          toast.success(`Folder "${subfolder}" added to sync`);
+        }
+      }
+    } catch (error) {
+      console.error("Add sync folder error:", error);
+      toast.error("Failed to add folder: " + error.message);
+    }
+  };
+
+  const handleRemoveSyncFolder = async (index) => {
+    try {
+      await removeDropboxSyncFolder(index);
+      await loadSyncFolders();
+      toast.success("Folder removed from sync");
+    } catch (error) {
+      console.error("Remove sync folder error:", error);
+      toast.error("Failed to remove folder");
+    }
+  };
+
+  const handleDropboxSyncToggle = async (enabled) => {
+    try {
+      await toggleDropboxSync(enabled);
+      setDropboxSyncEnabled(enabled);
+      
+      if (enabled) {
+        toast.success("Dropbox auto-sync enabled");
+      } else {
+        toast("Dropbox auto-sync disabled", { icon: "☁️" });
+      }
+    } catch (error) {
+      console.error("Toggle Dropbox sync error:", error);
+      toast.error("Failed to toggle sync");
+    }
+  };
+
   const handleAutoSaveToggle = (enabled) => {
     setAutoSaveEnabled(enabled);
     saveAppConfig(currentTheme, omakaseSyncEnabled, plasmaSyncEnabled, enabled);
@@ -2253,6 +2409,14 @@ const openRecentItem = async (item) => {
         onEditorSettingsChange={handleEditorSettingsChange}
         liveEditorType={liveEditorType}
         onLiveEditorTypeChange={handleLiveEditorTypeChange}
+        dropboxSyncEnabled={dropboxSyncEnabled}
+        onDropboxSyncToggle={handleDropboxSyncToggle}
+        dropboxStatus={dropboxStatus}
+        onDropboxAuth={handleDropboxAuth}
+        onDropboxDisconnect={handleDropboxDisconnect}
+        onAddSyncFolder={handleAddSyncFolder}
+        onRemoveSyncFolder={handleRemoveSyncFolder}
+        syncFolders={syncFolders}
       />
 
       <FolderSwitchDialog
