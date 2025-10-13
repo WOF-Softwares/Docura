@@ -91,9 +91,9 @@ const AboutDialog = ({ isOpen, onClose }) => {
 
               <div style={{ 
                 display: 'flex', 
+                flexDirection: 'column',
                 gap: '8px', 
-                marginTop: '8px',
-                flexWrap: 'wrap'
+                marginTop: '8px'
               }}>
                 <button
                   onClick={() => openLink('https://github.com/WOF-Softwares')}
@@ -101,14 +101,15 @@ const AboutDialog = ({ isOpen, onClose }) => {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
-                    padding: '8px 16px',
+                    padding: '10px 16px',
                     background: 'var(--bg-primary)',
                     border: '1px solid var(--border-color)',
                     borderRadius: '8px',
                     color: 'var(--text-primary)',
                     cursor: 'pointer',
                     fontSize: '13px',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s',
+                    width: '100%'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'var(--bg-tertiary)';
@@ -129,14 +130,15 @@ const AboutDialog = ({ isOpen, onClose }) => {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
-                    padding: '8px 16px',
+                    padding: '10px 16px',
                     background: 'var(--bg-primary)',
                     border: '1px solid var(--border-color)',
                     borderRadius: '8px',
                     color: 'var(--text-primary)',
                     cursor: 'pointer',
                     fontSize: '13px',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s',
+                    width: '100%'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'var(--bg-tertiary)';
@@ -237,16 +239,14 @@ const AboutDialog = ({ isOpen, onClose }) => {
               Apache License 2.0 - Free and Open Source Forever!
             </p>
             <div style={{ 
-              display: 'flex', 
-              gap: '12px', 
-              flexWrap: 'wrap',
               fontSize: '13px',
-              color: 'var(--text-secondary)'
+              color: 'var(--text-secondary)',
+              lineHeight: '1.8'
             }}>
-              <span>✅ Commercial Use</span>
-              <span>✅ Modify</span>
-              <span>✅ Distribute</span>
-              <span>✅ Private Use</span>
+              <div>✅ Commercial Use</div>
+              <div>✅ Modify</div>
+              <div>✅ Distribute</div>
+              <div>✅ Private Use</div>
             </div>
           </div>
 
@@ -309,8 +309,9 @@ const AboutDialog = ({ isOpen, onClose }) => {
             paddingTop: '20px', 
             borderTop: '1px solid var(--border-color)',
             display: 'flex',
-            justifyContent: 'center',
-            gap: '24px',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '12px',
             fontSize: '13px'
           }}>
             <button
@@ -320,10 +321,11 @@ const AboutDialog = ({ isOpen, onClose }) => {
                 border: 'none',
                 color: 'var(--accent-color)',
                 cursor: 'pointer',
-                textDecoration: 'underline'
+                textDecoration: 'underline',
+                padding: '4px'
               }}
             >
-              GitHub Repository
+              📦 GitHub Repository
             </button>
             <button
               onClick={() => openLink('https://wof-softwares.github.io/Docura/')}
@@ -332,10 +334,11 @@ const AboutDialog = ({ isOpen, onClose }) => {
                 border: 'none',
                 color: 'var(--accent-color)',
                 cursor: 'pointer',
-                textDecoration: 'underline'
+                textDecoration: 'underline',
+                padding: '4px'
               }}
             >
-              Website
+              🌐 Website
             </button>
             <button
               onClick={() => openLink('https://wof-softwares.github.io/Docura/wiki/')}
@@ -344,10 +347,11 @@ const AboutDialog = ({ isOpen, onClose }) => {
                 border: 'none',
                 color: 'var(--accent-color)',
                 cursor: 'pointer',
-                textDecoration: 'underline'
+                textDecoration: 'underline',
+                padding: '4px'
               }}
             >
-              Documentation
+              📚 Documentation
             </button>
           </div>
         </div>
