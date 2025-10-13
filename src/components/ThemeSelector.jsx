@@ -203,18 +203,6 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange, omakaseSy
     onClose()
   }
 
-  const getCurrentVariant = (theme) => {
-    // Handle dark-only themes (Omarchy themes)
-    if (theme.darkOnly) {
-      return theme.variants.dark
-    }
-    
-    // Extract the current theme variant from the selectedTheme
-    const parts = selectedTheme.split('-')
-    const isCurrentThemeDark = parts.includes('dark')
-    return isCurrentThemeDark ? theme.variants.dark : theme.variants.light
-  }
-
   if (!isOpen) return null
 
   return (
