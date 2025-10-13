@@ -2210,7 +2210,7 @@ const openRecentItem = async (item) => {
     if (!subfolder) return;
     
     try {
-      await addSyncFolder(pathToAdd, subfolder);
+      await addDropboxSyncFolder(pathToAdd, subfolder);
       await loadDropboxSyncFolders();
       toast.success(`✅ Added "${folderName}" to Dropbox sync!`);
     } catch (error) {
