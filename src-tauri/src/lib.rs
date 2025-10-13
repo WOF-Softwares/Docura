@@ -457,6 +457,8 @@ pub struct AppConfig {
     #[serde(default)]
     omakase_sync: bool,
     #[serde(default)]
+    plasma_sync: bool,
+    #[serde(default)]
     auto_save: bool,
     #[serde(default = "default_live_editor_type")]
     live_editor_type: String,
@@ -472,6 +474,7 @@ impl Default for AppConfig {
             theme: "dracula-dark".to_string(),
             recent_items: Vec::new(),
             omakase_sync: false,
+            plasma_sync: false,
             auto_save: true, // Default to enabled
             live_editor_type: "modern".to_string(),
         }

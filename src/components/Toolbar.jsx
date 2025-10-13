@@ -104,14 +104,15 @@ const Toolbar = ({
           <span>Random</span>
         </button>
 
-        {omakaseAvailable && omakaseSyncEnabled && (
+        {/* Dynamic Theme Sync Badge - Omakase or Plasma */}
+        {((omakaseAvailable && omakaseSyncEnabled) || (plasmaAvailable && plasmaSyncEnabled)) && (
           <button
             className={`omakase-sync-button ${isSyncing ? "syncing" : ""}`}
-            onClick={onOmakaseSync}
-            title="Sync with Omakase theme"
+            onClick={onThemeSync}
+            title={`Sync with ${syncProvider === 'plasma' ? 'KDE Plasma' : 'Omakase'} theme`}
           >
             <RefreshCw size={16} />
-            <span>Omakase</span>
+            <span>{syncProvider === 'plasma' ? 'Plasma' : 'Omakase'}</span>
           </button>
         )}
       </div>
