@@ -52,18 +52,30 @@ const AboutDialog = ({ isOpen, onClose }) => {
         }}>
           
           {/* Logo & Tagline */}
-          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <div style={{ 
+            textAlign: 'center', 
+            marginBottom: '32px',
+            width: '100%'
+          }}>
             <div style={{ fontSize: '64px', marginBottom: '16px' }}>📝</div>
-            <h3 style={{ fontSize: '24px', marginBottom: '8px', color: 'var(--text-primary)' }}>
+            <h3 style={{ 
+              fontSize: '24px', 
+              margin: '0 0 8px 0', 
+              color: 'var(--text-primary)' 
+            }}>
               Docura
             </h3>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '8px' }}>
+            <p style={{ 
+              color: 'var(--text-secondary)', 
+              margin: '0 0 8px 0'
+            }}>
               From Markdown Editor to Writing Operating System
             </p>
             <p style={{ 
               color: 'var(--accent-color)', 
               fontWeight: 'bold',
-              fontSize: '14px'
+              fontSize: '14px',
+              margin: 0
             }}>
               Version {appVersion} • Built in 37 Hours! ⚡
             </p>
@@ -196,11 +208,13 @@ const AboutDialog = ({ isOpen, onClose }) => {
             borderRadius: '12px', 
             padding: '20px',
             marginBottom: '16px',
-            border: '1px solid var(--border-color)'
+            border: '1px solid var(--border-color)',
+            width: '100%',
+            boxSizing: 'border-box'
           }}>
             <h4 style={{ 
               fontSize: '16px', 
-              marginBottom: '16px', 
+              margin: '0 0 16px 0', 
               color: 'var(--text-primary)',
               display: 'flex',
               alignItems: 'center',
@@ -210,22 +224,47 @@ const AboutDialog = ({ isOpen, onClose }) => {
               Special Thanks
             </h4>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div>
-                <p style={{ color: 'var(--accent-color)', fontWeight: 'bold', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div>
+              <div style={{ marginBottom: '16px' }}>
+                <p style={{ 
+                  color: 'var(--accent-color)', 
+                  fontWeight: 'bold', 
+                  marginBottom: '6px',
+                  margin: '0 0 6px 0',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '6px' 
+                }}>
                   <Zap size={16} />
                   🤖 Claude AI (Anthropic)
                 </p>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '13px', lineHeight: '1.6' }}>
+                <p style={{ 
+                  color: 'var(--text-secondary)', 
+                  fontSize: '13px', 
+                  lineHeight: '1.6',
+                  margin: 0
+                }}>
                   Primary AI partner - architecture, problem-solving, and making Docura possible!
                 </p>
               </div>
 
-              <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-                <p style={{ color: 'var(--accent-color)', fontWeight: 'bold', marginBottom: '6px' }}>
+              <div style={{ 
+                borderTop: '1px solid var(--border-color)', 
+                paddingTop: '16px' 
+              }}>
+                <p style={{ 
+                  color: 'var(--accent-color)', 
+                  fontWeight: 'bold', 
+                  margin: '0 0 6px 0'
+                }}>
                   💎 DHH (David Heinemeier Hansson)
                 </p>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '13px', lineHeight: '1.6' }}>
+                <p style={{ 
+                  color: 'var(--text-secondary)', 
+                  fontSize: '13px', 
+                  lineHeight: '1.6',
+                  margin: 0
+                }}>
                   For creating <strong>HEY</strong> (best email ever!), <strong>Ruby on Rails</strong> (web revolution), 
                   and <strong>Omakase</strong> (opinionated excellence). Your philosophy inspires us! 🙏
                 </p>
@@ -239,11 +278,13 @@ const AboutDialog = ({ isOpen, onClose }) => {
             borderRadius: '12px', 
             padding: '20px',
             marginBottom: '16px',
-            border: '1px solid var(--border-color)'
+            border: '1px solid var(--border-color)',
+            width: '100%',
+            boxSizing: 'border-box'
           }}>
             <h4 style={{ 
               fontSize: '16px', 
-              marginBottom: '12px', 
+              margin: '0 0 12px 0', 
               color: 'var(--text-primary)',
               display: 'flex',
               alignItems: 'center',
@@ -251,7 +292,11 @@ const AboutDialog = ({ isOpen, onClose }) => {
             }}>
               📜 License
             </h4>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '12px' }}>
+            <p style={{ 
+              color: 'var(--text-secondary)', 
+              fontSize: '14px', 
+              margin: '0 0 12px 0'
+            }}>
               Apache License 2.0 - Free and Open Source Forever!
             </p>
             <div style={{ 
@@ -272,12 +317,14 @@ const AboutDialog = ({ isOpen, onClose }) => {
             borderRadius: '12px', 
             padding: '20px',
             border: '1px solid var(--accent-color)',
-            textAlign: 'center'
+            textAlign: 'center',
+            width: '100%',
+            boxSizing: 'border-box'
           }}>
             <div style={{ fontSize: '32px', marginBottom: '12px' }}>💝</div>
             <h4 style={{ 
               fontSize: '16px', 
-              marginBottom: '8px', 
+              margin: '0 0 8px 0', 
               color: 'var(--text-primary)'
             }}>
               Love Docura? Support Development!
@@ -285,7 +332,7 @@ const AboutDialog = ({ isOpen, onClose }) => {
             <p style={{ 
               color: 'var(--text-secondary)', 
               fontSize: '13px',
-              marginBottom: '16px'
+              margin: '0 0 16px 0'
             }}>
               Help keep Docura free, open-source, and awesome!
             </p>
@@ -325,10 +372,11 @@ const AboutDialog = ({ isOpen, onClose }) => {
             paddingTop: '20px', 
             borderTop: '1px solid var(--border-color)',
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '12px',
-            fontSize: '13px'
+            justifyContent: 'center',
+            gap: '20px',
+            fontSize: '13px',
+            flexWrap: 'wrap',
+            width: '100%'
           }}>
             <button
               onClick={() => openLink('https://github.com/WOF-Softwares/Docura')}
@@ -338,10 +386,11 @@ const AboutDialog = ({ isOpen, onClose }) => {
                 color: 'var(--accent-color)',
                 cursor: 'pointer',
                 textDecoration: 'underline',
-                padding: '4px'
+                padding: '4px',
+                fontSize: '13px'
               }}
             >
-              📦 GitHub Repository
+              📦 GitHub
             </button>
             <button
               onClick={() => openLink('https://wof-softwares.github.io/Docura/')}
@@ -351,7 +400,8 @@ const AboutDialog = ({ isOpen, onClose }) => {
                 color: 'var(--accent-color)',
                 cursor: 'pointer',
                 textDecoration: 'underline',
-                padding: '4px'
+                padding: '4px',
+                fontSize: '13px'
               }}
             >
               🌐 Website
@@ -364,10 +414,11 @@ const AboutDialog = ({ isOpen, onClose }) => {
                 color: 'var(--accent-color)',
                 cursor: 'pointer',
                 textDecoration: 'underline',
-                padding: '4px'
+                padding: '4px',
+                fontSize: '13px'
               }}
             >
-              📚 Documentation
+              📚 Wiki
             </button>
           </div>
         </div>
