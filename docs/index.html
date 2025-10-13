@@ -2187,25 +2187,63 @@
                         powerful markdown editor.
                     </p>
 
-                    <div class="flex flex-wrap justify-center gap-4 mb-8">
-                        <a
-                            href="#"
-                            class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2"
-                        >
-                            <span>🐧</span> Linux
-                        </a>
-                        <a
-                            href="#"
-                            class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2"
-                        >
-                            <span>🪟</span> Windows
-                        </a>
-                        <a
-                            href="#"
-                            class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2"
-                        >
-                            <span>🍎</span> macOS
-                        </a>
+                    <div class="mb-8">
+                        <!-- Linux Downloads -->
+                        <div class="mb-6">
+                            <h3 class="text-accent text-lg font-semibold mb-4">🐧 Linux Packages</h3>
+                            <div class="flex flex-wrap justify-center gap-3">
+                                <a
+                                    href="downloads/docura-bin-1.0.0-1-x86_64.pkg.tar.zst"
+                                    download
+                                    class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-2.5 px-5 rounded-lg transition-all duration-300 flex items-center gap-2 text-sm"
+                                >
+                                    <span>📦</span> Arch Linux (.pkg.tar.zst)
+                                </a>
+                                <a
+                                    href="downloads/docura_1.0.0_amd64.deb"
+                                    download
+                                    class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-2.5 px-5 rounded-lg transition-all duration-300 flex items-center gap-2 text-sm"
+                                >
+                                    <span>📦</span> Debian/Ubuntu (.deb)
+                                </a>
+                                <a
+                                    href="downloads/docura-1.0.0-1.x86_64.rpm"
+                                    download
+                                    class="bg-dark-tertiary hover:bg-accent hover:text-black text-text-primary font-semibold py-2.5 px-5 rounded-lg transition-all duration-300 flex items-center gap-2 text-sm"
+                                >
+                                    <span>📦</span> Fedora/RHEL (.rpm)
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Installation Commands -->
+                        <div class="bg-dark-primary rounded-lg p-4 mb-6 max-w-3xl mx-auto">
+                            <p class="text-accent font-semibold mb-3 text-sm">Installation Instructions:</p>
+                            <div class="space-y-3 text-left text-xs">
+                                <div>
+                                    <p class="text-text-secondary mb-1">🔷 <strong>Arch Linux:</strong></p>
+                                    <code class="text-success">sudo pacman -U docura-bin-1.0.0-1-x86_64.pkg.tar.zst</code>
+                                </div>
+                                <div>
+                                    <p class="text-text-secondary mb-1">🔷 <strong>Debian/Ubuntu:</strong></p>
+                                    <code class="text-success">sudo dpkg -i docura_1.0.0_amd64.deb</code>
+                                </div>
+                                <div>
+                                    <p class="text-text-secondary mb-1">🔷 <strong>Fedora/RHEL:</strong></p>
+                                    <code class="text-success">sudo rpm -i docura-1.0.0-1.x86_64.rpm</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other Platforms (Coming Soon) -->
+                        <div class="flex flex-wrap justify-center gap-4">
+                            <div class="bg-dark-tertiary text-text-secondary py-2.5 px-5 rounded-lg flex items-center gap-2 text-sm opacity-60 cursor-not-allowed">
+                                <span>🪟</span> Windows (Coming Soon)
+                            </div>
+                            <div class="bg-dark-tertiary text-text-secondary py-2.5 px-5 rounded-lg flex items-center gap-2 text-sm opacity-60 cursor-not-allowed">
+                                <span>🍎</span> macOS (Coming Soon)
+                            </div>
+                        </div>
                     </div>
 
                     <p class="text-text-secondary mb-8">
