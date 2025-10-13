@@ -116,6 +116,67 @@
     background-color: var(--bg-tertiary);
 }
 
+/* Panel Actions */
+.panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.panel-action-button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.panel-action-button:hover {
+    color: var(--text-primary);
+    background: var(--hover-bg);
+}
+
+.panel-action-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.panel-action-button.add-sync {
+    color: var(--accent-color);
+}
+
+.panel-action-button.add-sync:hover {
+    background: var(--accent-color-alpha);
+}
+
+/* Folder Sync Badge */
+.folder-sync-badge {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    color: var(--accent-color);
+    opacity: 0.8;
+}
+
+/* File Sync Indicator */
+.sync-indicator {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    color: var(--accent-color);
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.file-tree-node:hover .sync-indicator {
+    opacity: 1;
+}
+
 /* File tree styles */
 .files-panel,
 .outline-panel {

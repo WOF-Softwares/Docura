@@ -6,7 +6,11 @@ import {
   ChevronRight, 
   ChevronDown,
   Hash,
-  Circle
+  Circle,
+  Cloud,
+  CloudOff,
+  FolderPlus,
+  Check
 } from 'lucide-react'
 import ScrollableContainer from './ScrollableContainer'
 
@@ -18,10 +22,18 @@ const Sidebar = ({
   onRefreshFiles,
   onHeaderClick,
   currentFile,
-  hasUnsavedChanges
+  hasUnsavedChanges,
+  // Dropbox props
+  dropboxSyncEnabled,
+  syncFolders,
+  onSyncCurrentFolder,
+  onAddCurrentFolderToSync,
+  currentFolderSyncStatus
 }) => {
   const [activeTab, setActiveTab] = useState('files')
   const [expandedFolders, setExpandedFolders] = useState(new Set())
+  const [contextMenu, setContextMenu] = useState(null)
+  const [syncingFolder, setSyncingFolder] = useState(false)
   const fileTreeScrollRef = React.useRef(null)
   const outlineScrollRef = React.useRef(null)
 
@@ -41,6 +53,51 @@ const Sidebar = ({
       filename.toLowerCase().endsWith(ext)
     )
   }
+
+  // Check if current folder is in sync list
+  const isCurrentFolderSynced = () => {
+    if (!currentFolder || !syncFolders) return false
+    return syncFolders.some(folder => folder.localPath === currentFolder)
+  }
+
+  // Check if a file is in a synced folder
+  const isFileSynced = (filePath) => {
+    if (!filePath || !syncFolders) return false
+    return syncFolders.some(folder => filePath.startsWith(folder.localPath))
+  }
+
+  // Handle sync current folder
+  const handleSyncFolder = async () => {
+    if (!currentFolder || !onSyncCurrentFolder) return
+    
+    setSyncingFolder(true)
+    try {
+      await onSyncCurrentFolder()
+    } finally {
+      setSyncingFolder(false)
+    }
+  }
+
+  // Handle right-click context menu
+  const handleContextMenu = (e, item) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    setContextMenu({
+      x: e.clientX,
+      y: e.clientY,
+      item: item
+    })
+  }
+
+  // Close context menu on click outside
+  React.useEffect(() => {
+    const handleClick = () => setContextMenu(null)
+    if (contextMenu) {
+      document.addEventListener('click', handleClick)
+      return () => document.removeEventListener('click', handleClick)
+    }
+  }, [contextMenu])
 
   const renderFileTree = (items, depth = 0) => {
     if (!items || !Array.isArray(items)) return null
@@ -70,6 +127,7 @@ const Sidebar = ({
                 onSelectFile(item.path)
               }
             }}
+            onContextMenu={(e) => !isFolder && handleContextMenu(e, item)}
           >
             {isFolder && (
               <span className="folder-icon">
@@ -85,6 +143,11 @@ const Sidebar = ({
               {isFolder ? <FolderIcon size={14} /> : <FileIcon size={14} />}
             </span>
             <span className="file-name">{item.name}</span>
+            {!isFolder && dropboxSyncEnabled && isFileSynced(item.path) && (
+              <span className="sync-indicator" title="Synced to Dropbox">
+                <Cloud size={12} />
+              </span>
+            )}
           </div>
 
           {isFolder && isExpanded && item.children && (
@@ -138,15 +201,41 @@ const Sidebar = ({
             <div className="panel-header">
               <span className="panel-title">
                 {currentFolder ? 'Files' : files.length > 0 ? 'Open Files' : 'No folder selected'}
+                {currentFolder && dropboxSyncEnabled && isCurrentFolderSynced() && (
+                  <span className="folder-sync-badge" title="Folder is synced to Dropbox">
+                    <Cloud size={12} />
+                  </span>
+                )}
               </span>
               {currentFolder && (
-                <button
-                  className="refresh-button"
-                  onClick={onRefreshFiles}
-                  title="Refresh"
-                >
-                  <RefreshCw size={14} />
-                </button>
+                <div className="panel-actions">
+                  {dropboxSyncEnabled && isCurrentFolderSynced() && (
+                    <button
+                      className="panel-action-button"
+                      onClick={handleSyncFolder}
+                      disabled={syncingFolder}
+                      title="Sync to Dropbox now"
+                    >
+                      <Cloud size={14} className={syncingFolder ? 'spin' : ''} />
+                    </button>
+                  )}
+                  {dropboxSyncEnabled && !isCurrentFolderSynced() && onAddCurrentFolderToSync && (
+                    <button
+                      className="panel-action-button add-sync"
+                      onClick={onAddCurrentFolderToSync}
+                      title="Add folder to Dropbox sync"
+                    >
+                      <FolderPlus size={14} />
+                    </button>
+                  )}
+                  <button
+                    className="panel-action-button"
+                    onClick={onRefreshFiles}
+                    title="Refresh"
+                  >
+                    <RefreshCw size={14} />
+                  </button>
+                </div>
               )}
             </div>
             
@@ -204,6 +293,49 @@ const Sidebar = ({
           </div>
         )}
       </div>
+
+      {/* Context Menu */}
+      {contextMenu && (
+        <div
+          className="sidebar-context-menu"
+          style={{
+            position: 'fixed',
+            left: contextMenu.x,
+            top: contextMenu.y,
+            zIndex: 10000
+          }}
+        >
+          {dropboxSyncEnabled && (
+            isFileSynced(contextMenu.item.path) ? (
+              <div className="context-menu-item disabled">
+                <Cloud size={14} />
+                <span>Already synced</span>
+              </div>
+            ) : (
+              <div 
+                className="context-menu-item"
+                onClick={() => {
+                  // This file's folder should be added to sync
+                  const folderPath = contextMenu.item.path.substring(0, contextMenu.item.path.lastIndexOf('/'))
+                  if (onAddCurrentFolderToSync) {
+                    onAddCurrentFolderToSync(folderPath)
+                  }
+                  setContextMenu(null)
+                }}
+              >
+                <FolderPlus size={14} />
+                <span>Add folder to sync</span>
+              </div>
+            )
+          )}
+          {!dropboxSyncEnabled && (
+            <div className="context-menu-item disabled">
+              <CloudOff size={14} />
+              <span>Dropbox sync disabled</span>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
