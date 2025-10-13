@@ -39,10 +39,10 @@ const monacoThemes = {
     ],
     colors: {
       'editor.background': '#f8f8f2',
-      'editor.foreground': '#282a36',
+      'editor.foreground': '#282A36',
       'editor.lineHighlightBackground': '#e6e6e6',
       'editor.selectionBackground': '#d4d4d4',
-      'editorCursor.foreground': '#282a36',
+      'editorCursor.foreground': '#282A36',
       'editorLineNumber.foreground': '#6272a4',
     }
   },
