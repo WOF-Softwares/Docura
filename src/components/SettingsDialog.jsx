@@ -156,8 +156,8 @@ const SettingsDialog = ({
                           <span className="detail-value">{dropboxStatus.email}</span>
                         </div>
                         <div className="detail-row">
-                          <span className="detail-label">Target Folder:</span>
-                          <span className="detail-value">{dropboxStatus.targetFolder || 'My Documents'}</span>
+                          <span className="detail-label">Dropbox Location:</span>
+                          <span className="detail-value">/Apps/Docura Sync/</span>
                         </div>
                       </div>
 

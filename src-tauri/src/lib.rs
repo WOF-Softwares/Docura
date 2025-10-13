@@ -483,7 +483,7 @@ impl Default for DropboxConfig {
             access_token: None,
             refresh_token: None,
             email: None,
-            target_folder: "My Documents".to_string(),
+            target_folder: "".to_string(), // Empty - files go directly to /Apps/Docura Sync/
             sync_folders: Vec::new(),
         }
     }
@@ -1216,8 +1216,13 @@ async fn dropbox_set_target_folder(folder_name: String) -> Result<(), String> {
 async fn dropbox_add_sync_folder(local_path: String, dropbox_subfolder: String) -> Result<(), String> {
     let mut config = load_config().await?;
     
-    // Create the Dropbox path using target folder + subfolder
-    let dropbox_path = format!("/{}/{}", config.dropbox.target_folder, dropbox_subfolder);
+    // Create the Dropbox path
+    // With App Folder, root is already /Apps/Docura Sync/
+    let dropbox_path = if config.dropbox.target_folder.is_empty() {
+        format!("/{}", dropbox_subfolder)
+    } else {
+        format!("/{}/{}", config.dropbox.target_folder, dropbox_subfolder)
+    };
     
     config.dropbox.sync_folders.push(SyncFolder {
         local_path,
