@@ -1,34 +1,46 @@
 import React, { useState, useEffect } from 'react'
 import { X, Check, RefreshCw } from 'lucide-react'
 import { getOmakaseStatus } from '../utils/omakaseSync'
+import { getPlasmaStatus } from '../utils/plasmaSync'
 
 const SettingsDialog = ({ 
   isOpen, 
   onClose, 
   omakaseSyncEnabled, 
   onOmakaseSyncToggle,
+  plasmaSyncEnabled,
+  onPlasmaSyncToggle,
   onSyncNow,
   autoSaveEnabled,
   onAutoSaveToggle,
   editorSettings,
   onEditorSettingsChange,
   liveEditorType,
-  onLiveEditorTypeChange
+  onLiveEditorTypeChange,
+  syncProvider // 'omakase' or 'plasma'
 }) => {
   const [omakaseStatus, setOmakaseStatus] = useState(null)
+  const [plasmaStatus, setPlasmaStatus] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('general')
 
   useEffect(() => {
     if (isOpen) {
-      loadOmakaseStatus()
+      loadThemeProviderStatus()
     }
   }, [isOpen])
 
-  const loadOmakaseStatus = async () => {
+  const loadThemeProviderStatus = async () => {
     setLoading(true)
-    const status = await getOmakaseStatus()
-    setOmakaseStatus(status)
+    
+    // Load both statuses in parallel
+    const [omakaseRes, plasmaRes] = await Promise.all([
+      getOmakaseStatus(),
+      getPlasmaStatus()
+    ])
+    
+    setOmakaseStatus(omakaseRes)
+    setPlasmaStatus(plasmaRes)
     setLoading(false)
   }
 
@@ -107,11 +119,13 @@ const SettingsDialog = ({
                       type="checkbox"
                       checked={omakaseSyncEnabled}
                       onChange={(e) => onOmakaseSyncToggle(e.target.checked)}
+                      disabled={plasmaSyncEnabled}
                     />
                     <span>Auto-sync with Omakase theme</span>
                   </label>
                   <p className="option-description">
                     Automatically update Docura's theme when Omakase theme changes (checks every 30 seconds)
+                    {plasmaSyncEnabled && <span className="text-error"> • Disabled (Plasma sync is active)</span>}
                   </p>
                 </div>
 
@@ -127,6 +141,69 @@ const SettingsDialog = ({
             ) : (
               <div className="settings-info">
                 <span>Omakase not detected. Install <a href="https://omakase.app" target="_blank" rel="noopener noreferrer">Omakase</a> to enable theme synchronization.</span>
+              </div>
+            )}
+          </div>
+
+          {/* Plasma Sync Section */}
+          <div className="settings-section">
+            <h3>🎨 KDE Plasma Integration</h3>
+            
+            {loading ? (
+              <div className="settings-loading">
+                <RefreshCw size={16} className="spin" />
+                <span>Checking Plasma status...</span>
+              </div>
+            ) : plasmaStatus?.available ? (
+              <>
+                <div className="settings-info success">
+                  <Check size={16} />
+                  <span>KDE Plasma detected!</span>
+                </div>
+                
+                <div className="settings-details">
+                  <div className="detail-row">
+                    <span className="detail-label">Color Scheme:</span>
+                    <span className="detail-value">{plasmaStatus.scheme}</span>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Theme Mode:</span>
+                    <span className="detail-value">{plasmaStatus.isDark ? 'Dark' : 'Light'}</span>
+                  </div>
+                  <div className="detail-row">
+                    <span className="detail-label">Mapped to:</span>
+                    <span className="detail-value accent">{plasmaStatus.theme}</span>
+                  </div>
+                </div>
+
+                <div className="settings-option">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={plasmaSyncEnabled}
+                      onChange={(e) => onPlasmaSyncToggle(e.target.checked)}
+                      disabled={omakaseSyncEnabled}
+                    />
+                    <span>Auto-sync with Plasma color scheme</span>
+                  </label>
+                  <p className="option-description">
+                    Automatically update Docura's theme when Plasma color scheme changes (checks every 30 seconds)
+                    {omakaseSyncEnabled && <span className="text-error"> • Disabled (Omakase sync is active)</span>}
+                  </p>
+                </div>
+
+                <button 
+                  className="sync-button"
+                  onClick={onSyncNow}
+                  disabled={!plasmaSyncEnabled}
+                >
+                  <RefreshCw size={16} />
+                  Sync Now
+                </button>
+              </>
+            ) : (
+              <div className="settings-info">
+                <span>KDE Plasma not detected. This feature is only available when running under KDE Plasma 5 or 6.</span>
               </div>
             )}
           </div>

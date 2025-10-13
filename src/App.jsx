@@ -20,6 +20,7 @@ import StatusBar from "./components/StatusBar";
 import { exportToPDF, generatePDFBlob } from "./utils/pdfExport";
 import { convertMarkdownImagePaths } from "./utils/imagePathConverter";
 import { isOmakaseEnvironment, syncWithOmakase } from "./utils/omakaseSync";
+import { isPlasmaEnvironment, syncWithPlasma } from "./utils/plasmaSync";
 import "./styles/App.css";
 import "./styles/ThemeSelector.css";
 import "./styles/markdown-themes.css";
@@ -46,6 +47,9 @@ function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [omakaseAvailable, setOmakaseAvailable] = useState(false);
   const [omakaseSyncEnabled, setOmakaseSyncEnabled] = useState(false);
+  const [plasmaAvailable, setPlasmaAvailable] = useState(false);
+  const [plasmaSyncEnabled, setPlasmaSyncEnabled] = useState(false);
+  const [syncProvider, setSyncProvider] = useState(null); // 'omakase' or 'plasma'
   const [isSyncing, setIsSyncing] = useState(false);
   const [omakaseFont, setOmakaseFont] = useState(null);
   const [isFolderSwitchDialogOpen, setIsFolderSwitchDialogOpen] =
@@ -153,8 +157,8 @@ function App() {
       })
       .catch((err) => console.error("Error checking WM:", err));
 
-    // Check for Omakase
-    checkOmakase();
+    // Check for theme providers (Omakase & Plasma)
+    checkThemeProviders();
 
     // Set up CLI event listeners (WINDOW-SPECIFIC)
     console.log("🎧 Setting up window-specific CLI event listeners...");
@@ -642,33 +646,48 @@ function App() {
     currentTempIdRef.current = currentTempId;
   }, [currentTempId]);
 
-  const checkOmakase = async () => {
-    const available = await isOmakaseEnvironment();
-    setOmakaseAvailable(available);
-    if (available) {
+  const checkThemeProviders = async () => {
+    // Check Omakase/Omarchy
+    const omakaseAvail = await isOmakaseEnvironment();
+    setOmakaseAvailable(omakaseAvail);
+    if (omakaseAvail) {
       console.log("🎨 Omarchy detected!");
-      // Load sync preference from config
-      try {
-        const config = await invoke("load_config");
-        if (config && config.omakase_sync !== undefined) {
-          setOmakaseSyncEnabled(config.omakase_sync);
-        }
-      } catch (error) {
-        console.error("Error loading Omarchy sync config:", error);
-      }
-
+      
       // Get Omarchy font
       try {
         const font = await invoke("get_omakase_font");
         if (font) {
           setOmakaseFont(font);
           console.log(`🔤 Using Omarchy font: ${font}`);
-          // Apply font to editor
           applyEditorFont(font);
         }
       } catch (error) {
         console.log("No Omarchy font detected");
       }
+    }
+
+    // Check KDE Plasma
+    const plasmaAvail = await isPlasmaEnvironment();
+    setPlasmaAvailable(plasmaAvail);
+    if (plasmaAvail) {
+      console.log("🎨 KDE Plasma detected!");
+    }
+
+    // Load sync preferences from config
+    try {
+      const config = await invoke("load_config");
+      if (config) {
+        if (config.omakase_sync !== undefined) {
+          setOmakaseSyncEnabled(config.omakase_sync);
+          if (config.omakase_sync) setSyncProvider('omakase');
+        }
+        if (config.plasma_sync !== undefined) {
+          setPlasmaSyncEnabled(config.plasma_sync);
+          if (config.plasma_sync) setSyncProvider('plasma');
+        }
+      }
+    } catch (error) {
+      console.error("Error loading theme sync config:", error);
     }
   };
 
