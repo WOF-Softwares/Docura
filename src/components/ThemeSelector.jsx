@@ -248,38 +248,41 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange, omakaseSy
               <span className="theme-section-badge">12 themes</span>
             </div>
             <div className="themes-grid">
-              {themes.filter(t => !t.category).map((theme) => {
-                const currentVariant = getCurrentVariant(theme)
-                const themeId = `${theme.id}-${selectedTheme.includes('dark') ? 'dark' : 'light'}`
-                const isSelected = selectedTheme === themeId || selectedTheme.startsWith(theme.id)
-                
-                return (
-                  <div
-                    key={theme.id}
-                    className={`theme-card ${isSelected ? 'selected' : ''} ${omakaseSyncEnabled ? 'disabled' : ''}`}
-                    onClick={() => !omakaseSyncEnabled && setSelectedTheme(themeId)}
-                  >
-                    <div className="theme-preview" style={{ backgroundColor: currentVariant.bg }}>
-                      <div className="theme-preview-header" style={{ backgroundColor: currentVariant.primary }}>
-                        <div className="theme-preview-dot" />
-                        <div className="theme-preview-dot" />
-                        <div className="theme-preview-dot" />
+              {themes.filter(t => !t.category).flatMap((theme) => {
+                // Create cards for both light and dark variants
+                return ['light', 'dark'].map((variant) => {
+                  const variantData = theme.variants[variant]
+                  const themeId = `${theme.id}-${variant}`
+                  const isSelected = selectedTheme === themeId
+                  
+                  return (
+                    <div
+                      key={themeId}
+                      className={`theme-card ${isSelected ? 'selected' : ''} ${omakaseSyncEnabled ? 'disabled' : ''}`}
+                      onClick={() => !omakaseSyncEnabled && setSelectedTheme(themeId)}
+                    >
+                      <div className="theme-preview" style={{ backgroundColor: variantData.bg }}>
+                        <div className="theme-preview-header" style={{ backgroundColor: variantData.primary }}>
+                          <div className="theme-preview-dot" />
+                          <div className="theme-preview-dot" />
+                          <div className="theme-preview-dot" />
+                        </div>
+                        <div className="theme-preview-content">
+                          <div className="theme-preview-line" style={{ backgroundColor: variantData.text, opacity: 0.8 }} />
+                          <div className="theme-preview-line" style={{ backgroundColor: variantData.accent, opacity: 0.6, width: '80%' }} />
+                          <div className="theme-preview-line" style={{ backgroundColor: variantData.text, opacity: 0.4, width: '90%' }} />
+                        </div>
                       </div>
-                      <div className="theme-preview-content">
-                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.text, opacity: 0.8 }} />
-                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.accent, opacity: 0.6, width: '80%' }} />
-                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.text, opacity: 0.4, width: '90%' }} />
+                      <div className="theme-info">
+                        <h3>{theme.name} {variant === 'light' ? '☀️' : '🌙'}</h3>
+                        <p>{theme.description}</p>
                       </div>
+                      {isSelected && (
+                        <div className="theme-selected-badge">✓</div>
+                      )}
                     </div>
-                    <div className="theme-info">
-                      <h3>{theme.name}</h3>
-                      <p>{theme.description}</p>
-                    </div>
-                    {isSelected && (
-                      <div className="theme-selected-badge">✓</div>
-                    )}
-                  </div>
-                )
+                  )
+                })
               })}
             </div>
           </div>
@@ -292,7 +295,7 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange, omakaseSy
             </div>
             <div className="themes-grid">
               {themes.filter(t => t.category === 'omarchy').map((theme) => {
-                const currentVariant = getCurrentVariant(theme)
+                const variantData = theme.variants.dark
                 const themeId = theme.id
                 const isSelected = selectedTheme === themeId
                 
@@ -302,16 +305,16 @@ const ThemeSelector = ({ isOpen, onClose, currentTheme, onThemeChange, omakaseSy
                     className={`theme-card ${isSelected ? 'selected' : ''} ${omakaseSyncEnabled ? 'disabled' : ''}`}
                     onClick={() => !omakaseSyncEnabled && setSelectedTheme(themeId)}
                   >
-                    <div className="theme-preview" style={{ backgroundColor: currentVariant.bg }}>
-                      <div className="theme-preview-header" style={{ backgroundColor: currentVariant.primary }}>
+                    <div className="theme-preview" style={{ backgroundColor: variantData.bg }}>
+                      <div className="theme-preview-header" style={{ backgroundColor: variantData.primary }}>
                         <div className="theme-preview-dot" />
                         <div className="theme-preview-dot" />
                         <div className="theme-preview-dot" />
                       </div>
                       <div className="theme-preview-content">
-                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.text, opacity: 0.8 }} />
-                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.accent, opacity: 0.6, width: '80%' }} />
-                        <div className="theme-preview-line" style={{ backgroundColor: currentVariant.text, opacity: 0.4, width: '90%' }} />
+                        <div className="theme-preview-line" style={{ backgroundColor: variantData.text, opacity: 0.8 }} />
+                        <div className="theme-preview-line" style={{ backgroundColor: variantData.accent, opacity: 0.6, width: '80%' }} />
+                        <div className="theme-preview-line" style={{ backgroundColor: variantData.text, opacity: 0.4, width: '90%' }} />
                       </div>
                     </div>
                     <div className="theme-info">
