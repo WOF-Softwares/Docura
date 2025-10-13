@@ -2211,10 +2211,31 @@ const openRecentItem = async (item) => {
     
     try {
       await addDropboxSyncFolder(pathToAdd, subfolder);
+      
       // Reload sync folders
       const folders = await getDropboxSyncFolders();
       setSyncFolders(folders);
-      toast.success(`✅ Added "${folderName}" to Dropbox sync!`);
+      
+      // Auto-sync the newly added folder immediately!
+      const newFolderIndex = folders.findIndex(f => f.localPath === pathToAdd);
+      if (newFolderIndex !== -1) {
+        toast.success(`✅ Added "${folderName}" to sync! Syncing now...`);
+        
+        // Sync immediately
+        try {
+          const result = await syncFolderNow(newFolderIndex);
+          if (result.synced > 0) {
+            toast.success(`🎉 Synced ${result.synced} file${result.synced > 1 ? 's' : ''} to Dropbox!`);
+          } else {
+            toast.info("📁 Folder added! No markdown files to sync yet.");
+          }
+        } catch (syncError) {
+          console.error("Auto-sync failed:", syncError);
+          toast.warning("⚠️ Folder added but sync failed. Click cloud icon to retry.");
+        }
+      } else {
+        toast.success(`✅ Added "${folderName}" to Dropbox sync!`);
+      }
     } catch (error) {
       console.error("Failed to add folder to sync:", error);
       toast.error("Failed to add folder: " + error.message);
