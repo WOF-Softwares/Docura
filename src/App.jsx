@@ -32,7 +32,8 @@ import {
   removeDropboxSyncFolder,
   toggleDropboxSync,
   syncFileToDropbox,
-  shouldSyncFile
+  shouldSyncFile,
+  syncFolderNow
 } from "./utils/dropboxSync";
 import "./styles/App.css";
 import "./styles/ThemeSelector.css";
@@ -2155,6 +2156,24 @@ const openRecentItem = async (item) => {
     }
   };
 
+  const handleSyncFolderNow = async (index) => {
+    try {
+      const result = await syncFolderNow(index);
+      if (result.synced > 0) {
+        toast.success(`✅ Synced ${result.synced} file${result.synced > 1 ? 's' : ''} to Dropbox`);
+      } else if (result.failed > 0) {
+        toast.error(`❌ Failed to sync ${result.failed} file${result.failed > 1 ? 's' : ''}`);
+      } else {
+        toast.info("ℹ️ No markdown files found to sync");
+      }
+      return result;
+    } catch (error) {
+      console.error("Sync folder error:", error);
+      toast.error("Failed to sync folder: " + error.message);
+      throw error;
+    }
+  };
+
   const handleDropboxSyncToggle = async (enabled) => {
     try {
       await toggleDropboxSync(enabled);
@@ -2426,6 +2445,7 @@ const openRecentItem = async (item) => {
         onDropboxDisconnect={handleDropboxDisconnect}
         onAddSyncFolder={handleAddSyncFolder}
         onRemoveSyncFolder={handleRemoveSyncFolder}
+        onSyncFolderNow={handleSyncFolderNow}
         syncFolders={syncFolders}
       />
 

@@ -194,12 +194,27 @@ export function getDropboxPath(localPath, syncFolders) {
   const syncFolder = syncFolders.find(folder => 
     localPath.startsWith(folder.localPath)
   );
-  
+
   if (!syncFolder) {
     return null;
   }
-  
+
   const relativePath = localPath.substring(syncFolder.localPath.length);
   return `${syncFolder.dropboxPath}${relativePath}`;
+}
+
+/**
+ * Manually sync a folder now
+ * @param {number} folderIndex - Index of the folder to sync
+ * @returns {Promise<{synced: number, failed: number}>}
+ */
+export async function syncFolderNow(folderIndex) {
+  try {
+    const result = await invoke('dropbox_sync_folder_now', { folderIndex });
+    return result;
+  } catch (error) {
+    console.error('Failed to sync folder:', error);
+    throw error;
+  }
 }
 

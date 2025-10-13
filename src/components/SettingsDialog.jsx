@@ -25,12 +25,14 @@ const SettingsDialog = ({
   onDropboxDisconnect,
   onAddSyncFolder,
   onRemoveSyncFolder,
-  syncFolders
+  syncFolders,
+  onSyncFolderNow
 }) => {
   const [omakaseStatus, setOmakaseStatus] = useState(null)
   const [plasmaStatus, setPlasmaStatus] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('general')
+  const [syncingFolders, setSyncingFolders] = useState({})
 
   useEffect(() => {
     if (isOpen) {
@@ -50,6 +52,30 @@ const SettingsDialog = ({
     setOmakaseStatus(omakaseRes)
     setPlasmaStatus(plasmaRes)
     setLoading(false)
+  }
+
+  const handleSyncFolder = async (index) => {
+    setSyncingFolders(prev => ({ ...prev, [index]: 'syncing' }))
+    
+    try {
+      const result = await onSyncFolderNow(index)
+      setSyncingFolders(prev => ({ 
+        ...prev, 
+        [index]: result.synced > 0 ? 'success' : 'idle' 
+      }))
+      
+      // Reset status after 3 seconds
+      setTimeout(() => {
+        setSyncingFolders(prev => ({ ...prev, [index]: 'idle' }))
+      }, 3000)
+    } catch (error) {
+      setSyncingFolders(prev => ({ ...prev, [index]: 'error' }))
+      
+      // Reset status after 3 seconds
+      setTimeout(() => {
+        setSyncingFolders(prev => ({ ...prev, [index]: 'idle' }))
+      }, 3000)
+    }
   }
 
   if (!isOpen) return null
@@ -184,24 +210,50 @@ const SettingsDialog = ({
                         
                         {syncFolders && syncFolders.length > 0 ? (
                           <div className="sync-folders-list">
-                            {syncFolders.map((folder, index) => (
-                              <div key={index} className="sync-folder-item">
-                                <div className="folder-info">
-                                  <span className="folder-icon">📁</span>
-                                  <div className="folder-paths">
-                                    <div className="local-path">{folder.localPath}</div>
-                                    <div className="dropbox-path">→ {folder.dropboxPath}</div>
+                            {syncFolders.map((folder, index) => {
+                              const syncStatus = syncingFolders[index] || 'idle'
+                              return (
+                                <div key={index} className="sync-folder-item">
+                                  <div className="folder-info">
+                                    <span className="folder-icon">📁</span>
+                                    <div className="folder-paths">
+                                      <div className="local-path">{folder.localPath}</div>
+                                      <div className="dropbox-path">→ {folder.dropboxPath}</div>
+                                    </div>
+                                  </div>
+                                  <div className="folder-actions">
+                                    {syncStatus === 'syncing' && (
+                                      <span className="sync-status syncing">
+                                        <RefreshCw size={14} className="spin" />
+                                      </span>
+                                    )}
+                                    {syncStatus === 'success' && (
+                                      <span className="sync-status success">
+                                        <Check size={14} />
+                                      </span>
+                                    )}
+                                    {syncStatus === 'error' && (
+                                      <span className="sync-status error">⚠️</span>
+                                    )}
+                                    <button
+                                      className="sync-folder-btn"
+                                      onClick={() => handleSyncFolder(index)}
+                                      disabled={syncStatus === 'syncing'}
+                                      title="Sync this folder now"
+                                    >
+                                      <RefreshCw size={16} />
+                                    </button>
+                                    <button
+                                      className="remove-folder-btn"
+                                      onClick={() => onRemoveSyncFolder(index)}
+                                      title="Remove folder"
+                                    >
+                                      <X size={16} />
+                                    </button>
                                   </div>
                                 </div>
-                                <button
-                                  className="remove-folder-btn"
-                                  onClick={() => onRemoveSyncFolder(index)}
-                                  title="Remove folder"
-                                >
-                                  <X size={16} />
-                                </button>
-                              </div>
-                            ))}
+                              )
+                            })}
                           </div>
                         ) : (
                           <div className="settings-info">

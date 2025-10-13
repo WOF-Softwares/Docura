@@ -1292,6 +1292,54 @@ async fn dropbox_sync_file(local_path: String, content: String) -> Result<(), St
     Ok(())
 }
 
+#[command]
+async fn dropbox_sync_folder_now(folder_index: usize) -> Result<serde_json::Value, String> {
+    let config = load_config().await?;
+    
+    if !config.dropbox_sync_enabled {
+        return Err("Dropbox sync is not enabled".to_string());
+    }
+    
+    let access_token = config.dropbox.access_token
+        .ok_or("Not connected to Dropbox")?;
+    
+    let sync_folder = config.dropbox.sync_folders.get(folder_index)
+        .ok_or("Invalid folder index")?;
+    
+    // Get all markdown files in the folder
+    let mut files_synced = 0;
+    let mut files_failed = 0;
+    
+    if let Ok(entries) = std::fs::read_dir(&sync_folder.local_path) {
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.is_file() && path.extension().and_then(|s| s.to_str()) == Some("md") {
+                if let Ok(content) = std::fs::read(&path) {
+                    let relative_path = path.strip_prefix(&sync_folder.local_path)
+                        .ok().and_then(|p| p.to_str())
+                        .unwrap_or("");
+                    let dropbox_path = format!("{}/{}", sync_folder.dropbox_path, relative_path);
+                    
+                    match dropbox_sync::upload_file(
+                        &access_token,
+                        path.to_str().unwrap_or(""),
+                        &dropbox_path,
+                        content
+                    ).await {
+                        Ok(_) => files_synced += 1,
+                        Err(_) => files_failed += 1,
+                    }
+                }
+            }
+        }
+    }
+    
+    Ok(serde_json::json!({
+        "synced": files_synced,
+        "failed": files_failed
+    }))
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Get CLI arguments
@@ -1390,7 +1438,8 @@ pub fn run() {
             dropbox_remove_sync_folder,
             dropbox_get_sync_folders,
             dropbox_toggle_sync,
-            dropbox_sync_file
+            dropbox_sync_file,
+            dropbox_sync_folder_now
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
