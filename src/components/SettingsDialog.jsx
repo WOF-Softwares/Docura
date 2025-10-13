@@ -168,6 +168,36 @@ const SettingsDialog = ({
                         </svg>
                         Connect Dropbox
                       </button>
+
+                      {/* Show saved sync folders even when disconnected */}
+                      {syncFolders && syncFolders.length > 0 && (
+                        <div className="settings-subsection" style={{ marginTop: '24px', opacity: 0.7 }}>
+                          <h4 className="subsection-title">📌 Saved Sync Folders</h4>
+                          <p className="option-description" style={{ marginBottom: '12px' }}>
+                            Your sync folder configuration is saved. Connect to Dropbox to use them.
+                          </p>
+                          <div className="sync-folders-list">
+                            {syncFolders.map((folder, index) => (
+                              <div key={index} className="sync-folder-item" style={{ opacity: 0.8 }}>
+                                <div className="folder-info">
+                                  <span className="folder-icon">📁</span>
+                                  <div className="folder-paths">
+                                    <div className="local-path">{folder.localPath}</div>
+                                    <div className="dropbox-path">→ {folder.dropboxPath}</div>
+                                  </div>
+                                </div>
+                                <button
+                                  className="remove-folder-btn"
+                                  onClick={() => onRemoveSyncFolder(index)}
+                                  title="Remove folder"
+                                >
+                                  <X size={16} />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </>
                   ) : (
                     <>

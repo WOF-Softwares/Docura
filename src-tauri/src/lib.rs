@@ -1148,9 +1148,17 @@ async fn dropbox_exchange_code(code: String) -> Result<(), String> {
 #[command]
 async fn dropbox_disconnect() -> Result<(), String> {
     let mut config = load_config().await?;
+    
+    // Preserve sync folders when disconnecting
+    let sync_folders = config.dropbox.sync_folders.clone();
+    
+    // Clear authentication but keep sync folder configuration
     config.dropbox = DropboxConfig::default();
+    config.dropbox.sync_folders = sync_folders;
     config.dropbox_sync_enabled = false;
+    
     save_config(config).await?;
+    log::info!("Disconnected from Dropbox (sync folders preserved)");
     Ok(())
 }
 
