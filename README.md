@@ -39,6 +39,16 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 
 **Day 2 brings a MASSIVE feature update!** Docura keeps getting better:
 
+### 🆕 Day 5 Features (October 13, 2025) - CLOUD SYNC! ☁️
+
+- **☁️ Dropbox Cloud Sync** - Your documents, everywhere you are!
+  - Secure **App Folder** architecture (only accesses `/Apps/Docura Sync/`)
+  - Auto-sync on save (manual or auto-save)
+  - Multiple folder support
+  - Beautiful OAuth flow
+  - **ONLY free, open-source markdown editor with cloud sync!**
+  - **Status:** Submitted to Dropbox for approval on **October 13, 2025** 🚀
+
 ### 🆕 Day 4 Features (October 13, 2025)
 
 - **🎯 Focus Mode** (F8): Typora-style focus writing - dynamic overlay dims everything except current block (ADHD-friendly!)
@@ -92,6 +102,7 @@ Respect the setup. When Omarchy controls your theme, Docura respects that choice
 
 - ✅ **Three Editing Modes** - Code, Live (WYSIWYG), and Preview
 - ✅ **17 Beautiful Themes** - Unified across entire application (12 classic + 5 Omarchy-exact)
+- ✅ **☁️ Dropbox Cloud Sync** - Your documents everywhere! (Submitted for approval Oct 13, 2025)
 - ✅ **Focus Mode** - Dynamic overlay spotlight on current paragraph (F8) - ADHD-friendly! 🎯
 - ✅ **Typewriter Mode** - Auto-scrolling to keep cursor centered (F9) - Just like a real typewriter! ⌨️
 - ✅ **PDF Export** - High-quality PDF generation with native save dialogs

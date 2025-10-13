@@ -1,5 +1,15 @@
 [
   {
+    "slug": "dropbox-sync",
+    "file": "dropbox-sync.md",
+    "title": "Dropbox Cloud Sync",
+    "description": "Access your documents from anywhere! Secure app-folder sync with Dropbox - the ONLY free open-source editor with cloud sync!",
+    "category": "Cloud Sync",
+    "icon": "☁️",
+    "difficulty": "Beginner",
+    "readTime": "10 min read"
+  },
+  {
     "slug": "focus-typewriter-modes",
     "file": "focus-typewriter-modes.md",
     "title": "Focus Mode & Typewriter Mode",
