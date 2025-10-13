@@ -1348,6 +1348,33 @@ async fn dropbox_sync_folder_now(folder_index: usize) -> Result<serde_json::Valu
     }))
 }
 
+#[command]
+async fn dropbox_list_files(path: String) -> Result<Vec<serde_json::Value>, String> {
+    let config = load_config().await?;
+    
+    let access_token = config.dropbox.access_token
+        .ok_or("Not connected to Dropbox")?;
+    
+    // Prepend /Apps/Docura Sync to the path
+    let full_path = if path == "/" || path.is_empty() {
+        "".to_string() // Root of app folder
+    } else {
+        path
+    };
+    
+    dropbox_sync::list_files_with_metadata(&access_token, &full_path).await
+}
+
+#[command]
+async fn dropbox_download_file(dropbox_path: String) -> Result<String, String> {
+    let config = load_config().await?;
+    
+    let access_token = config.dropbox.access_token
+        .ok_or("Not connected to Dropbox")?;
+    
+    dropbox_sync::download_file_content(&access_token, &dropbox_path).await
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Get CLI arguments
@@ -1447,7 +1474,9 @@ pub fn run() {
             dropbox_get_sync_folders,
             dropbox_toggle_sync,
             dropbox_sync_file,
-            dropbox_sync_folder_now
+            dropbox_sync_folder_now,
+            dropbox_list_files,
+            dropbox_download_file
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

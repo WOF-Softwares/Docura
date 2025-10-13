@@ -51,6 +51,8 @@ const Toolbar = ({
   typewriterMode,
   onToggleFocusMode,
   onToggleTypewriterMode,
+  onOpenFromDropbox,
+  dropboxConnected,
 }) => {
   return (
     <div className="toolbar">
@@ -80,6 +82,8 @@ const Toolbar = ({
           recentItems={recentItems}
           onOpenRecentItem={onOpenRecentItem}
           onClearRecentItems={onClearRecentItems}
+          onOpenFromDropbox={onOpenFromDropbox}
+          dropboxConnected={dropboxConnected}
         />
       </div>
 

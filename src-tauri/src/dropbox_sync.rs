@@ -327,3 +327,71 @@ pub async fn create_folder(
     Ok(())
 }
 
+/// List files in Dropbox (for browsing/downloading)
+pub async fn list_files_with_metadata(
+    access_token: &str,
+    folder_path: &str,
+) -> Result<Vec<serde_json::Value>, String> {
+    let client = reqwest::Client::new();
+    
+    let list_arg = serde_json::json!({
+        "path": folder_path,
+        "recursive": false,
+        "include_media_info": false,
+        "include_deleted": false,
+        "include_has_explicit_shared_members": false
+    });
+    
+    let response = client
+        .post("https://api.dropboxapi.com/2/files/list_folder")
+        .header("Authorization", format!("Bearer {}", access_token))
+        .header("Content-Type", "application/json")
+        .json(&list_arg)
+        .send()
+        .await
+        .map_err(|e| format!("Failed to list files: {}", e))?;
+    
+    if !response.status().is_success() {
+        let error_text = response.text().await.unwrap_or_else(|_| "Unknown error".to_string());
+        return Err(format!("Dropbox list error: {}", error_text));
+    }
+    
+    let list_data: serde_json::Value = response
+        .json()
+        .await
+        .map_err(|e| format!("Failed to parse list response: {}", e))?;
+    
+    let entries = list_data["entries"]
+        .as_array()
+        .ok_or("Missing entries in response")?;
+    
+    let mut files = Vec::new();
+    for entry in entries {
+        let tag = entry[".tag"].as_str().unwrap_or("");
+        let name = entry["name"].as_str().unwrap_or("Unknown");
+        let path = entry["path_display"].as_str().unwrap_or("");
+        
+        let file_info = serde_json::json!({
+            "name": name,
+            "path": path,
+            "isFolder": tag == "folder",
+            "size": entry["size"].as_u64()
+        });
+        
+        files.push(file_info);
+    }
+    
+    Ok(files)
+}
+
+/// Download a file from Dropbox and return content as string
+pub async fn download_file_content(
+    access_token: &str,
+    dropbox_path: &str,
+) -> Result<String, String> {
+    let bytes = download_file(access_token, dropbox_path).await?;
+    
+    String::from_utf8(bytes)
+        .map_err(|e| format!("Failed to convert file to UTF-8: {}", e))
+}
+

@@ -24,6 +24,7 @@ import {
   FileJson,
   AlignLeft,
   Newspaper,
+  Cloud,
 } from "lucide-react";
 
 const Menu = ({
@@ -51,6 +52,8 @@ const Menu = ({
   recentItems,
   onOpenRecentItem,
   onClearRecentItems,
+  onOpenFromDropbox,
+  dropboxConnected,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isRecentSubmenuOpen, setIsRecentSubmenuOpen] = useState(false);
@@ -129,6 +132,14 @@ const Menu = ({
               <FileText size={16} />
               <span>Open File</span>
               <span className="menu-shortcut">Ctrl+O</span>
+            </button>
+            <button
+              className="menu-item"
+              onClick={() => handleMenuClick(onOpenFromDropbox)}
+              disabled={!dropboxConnected}
+            >
+              <Cloud size={16} />
+              <span>Open from Dropbox</span>
             </button>
             <div className="menu-divider"></div>
             <button

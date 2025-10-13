@@ -18,6 +18,7 @@ import UnsavedChangesDialog from "./components/UnsavedChangesDialog";
 import RecoveryDialog from "./components/RecoveryDialog";
 import StatusBar from "./components/StatusBar";
 import OAuthDialog from "./components/OAuthDialog";
+import DropboxFilesDialog from "./components/DropboxFilesDialog";
 import { exportToPDF, generatePDFBlob } from "./utils/pdfExport";
 import { convertMarkdownImagePaths } from "./utils/imagePathConverter";
 import { isOmakaseEnvironment, syncWithOmakase } from "./utils/omakaseSync";
@@ -105,6 +106,7 @@ function App() {
   const [syncFolders, setSyncFolders] = useState([]);
   const [isOAuthDialogOpen, setIsOAuthDialogOpen] = useState(false);
   const [oauthUrl, setOauthUrl] = useState('');
+  const [isDropboxFilesDialogOpen, setIsDropboxFilesDialogOpen] = useState(false);
   const previewRef = useRef(null);
   const syncIntervalRef = useRef(null);
   const autoSaveTimeoutRef = useRef(null);
@@ -2258,6 +2260,105 @@ const openRecentItem = async (item) => {
     }
   };
 
+  const handleOpenFromDropbox = () => {
+    if (!dropboxStatus?.connected) {
+      toast.error("Please connect to Dropbox first");
+      return;
+    }
+    setIsDropboxFilesDialogOpen(true);
+  };
+
+  const handleDownloadFromDropbox = async (fileName, content) => {
+    try {
+      // Check for unsaved changes first
+      if (hasUnsavedChanges && fileContent.trim() !== "") {
+        const choice = await showUnsavedChangesDialog();
+        if (choice === "cancelled") {
+          return;
+        }
+      }
+
+      // Delete temp file if switching from untitled
+      if (currentTempId) {
+        try {
+          await invoke("delete_temp_file", { tempId: currentTempId });
+          console.log("🗑️ Deleted temp file when opening from Dropbox");
+        } catch (error) {
+          console.error("Failed to delete temp file:", error);
+        }
+        setCurrentTempId(null);
+      }
+
+      // Set the content and file info
+      setFileContent(content);
+      setOriginalContent(content);
+      setIsEditing(true);
+      extractHeaders(content);
+      
+      // Download to local folder (ask user where to save)
+      const localPath = await save({
+        defaultPath: `~/Downloads/${fileName}`,
+        filters: [
+          {
+            name: "Markdown",
+            extensions: ["md"],
+          },
+        ],
+      });
+
+      if (localPath) {
+        // Save to local disk
+        await writeTextFile(localPath, content);
+        
+        // Grant file scope
+        try {
+          await invoke("grant_file_scope", { filePath: localPath });
+        } catch (scopeError) {
+          console.warn("Failed to grant file scope:", scopeError);
+        }
+
+        setCurrentFile(localPath);
+        setCurrentFolder(null);
+
+        // Show in sidebar
+        const savedFileName = localPath.split("/").pop();
+        setFiles([
+          {
+            name: savedFileName,
+            path: localPath,
+            type: "file",
+          },
+        ]);
+
+        // Switch to code mode (stable)
+        setActiveTab('code');
+
+        // Add to recent items
+        await addRecentItem(localPath, "file");
+
+        toast.success(`Downloaded and opened: ${savedFileName}`);
+      } else {
+        // User cancelled save, just open in memory
+        setCurrentFile(null);
+        setCurrentFolder(null);
+        setFiles([
+          {
+            name: fileName,
+            path: null,
+            type: "file",
+            isUntitled: true,
+          },
+        ]);
+        
+        setActiveTab('code');
+        toast.success(`Opened from Dropbox: ${fileName}`);
+      }
+    } catch (error) {
+      console.error("Error downloading from Dropbox:", error);
+      toast.error("Failed to download file: " + error);
+    }
+  };
+
   const handleAutoSaveToggle = (enabled) => {
     setAutoSaveEnabled(enabled);
     saveAppConfig(currentTheme, omakaseSyncEnabled, plasmaSyncEnabled, enabled);
@@ -2409,6 +2510,8 @@ const openRecentItem = async (item) => {
           typewriterMode={typewriterMode}
           onToggleFocusMode={toggleFocusMode}
           onToggleTypewriterMode={toggleTypewriterMode}
+          onOpenFromDropbox={handleOpenFromDropbox}
+          dropboxConnected={dropboxStatus?.connected || false}
         />
       )}
 
@@ -2585,6 +2688,13 @@ const openRecentItem = async (item) => {
         onClose={() => setIsOAuthDialogOpen(false)}
         authUrl={oauthUrl}
         onCodeSubmit={handleOAuthCodeSubmit}
+      />
+
+      <DropboxFilesDialog
+        isOpen={isDropboxFilesDialogOpen}
+        onClose={() => setIsDropboxFilesDialogOpen(false)}
+        onDownloadFile={handleDownloadFromDropbox}
+        dropboxStatus={dropboxStatus}
       />
 
       <Toaster
