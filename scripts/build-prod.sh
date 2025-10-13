@@ -333,6 +333,66 @@ if $DO_TAG || $DO_RELEASE; then
         warn "Release may already exist; attempting to upload/overwrite assets"
         for a in "${ASSETS[@]}"; do gh release upload "$TAG" "$a" --clobber || true; done
       fi
+      
+      # Update docs/index.html with new version and copy packages to docs/downloads
+      log "Updating docs/index.html with version $NEW_VERSION"
+      DOCS_DIR="$ROOT_DIR/docs"
+      DOWNLOADS_DIR="$DOCS_DIR/downloads"
+      
+      # Create downloads directory if it doesn't exist
+      mkdir -p "$DOWNLOADS_DIR"
+      
+      # Copy packages to docs/downloads
+      if [[ -f "$PKG_DIR/$DEB_NAME" ]]; then
+        cp -f "$PKG_DIR/$DEB_NAME" "$DOWNLOADS_DIR/"
+        log "Copied $DEB_NAME to $DOWNLOADS_DIR"
+      fi
+      if [[ -f "$PKG_DIR/$RPM_NAME" ]]; then
+        cp -f "$PKG_DIR/$RPM_NAME" "$DOWNLOADS_DIR/"
+        log "Copied $RPM_NAME to $DOWNLOADS_DIR"
+      fi
+      # Copy Arch package
+      shopt -s nullglob
+      for f in "$PKG_DIR"/*.pkg.tar.*; do
+        ARCH_PKG_NAME="${BASE_NAME_LOWER}-bin-${APP_VERSION}-1-x86_64.pkg.tar.xz"
+        cp -f "$f" "$DOWNLOADS_DIR/$ARCH_PKG_NAME"
+        log "Copied $(basename "$f") to $DOWNLOADS_DIR/$ARCH_PKG_NAME"
+      done
+      shopt -u nullglob
+      
+      # Update version in docs/index.html
+      DOCS_HTML="$DOCS_DIR/index.html"
+      if [[ -f "$DOCS_HTML" ]]; then
+        # Update version numbers in meta tags and structured data
+        sed -i -E "s/(\"version\":\s*\")[^\"]+(\",)/\1$NEW_VERSION\2/" "$DOCS_HTML"
+        sed -i -E "s/(\"softwareVersion\":\s*\")[^\"]+(\",)/\1$NEW_VERSION\2/" "$DOCS_HTML"
+        sed -i -E "s/Docura v[0-9]+\.[0-9]+\.[0-9]*/Docura v$NEW_VERSION/g" "$DOCS_HTML"
+        
+        # Update download links for packages
+        sed -i -E "s|downloads/${BASE_NAME_LOWER}-bin-[0-9]+\.[0-9]+\.[0-9]+-1-x86_64\.pkg\.tar\.[a-z]+|downloads/${BASE_NAME_LOWER}-bin-${APP_VERSION}-1-x86_64.pkg.tar.xz|g" "$DOCS_HTML"
+        sed -i -E "s|downloads/${BASE_NAME_LOWER}_[0-9]+\.[0-9]+\.[0-9]+_amd64\.deb|downloads/${BASE_NAME_LOWER}_${APP_VERSION}_amd64.deb|g" "$DOCS_HTML"
+        sed -i -E "s|downloads/${BASE_NAME_LOWER}-[0-9]+\.[0-9]+\.[0-9]+-1\.x86_64\.rpm|downloads/${BASE_NAME_LOWER}-${APP_VERSION}-1.x86_64.rpm|g" "$DOCS_HTML"
+        
+        # Update installation commands
+        sed -i -E "s|(sudo pacman -U ${BASE_NAME_LOWER}-bin-)[0-9]+\.[0-9]+\.[0-9]+(-1-x86_64\.pkg\.tar\.[a-z]+)|\1${APP_VERSION}\2|g" "$DOCS_HTML"
+        sed -i -E "s|(sudo dpkg -i ${BASE_NAME_LOWER}_)[0-9]+\.[0-9]+\.[0-9]+(_amd64\.deb)|\1${APP_VERSION}\2|g" "$DOCS_HTML"
+        sed -i -E "s|(sudo rpm -i ${BASE_NAME_LOWER}-)[0-9]+\.[0-9]+\.[0-9]+(-1\.x86_64\.rpm)|\1${APP_VERSION}\2|g" "$DOCS_HTML"
+        
+        log "Updated $DOCS_HTML with version $NEW_VERSION"
+        
+        # Stage the updated docs files for commit
+        git add "$DOCS_HTML" "$DOWNLOADS_DIR"/*.deb "$DOWNLOADS_DIR"/*.rpm "$DOWNLOADS_DIR"/*.pkg.tar.* 2>/dev/null || true
+        if ! git diff --cached --quiet --exit-code; then
+          log "Committing docs updates"
+          git commit -m "docs: update download links to v$NEW_VERSION"
+          if git remote get-url origin >/dev/null 2>&1; then
+            log "Pushing docs updates to origin"
+            git push origin HEAD
+          fi
+        fi
+      else
+        warn "docs/index.html not found; skipping docs update"
+      fi
     fi
   )
 fi

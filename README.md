@@ -4,7 +4,7 @@
 
 🚀 A fast, elegant, and powerful next-generation writing platform that surpasses Typora and transforms how you create content.
 
-🎉 **Version 1.1 Released!** 🎉
+🎉 **Version 1.0.4 Released!** 🎉
 
 Docura is not just another markdown editor - it's the foundation for the **ultimate writing environment**. Currently a powerful native desktop app designed for Linux systems, built with Rust (Tauri) and React, combining the best features of Typora, VS Code, Medium, and Notion into one beautiful, lightweight application.
 
@@ -486,6 +486,78 @@ Tested on Linux (Arch) with both applications:
 - **System Integration** - Uses system WebKit rather than bundling everything
 - **No V8 overhead** - Electron includes full V8 JavaScript engine for backend
 - **Optimized Rendering** - Efficient React components with proper memoization
+
+---
+
+## 🔄 CI/CD & Release Process
+
+Docura has a fully automated CI/CD pipeline for building, versioning, and releasing packages!
+
+### Automatic Release Script
+
+Use the enhanced `scripts/build-prod.sh` with powerful flags:
+
+```bash
+# Build packages with automatic version bump
+scripts/build-prod.sh
+
+# Build with specific version bump
+scripts/build-prod.sh --major        # Bump major version (e.g., 1.x.x → 2.0.0)
+
+# Create git tag and push
+scripts/build-prod.sh --tag          # Create v<version> tag and push to GitHub
+
+# Full release automation (recommended!)
+scripts/build-prod.sh --release      # Build → Tag → GitHub Release → Update docs
+```
+
+### What `--release` Does Automatically
+
+When you run `scripts/build-prod.sh --release`, it will:
+
+1. **📦 Build Packages** - Creates `.deb`, `.rpm`, and `.pkg.tar.xz` files
+2. **🔢 Bump Version** - Automatically increments version in `version.info`
+3. **🏷️ Create Tag** - Makes a git tag `v<version>` and pushes it
+4. **🚀 GitHub Release** - Creates GitHub release with all package files
+5. **📝 Update Website** - Automatically updates `docs/index.html`:
+   - Updates version numbers in meta tags
+   - Updates download links to new packages
+   - Updates installation commands
+6. **📦 Copy Packages** - Copies packages to `docs/downloads/` for direct downloads
+7. **💾 Commit & Push** - Commits all changes and pushes to GitHub
+
+### Example Workflow
+
+```bash
+# Make your changes, test them...
+
+# When ready to release:
+scripts/build-prod.sh --release
+
+# That's it! Everything is automated:
+# ✅ Packages built
+# ✅ Version bumped
+# ✅ Git tag created
+# ✅ GitHub release published
+# ✅ Website updated with new download links
+# ✅ All changes committed and pushed
+```
+
+### Version Management
+
+- Version stored in `version.info` (TOML format)
+- Automatically synced to `src-tauri/tauri.conf.json`
+- Build number auto-increments (1.0.3 → 1.0.4 → ... → 1.0.9 → 1.1.0)
+- Use `--major` flag to bump major version manually
+
+### Package Locations
+
+After building:
+- **Source packages**: `packaging/arch/`
+- **Website downloads**: `docs/downloads/` (auto-copied on release)
+- **GitHub releases**: Attached to release automatically
+
+**No manual work needed - just code and release!** 🚀
 
 ---
 
