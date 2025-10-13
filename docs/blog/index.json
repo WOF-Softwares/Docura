@@ -1,5 +1,13 @@
 [
   {
+    "slug": "modern-development-choosing-tools-wisely",
+    "title": "Modern Development: Choosing Tools Wisely, Not Just Using Them Blindly",
+    "date": "October 14, 2025",
+    "readTime": "8 min read",
+    "excerpt": "Modern tools exist to solve real problems—the issue isn't the tools themselves, it's how we choose them. A practical approach to framework selection and engineering decisions.",
+    "file": "modern-development-choosing-tools-wisely.md"
+  },
+  {
     "slug": "open-from-dropbox-destroys-typora",
     "title": "🌍 Open from Dropbox: The Feature That Destroys Typora",
     "date": "October 13, 2025",
@@ -112,4 +120,3 @@
     "file": "docura-roadmap.md"
   }
 ]
-
