@@ -271,6 +271,71 @@ Built with respect for your work on Rails, Basecamp, and Omarchy. This integrati
 
 ---
 
+## 🎨 KDE Plasma Integration
+
+**We respect Plasma users!** 💙
+
+[KDE Plasma](https://kde.org/plasma-desktop/) is one of the most popular and powerful Linux desktop environments. Docura now integrates seamlessly with Plasma 5 & 6!
+
+### ✨ Features
+
+- **🔍 Auto-Detection** - Automatically detects KDE Plasma 5 & 6
+- **🔄 Theme Sync** - Syncs with your Plasma color scheme every 30 seconds
+- **🎨 Smart Mapping** - Breeze, Arc, Nord, Dracula, Gruvbox, and more!
+- **🌗 Dark/Light Detection** - Automatically detects theme brightness
+- **⚙️ Settings Integration** - Easy toggle in Settings dialog
+- **💚 Zero Configuration** - Just enable sync and it works!
+
+### 🎯 How It Works
+
+Docura reads your Plasma configuration:
+- **Config:** `~/.config/kdeglobals` (current color scheme)
+- **Plasma 5:** `~/.local/share/color-schemes/*.colors`
+- **Plasma 6:** `~/.local/share/plasma/look-and-feel/*/colors`
+
+### 🚀 How to Use
+
+1. **Use KDE Plasma** (5 or 6) as your desktop environment
+2. **Open Docura** → It auto-detects Plasma!
+3. **Menu → Settings** → KDE Plasma Integration section
+4. **Enable** "Auto-sync with Plasma color scheme"
+5. **Done!** Docura now follows your Plasma theme
+
+Change your Plasma theme → Docura updates automatically! ✨
+
+### 💡 Mutual Exclusion
+
+Only one sync provider can be active at a time:
+- Enabling **Plasma sync** → Disables Omarchy sync
+- Enabling **Omarchy sync** → Disables Plasma sync
+
+**Toolbar badge shows which is active:** "Plasma" or "Omakase"
+
+---
+
+## 🚀 COSMIC Integration (Coming Soon!)
+
+**Respect for System76 and COSMIC users!** 🌌
+
+[COSMIC Desktop](https://system76.com/cosmic) by System76 is the next-generation desktop environment written in Rust. When the stable version arrives, **Docura will support it!**
+
+### 🎯 Planned Features
+
+- **🔍 Auto-Detection** - Detect COSMIC desktop environment
+- **🔄 Theme Sync** - Sync with COSMIC themes
+- **🎨 Rust to Rust** - Perfect integration (both written in Rust!)
+- **💜 Pop!_OS Support** - First-class support for Pop!_OS users
+- **🌌 Modern Architecture** - Embrace COSMIC's modern design
+
+**This is our gift to:**
+- 🎁 Pop!_OS users
+- 🎁 System76 enthusiasts  
+- 🎁 COSMIC early adopters on Arch, Fedora, and beyond!
+
+**Status:** Waiting for COSMIC stable release. When it launches, Docura will be ready! 🚀
+
+---
+
 ## 📸 Screenshots
 
 <div align="center">
