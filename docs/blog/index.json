@@ -1,5 +1,13 @@
 [
   {
+    "slug": "dropbox-cloud-sync-integration",
+    "title": "🚀 Dropbox Cloud Sync is Here! Your Documents, Everywhere",
+    "date": "October 13, 2025",
+    "readTime": "12 min read",
+    "excerpt": "Docura now syncs with Dropbox! Secure app-folder architecture, auto-sync on save, and the ONLY free open-source markdown editor with cloud sync. Submitted for Dropbox approval! 🎉",
+    "file": "dropbox-cloud-sync-integration.md"
+  },
+  {
     "slug": "beating-typora-focus-mode",
     "title": "We Beat Typora's Focus Mode (And It Wasn't Even Close)",
     "date": "October 13, 2025",
