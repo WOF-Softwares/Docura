@@ -412,6 +412,17 @@
     --shadow-color: rgba(122, 162, 247, 0.2);
 }
 
+/* Vditor specific styling for Tokyo Night */
+[data-theme="tokyo-night"] .vditor-reset,
+[data-theme="tokyo-night"] .vditor-wysiwyg {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="tokyo-night"] .vditor-reset p,
+[data-theme="tokyo-night"] .vditor-wysiwyg p {
+    color: var(--text-primary) !important;
+}
+
 /* Everforest Theme */
 [data-theme="everforest-dark"] {
     --text-strong: #e67e80;
@@ -425,6 +436,17 @@
     --table-header-color: var(--text-primary);
     --table-alt-bg: var(--bg-tertiary);
     --shadow-color: rgba(167, 192, 128, 0.2);
+}
+
+/* Vditor specific styling for Everforest */
+[data-theme="everforest-dark"] .vditor-reset,
+[data-theme="everforest-dark"] .vditor-wysiwyg {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="everforest-dark"] .vditor-reset p,
+[data-theme="everforest-dark"] .vditor-wysiwyg p {
+    color: var(--text-primary) !important;
 }
 
 /* Gruvbox Theme */
@@ -442,6 +464,17 @@
     --shadow-color: rgba(254, 128, 25, 0.2);
 }
 
+/* Vditor specific styling for Gruvbox */
+[data-theme="gruvbox-dark"] .vditor-reset,
+[data-theme="gruvbox-dark"] .vditor-wysiwyg {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="gruvbox-dark"] .vditor-reset p,
+[data-theme="gruvbox-dark"] .vditor-wysiwyg p {
+    color: var(--text-primary) !important;
+}
+
 /* Rose Pine Theme */
 [data-theme="rose-pine"] {
     --text-strong: #eb6f92;
@@ -457,6 +490,17 @@
     --shadow-color: rgba(235, 188, 186, 0.2);
 }
 
+/* Vditor specific styling for Rose Pine */
+[data-theme="rose-pine"] .vditor-reset,
+[data-theme="rose-pine"] .vditor-wysiwyg {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="rose-pine"] .vditor-reset p,
+[data-theme="rose-pine"] .vditor-wysiwyg p {
+    color: var(--text-primary) !important;
+}
+
 /* Kanagawa Theme */
 [data-theme="kanagawa"] {
     --text-strong: #d27e99;
@@ -470,6 +514,17 @@
     --table-header-color: var(--text-primary);
     --table-alt-bg: var(--bg-tertiary);
     --shadow-color: rgba(149, 127, 184, 0.2);
+}
+
+/* Vditor specific styling for Kanagawa */
+[data-theme="kanagawa"] .vditor-reset,
+[data-theme="kanagawa"] .vditor-wysiwyg {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="kanagawa"] .vditor-reset p,
+[data-theme="kanagawa"] .vditor-wysiwyg p {
+    color: var(--text-primary) !important;
 }
 
 /* Responsive Design */

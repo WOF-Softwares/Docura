@@ -204,6 +204,8 @@ function App() {
           setCurrentFolder(null);
           const fileName = filePath.split("/").pop();
           setFiles([{ name: fileName, path: filePath, type: "file" }]);
+          // Switch to preview mode to ensure content is visible
+          setActiveTab('preview');
           toast.success(`Opened: ${fileName}`);
         } catch (error) {
           console.error("Error opening file from CLI:", error);
@@ -1219,6 +1221,9 @@ function App() {
           },
         ]);
 
+        // Switch to preview mode to ensure content is visible
+        setActiveTab('preview');
+
         // Add to recent items
         await addRecentItem(selected, "file");
 
@@ -1717,28 +1722,31 @@ function App() {
           console.log("🗑️ Deleted temp file when switching files");
         } catch (error) {
           console.error("Failed to delete temp file:", error);
-        }
-        setCurrentTempId(null);
       }
-
-      setCurrentFile(filePath);
-      setFileContent(content);
-      setOriginalContent(content);
-      setIsEditing(true);
-      extractHeaders(content);
-
-      // Add to recent items
-      await addRecentItem(filePath, "file");
-
-      const fileName = filePath.split("/").pop();
-      toast.success(`Opened: ${fileName}`);
-    } catch (error) {
-      console.error("Error reading file:", error);
-      toast.error("Failed to open file");
+      setCurrentTempId(null);
     }
-  };
 
-  const openRecentItem = async (item) => {
+    setCurrentFile(filePath);
+    setFileContent(content);
+    setOriginalContent(content);
+    setIsEditing(true);
+    extractHeaders(content);
+
+    // Switch to preview mode to ensure content is visible
+    setActiveTab('preview');
+
+    // Add to recent items
+    await addRecentItem(filePath, "file");
+
+    const fileName = filePath.split("/").pop();
+    toast.success(`Opened: ${fileName}`);
+  } catch (error) {
+    console.error("Error reading file:", error);
+    toast.error("Failed to open file");
+  }
+};
+
+const openRecentItem = async (item) => {
     try {
       // Check for unsaved changes first
       if (hasUnsavedChanges && fileContent.trim() !== "") {
@@ -1789,6 +1797,9 @@ function App() {
           },
         ]);
 
+        // Switch to preview mode to ensure content is visible
+        setActiveTab('preview');
+
         // Add to recent items (moves it to top)
         await addRecentItem(item.path, "file");
 
@@ -1833,6 +1844,9 @@ function App() {
       setOriginalContent(content);
       setIsEditing(true);
       extractHeaders(content);
+
+      // Switch to preview mode to ensure content is visible
+      setActiveTab('preview');
 
       // Add to recent items
       await addRecentItem(filePath, "file");
