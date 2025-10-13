@@ -1,5 +1,13 @@
 [
   {
+    "slug": "document-formats-markdown-supremacy",
+    "title": "Document Formats in 2025: Why Markdown Wins (and Why XML Should Retire)",
+    "date": "October 13, 2025",
+    "readTime": "8 min read",
+    "excerpt": "A deep dive into document formats: why Markdown is the future, where LaTeX fits in, why .docx is bloated, and the ultimate format - JSON + Markdown.",
+    "file": "document-formats-markdown-supremacy.md"
+  },
+  {
     "slug": "why-welcome-screens-matter",
     "title": "Why Every Great Editor Needs a Welcome Screen",
     "date": "October 12, 2025",
