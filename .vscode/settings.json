@@ -1,0 +1,20 @@
+{
+  "terminal.integrated.defaultProfile.linux": "bash-host",
+  "terminal.integrated.profiles.linux": {
+    "bash-host": {
+      "path": "flatpak-spawn",
+      "args": ["--host", "bash"],
+      "icon": "terminal-bash"
+    },
+    "bash": {
+      "path": "bash",
+      "icon": "terminal-bash"
+    }
+  },
+  "terminal.integrated.automationProfile.linux": {
+    "path": "flatpak-spawn",
+    "args": ["--host", "bash"]
+  },
+  "git.path": "flatpak-spawn --host git",
+  "terminal.integrated.inheritEnv": false
+}
