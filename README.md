@@ -4,7 +4,7 @@
 
 🚀 A fast, elegant, and powerful next-generation writing platform that surpasses Typora and transforms how you create content.
 
-🎉 **Version 1.0.4 Released!** 🎉
+🎉 **Version 1.1.5 Released!** 🎉
 
 Docura is not just another markdown editor - it's the foundation for the **ultimate writing environment**. Currently a powerful native desktop app designed for Linux systems, built with Rust (Tauri) and React, combining the best features of Typora, VS Code, Medium, and Notion into one beautiful, lightweight application.
 
