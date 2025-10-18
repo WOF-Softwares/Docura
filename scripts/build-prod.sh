@@ -111,6 +111,20 @@ else
   sed -i -E 's/("version"\s*:\s*")([0-9]+\.[0-9]+\.[0-9]+)(")/\1'"$NEW_VERSION"'\3/' "$CONF_JSON"
 fi
 
+# Update README.md version
+README_FILE="$ROOT_DIR/README.md"
+if [[ -f "$README_FILE" ]]; then
+  log "Updating README.md with version $NEW_VERSION"
+  # Update version in README.md (multiple patterns to catch different formats)
+  sed -i -E "s/Version [0-9]+\.[0-9]+\.[0-9]+/Version $NEW_VERSION/g" "$README_FILE"
+  sed -i -E "s/v[0-9]+\.[0-9]+\.[0-9]+/v$NEW_VERSION/g" "$README_FILE"
+  sed -i -E "s/(\*\*Version )([0-9]+\.[0-9]+\.[0-9]+)(\*\*)/\1$NEW_VERSION\3/g" "$README_FILE"
+  # Update version badge
+  sed -i -E "s/(Version-)[0-9]+\.[0-9]+\.[0-9]+/\1$NEW_VERSION/g" "$README_FILE"
+else
+  warn "README.md not found; skipping README update"
+fi
+
 APP_VERSION="$NEW_VERSION"
 
 # Normalize names
@@ -298,7 +312,7 @@ if $DO_TAG || $DO_RELEASE; then
     TAG="v$NEW_VERSION"
 
     # Commit version bump if there are staged changes to commit
-    git add version.info src-tauri/tauri.conf.json "$PKG_DIR/PKGBUILD" 2>/dev/null || true
+    git add version.info src-tauri/tauri.conf.json README.md "$PKG_DIR/PKGBUILD" 2>/dev/null || true
     if ! git diff --cached --quiet --exit-code; then
       log "Committing release files"
       git commit -m "chore(release): $TAG"
