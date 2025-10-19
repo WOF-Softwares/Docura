@@ -1,5 +1,13 @@
 [
   {
+    "slug": "reimagining-desktop-productivity-tauri-ram-revolution",
+    "title": "🧠 Reimagining Desktop Productivity: Docurator, Tauri, and the RAM Revolution",
+    "date": "October 14, 2025",
+    "readTime": "15 min read",
+    "excerpt": "In a world of bloated apps and fragmented workflows, a new ecosystem is emerging—modular, memory-efficient, and emotionally satisfying. Built with Rust, powered by Tauri, and designed for creators, developers, and power users, this suite redefines what desktop tools can be.",
+    "file": "reimagining-desktop-productivity-tauri-ram-revolution.md"
+  },
+  {
     "slug": "fixing-cli-timing-race-condition-bug",
     "title": "Fixing the CLI Timing Race Condition Bug: A Real-World Debugging Journey",
     "date": "October 14, 2025",
