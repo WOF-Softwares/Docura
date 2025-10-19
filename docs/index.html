@@ -555,62 +555,145 @@
                     <span class="text-xl font-bold gradient-text">Docura</span>
                 </a>
 
-                <div class="hidden md:flex space-x-8">
-                    <a
-                        href="#features"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        >Features</a
-                    >
-                    <a
-                        href="#cloud-sync"
-                        class="text-success hover:text-accent-hover transition-colors font-semibold"
-                        >☁️ Cloud Sync</a
-                    >
-                    <a
-                        href="#omakase"
-                        class="text-accent hover:text-accent-hover transition-colors font-semibold"
-                        >🎨 Omarchy</a
-                    >
-                    <a
-                        href="#plasma"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        >💙 Plasma</a
-                    >
-                    <a
-                        href="#cosmic"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        >🌌 COSMIC</a
-                    >
-                    <a
-                        href="#screenshots"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        >Screenshots</a
-                    >
-                    <a
-                        href="#memory-analysis"
-                        class="text-purple-400 hover:text-purple-300 transition-colors font-semibold"
-                        >🧠 RAM Analysis</a
-                    >
-                    <a
-                        href="#comparison"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        >Comparison</a
-                    >
-                    <a
-                        href="#wiki"
-                        class="text-success hover:text-accent-hover transition-colors font-semibold"
-                        >📚 Wiki</a
-                    >
-                    <a
-                        href="#blog"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        >Blog</a
-                    >
+                <div class="hidden md:flex space-x-6">
+                    <!-- Features Dropdown -->
+                    <div class="relative group" x-data="{ open: false }">
+                        <button
+                            @click="open = !open"
+                            @mouseenter="open = true"
+                            @mouseleave="open = false"
+                            class="text-text-secondary hover:text-text-primary transition-colors flex items-center gap-1"
+                        >
+                            Features
+                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div
+                            x-show="open"
+                            @mouseenter="open = true"
+                            @mouseleave="open = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 scale-95"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-95"
+                            class="absolute top-full left-0 mt-2 w-64 bg-dark-tertiary rounded-lg shadow-xl border border-border-dark z-50"
+                        >
+                            <div class="py-2">
+                                <a href="#features" class="block px-4 py-2 text-text-secondary hover:text-text-primary hover:bg-dark-primary transition-colors">🎯 All Features</a>
+                                <a href="#victory" class="block px-4 py-2 text-text-secondary hover:text-text-primary hover:bg-dark-primary transition-colors">🏆 Focus Mode Victory</a>
+                                <a href="#cloud-sync" class="block px-4 py-2 text-success hover:text-accent-hover hover:bg-dark-primary transition-colors">☁️ Cloud Sync</a>
+                                <a href="#memory-analysis" class="block px-4 py-2 text-purple-400 hover:text-purple-300 hover:bg-dark-primary transition-colors">🧠 RAM Analysis</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Integrations Dropdown -->
+                    <div class="relative group" x-data="{ open: false }">
+                        <button
+                            @click="open = !open"
+                            @mouseenter="open = true"
+                            @mouseleave="open = false"
+                            class="text-text-secondary hover:text-text-primary transition-colors flex items-center gap-1"
+                        >
+                            Integrations
+                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div
+                            x-show="open"
+                            @mouseenter="open = true"
+                            @mouseleave="open = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 scale-95"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-95"
+                            class="absolute top-full left-0 mt-2 w-64 bg-dark-tertiary rounded-lg shadow-xl border border-border-dark z-50"
+                        >
+                            <div class="py-2">
+                                <a href="#omakase" class="block px-4 py-2 text-accent hover:text-accent-hover hover:bg-dark-primary transition-colors">🎨 Omarchy</a>
+                                <a href="#plasma" class="block px-4 py-2 text-text-secondary hover:text-text-primary hover:bg-dark-primary transition-colors">💙 KDE Plasma</a>
+                                <a href="#cosmic" class="block px-4 py-2 text-text-secondary hover:text-text-primary hover:bg-dark-primary transition-colors">🌌 COSMIC (Coming Soon)</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Media Dropdown -->
+                    <div class="relative group" x-data="{ open: false }">
+                        <button
+                            @click="open = !open"
+                            @mouseenter="open = true"
+                            @mouseleave="open = false"
+                            class="text-text-secondary hover:text-text-primary transition-colors flex items-center gap-1"
+                        >
+                            Media
+                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div
+                            x-show="open"
+                            @mouseenter="open = true"
+                            @mouseleave="open = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 scale-95"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-95"
+                            class="absolute top-full left-0 mt-2 w-64 bg-dark-tertiary rounded-lg shadow-xl border border-border-dark z-50"
+                        >
+                            <div class="py-2">
+                                <a href="#screenshots" class="block px-4 py-2 text-text-secondary hover:text-text-primary hover:bg-dark-primary transition-colors">📸 Screenshots</a>
+                                <a href="#comparison" class="block px-4 py-2 text-text-secondary hover:text-text-primary hover:bg-dark-primary transition-colors">📊 Performance Comparison</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resources Dropdown -->
+                    <div class="relative group" x-data="{ open: false }">
+                        <button
+                            @click="open = !open"
+                            @mouseenter="open = true"
+                            @mouseleave="open = false"
+                            class="text-text-secondary hover:text-text-primary transition-colors flex items-center gap-1"
+                        >
+                            Resources
+                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div
+                            x-show="open"
+                            @mouseenter="open = true"
+                            @mouseleave="open = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 scale-95"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-95"
+                            class="absolute top-full left-0 mt-2 w-64 bg-dark-tertiary rounded-lg shadow-xl border border-border-dark z-50"
+                        >
+                            <div class="py-2">
+                                <a href="#wiki" class="block px-4 py-2 text-success hover:text-accent-hover hover:bg-dark-primary transition-colors">📚 Wiki & Guides</a>
+                                <a href="#blog" class="block px-4 py-2 text-text-secondary hover:text-text-primary hover:bg-dark-primary transition-colors">📝 Blog</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Download (Always Visible) -->
                     <a
                         href="#download"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        >Download</a
+                        class="bg-accent hover:bg-accent-hover text-black font-semibold py-2 px-4 rounded-lg transition-all duration-300"
                     >
+                        Download
+                    </a>
                 </div>
 
                 <div class="flex items-center space-x-4">
@@ -655,73 +738,110 @@
                 x-show="mobileMenuOpen"
                 class="md:hidden bg-dark-secondary border-t border-border-dark px-4 py-2"
             >
-                <div class="flex flex-col space-y-3 py-2">
-                    <a
-                        href="#features"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        @click="mobileMenuOpen = false"
-                        >Features</a
-                    >
-                    <a
-                        href="#cloud-sync"
-                        class="text-success hover:text-accent-hover transition-colors font-semibold"
-                        @click="mobileMenuOpen = false"
-                        >☁️ Cloud Sync</a
-                    >
-                    <a
-                        href="#omakase"
-                        class="text-accent hover:text-accent-hover transition-colors font-semibold"
-                        @click="mobileMenuOpen = false"
-                        >🎨 Omarchy</a
-                    >
-                    <a
-                        href="#plasma"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        @click="mobileMenuOpen = false"
-                        >💙 Plasma</a
-                    >
-                    <a
-                        href="#cosmic"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        @click="mobileMenuOpen = false"
-                        >🌌 COSMIC</a
-                    >
-                    <a
-                        href="#screenshots"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        @click="mobileMenuOpen = false"
-                        >Screenshots</a
-                    >
-                    <a
-                        href="#memory-analysis"
-                        class="text-purple-400 hover:text-purple-300 transition-colors font-semibold"
-                        @click="mobileMenuOpen = false"
-                        >🧠 RAM Analysis</a
-                    >
-                    <a
-                        href="#comparison"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        @click="mobileMenuOpen = false"
-                        >Comparison</a
-                    >
-                    <a
-                        href="#wiki"
-                        class="text-success hover:text-accent-hover transition-colors font-semibold"
-                        @click="mobileMenuOpen = false"
-                        >📚 Wiki</a
-                    >
-                    <a
-                        href="#blog"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        @click="mobileMenuOpen = false"
-                        >Blog</a
-                    >
-                    <a
-                        href="#download"
-                        class="text-text-secondary hover:text-text-primary transition-colors"
-                        @click="mobileMenuOpen = false"
-                        >Download</a
-                    >
+                <div class="flex flex-col space-y-4 py-2">
+                    <!-- Features Section -->
+                    <div>
+                        <div class="text-sm font-semibold text-text-primary mb-2 px-2">Features</div>
+                        <div class="ml-4 space-y-2">
+                            <a
+                                href="#features"
+                                class="block text-text-secondary hover:text-text-primary transition-colors"
+                                @click="mobileMenuOpen = false"
+                                >🎯 All Features</a
+                            >
+                            <a
+                                href="#victory"
+                                class="block text-text-secondary hover:text-text-primary transition-colors"
+                                @click="mobileMenuOpen = false"
+                                >🏆 Focus Mode Victory</a
+                            >
+                            <a
+                                href="#cloud-sync"
+                                class="block text-success hover:text-accent-hover transition-colors font-semibold"
+                                @click="mobileMenuOpen = false"
+                                >☁️ Cloud Sync</a
+                            >
+                            <a
+                                href="#memory-analysis"
+                                class="block text-purple-400 hover:text-purple-300 transition-colors font-semibold"
+                                @click="mobileMenuOpen = false"
+                                >🧠 RAM Analysis</a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Integrations Section -->
+                    <div>
+                        <div class="text-sm font-semibold text-text-primary mb-2 px-2">Integrations</div>
+                        <div class="ml-4 space-y-2">
+                            <a
+                                href="#omakase"
+                                class="block text-accent hover:text-accent-hover transition-colors font-semibold"
+                                @click="mobileMenuOpen = false"
+                                >🎨 Omarchy</a
+                            >
+                            <a
+                                href="#plasma"
+                                class="block text-text-secondary hover:text-text-primary transition-colors"
+                                @click="mobileMenuOpen = false"
+                                >💙 KDE Plasma</a
+                            >
+                            <a
+                                href="#cosmic"
+                                class="block text-text-secondary hover:text-text-primary transition-colors"
+                                @click="mobileMenuOpen = false"
+                                >🌌 COSMIC (Coming Soon)</a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Media Section -->
+                    <div>
+                        <div class="text-sm font-semibold text-text-primary mb-2 px-2">Media</div>
+                        <div class="ml-4 space-y-2">
+                            <a
+                                href="#screenshots"
+                                class="block text-text-secondary hover:text-text-primary transition-colors"
+                                @click="mobileMenuOpen = false"
+                                >📸 Screenshots</a
+                            >
+                            <a
+                                href="#comparison"
+                                class="block text-text-secondary hover:text-text-primary transition-colors"
+                                @click="mobileMenuOpen = false"
+                                >📊 Performance Comparison</a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Resources Section -->
+                    <div>
+                        <div class="text-sm font-semibold text-text-primary mb-2 px-2">Resources</div>
+                        <div class="ml-4 space-y-2">
+                            <a
+                                href="#wiki"
+                                class="block text-success hover:text-accent-hover transition-colors font-semibold"
+                                @click="mobileMenuOpen = false"
+                                >📚 Wiki & Guides</a
+                            >
+                            <a
+                                href="#blog"
+                                class="block text-text-secondary hover:text-text-primary transition-colors"
+                                @click="mobileMenuOpen = false"
+                                >📝 Blog</a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Download -->
+                    <div class="pt-2 border-t border-border-dark">
+                        <a
+                            href="#download"
+                            class="block bg-accent hover:bg-accent-hover text-black font-semibold py-2 px-4 rounded-lg transition-all duration-300 text-center"
+                            @click="mobileMenuOpen = false"
+                            >Download</a
+                        >
+                    </div>
                 </div>
             </div>
         </nav>
